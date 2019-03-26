@@ -1,0 +1,89 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-kapt'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: "androidx.navigation.safeargs.kotlin"
+
+android {
+    def globalConfiguration = rootProject.extensions.getByName('ext')
+
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId globalConfiguration['androidApplicationId']
+
+        minSdkVersion globalConfiguration['androidMinSdkVersion']
+        targetSdkVersion globalConfiguration['androidTargetSdkVersion']
+
+        testInstrumentationRunner globalConfiguration['androidTestInstrumentationRunner']
+
+        vectorDrawables.useSupportLibrary globalConfiguration['androidVDUseSupportLibrary']
+
+        versionCode globalConfiguration['androidVersionCode']
+        versionName globalConfiguration['androidVersionName']
+    }
+    buildTypes {
+        debug {
+            ext.enableCrashlytics = false
+        }
+
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    flavorDimensions "stage"
+
+    productFlavors {
+        dev {
+            dimension "stage"
+            versionNameSuffix "-dev"
+            applicationIdSuffix '.dev'
+        }
+        prod {
+
+        }
+    }
+}
+
+dependencies {
+    def dependencies = rootProject.ext.presentationDependencies
+    def presentationTestDependencies = rootProject.ext.presentationTestDependencies
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+//    Kotlin
+    implementation dependencies.kotlinLib
+    implementation dependencies.kotlinCoroutinesCore
+    implementation dependencies.kotlinCoroutinesAndroid
+//    Modules
+    implementation project(path: ':domain')
+    implementation project(path: ':data')
+//    View
+    implementation dependencies.appCompat
+    implementation dependencies.constraintLayout
+    implementation dependencies.legacy
+    implementation dependencies.material
+    implementation dependencies.recyclerView
+    implementation dependencies.cardView
+//    Arch
+    implementation dependencies.lifeCycleExtention
+    implementation dependencies.lifeCycleViewModel
+    implementation dependencies.navigationFragment
+    implementation dependencies.navigationUI
+//    Dagger
+    implementation dependencies.dagger
+    kapt dependencies.daggerCompiler
+//    Test
+    testImplementation presentationTestDependencies.junit
+    androidTestImplementation presentationTestDependencies.runner
+    androidTestImplementation presentationTestDependencies.espresso
+
+}

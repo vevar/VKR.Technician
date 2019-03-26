@@ -1,0 +1,28 @@
+apply from: 'buildsystem/dependencies.gradle'
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.3.2'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.21"
+        classpath "android.arch.navigation:navigation-safe-args-gradle-plugin:1.0.0"
+    }
+}
+
+allprojects {
+    ext {
+        androidApplicationId = 'com.nstu.techinician'
+        androidTestInstrumentationRunner = 'androidx.test.runner.AndroidJUnitRunner'
+
+        androidVDUseSupportLibrary = true
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
