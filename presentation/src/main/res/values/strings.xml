@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">VKR.Technician</string>
+    <string name="authorization">Авторизация</string>
+    <string name="fld_login">Логин</string>
+    <string name="fld_password">Пароль</string>
+    <string name="btn_sing_in">Вход</string>
 </resources>
