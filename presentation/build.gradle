@@ -9,21 +9,20 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
-    def globalConfiguration = rootProject.extensions.getByName('ext')
 
-    compileSdkVersion 28
+    compileSdkVersion androidCompileSdkVersion
     defaultConfig {
-        applicationId globalConfiguration['androidApplicationId']
+        applicationId androidApplicationId
 
-        minSdkVersion globalConfiguration['androidMinSdkVersion']
-        targetSdkVersion globalConfiguration['androidTargetSdkVersion']
+        minSdkVersion androidMinSdkVersion
+        targetSdkVersion androidTargetSdkVersion
 
-        testInstrumentationRunner globalConfiguration['androidTestInstrumentationRunner']
+        testInstrumentationRunner androidTestInstrumentationRunner
 
-        vectorDrawables.useSupportLibrary globalConfiguration['androidVDUseSupportLibrary']
+        vectorDrawables.useSupportLibrary androidVDUseSupportLibrary
 
-        versionCode globalConfiguration['androidVersionCode']
-        versionName globalConfiguration['androidVersionName']
+        versionCode androidVersionCode
+        versionName androidVersionName
     }
     buildTypes {
         debug {
