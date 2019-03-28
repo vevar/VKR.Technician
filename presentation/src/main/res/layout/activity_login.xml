@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        tools:context=".feature.login.LoginActivity">
+    <data>
+        <variable name="viewModel" type="com.nstu.technician.feature.login.LoginViewModel"/>
+    </data>
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="35dp">
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/authorization"
+                    android:textSize="@dimen/H5"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"/>
+            <EditText
+                    android:id="@+id/fld_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/fld_height"
+                    android:inputType="text"
+                    android:hint="@string/fld_login"
+                    android:text="@={viewModel.username}"
+                    android:layout_marginTop="@dimen/default_margin"
+                    tools:ignore="Autofill"/>
+            <EditText
+                    android:id="@+id/fld_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/fld_height"
+                    android:inputType="textPassword"
+                    android:hint="@string/fld_password"
+                    android:text="@={viewModel.password}"
+                    android:layout_marginTop="@dimen/default_margin"
+                    tools:ignore="Autofill"/>
+            <Button
+                    android:id="@+id/btn_sing_in"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/fld_height"
+                    android:text="@string/btn_sing_in"
+                    android:layout_marginTop="@dimen/default_margin"
+                    app:enable="@{safeUnbox(viewModel.isFieldsFilled())}"/>
+        </LinearLayout>
+
+        <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                app:showIfLoad="@{safeUnbox(viewModel.isLoading())}"/>
+    </FrameLayout>
+</layout>
