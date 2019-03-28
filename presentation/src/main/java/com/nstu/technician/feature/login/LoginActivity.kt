@@ -52,8 +52,7 @@ class LoginActivity : BaseActivity() {
             Log.d(TAG_PRESENTATION, "Technician auth is success")
         })
         mViewModel.message.observe(this, Observer {
-            val dialog = ErrorDialog()
-
+            val dialog = ErrorDialog.createDialog(it)
             dialog.show(supportFragmentManager, TAG_ERROR_DIALOG)
         })
     }
@@ -62,7 +61,7 @@ class LoginActivity : BaseActivity() {
         if (outState != null) {
             outState.putString(STATE_USERNAME, mViewModel.username.value)
             outState.putString(STATE_PASSWORD, mViewModel.password.value)
-            outState.putString(ErrorDialog.STATE_MESSAGE, mViewModel.password.value)
+            outState.putString(ErrorDialog.EXTRA_MESSAGE, mViewModel.password.value)
         }
     }
 }

@@ -43,7 +43,7 @@ class LoginViewModel(
 
     fun singIn() {
         launchDataLoad {
-            delay(3_000)
+            delay(1_000)
             _message.value = context.getString(R.string.incorrect_data_of_account)
         }
     }
