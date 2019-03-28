@@ -22,9 +22,8 @@ class LoginViewModel(
     private val _isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
     val isLoading: LiveData<Boolean>
         get() = _isLoading
-    private val _message: MutableLiveData<String> = MutableLiveData()
-    val message: LiveData<String>
-        get() = _message
+    val message: MutableLiveData<String> = MutableLiveData()
+
     private val _technician: MutableLiveData<Technician> = MutableLiveData()
     val technician: LiveData<Technician>
         get() = _technician
@@ -44,7 +43,7 @@ class LoginViewModel(
     fun singIn() {
         launchDataLoad {
             delay(1_000)
-            _message.value = context.getString(R.string.incorrect_data_of_account)
+            message.value = context.getString(R.string.incorrect_data_of_account)
         }
     }
 
