@@ -16,7 +16,7 @@ class ListMaintenanceForDayFragment : BaseFragment() {
 
     private lateinit var mBinding: FragmentListMaintenanceBinding
     private lateinit var mViewModel: ListMaintenanceForDayViewModel
-    private lateinit var mMaintenanceRecycleAdapter: MaintenanceRecyclerViewAdapter
+    private lateinit var mMaintenanceRecycleAdapter: MaintenanceRVAdapter
 
     private var listMaintenanceObserver = Observer<List<Any>> {
         mMaintenanceRecycleAdapter.setListMaintenance(it)
@@ -29,10 +29,10 @@ class ListMaintenanceForDayFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_list_maintenance, container, false)
-        mMaintenanceRecycleAdapter = MaintenanceRecyclerViewAdapter(
+        mMaintenanceRecycleAdapter = MaintenanceRVAdapter(
             requireContext(),
             object :
-                MaintenanceRecyclerViewAdapter.MaintenanceListener {
+                MaintenanceRVAdapter.MaintenanceListener {
                 override fun onShowOnMap() {
                     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                 }
@@ -51,7 +51,7 @@ class ListMaintenanceForDayFragment : BaseFragment() {
 
     private fun setupViewModel() {
         val factory =
-            ListMaintenanceForDayViewModelFactory()
+            ListMaintenanceForDayVMFactory()
         mViewModel = ViewModelProviders.of(this, factory).get(ListMaintenanceForDayViewModel::class.java)
     }
 

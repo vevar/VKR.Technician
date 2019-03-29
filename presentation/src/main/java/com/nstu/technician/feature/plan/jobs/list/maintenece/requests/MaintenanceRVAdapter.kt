@@ -1,5 +1,6 @@
 package com.nstu.technician.feature.plan.jobs.list.maintenece.requests
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -9,10 +10,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.nstu.technician.R
 
-class MaintenanceRecyclerViewAdapter(
+class MaintenanceRVAdapter(
     context: Context,
     private val maintenanceListener: MaintenanceListener
-) : RecyclerView.Adapter<MaintenanceRecyclerViewAdapter.FacilityHolder>() {
+) : RecyclerView.Adapter<MaintenanceRVAdapter.FacilityHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private val listMaintenance: MutableList<Any> = mutableListOf()
@@ -33,7 +34,7 @@ class MaintenanceRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: FacilityHolder, position: Int) {
-        holder.bind(listMaintenance[position])
+        holder.bind()
     }
 
     class FacilityHolder(
@@ -48,12 +49,17 @@ class MaintenanceRecyclerViewAdapter(
         private var addressFacility: TextView = view.findViewById(R.id.address_facility)
         private var showOnMap: Button = view.findViewById(R.id.btn_show_on_map)
         private var startJob: Button = view.findViewById(R.id.btn_start_job)
+        private var message: TextView = view.findViewById(R.id.maintenance_message)
+        private var type: TextView = view.findViewById(R.id.type_maintenance)
 
-        fun bind(any: Any) {
+        @SuppressLint("SetTextI18n")
+        fun bind() {
             number.text = "#32"
             nameFacility.text = "NSTU"
             timeForJob.text = "2 часа"
             addressFacility.text = "ул.Ватутина д. 245 оф.56"
+            type.text = "Ежемесячное ТО"
+            message.text = "Заберите акт"
             showOnMap.setOnClickListener {
                 maintenanceListener.onShowOnMap()
             }
