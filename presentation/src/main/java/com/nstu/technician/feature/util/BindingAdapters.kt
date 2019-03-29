@@ -12,7 +12,7 @@ object BindingAdapters {
     @BindingAdapter("app:showIfLoad")
     @JvmStatic
     fun showIfLoad(view: View, isLoading: Boolean) {
-        view.visibility = if (isLoading) View.VISIBLE else View.INVISIBLE
+        view.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     @BindingAdapter("app:enable")

@@ -1,4 +1,4 @@
-package com.nstu.technician.feature.listjobsforday
+package com.nstu.technician.feature.plan.jobs.list.maintenece.requests
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -9,30 +9,36 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.nstu.technician.R
 
-class FacilitiesRecyclerViewAdapter(
+class MaintenanceRecyclerViewAdapter(
     context: Context,
-    private val facilityListener: FacilityListener
-) : RecyclerView.Adapter<FacilitiesRecyclerViewAdapter.FacilityHolder>() {
+    private val maintenanceListener: MaintenanceListener
+) : RecyclerView.Adapter<MaintenanceRecyclerViewAdapter.FacilityHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private val facilities: MutableList<Any> = mutableListOf()
+    private val listMaintenance: MutableList<Any> = mutableListOf()
+
+    fun setListMaintenance(list: List<Any>) {
+        listMaintenance.clear()
+        listMaintenance.addAll(list)
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FacilityHolder {
-        val view = inflater.inflate(R.layout.view_facility, parent, false)
-        return FacilityHolder(view, facilityListener)
+        val view = inflater.inflate(R.layout.view_maintenance, parent, false)
+        return FacilityHolder(view, maintenanceListener)
     }
 
     override fun getItemCount(): Int {
-        return facilities.size
+        return listMaintenance.size
     }
 
     override fun onBindViewHolder(holder: FacilityHolder, position: Int) {
-        holder.bind(facilities[position])
+        holder.bind(listMaintenance[position])
     }
 
     class FacilityHolder(
         view: View,
-        private val facilityListener: FacilityListener
+        private val maintenanceListener: MaintenanceListener
 
     ) : RecyclerView.ViewHolder(view) {
 
@@ -49,15 +55,15 @@ class FacilitiesRecyclerViewAdapter(
             timeForJob.text = "2 часа"
             addressFacility.text = "ул.Ватутина д. 245 оф.56"
             showOnMap.setOnClickListener {
-                facilityListener.onShowOnMap()
+                maintenanceListener.onShowOnMap()
             }
             startJob.setOnClickListener {
-                facilityListener.onStartJob()
+                maintenanceListener.onStartJob()
             }
         }
     }
 
-    interface FacilityListener {
+    interface MaintenanceListener {
         fun onShowOnMap()
         fun onStartJob()
     }

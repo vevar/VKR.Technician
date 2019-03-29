@@ -1,13 +1,14 @@
-package com.nstu.technician.feature.listjobsforday
+package com.nstu.technician.feature.plan.jobs
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-class ListFacilitiesForDayViewModelFactory : ViewModelProvider.Factory {
+class PlanJobsVMFactory : ViewModelProvider.Factory {
+
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(ListFacilitiesForDayViewModel::class.java)) {
-            return ListFacilitiesForDayViewModel() as T
+        if (modelClass.isAssignableFrom(PlanJobsViewModel::class.java)) {
+            return PlanJobsViewModel() as T
         } else {
             throw IllegalArgumentException("ViewModel not found")
         }

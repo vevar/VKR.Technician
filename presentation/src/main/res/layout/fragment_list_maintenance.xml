@@ -2,19 +2,20 @@
 <layout
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
-        tools:context=".feature.listjobsforday.ListFacilitiesForDayFragment">
+        tools:context=".feature.plan.jobs.list.maintenece.requests.ListMaintenanceForDayFragment">
     <data>
-        <variable name="viewModel" type="com.nstu.technician.feature.listjobsforday.ListFacilitiesForDayViewModel"/>
+        <variable name="viewModel"
+                  type="com.nstu.technician.feature.plan.jobs.list.maintenece.requests.ListMaintenanceForDayViewModel"/>
     </data>
     <FrameLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycle_view_facilities"
+                android:id="@+id/recycle_view_maintenance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:listitem="@layout/view_facility">
+                tools:listitem="@layout/view_maintenance">
 
         </androidx.recyclerview.widget.RecyclerView>
 
@@ -23,6 +24,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                app:showIfLoad="@{safeUnbox(viewModel.loader.isLoading())}"/>
+                app:showIfLoad="@{safeUnbox(viewModel.isLoading())}"/>
     </FrameLayout>
 </layout>
