@@ -32,7 +32,6 @@ android {
 }
 
 dependencies {
-
     def dependencies = rootProject.ext.domainDependencies
 
     implementation dependencies.kotlinLib
