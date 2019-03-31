@@ -12,14 +12,15 @@ import com.nstu.technician.databinding.ActivityLoginBinding
 import com.nstu.technician.domain.model.Technician
 import com.nstu.technician.feature.BaseActivity
 import com.nstu.technician.feature.common.ErrorDialogFragment
-import com.nstu.technician.feature.util.TAG_ERROR_DIALOG
-import com.nstu.technician.feature.util.TAG_PRESENTATION
 
 class LoginActivity : BaseActivity(), ErrorDialogFragment.ErrorDialogListener {
 
     companion object {
+        private const val TAG = "LoginActivity"
+
         private const val STATE_USERNAME = "STATE_USERNAME"
         private const val STATE_PASSWORD = "STATE_PASSWORD"
+        private const val STATE_MESSAGE = "STATE_MESSAGE"
     }
 
     private lateinit var mBinding: ActivityLoginBinding
@@ -41,18 +42,20 @@ class LoginActivity : BaseActivity(), ErrorDialogFragment.ErrorDialogListener {
         if (savedInstanceState != null) {
             mViewModel.username.value = savedInstanceState.getString(STATE_USERNAME) ?: ""
             mViewModel.password.value = savedInstanceState.getString(STATE_PASSWORD) ?: ""
+            mViewModel.message.value = savedInstanceState.getString(STATE_MESSAGE) ?: ""
         }
 
         technicianObserver = Observer {
-            Log.d(TAG_PRESENTATION, "Technician auth is success")
+            Log.d(TAG, "Technician auth is success")
         }
         messageObserver = Observer {
             if (it.isNotBlank()) {
-                val fragment = supportFragmentManager.findFragmentByTag(TAG_ERROR_DIALOG) as? ErrorDialogFragment
+                val fragment = supportFragmentManager.findFragmentByTag(ErrorDialogFragment.TAG)
+                        as? ErrorDialogFragment
 
                 if (fragment == null) {
                     val dialog = ErrorDialogFragment.createDialog(it)
-                    dialog.show(supportFragmentManager, TAG_ERROR_DIALOG)
+                    dialog.show(supportFragmentManager, ErrorDialogFragment.TAG)
                 }
             }
         }
@@ -83,7 +86,7 @@ class LoginActivity : BaseActivity(), ErrorDialogFragment.ErrorDialogListener {
         outState?.let {
             it.putString(STATE_USERNAME, mViewModel.username.value)
             it.putString(STATE_PASSWORD, mViewModel.password.value)
-            it.putString(ErrorDialogFragment.EXTRA_MESSAGE, mViewModel.message.value)
+            it.putString(STATE_MESSAGE, mViewModel.message.value)
         }
     }
 

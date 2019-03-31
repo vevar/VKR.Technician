@@ -11,7 +11,8 @@ import com.nstu.technician.R
 class ErrorDialogFragment : DialogFragment() {
 
     companion object {
-        const val EXTRA_MESSAGE = "EXTRA_MESSAGE"
+        private const val EXTRA_MESSAGE = "EXTRA_MESSAGE"
+        const val TAG = "ErrorDialogFragment"
 
         fun createDialog(message: String): ErrorDialogFragment {
             val dialog = ErrorDialogFragment()
@@ -23,7 +24,7 @@ class ErrorDialogFragment : DialogFragment() {
         }
     }
 
-    lateinit var errorDialogListener: ErrorDialogListener
+    var errorDialogListener: ErrorDialogListener? = null
 
     interface ErrorDialogListener {
         fun onClickOk(dialogFragment: ErrorDialogFragment)
@@ -40,7 +41,8 @@ class ErrorDialogFragment : DialogFragment() {
         textView.text = arguments?.getString(EXTRA_MESSAGE) ?: throw NullPointerException()
         builder.setView(view)
             .setPositiveButton(R.string.ok) { _, _ ->
-                errorDialogListener.onClickOk(this)
+                errorDialogListener?.onClickOk(this)
+                    ?: throw IllegalStateException("errorDialogListener must be set")
             }
         return builder.create()
     }

@@ -45,8 +45,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/fld_height"
                     android:text="@string/btn_sing_in"
+                    android:textColor="@color/btn_text"
+                    android:background="@drawable/btn_round_background"
                     android:layout_marginTop="@dimen/default_margin"
-                    app:enable="@{safeUnbox(viewModel.isFieldsFilled())}"/>
+                    android:enabled="@{safeUnbox(viewModel.isFieldsFilled())}"/>
         </LinearLayout>
 
         <ProgressBar
