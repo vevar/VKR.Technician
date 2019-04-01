@@ -26,7 +26,7 @@ class ListMaintenanceForDayViewModel : ViewModel() {
     fun loadListMaintenance() {
         launchDataLoad {
             withContext(Dispatchers.IO) {
-                delay(2_000)
+                delay(500)
             }
             _listMaintenance.value = mutableListOf<Any>(1, 2, 4, 5, 6)
         }

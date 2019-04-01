@@ -17,5 +17,6 @@
     <string name="tlt_plan_jobs">График работ</string>
     <string name="btn_show_on_map">Показать на карте</string>
     <string name="btn_start">Начать</string>
+    <string name="map">Карта</string>
 
 </resources>

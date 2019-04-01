@@ -38,6 +38,8 @@ ext {
     legacyVersion = '1.0.0'
     materialVersion = '1.0.0'
 
+    googleServicesMaps_verion = '16.1.0'
+
 //Testing
     junitVersion = '4.12'
     runnerVersion = '1.1.1'
@@ -62,7 +64,8 @@ ext {
             legacy                 : "androidx.legacy:legacy-support-v4:${legacyVersion}",
             material               : "com.google.android.material:material:${materialVersion}",
             navigationFragment     : "android.arch.navigation:navigation-fragment-ktx:${nav_version}",
-            navigationUI           : "android.arch.navigation:navigation-ui-ktx:${nav_version}"
+            navigationUI           : "android.arch.navigation:navigation-ui-ktx:${nav_version}",
+            googleServicesMaps     : "com.google.android.gms:play-services-maps:${googleServicesMaps_verion}"
     ]
 
     presentationTestDependencies = [

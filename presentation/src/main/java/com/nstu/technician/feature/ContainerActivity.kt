@@ -6,7 +6,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.nstu.technician.R
 import com.nstu.technician.databinding.ActivityContainerBinding
@@ -16,6 +15,8 @@ class ContainerActivity : BaseActivity() {
     private lateinit var mBinding: ActivityContainerBinding
 
     companion object {
+        private const val TAG = "ContainerActivity"
+
         fun startActivity(activity: BaseActivity) {
             val intent = Intent(activity, ContainerActivity::class.java)
             activity.startActivity(intent)
@@ -35,5 +36,4 @@ class ContainerActivity : BaseActivity() {
     private fun setupActionBar(navController: NavController, appBarConfiguration: AppBarConfiguration) {
         setupActionBarWithNavController(navController, appBarConfiguration)
     }
-
 }
