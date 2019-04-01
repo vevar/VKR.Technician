@@ -26,5 +26,6 @@ class PlanJobVPAdapter(fragmentManger: FragmentManager) : FragmentStatePagerAdap
         return "День $position"
     }
 
+
     // TODO fix bug multi progressbar with finishUpdate(ViewGroup container)
 }

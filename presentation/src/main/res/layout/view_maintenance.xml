@@ -19,6 +19,8 @@
                 android:padding="10dp"
                 android:drawableStart="@drawable/ic_warning_white"
                 android:drawablePadding="@dimen/mini_margin"
+                android:visibility="gone"
+
                 style="@style/Warning"
                 tools:text="Заберите акт"/>
 

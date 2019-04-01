@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.nstu.technician.R
+import com.nstu.technician.feature.common.TypeNotification
 
 class MaintenanceRVAdapter(
     context: Context,
@@ -59,7 +60,39 @@ class MaintenanceRVAdapter(
             timeForJob.text = "2 часа"
             addressFacility.text = "ул.Ватутина д. 245 оф.56"
             type.text = "Ежемесячное ТО"
-            message.text = "Заберите акт"
+
+            val randNotification = Math.random()
+            var typeNotification: TypeNotification? = null
+
+            var recMessage: String? = null
+            if (randNotification <= 0.33) {
+                typeNotification = TypeNotification.NOTIFICATION
+                recMessage = "Заберите инструменты"
+
+            } else if (randNotification > 0.33 && randNotification <= 0.66) {
+                typeNotification = TypeNotification.WARNING
+                recMessage = "Заберите акт"
+            } else {
+
+            }
+            if (recMessage != null) {
+                when (typeNotification) {
+                    TypeNotification.NOTIFICATION -> {
+                        message.text = "Заберите инструменты"
+                        message.setBackgroundResource(R.color.yellow)
+                        message.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_notification_white, 0, 0, 0)
+                        message.visibility = TextView.VISIBLE
+
+                    }
+                    TypeNotification.WARNING -> {
+                        message.text = "Заберите акт"
+                        message.setBackgroundResource(R.color.red)
+                        message.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_warning_white, 0, 0, 0)
+                        message.visibility = TextView.VISIBLE
+                    }
+                }
+            }
+
             showOnMap.setOnClickListener {
                 maintenanceListener.onShowOnMap()
             }

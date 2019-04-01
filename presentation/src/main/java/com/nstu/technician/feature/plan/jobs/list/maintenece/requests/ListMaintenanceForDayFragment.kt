@@ -1,6 +1,7 @@
 package com.nstu.technician.feature.plan.jobs.list.maintenece.requests
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,9 @@ import com.nstu.technician.databinding.FragmentListMaintenanceBinding
 import com.nstu.technician.feature.BaseFragment
 
 class ListMaintenanceForDayFragment : BaseFragment() {
+    companion object {
+        private const val TAG = "Maintenance_Fragment"
+    }
 
     private lateinit var mBinding: FragmentListMaintenanceBinding
     private lateinit var mViewModel: ListMaintenanceForDayViewModel
@@ -59,10 +63,18 @@ class ListMaintenanceForDayFragment : BaseFragment() {
         super.onStart()
         mViewModel.listMaintenance.observe(this, listMaintenanceObserver)
         mViewModel.loadListMaintenance()
+        Log.d(TAG,"${this} + fragment is started")
     }
+
 
     override fun onStop() {
         super.onStop()
         mViewModel.listMaintenance.removeObserver(listMaintenanceObserver)
+        Log.d(TAG,"${this} + fragment is stopped")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG,"${this} + fragment is destroy")
     }
 }

@@ -48,6 +48,7 @@ class PlanJobsFragment : BaseFragment() {
         super.onStart()
         mViewModel.days.observe(this, mDaysObserver)
         mViewModel.loadPlanJobs()
+
     }
 
     override fun onStop() {

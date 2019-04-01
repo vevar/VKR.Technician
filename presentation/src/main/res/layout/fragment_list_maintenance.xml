@@ -18,7 +18,11 @@
                 tools:listitem="@layout/view_maintenance">
         </androidx.recyclerview.widget.RecyclerView>
 
-
-
+        <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:showIfLoad="@{viewModel.isLoading()}"/>
     </FrameLayout>
 </layout>

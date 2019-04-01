@@ -1,14 +1,16 @@
 package com.nstu.technician.feature.plan.jobs.list.maintenece.requests
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class ListMaintenanceForDayViewModel : ViewModel() {
+    companion object {
+        private const val TAG = "Maintenances_ViewModel"
+    }
 
     val listMaintenance: LiveData<List<Any>>
         get() = _listMaintenance
@@ -23,20 +25,28 @@ class ListMaintenanceForDayViewModel : ViewModel() {
 
     fun loadListMaintenance() {
         launchDataLoad {
-            delay(1_000)
+            withContext(Dispatchers.IO) {
+                delay(2_000)
+            }
             _listMaintenance.value = mutableListOf<Any>(1, 2, 4, 5, 6)
         }
     }
-
     private fun launchDataLoad(block: suspend () -> Unit): Job {
         return viewModelScope.launch {
             try {
                 _isLoading.value = true
+                Log.d(TAG, "(${this@ListMaintenanceForDayViewModel})Loader is called")
                 block()
             } finally {
                 _isLoading.value = false
+                Log.d(TAG, "(${this@ListMaintenanceForDayViewModel})finally is called")
             }
+            Log.d(TAG, "(${this@ListMaintenanceForDayViewModel})launch is finished")
         }
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        Log.d(TAG, "$this is cleared")
+    }
 }
