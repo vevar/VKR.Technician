@@ -3,14 +3,18 @@ package com.nstu.technician.feature.plan.jobs
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
+import com.nstu.technician.domain.model.Shift
 import com.nstu.technician.feature.plan.jobs.list.maintenece.requests.ListMaintenanceForDayFragment
+import java.util.*
 
-class PlanJobVPAdapter(fragmentManger: FragmentManager) : FragmentStatePagerAdapter(fragmentManger) {
-    private val listDays: MutableList<Any> = mutableListOf()
-
-    fun setListDays(list: List<Any>) {
-        listDays.clear()
-        listDays.addAll(list)
+class PlanJobVPAdapter(
+    fragmentManger: FragmentManager,
+    private val planJobListener: PlanJobListener
+) : FragmentStatePagerAdapter(fragmentManger) {
+    private val listShifts: MutableList<Shift> = mutableListOf()
+    fun setListShifts(list: List<Shift>) {
+        listShifts.clear()
+        listShifts.addAll(list)
         notifyDataSetChanged()
     }
 
@@ -19,13 +23,17 @@ class PlanJobVPAdapter(fragmentManger: FragmentManager) : FragmentStatePagerAdap
     }
 
     override fun getCount(): Int {
-        return listDays.size
+        return listShifts.size
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
-        return "День $position"
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = listShifts[position].date.timeInMS
+
+        return planJobListener.onCreatePageTitle(calendar)
     }
 
-
-    // TODO fix bug multi progressbar with finishUpdate(ViewGroup container)
+    interface PlanJobListener {
+        fun onCreatePageTitle(calendar: Calendar): String
+    }
 }

@@ -2,13 +2,16 @@ package com.nstu.technician.feature.plan.jobs
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.nstu.technician.domain.usecase.job.LoadShiftsUseCase
 
-class PlanJobsVMFactory : ViewModelProvider.Factory {
+class PlanJobsVMFactory(
+    private val loadShiftsUseCase: LoadShiftsUseCase
+) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(PlanJobsViewModel::class.java)) {
-            return PlanJobsViewModel() as T
+            return PlanJobsViewModel(loadShiftsUseCase) as T
         } else {
             throw IllegalArgumentException("ViewModel not found")
         }

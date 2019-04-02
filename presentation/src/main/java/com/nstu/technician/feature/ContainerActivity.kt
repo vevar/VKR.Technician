@@ -31,6 +31,8 @@ class ContainerActivity : BaseActivity() {
             .findFragmentById(R.id.host_fragment) as NavHostFragment? ?: return
         val navController = host.navController
         setupActionBar(navController, AppBarConfiguration(navController.graph))
+
+        supportActionBar?.show()
     }
 
     private fun setupActionBar(navController: NavController, appBarConfiguration: AppBarConfiguration) {

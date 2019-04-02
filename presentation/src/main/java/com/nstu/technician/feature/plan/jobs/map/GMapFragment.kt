@@ -63,7 +63,7 @@ class GMapFragment : BaseFragment() {
                 fusedLocationClient.lastLocation.addOnCompleteListener {
                     Log.d(TAG, "onCompleteListener(lastLocation) is called")
                 }
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermissions(
                     arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
                     GMapFragment.PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION
@@ -92,6 +92,13 @@ class GMapFragment : BaseFragment() {
         }
     }
 
+    private fun showActionBar() {
+        val activity = activity
+        if (activity is AppCompatActivity) {
+            activity.supportActionBar?.show()
+        }
+    }
+
     private fun checkLocationPermission(): Boolean {
         return PermissionChecker.checkSelfPermission(
             requireContext(),
@@ -112,5 +119,10 @@ class GMapFragment : BaseFragment() {
     override fun onStop() {
         super.onStop()
         mBinding.mapView.onStop()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        showActionBar()
     }
 }

@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.alxminyaev.ratingnstustudent.domain.usecase.auth.AuthUseCase
+import com.nstu.technician.domain.usecase.auth.AuthUseCase
 import com.nstu.technician.R
 import com.nstu.technician.domain.model.user.Technician
 import com.nstu.technician.feature.util.TAG_PRESENTATION

@@ -19,4 +19,19 @@
     <string name="btn_start">Начать</string>
     <string name="map">Карта</string>
 
+    <string-array name="months">
+        <item>Января</item>
+        <item>Февраля</item>
+        <item>Марта</item>
+        <item>Апреля</item>
+        <item>Мая</item>
+        <item>Июня</item>
+        <item>Июля</item>
+        <item>Августа</item>
+        <item>Сентебря</item>
+        <item>Октября</item>
+        <item>Ноября</item>
+        <item>Декабря</item>
+    </string-array>
+
 </resources>
