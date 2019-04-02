@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         tools:context=".feature.plan.jobs.map.GMapFragment">
     <data>
 
     </data>
-    <LinearLayout
+    <FrameLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -13,5 +14,28 @@
                 android:id="@+id/mapView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
-    </LinearLayout>
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:orientation="vertical">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/btn_place"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_place_white"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_margin="@dimen/mini_margin"/>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/btn_my_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_my_location_white"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_margin="@dimen/mini_margin"/>
+        </LinearLayout>
+    </FrameLayout>
 </layout>

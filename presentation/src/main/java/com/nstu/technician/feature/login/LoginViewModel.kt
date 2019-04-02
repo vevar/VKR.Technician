@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alxminyaev.ratingnstustudent.domain.usecase.auth.AuthUseCase
 import com.nstu.technician.R
-import com.nstu.technician.domain.model.Technician
+import com.nstu.technician.domain.model.user.Technician
 import com.nstu.technician.feature.util.TAG_PRESENTATION
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

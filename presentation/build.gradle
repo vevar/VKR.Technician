@@ -82,8 +82,9 @@ dependencies {
     implementation dependencies.lifeCycleViewModel
     implementation dependencies.navigationFragment
     implementation dependencies.navigationUI
-//    Maps
+//    Map
     implementation dependencies.googleServicesMaps
+    implementation dependencies.playServiceLocation
 
 //    Dagger
     implementation dependencies.dagger

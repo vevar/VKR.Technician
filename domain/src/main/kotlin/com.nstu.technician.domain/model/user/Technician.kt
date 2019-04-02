@@ -1,4 +1,4 @@
-package com.nstu.technician.domain.model
+package com.nstu.technician.domain.model.user
 
 data class Technician(
     val id: Int,
