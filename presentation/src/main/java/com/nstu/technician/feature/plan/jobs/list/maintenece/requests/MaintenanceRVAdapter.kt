@@ -16,6 +16,9 @@ class MaintenanceRVAdapter(
     context: Context,
     private val maintenanceListener: MaintenanceListener
 ) : RecyclerView.Adapter<MaintenanceRVAdapter.FacilityHolder>() {
+    companion object {
+        private const val MINUTE_IN_HOUR = 60
+    }
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private val listMaintenance: MutableList<Maintenance> = mutableListOf()
@@ -55,10 +58,10 @@ class MaintenanceRVAdapter(
 
         @SuppressLint("SetTextI18n")
         fun bind(maintenance: Maintenance) {
-            number.text = maintenance.oid.toString()
+            number.text = "#${maintenance.oid}"
             nameFacility.text = maintenance.facility.name
-            timeForJob.text = maintenance.duration.toString()
-            addressFacility.text = maintenance.facility.address.street
+            timeForJob.text = getStringTimeForJob(maintenance)
+            addressFacility.text = getStringAddressFacility(maintenance)
             type.text = maintenance.maintenanceType.name
 
             val randNotification = Math.random()
@@ -98,6 +101,30 @@ class MaintenanceRVAdapter(
             }
             startJob.setOnClickListener {
                 maintenanceListener.onStartJob(maintenance)
+            }
+        }
+
+        private fun getStringAddressFacility(maintenance: Maintenance): String {
+            val resources = itemView.resources
+            val address = maintenance.facility.address
+            return "${resources.getString(R.string.lbl_shot_street)}. ${address.street} " +
+                    "${resources.getString(R.string.lbl_shot_street)}. ${address.home} " +
+                    "${resources.getString(R.string.lbl_shot_office)}. ${address.office}"
+        }
+
+        private fun getStringTimeForJob(maintenance: Maintenance): String {
+            val resources = itemView.resources
+            val hours = maintenance.duration / MINUTE_IN_HOUR
+            val minutes = maintenance.duration % MINUTE_IN_HOUR
+            return if (hours > 0) {
+                if (minutes == 0) {
+                    "$hours ${resources.getString(R.string.lbl_shot_hour)}."
+                } else {
+                    "$hours ${resources.getString(R.string.lbl_shot_hour)}. " +
+                            "$minutes ${resources.getString(R.string.lbl_shot_minutes)}"
+                }
+            } else {
+                "$minutes ${resources.getString(R.string.lbl_shot_minutes)}"
             }
         }
     }

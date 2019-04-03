@@ -6,6 +6,15 @@
     <string name="ok">OK</string>
     <string name="incorrect_data_of_account">Неверный логин или пароль</string>
 
+
+    <!--LABELS-->
+    <string name="lbl_shot_hour">ч</string>
+    <string name="lbl_shot_minutes">мин</string>
+    <string name="lbl_shot_street">ул</string>
+    <string name="lbl_shot_home">д</string>
+    <string name="lbl_shot_office">оф</string>
+
+
     <!--FIELDS-->
     <string name="fld_login">Логин</string>
     <string name="fld_password">Пароль</string>
