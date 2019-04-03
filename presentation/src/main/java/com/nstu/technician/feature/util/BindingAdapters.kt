@@ -44,7 +44,8 @@ object BindingAdapters {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 view.setTextColor(resources.getColor(R.color.white, theme))
             } else {
-                view.setTextColor(resources.getColor(R.color.white))
+                view.setTextColor(resources.
+                    getColor(R.color.white))
             }
         } else {
             view.isEnabled = false

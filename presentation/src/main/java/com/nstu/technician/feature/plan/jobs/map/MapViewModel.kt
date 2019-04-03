@@ -1,6 +1,6 @@
 package com.nstu.technician.feature.plan.jobs.map
 
-import android.location.Location
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
@@ -11,8 +11,11 @@ import com.nstu.technician.domain.model.facility.GPSPoint
 class MapViewModel(
     private val mapListener: MapListener
 ) : ViewModel() {
-    var targetGPSPoints: List<GPSPoint> = listOf()
-    var mainTargetGPSPoint: GPSPoint = GPSPoint(0.0, 0.0)
+    companion object {
+        const val TAG = "MapViewModel"
+    }
+
+    var mainTargetGPSPoint: MutableLiveData<GPSPoint> = MutableLiveData()
 
     private var _deviceMarker = MarkerOptions()
     var deviceGPSPoint: MutableLiveData<GPSPoint> = MutableLiveData(GPSPoint(0.0, 0.0))
@@ -20,21 +23,24 @@ class MapViewModel(
         _deviceMarker.position(LatLng(gpsPoint.geoy, gpsPoint.geox))
     }
 
-    private var targetLocation: Location? = null
-
     fun init(latitude: Double, longitude: Double) {
-        mainTargetGPSPoint = GPSPoint(latitude, longitude)
+        mainTargetGPSPoint.value = GPSPoint(latitude, longitude)
     }
 
     fun goToMainTarget() {
-        mapListener.onGoToMainTarget(mainTargetGPSPoint)
+        Log.d(TAG, "goToMainTarget is called")
+        mapListener.onGoToMainTarget(
+            mainTargetGPSPoint.value ?: throw NullPointerException("mainTargetGPSPoint is null")
+        )
     }
 
     fun goToDevice() {
+        Log.d(TAG, "goToDevice is called")
         mapListener.onGoToDevicePosition(deviceGPSPoint.value ?: throw NullPointerException())
     }
 
     fun updateDevicePosition() {
+        Log.d(TAG, "updateDevicePosition is called")
         mapListener.onUpdateDevicePosition(deviceMarker.value ?: throw NullPointerException())
     }
 

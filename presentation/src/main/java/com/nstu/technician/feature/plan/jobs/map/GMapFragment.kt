@@ -1,25 +1,24 @@
 package com.nstu.technician.feature.plan.jobs.map
 
-import android.Manifest
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.PermissionChecker
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.nstu.technician.databinding.FragmentMapBinding
 import com.nstu.technician.domain.model.facility.GPSPoint
 import com.nstu.technician.feature.BaseFragment
-import java.lang.NullPointerException
 
 
 class GMapFragment : BaseFragment() {
@@ -33,27 +32,35 @@ class GMapFragment : BaseFragment() {
     private lateinit var mViewModel: MapViewModel
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
+    private var mainTargetMarker: Marker? = null
+    private val mainTargetObserver = Observer<GPSPoint> { gpsPoint ->
+        val latLng = LatLng(gpsPoint.geox, gpsPoint.geoy)
+        if (mainTargetMarker == null) {
+            mBinding.mapView.getMapAsync { map ->
+                mainTargetMarker = map.addMarker(
+                    MarkerOptions().position(latLng)
+                        .icon(BitmapDescriptorFactory.defaultMarker())
+                )
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+                mViewModel.mainTargetGPSPoint.value = gpsPoint
+                Log.d(TAG, "mainTargetMarker is added to map")
+            }
+        }
+        mainTargetMarker?.position = latLng
+    }
+
     override fun onCreate(bundle: Bundle?) {
         super.onCreate(bundle)
-        setupViewModel(bundle)
-        hideActionBar()
+        setupViewModel()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
     }
 
     override fun onStart() {
         super.onStart()
         mBinding.mapView.onStart()
-        mBinding.mapView.getMapAsync { map ->
-            val latLng = LatLng(mViewModel.mainTargetGPSPoint.geox, mViewModel.mainTargetGPSPoint.geoy)
-            map.addMarker(
-                MarkerOptions()
-                    .position(latLng)
-            )
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
-        }
     }
 
-    private fun setupViewModel(bundle: Bundle?) {
+    private fun setupViewModel() {
         val vmFactory = MapVMFactory(object : MapViewModel.MapListener {
             override fun onUpdateDevicePosition(marker: MarkerOptions) {
                 Log.d(TAG, "onUpdateDevicePosition is called")
@@ -85,6 +92,7 @@ class GMapFragment : BaseFragment() {
         mBinding.viewModel = mViewModel
         mBinding.mapView.onCreate(savedInstanceState)
         mBinding.lifecycleOwner = this
+        hideActionBar()
 
         return mBinding.root
     }
@@ -103,21 +111,16 @@ class GMapFragment : BaseFragment() {
         }
     }
 
-    private fun checkLocationPermission(): Boolean {
-        return PermissionChecker.checkSelfPermission(
-            requireContext(),
-            Manifest.permission.ACCESS_COARSE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED
-    }
-
     override fun onResume() {
         super.onResume()
         mBinding.mapView.onResume()
+        mViewModel.mainTargetGPSPoint.observe(this, mainTargetObserver)
     }
 
     override fun onPause() {
         super.onPause()
         mBinding.mapView.onPause()
+        mViewModel.mainTargetGPSPoint.removeObserver(mainTargetObserver)
     }
 
     override fun onStop() {
@@ -125,8 +128,13 @@ class GMapFragment : BaseFragment() {
         mBinding.mapView.onStop()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        showActionBar()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-        showActionBar()
+        mBinding.mapView.onDestroy()
     }
 }
