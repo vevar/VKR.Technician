@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.nstu.technician.R
+import com.nstu.technician.domain.model.facility.Maintenance
 import com.nstu.technician.feature.common.TypeNotification
 
 class MaintenanceRVAdapter(
@@ -17,9 +18,9 @@ class MaintenanceRVAdapter(
 ) : RecyclerView.Adapter<MaintenanceRVAdapter.FacilityHolder>() {
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private val listMaintenance: MutableList<Any> = mutableListOf()
+    private val listMaintenance: MutableList<Maintenance> = mutableListOf()
 
-    fun setListMaintenance(list: List<Any>) {
+    fun setListMaintenance(list: List<Maintenance>) {
         listMaintenance.clear()
         listMaintenance.addAll(list)
         notifyDataSetChanged()
@@ -35,7 +36,7 @@ class MaintenanceRVAdapter(
     }
 
     override fun onBindViewHolder(holder: FacilityHolder, position: Int) {
-        holder.bind()
+        holder.bind(listMaintenance[position])
     }
 
     class FacilityHolder(
@@ -43,7 +44,6 @@ class MaintenanceRVAdapter(
         private val maintenanceListener: MaintenanceListener
 
     ) : RecyclerView.ViewHolder(view) {
-
         private var number: TextView = view.findViewById(R.id.number)
         private var nameFacility: TextView = view.findViewById(R.id.name_facility)
         private var timeForJob: TextView = view.findViewById(R.id.time_for_job)
@@ -54,12 +54,12 @@ class MaintenanceRVAdapter(
         private var type: TextView = view.findViewById(R.id.type_maintenance)
 
         @SuppressLint("SetTextI18n")
-        fun bind() {
-            number.text = "#32"
-            nameFacility.text = "NSTU"
-            timeForJob.text = "2 часа"
-            addressFacility.text = "ул.Ватутина д. 245 оф.56"
-            type.text = "Ежемесячное ТО"
+        fun bind(maintenance: Maintenance) {
+            number.text = maintenance.oid.toString()
+            nameFacility.text = maintenance.facility.name
+            timeForJob.text = maintenance.duration.toString()
+            addressFacility.text = maintenance.facility.address.street
+            type.text = maintenance.maintenanceType.name
 
             val randNotification = Math.random()
             var typeNotification: TypeNotification? = null

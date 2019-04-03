@@ -19,7 +19,7 @@ class PlanJobVPAdapter(
     }
 
     override fun getItem(position: Int): Fragment {
-        return ListMaintenanceForDayFragment()
+        return ListMaintenanceForDayFragment.newInstance(listShifts[position].oid)
     }
 
     override fun getCount(): Int {

@@ -57,6 +57,7 @@ class PlanJobsFragment : BaseFragment() {
         })
         mBinding.viewPagerMaintenance.adapter = mPagerAdapter
         mBinding.tabLayout.setupWithViewPager(mBinding.viewPagerMaintenance)
+        mBinding.lifecycleOwner = this
     }
 
     override fun onStart() {

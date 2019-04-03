@@ -8,11 +8,10 @@ class Maintenance(
     val facility: Facility,
     val visitDate: OwnDateTime,
     val duration: Int,
-    val beginTime: OwnDateTime,
-    val endTime: OwnDateTime,
     val maintenanceType: Type
 ) : Entity(oid) {
-
+    var beginTime: OwnDateTime? = null
+    var endTime: OwnDateTime? = null
     var jobList: List<MaintenanceJob>? = null
 
     enum class Type {

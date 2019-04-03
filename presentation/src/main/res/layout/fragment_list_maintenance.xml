@@ -25,10 +25,14 @@
                 android:visibility="gone"
                 app:showIfLoad="@{viewModel.isLoading()}"/>
         <TextView
-                android:id="@+id/txt_message"
+                android:id="@+id/txt_not_any_maintenance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:drawableTop="@drawable/ic_assignment_gray"/>
+                android:textColor="@color/black"
+                android:drawableTop="@drawable/ic_assignment_gray"
+                android:textSize="24sp"
+                android:text="@string/txt_not_any_maintenance"
+                app:showIfListEmpty="@{viewModel.listMaintenance}"/>
     </FrameLayout>
 </layout>

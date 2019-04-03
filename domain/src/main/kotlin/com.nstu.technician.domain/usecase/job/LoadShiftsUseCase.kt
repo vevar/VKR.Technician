@@ -9,13 +9,12 @@ import javax.inject.Inject
 
 class LoadShiftsUseCase @Inject constructor(
 
-) : UseCase<List<Shift>>() {
+) : UseCase<List<Shift>, Unit>() {
 
-    override suspend fun task(): List<Shift> {
+    override suspend fun task(param: Unit): List<Shift> {
         delay(1_000)
         return generateListShifts()
     }
-
 
     private fun generateListShifts(): MutableList<Shift> {
         val currentDate = Calendar.getInstance()

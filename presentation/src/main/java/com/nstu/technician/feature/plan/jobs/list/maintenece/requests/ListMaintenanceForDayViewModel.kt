@@ -12,8 +12,9 @@ class ListMaintenanceForDayViewModel(private val loadListMaintenanceUseCase: Loa
         private const val TAG = "Maintenances_ViewModel"
     }
 
-    private val _listMaintenance = MutableLiveData<List<Any>>()
-    val listMaintenance: LiveData<List<Any>>
+    private var idShift: Int? = null
+    private val _listMaintenance = MutableLiveData<List<Maintenance>>(listOf())
+    val listMaintenance: LiveData<List<Maintenance>>
         get() = _listMaintenance
     private val _isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
     val isLoading: LiveData<Boolean>
@@ -22,18 +23,27 @@ class ListMaintenanceForDayViewModel(private val loadListMaintenanceUseCase: Loa
     val message: LiveData<String>
         get() = _message
 
-    fun loadListMaintenance() {
-        launchDataLoad {
-            loadListMaintenanceUseCase.execute(object : CallUseCase<List<Maintenance>> {
-                override suspend fun onSuccess(result: List<Maintenance>) {
-                    _listMaintenance.value = result
-                }
+    fun init(idShift: Int?) {
+        this.idShift = idShift
+    }
 
-                override suspend fun onFailure(throwable: Throwable) {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                }
-            })
+    fun loadListMaintenance() {
+        if (idShift != null) {
+            launchDataLoad {
+                loadListMaintenanceUseCase.execute(object : CallUseCase<List<Maintenance>> {
+                    override suspend fun onSuccess(result: List<Maintenance>) {
+                        _listMaintenance.value = result
+                    }
+
+                    override suspend fun onFailure(throwable: Throwable) {
+                        Log.d(TAG, throwable.message)
+                    }
+                }, LoadListMaintenanceUseCase.Companion.Param.forShift(idShift!!))
+            }
+        } else {
+            throw NullPointerException("idShift is null")
         }
+
     }
 
     private fun launchDataLoad(block: suspend () -> Unit): Job {

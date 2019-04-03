@@ -18,6 +18,7 @@
     <string name="btn_show_on_map">Показать на карте</string>
     <string name="btn_start">Начать</string>
     <string name="map">Карта</string>
+    <string name="txt_not_any_maintenance">Нет заявок</string>
 
     <string-array name="months">
         <item>Января</item>

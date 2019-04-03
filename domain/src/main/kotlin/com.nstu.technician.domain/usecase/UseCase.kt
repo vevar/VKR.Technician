@@ -3,15 +3,15 @@ package com.nstu.technician.domain.usecase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-abstract class UseCase<T> {
+abstract class UseCase<Result, Param> {
 
-    protected abstract suspend fun task(): T
+    protected abstract suspend fun task(param: Param): Result
 
-    suspend fun execute(callUseCase: CallUseCase<T>) {
+    suspend fun execute(callUseCase: CallUseCase<Result>, param: Param) {
         try {
-            var result: T
+            var result: Result
             withContext(Dispatchers.IO) {
-                result = task()
+                result = task(param)
                 withContext(Dispatchers.Main) {
                     callUseCase.onSuccess(result)
                 }

@@ -33,7 +33,6 @@ object BindingAdapters {
         }
     }
 
-
     @BindingAdapter("app:enable")
     @JvmStatic
     fun enable(view: Button, isEnable: Boolean) {
@@ -56,6 +55,12 @@ object BindingAdapters {
                 view.setTextColor(resources.getColor(R.color.black))
             }
         }
+    }
+
+    @BindingAdapter("app:showIfListEmpty")
+    @JvmStatic
+    fun showIfListEmpty(view: View, list: List<Any>) {
+        view.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
     }
 
 }

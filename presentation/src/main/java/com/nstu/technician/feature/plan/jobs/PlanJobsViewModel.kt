@@ -32,25 +32,23 @@ class PlanJobsViewModel(
 
     fun loadPlanJobs() {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                loadShiftsUseCase.execute(object : CallUseCase<List<Shift>> {
-                    override suspend fun onSuccess(result: List<Shift>) {
-                        val indexCurrentShift = findIndexOfCurrentShift(result)
-                        if (indexCurrentShift != null) {
-                            withContext(Dispatchers.Main) {
-                                _data.value = Data(result, indexCurrentShift)
-                            }
-                        } else {
-                            throw NullPointerException("Current day not found")
+            loadShiftsUseCase.execute(object : CallUseCase<List<Shift>> {
+                override suspend fun onSuccess(result: List<Shift>) {
+                    val indexCurrentShift = findIndexOfCurrentShift(result)
+                    if (indexCurrentShift != null) {
+                        withContext(Dispatchers.Main) {
+                            _data.value = Data(result, indexCurrentShift)
                         }
+                    } else {
+                        throw NullPointerException("Current day not found")
                     }
+                }
 
-                    override suspend fun onFailure(throwable: Throwable) {
-                        Log.d(TAG, throwable.message)
-                    }
+                override suspend fun onFailure(throwable: Throwable) {
+                    Log.d(TAG, throwable.message)
+                }
 
-                })
-            }
+            }, Unit)
         }
     }
 

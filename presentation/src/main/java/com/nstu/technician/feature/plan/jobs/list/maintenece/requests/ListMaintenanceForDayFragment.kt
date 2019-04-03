@@ -18,6 +18,7 @@ import com.nstu.technician.R
 import com.nstu.technician.databinding.FragmentListMaintenanceBinding
 import com.nstu.technician.di.component.DaggerListMaintenanceComponent
 import com.nstu.technician.di.component.DaggerListMaintenanceScreen
+import com.nstu.technician.domain.model.facility.Maintenance
 import com.nstu.technician.feature.App
 import com.nstu.technician.feature.BaseFragment
 import com.nstu.technician.feature.plan.jobs.PlanJobsFragmentDirections
@@ -27,6 +28,15 @@ import javax.inject.Inject
 class ListMaintenanceForDayFragment : BaseFragment() {
     companion object {
         private const val TAG = "Maintenance_Fragment"
+        private const val EXTRA_ID_SHIFT = "EXTRA_ID_SHIFT"
+
+        fun newInstance(idShift: Int): ListMaintenanceForDayFragment {
+            val fragment = ListMaintenanceForDayFragment()
+            val bundle = Bundle()
+            bundle.putInt(EXTRA_ID_SHIFT, idShift)
+            fragment.arguments = bundle
+            return fragment
+        }
     }
 
     @Inject
@@ -36,17 +46,16 @@ class ListMaintenanceForDayFragment : BaseFragment() {
     private lateinit var mViewModel: ListMaintenanceForDayViewModel
     private lateinit var mMaintenanceRecycleAdapter: MaintenanceRVAdapter
 
-    private var listMaintenanceObserver = Observer<List<Any>> {
-        //        mMaintenanceRecycleAdapter.setListMaintenance(it)
-        mMaintenanceRecycleAdapter.setListMaintenance(listOf())
+    private var listMaintenanceObserver = Observer<List<Maintenance>> {
+        mMaintenanceRecycleAdapter.setListMaintenance(it)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setupViewModel()
-
         initInjection()
+        setupViewModel()
     }
+
 
     private fun initInjection() {
         val listMaintenanceComponent = DaggerListMaintenanceComponent.builder()
@@ -99,6 +108,7 @@ class ListMaintenanceForDayFragment : BaseFragment() {
     private fun setupViewModel() {
         mViewModel = ViewModelProviders.of(this, listMaintenanceForDayVMFactory)
             .get(ListMaintenanceForDayViewModel::class.java)
+        mViewModel.init(arguments?.getInt(EXTRA_ID_SHIFT))
     }
 
     override fun onStart() {
