@@ -14,10 +14,10 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.nstu.technician.databinding.FragmentMapBinding
+import com.nstu.technician.domain.model.facility.GPSPoint
 import com.nstu.technician.feature.BaseFragment
 
 
@@ -44,24 +44,30 @@ class GMapFragment : BaseFragment() {
         super.onStart()
         mBinding.mapView.onStart()
         mBinding.mapView.getMapAsync { map ->
-            val latLng = LatLng(mViewModel.targetLatitude, mViewModel.targetLongitude)
+            val latLng = LatLng(mViewModel.mainTargetGPSPoint.geox, mViewModel.mainTargetGPSPoint.geoy)
             map.addMarker(
                 MarkerOptions()
                     .position(latLng)
             )
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
-            Log.d(TAG, "Method onMapReady is called")
         }
     }
 
     private fun setupViewModel(bundle: Bundle?) {
-        val vmFactory = MapVMFactory()
+        val vmFactory = MapVMFactory(object : MapViewModel.MapListener {
+            override fun onGoToMainTarget(gpsPoint: GPSPoint) {
+                Log.d(TAG, "onGoToMainTarget is called")
+                mBinding.mapView.getMapAsync { map ->
+                    val latLng = LatLng(gpsPoint.geoy, gpsPoint.geox)
+                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+                }
+            }
+        })
         mViewModel = ViewModelProviders.of(this, vmFactory).get(MapViewModel::class.java)
         if (bundle != null) {
             val gMapFragmentArgs = GMapFragmentArgs.fromBundle(bundle)
             gMapFragmentArgs.apply {
-                mViewModel.targetLatitude = latitude.toDouble()
-                mViewModel.targetLongitude = longitude.toDouble()
+                mViewModel.init(latitude.toDouble(), longitude.toDouble())
             }
         }
     }
@@ -69,6 +75,7 @@ class GMapFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate(inflater, com.nstu.technician.R.layout.fragment_map, container, false)
         mBinding.mapView.onCreate(savedInstanceState)
+        mBinding.lifecycleOwner = this
 
         return mBinding.root
     }

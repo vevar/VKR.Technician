@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         tools:context=".feature.plan.jobs.map.GMapFragment">
     <data>
-
+        <variable name="viewModel" type="com.nstu.technician.feature.plan.jobs.map.MapViewModel"/>
     </data>
     <FrameLayout
             android:orientation="vertical"
@@ -27,7 +27,8 @@
                     android:src="@drawable/ic_place_white"
                     android:clickable="true"
                     android:focusable="true"
-                    android:layout_margin="@dimen/mini_margin"/>
+                    android:layout_margin="@dimen/mini_margin"
+                    android:onClickListener="@{() -> viewModel.goToMainTarget()}"/>
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/btn_my_location"
                     android:layout_width="match_parent"
