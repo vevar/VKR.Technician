@@ -75,7 +75,7 @@ class ListMaintenanceForDayFragment : BaseFragment() {
             requireContext(),
             object :
                 MaintenanceRVAdapter.MaintenanceListener {
-                override fun onShowOnMap() {
+                override fun onShowOnMap(maintenance: Maintenance) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
                         PermissionChecker.checkSelfPermission(
                             requireContext(),
@@ -88,11 +88,18 @@ class ListMaintenanceForDayFragment : BaseFragment() {
                             GMapFragment.PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION
                         )
                     }
-                    val dest = PlanJobsFragmentDirections.actionPlanJobsDestToMapDest()
+                    val gpsPoint = maintenance.facility.address.location
+                    val dest = if (gpsPoint != null) {
+                        PlanJobsFragmentDirections.actionPlanJobsDestToMapDest(
+                            gpsPoint.geoy.toLong(), gpsPoint.geox.toLong()
+                        )
+                    } else {
+                        PlanJobsFragmentDirections.actionPlanJobsDestToMapDest()
+                    }
                     findNavController().navigate(dest)
                 }
 
-                override fun onStartJob() {
+                override fun onStartJob(maintenance: Maintenance) {
                     TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
                 }
 

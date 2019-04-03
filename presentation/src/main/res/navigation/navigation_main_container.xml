@@ -18,6 +18,15 @@
     <fragment
             android:id="@+id/map_dest"
             android:name="com.nstu.technician.feature.plan.jobs.map.GMapFragment"
-            tools:layout="@layout/fragment_map"/>
+            tools:layout="@layout/fragment_map">
+        <argument
+                android:name="latitude"
+                android:defaultValue="0L"
+                app:argType="long"/>
+        <argument
+                android:name="longitude"
+                android:defaultValue="0L"
+                app:argType="long"/>
+    </fragment>
 
 </navigation>

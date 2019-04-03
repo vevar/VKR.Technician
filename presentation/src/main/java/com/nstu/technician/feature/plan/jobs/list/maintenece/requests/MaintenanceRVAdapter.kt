@@ -94,16 +94,16 @@ class MaintenanceRVAdapter(
             }
 
             showOnMap.setOnClickListener {
-                maintenanceListener.onShowOnMap()
+                maintenanceListener.onShowOnMap(maintenance)
             }
             startJob.setOnClickListener {
-                maintenanceListener.onStartJob()
+                maintenanceListener.onStartJob(maintenance)
             }
         }
     }
 
     interface MaintenanceListener {
-        fun onShowOnMap()
-        fun onStartJob()
+        fun onShowOnMap(maintenance: Maintenance)
+        fun onStartJob(maintenance: Maintenance)
     }
 }

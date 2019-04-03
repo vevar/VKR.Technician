@@ -5,5 +5,5 @@ data class Address(
     val home: String,
     val office: String
 ) {
-    var location: GPSPoint = GPSPoint()
+    var location: GPSPoint? = null
 }

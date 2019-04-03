@@ -1,9 +1,6 @@
 package com.nstu.technician.domain.usecase.job
 
-import com.nstu.technician.domain.model.facility.Address
-import com.nstu.technician.domain.model.facility.Facility
-import com.nstu.technician.domain.model.facility.Maintenance
-import com.nstu.technician.domain.model.facility.OwnDateTime
+import com.nstu.technician.domain.model.facility.*
 import com.nstu.technician.domain.usecase.UseCase
 import java.util.*
 import javax.inject.Inject
@@ -23,12 +20,10 @@ class LoadListMaintenanceUseCase @Inject constructor(
 
     private fun createMaintenance(): Maintenance {
         val calendar = Calendar.getInstance()
-        return Maintenance(
-            1, Facility(
-                1, "NSTU", "123",
-                Address("Советская", "23", "111"), OwnDateTime(calendar.timeInMillis)
-            ), OwnDateTime(calendar.timeInMillis), 60, Maintenance.Type.MONTHLY
-        )
+        val address = Address("Советская", "23", "111")
+        address.location = GPSPoint(-31.952854, 115.857342)
+        val facility = Facility(1, "NSTU", "123", address, OwnDateTime(calendar.timeInMillis))
+        return Maintenance(1, facility, OwnDateTime(calendar.timeInMillis), 60, Maintenance.Type.MONTHLY)
     }
 
     companion object {
