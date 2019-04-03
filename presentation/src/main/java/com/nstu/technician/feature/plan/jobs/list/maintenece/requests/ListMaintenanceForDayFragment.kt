@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
 import androidx.core.content.PermissionChecker
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -56,7 +57,6 @@ class ListMaintenanceForDayFragment : BaseFragment() {
         setupViewModel()
     }
 
-
     private fun initInjection() {
         val listMaintenanceComponent = DaggerListMaintenanceComponent.builder()
             .build()
@@ -76,27 +76,17 @@ class ListMaintenanceForDayFragment : BaseFragment() {
             object :
                 MaintenanceRVAdapter.MaintenanceListener {
                 override fun onShowOnMap(maintenance: Maintenance) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-                        PermissionChecker.checkSelfPermission(
-                            requireContext(),
-                            Manifest.permission.ACCESS_COARSE_LOCATION
-                        )
-                        != PackageManager.PERMISSION_GRANTED
-                    ) {
-                        requestPermissions(
-                            arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
-                            GMapFragment.PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION
-                        )
-                    }
-                    val gpsPoint = maintenance.facility.address.location
-                    val dest = if (gpsPoint != null) {
-                        PlanJobsFragmentDirections.actionPlanJobsDestToMapDest(
-                            gpsPoint.geoy.toLong(), gpsPoint.geox.toLong()
-                        )
+                    if (checkPermissionLocation()) {
+                        requestLocationPermission()
                     } else {
-                        PlanJobsFragmentDirections.actionPlanJobsDestToMapDest()
+                        val gpsPoint = maintenance.facility.address.location
+                        if (gpsPoint != null) {
+                            val dest = PlanJobsFragmentDirections.actionPlanJobsDestToMapDest(
+                                gpsPoint.geoy.toLong(), gpsPoint.geox.toLong()
+                            )
+                            findNavController().navigate(dest)
+                        }
                     }
-                    findNavController().navigate(dest)
                 }
 
                 override fun onStartJob(maintenance: Maintenance) {
@@ -104,10 +94,14 @@ class ListMaintenanceForDayFragment : BaseFragment() {
                 }
 
             })
-        mBinding.recycleViewMaintenance.layoutManager = LinearLayoutManager(this.context)
-        mBinding.recycleViewMaintenance.adapter = mMaintenanceRecycleAdapter
-        mBinding.viewModel = mViewModel
-        mBinding.lifecycleOwner = this
+        mBinding.apply {
+            recycleViewMaintenance.apply {
+                adapter = mMaintenanceRecycleAdapter
+                layoutManager = LinearLayoutManager(this.context)
+            }
+            viewModel = mViewModel
+            lifecycleOwner = this@ListMaintenanceForDayFragment
+        }
 
         return mBinding.root
     }
@@ -116,6 +110,22 @@ class ListMaintenanceForDayFragment : BaseFragment() {
         mViewModel = ViewModelProviders.of(this, listMaintenanceForDayVMFactory)
             .get(ListMaintenanceForDayViewModel::class.java)
         mViewModel.init(arguments?.getInt(EXTRA_ID_SHIFT))
+    }
+
+    private fun checkPermissionLocation(): Boolean {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && PermissionChecker.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ) != PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestLocationPermission() {
+        Log.d(TAG, "requestLocationPermission is called")
+        ActivityCompat.requestPermissions(
+            requireActivity(),
+            arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
+            GMapFragment.PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION
+        )
     }
 
     override fun onStart() {

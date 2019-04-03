@@ -21,8 +21,9 @@ class LoadListMaintenanceUseCase @Inject constructor(
     private fun createMaintenance(): Maintenance {
         val calendar = Calendar.getInstance()
         val address = Address("Советская", "23", "111")
-        address.location = GPSPoint(-31.952854, 115.857342)
+        address.location = GPSPoint(31.952854, 115.857342)
         val facility = Facility(1, "NSTU", "123", address, OwnDateTime(calendar.timeInMillis))
+
         return Maintenance(1, facility, OwnDateTime(calendar.timeInMillis), 60, Maintenance.Type.MONTHLY)
     }
 

@@ -32,7 +32,6 @@ class GMapFragment : BaseFragment() {
     private lateinit var mViewModel: MapViewModel
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
-
     override fun onCreate(bundle: Bundle?) {
         super.onCreate(bundle)
         setupViewModel(bundle)
@@ -55,6 +54,14 @@ class GMapFragment : BaseFragment() {
 
     private fun setupViewModel(bundle: Bundle?) {
         val vmFactory = MapVMFactory(object : MapViewModel.MapListener {
+            override fun onUpdateDevicePosition(marker: MarkerOptions) {
+                Log.d(TAG, "onUpdateDevicePosition is called")
+            }
+
+            override fun onGoToDevicePosition(gpsPoint: GPSPoint) {
+                Log.d(TAG, "onGoToDevicePosition is called")
+            }
+
             override fun onGoToMainTarget(gpsPoint: GPSPoint) {
                 Log.d(TAG, "onGoToMainTarget is called")
                 mBinding.mapView.getMapAsync { map ->
@@ -74,6 +81,7 @@ class GMapFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate(inflater, com.nstu.technician.R.layout.fragment_map, container, false)
+        mBinding.viewModel = mViewModel
         mBinding.mapView.onCreate(savedInstanceState)
         mBinding.lifecycleOwner = this
 

@@ -28,7 +28,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:layout_margin="@dimen/mini_margin"
-                    android:onClickListener="@{() -> viewModel.goToMainTarget()}"/>
+                    android:onClick="@{() -> viewModel.goToMainTarget()}"/>
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/btn_my_location"
                     android:layout_width="match_parent"
@@ -36,7 +36,8 @@
                     android:src="@drawable/ic_my_location_white"
                     android:clickable="true"
                     android:focusable="true"
-                    android:layout_margin="@dimen/mini_margin"/>
+                    android:layout_margin="@dimen/mini_margin"
+                    android:onClick="@{() -> viewModel.goToDevice()}"/>
         </LinearLayout>
     </FrameLayout>
 </layout>
