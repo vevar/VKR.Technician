@@ -1,17 +1,18 @@
 package com.nstu.technician.feature.plan.jobs.list.maintenece.requests
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import com.nstu.technician.domain.model.facility.Maintenance
+import com.nstu.technician.domain.usecase.CallUseCase
+import com.nstu.technician.domain.usecase.job.LoadListMaintenanceUseCase
 import kotlinx.coroutines.*
 
-class ListMaintenanceForDayViewModel : ViewModel() {
+class ListMaintenanceForDayViewModel(private val loadListMaintenanceUseCase: LoadListMaintenanceUseCase) : ViewModel() {
     companion object {
         private const val TAG = "Maintenances_ViewModel"
     }
 
+    private val _listMaintenance = MutableLiveData<List<Any>>()
     val listMaintenance: LiveData<List<Any>>
         get() = _listMaintenance
     private val _isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
@@ -20,17 +21,21 @@ class ListMaintenanceForDayViewModel : ViewModel() {
     private val _message: MutableLiveData<String> = MutableLiveData()
     val message: LiveData<String>
         get() = _message
-    private val _listMaintenance = MutableLiveData<List<Any>>()
-
 
     fun loadListMaintenance() {
         launchDataLoad {
-            withContext(Dispatchers.IO) {
-                delay(500)
-            }
-            _listMaintenance.value = mutableListOf<Any>(1, 2, 4, 5, 6)
+            loadListMaintenanceUseCase.execute(object : CallUseCase<List<Maintenance>> {
+                override suspend fun onSuccess(result: List<Maintenance>) {
+                    _listMaintenance.value = result
+                }
+
+                override suspend fun onFailure(throwable: Throwable) {
+                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                }
+            })
         }
     }
+
     private fun launchDataLoad(block: suspend () -> Unit): Job {
         return viewModelScope.launch {
             try {
