@@ -19,6 +19,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.nstu.technician.databinding.FragmentMapBinding
 import com.nstu.technician.domain.model.facility.GPSPoint
 import com.nstu.technician.feature.BaseFragment
+import java.lang.NullPointerException
 
 
 class GMapFragment : BaseFragment() {
@@ -71,11 +72,11 @@ class GMapFragment : BaseFragment() {
             }
         })
         mViewModel = ViewModelProviders.of(this, vmFactory).get(MapViewModel::class.java)
-        if (bundle != null) {
-            val gMapFragmentArgs = GMapFragmentArgs.fromBundle(bundle)
-            gMapFragmentArgs.apply {
-                mViewModel.init(latitude.toDouble(), longitude.toDouble())
-            }
+        val gMapFragmentArgs = GMapFragmentArgs.fromBundle(
+            arguments ?: throw NullPointerException("Arguments are null")
+        )
+        gMapFragmentArgs.apply {
+            mViewModel.init(latitude.toDouble(), longitude.toDouble())
         }
     }
 
