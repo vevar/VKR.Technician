@@ -20,6 +20,8 @@ class PlanJobsViewModel(
         private const val TAG = "PlanJobsViewModel"
     }
 
+    var scrollPosition: Int? = null
+
     private val _data: MutableLiveData<Data> = MutableLiveData()
     val data: LiveData<Data>
         get() = _data
