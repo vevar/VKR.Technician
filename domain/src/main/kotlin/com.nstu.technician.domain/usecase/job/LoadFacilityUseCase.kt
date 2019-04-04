@@ -15,7 +15,7 @@ class LoadFacilityUseCase @Inject constructor(
     override suspend fun task(param: Param): Facility {
         val calendar = Calendar.getInstance()
         val address = Address("Советская", "23", "111")
-        address.location = GPSPoint(31.952854, 115.857342)
+        address.location = GPSPoint(55.008166, 82.937308)
         return Facility(1, "NSTU", "123", address, OwnDateTime(calendar.timeInMillis))
     }
 

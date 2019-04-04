@@ -9,10 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
@@ -38,33 +36,39 @@ class GMapFragment : BaseFragment() {
     private lateinit var mBinding: FragmentMapBinding
     private lateinit var mViewModel: MapViewModel
 
+    private lateinit var mMap: GoogleMap
     private var mainTargetMarker: Marker? = null
     private var mainFacility = Observer<Facility> { facility ->
         val gpsPoint = facility.address.location ?: throw NullPointerException("gpsPoint is null")
-        val latLng = LatLng(gpsPoint.geox, gpsPoint.geoy)
+        val latLng = LatLng(gpsPoint.geoy, gpsPoint.geox)
         if (mainTargetMarker == null) {
             addMarkerToMap(latLng)
         } else {
             mainTargetMarker!!.position = latLng
             Log.d(TAG, "Position of mainTargetMarker is updated ")
         }
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
     }
 
     private fun addMarkerToMap(latLng: LatLng) {
-        mBinding.mapView.getMapAsync { map ->
-            mainTargetMarker = map.addMarker(
-                MarkerOptions()
-                    .position(latLng)
-                    .visible(true)
+        mainTargetMarker = mMap.addMarker(
+            MarkerOptions()
+                .position(latLng)
+                .title("TARGET")
+                .visible(true)
+        )
+
+        if (mainTargetMarker == null) {
+            Log.d(TAG, "mainTargetMarker isn't added to map")
+        } else {
+            Log.d(
+                GMapFragment.TAG,
+                "mainTargetMarker is added to map(" +
+                        "${mainTargetMarker!!.position.latitude}, ${mainTargetMarker!!.position.longitude})"
             )
-            if (mainTargetMarker == null) {
-                Log.d(TAG, "mainTargetMarker isn't added to map")
-            } else {
-                Log.d(GMapFragment.TAG, "mainTargetMarker is added to map")
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
-            }
         }
     }
+
 
     override fun onCreate(bundle: Bundle?) {
         super.onCreate(bundle)
@@ -101,10 +105,8 @@ class GMapFragment : BaseFragment() {
 
                     override fun onGoToMainTarget(gpsPoint: GPSPoint) {
                         Log.d(TAG, "onGoToMainTarget is called")
-                        mBinding.mapView.getMapAsync { map ->
-                            val latLng = LatLng(gpsPoint.geoy, gpsPoint.geox)
-                            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
-                        }
+                        val latLng = LatLng(gpsPoint.geoy, gpsPoint.geox)
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
                     }
                 })
                 mViewModel = ViewModelProviders.of(this@GMapFragment, mapVMFactory).get(MapViewModel::class.java)
@@ -112,7 +114,6 @@ class GMapFragment : BaseFragment() {
                 throw IllegalArgumentException("idFacility must not equals -1")
             }
         }
-
     }
 
     override fun onStart() {
@@ -123,9 +124,16 @@ class GMapFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate(inflater, com.nstu.technician.R.layout.fragment_map, container, false)
-        mBinding.viewModel = mViewModel
-        mBinding.mapView.onCreate(savedInstanceState)
-        mBinding.lifecycleOwner = this
+        mBinding.apply {
+            viewModel = mViewModel
+            mapView.onCreate(savedInstanceState)
+            mapView.getMapAsync { map ->
+                mMap = map
+            }
+            lifecycleOwner = this@GMapFragment
+
+        }
+
         hideActionBar()
 
         return mBinding.root
