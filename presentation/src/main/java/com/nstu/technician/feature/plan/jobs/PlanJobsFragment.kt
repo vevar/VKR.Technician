@@ -1,6 +1,7 @@
 package com.nstu.technician.feature.plan.jobs
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ import javax.inject.Inject
 
 class PlanJobsFragment : BaseFragment() {
     companion object {
+        private const val TAG = "PlanJobsFragment"
         private const val STATE_TABS_SCROLL = "STATE_TABS_SCROLL"
     }
 
@@ -28,15 +30,17 @@ class PlanJobsFragment : BaseFragment() {
     private lateinit var mViewModel: PlanJobsViewModel
     private lateinit var mPagerAdapter: PlanJobVPAdapter
 
-    private var mDaysObserver = Observer<PlanJobsViewModel.Data> {
-        mPagerAdapter.setListShifts(it.shifts)
+    private var mDaysObserver = Observer<PlanJobsViewModel.Data> { data ->
+        mPagerAdapter.setListShifts(data.shifts)
         mBinding.apply {
-            viewPagerMaintenance.currentItem = it.indexCurrentShift
-            if (mViewModel.scrollPosition != null) {
-                tabLayout.scrollX = mViewModel.scrollPosition!!
+            val index: Int = if (mViewModel.indexCurrentPosition != null) {
+                mViewModel.indexCurrentPosition!!
+            } else {
+                data.indexCurrentDay
             }
+            Log.d(TAG, "Current index of tab: $index")
+            viewPagerMaintenance.currentItem = index
         }
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,7 +64,7 @@ class PlanJobsFragment : BaseFragment() {
     private fun setupViewModel(savedInstanceState: Bundle?) {
         mViewModel = ViewModelProviders.of(this, planJobsVMFactory).get(PlanJobsViewModel::class.java)
         savedInstanceState?.apply {
-            mViewModel.scrollPosition = getInt(STATE_TABS_SCROLL)
+            mViewModel.indexCurrentPosition = getInt(STATE_TABS_SCROLL)
         }
     }
 
@@ -96,8 +100,8 @@ class PlanJobsFragment : BaseFragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt(STATE_TABS_SCROLL, mBinding.tabLayout.scrollX)
-
+        outState.putInt(STATE_TABS_SCROLL, mBinding.viewPagerMaintenance.currentItem)
+        Log.d(TAG, "Current index of tab: ${mBinding.viewPagerMaintenance.currentItem} saved")
     }
 
     override fun onStart() {

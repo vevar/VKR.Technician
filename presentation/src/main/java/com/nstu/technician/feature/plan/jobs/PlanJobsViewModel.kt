@@ -20,7 +20,7 @@ class PlanJobsViewModel(
         private const val TAG = "PlanJobsViewModel"
     }
 
-    var scrollPosition: Int? = null
+    var indexCurrentPosition: Int? = null
 
     private val _data: MutableLiveData<Data> = MutableLiveData()
     val data: LiveData<Data>
@@ -69,7 +69,7 @@ class PlanJobsViewModel(
 
     class Data(
         val shifts: List<Shift>,
-        val indexCurrentShift: Int
+        val indexCurrentDay: Int
     )
 
 }
