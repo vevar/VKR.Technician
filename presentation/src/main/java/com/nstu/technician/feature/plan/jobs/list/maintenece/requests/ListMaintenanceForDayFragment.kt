@@ -79,13 +79,8 @@ class ListMaintenanceForDayFragment : BaseFragment() {
                     if (checkPermissionLocation()) {
                         requestLocationPermission()
                     } else {
-                        val gpsPoint = maintenance.facility.address.location
-                        if (gpsPoint != null) {
-                            val dest = PlanJobsFragmentDirections.actionPlanJobsDestToMapDest(
-                                gpsPoint.geoy.toLong(), gpsPoint.geox.toLong()
-                            )
-                            findNavController().navigate(dest)
-                        }
+                        val dest = PlanJobsFragmentDirections.actionPlanJobsDestToMapDest(maintenance.facility.oid)
+                        findNavController().navigate(dest)
                     }
                 }
 

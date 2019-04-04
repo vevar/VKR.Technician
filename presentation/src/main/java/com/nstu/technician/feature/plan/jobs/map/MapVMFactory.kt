@@ -2,13 +2,30 @@ package com.nstu.technician.feature.plan.jobs.map
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import java.lang.IllegalArgumentException
+import com.nstu.technician.domain.usecase.job.LoadFacilityUseCase
+import java.lang.IllegalStateException
+import javax.inject.Inject
 
-class MapVMFactory(private val mapListener: MapViewModel.MapListener) : ViewModelProvider.Factory {
+class MapVMFactory @Inject constructor(
+    private val loadFacilityUseCase: LoadFacilityUseCase
+) : ViewModelProvider.Factory {
+
+    private var idFacility: Int? = null
+    private var mapListener: MapViewModel.MapListener? = null
+
+    fun init(idFacility: Int, mapListener: MapViewModel.MapListener) {
+        this.idFacility = idFacility
+        this.mapListener = mapListener
+    }
+
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MapViewModel::class.java)) {
-            return MapViewModel(mapListener) as T
+            if (idFacility != null && mapListener != null) {
+                return MapViewModel(idFacility!!, loadFacilityUseCase, mapListener!!) as T
+            } else {
+                throw IllegalStateException("Method init not called")
+            }
         } else {
             throw IllegalArgumentException("ViewModel not found")
         }

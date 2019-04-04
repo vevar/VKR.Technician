@@ -17,74 +17,108 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.nstu.technician.databinding.FragmentMapBinding
+import com.nstu.technician.di.component.DaggerGMapComponent
+import com.nstu.technician.di.component.DaggerGMapScreen
+import com.nstu.technician.domain.model.facility.Facility
 import com.nstu.technician.domain.model.facility.GPSPoint
+import com.nstu.technician.feature.App
 import com.nstu.technician.feature.BaseFragment
+import javax.inject.Inject
 
 
 class GMapFragment : BaseFragment() {
-
     companion object {
         private const val TAG = "GMapFragment"
         const val PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION = 1
     }
 
+    @Inject
+    lateinit var mapVMFactory: MapVMFactory
+
     private lateinit var mBinding: FragmentMapBinding
     private lateinit var mViewModel: MapViewModel
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     private var mainTargetMarker: Marker? = null
-    private val mainTargetObserver = Observer<GPSPoint> { gpsPoint ->
+    private var mainFacility = Observer<Facility> { facility ->
+        val gpsPoint = facility.address.location ?: throw NullPointerException("gpsPoint is null")
         val latLng = LatLng(gpsPoint.geox, gpsPoint.geoy)
         if (mainTargetMarker == null) {
-            mBinding.mapView.getMapAsync { map ->
-                mainTargetMarker = map.addMarker(
-                    MarkerOptions().position(latLng)
-                        .icon(BitmapDescriptorFactory.defaultMarker())
-                )
+            addMarkerToMap(latLng)
+        } else {
+            mainTargetMarker!!.position = latLng
+            Log.d(TAG, "Position of mainTargetMarker is updated ")
+        }
+    }
+
+    private fun addMarkerToMap(latLng: LatLng) {
+        mBinding.mapView.getMapAsync { map ->
+            mainTargetMarker = map.addMarker(
+                MarkerOptions()
+                    .position(latLng)
+                    .visible(true)
+            )
+            if (mainTargetMarker == null) {
+                Log.d(TAG, "mainTargetMarker isn't added to map")
+            } else {
+                Log.d(GMapFragment.TAG, "mainTargetMarker is added to map")
                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
-                mViewModel.mainTargetGPSPoint.value = gpsPoint
-                Log.d(TAG, "mainTargetMarker is added to map")
             }
         }
-        mainTargetMarker?.position = latLng
     }
 
     override fun onCreate(bundle: Bundle?) {
         super.onCreate(bundle)
+        setupInjection()
         setupViewModel()
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+    }
+
+    private fun setupInjection() {
+        val gMapComponent = DaggerGMapComponent.builder()
+            .build()
+
+        val gMapScreen = DaggerGMapScreen.builder()
+            .appComponent(App.getApp(requireContext()).getAppComponent())
+            .gMapComponent(gMapComponent)
+            .build()
+
+        gMapScreen.inject(this)
+    }
+
+    private fun setupViewModel() {
+        val gMapFragmentArgs = GMapFragmentArgs.fromBundle(
+            arguments ?: throw NullPointerException("Arguments are null")
+        )
+        gMapFragmentArgs.apply {
+            if (idFacility != -1) {
+                mapVMFactory.init(idFacility, object : MapViewModel.MapListener {
+                    override fun onUpdateDevicePosition(marker: MarkerOptions) {
+                        Log.d(TAG, "onUpdateDevicePosition is called")
+                    }
+
+                    override fun onGoToDevicePosition(gpsPoint: GPSPoint) {
+                        Log.d(TAG, "onGoToDevicePosition is called")
+                    }
+
+                    override fun onGoToMainTarget(gpsPoint: GPSPoint) {
+                        Log.d(TAG, "onGoToMainTarget is called")
+                        mBinding.mapView.getMapAsync { map ->
+                            val latLng = LatLng(gpsPoint.geoy, gpsPoint.geox)
+                            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+                        }
+                    }
+                })
+                mViewModel = ViewModelProviders.of(this@GMapFragment, mapVMFactory).get(MapViewModel::class.java)
+            } else {
+                throw IllegalArgumentException("idFacility must not equals -1")
+            }
+        }
+
     }
 
     override fun onStart() {
         super.onStart()
         mBinding.mapView.onStart()
-    }
-
-    private fun setupViewModel() {
-        val vmFactory = MapVMFactory(object : MapViewModel.MapListener {
-            override fun onUpdateDevicePosition(marker: MarkerOptions) {
-                Log.d(TAG, "onUpdateDevicePosition is called")
-            }
-
-            override fun onGoToDevicePosition(gpsPoint: GPSPoint) {
-                Log.d(TAG, "onGoToDevicePosition is called")
-            }
-
-            override fun onGoToMainTarget(gpsPoint: GPSPoint) {
-                Log.d(TAG, "onGoToMainTarget is called")
-                mBinding.mapView.getMapAsync { map ->
-                    val latLng = LatLng(gpsPoint.geoy, gpsPoint.geox)
-                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
-                }
-            }
-        })
-        mViewModel = ViewModelProviders.of(this, vmFactory).get(MapViewModel::class.java)
-        val gMapFragmentArgs = GMapFragmentArgs.fromBundle(
-            arguments ?: throw NullPointerException("Arguments are null")
-        )
-        gMapFragmentArgs.apply {
-            mViewModel.init(latitude.toDouble(), longitude.toDouble())
-        }
+        mViewModel.loadFacility()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -114,13 +148,13 @@ class GMapFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
         mBinding.mapView.onResume()
-        mViewModel.mainTargetGPSPoint.observe(this, mainTargetObserver)
+        mViewModel.mainFacility.observe(this, mainFacility)
     }
 
     override fun onPause() {
         super.onPause()
         mBinding.mapView.onPause()
-        mViewModel.mainTargetGPSPoint.removeObserver(mainTargetObserver)
+        mViewModel.mainFacility.removeObserver(mainFacility)
     }
 
     override fun onStop() {
