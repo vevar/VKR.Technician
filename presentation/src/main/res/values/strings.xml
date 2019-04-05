@@ -28,6 +28,11 @@
     <string name="btn_start">Начать</string>
     <string name="map">Карта</string>
     <string name="txt_not_any_maintenance">Нет заявок</string>
+    <string name="period_contract">Срок договора</string>
+    <string name="contractor">Контрагент</string>
+    <string name="btn_message_about_problem">Сообщить о проблеме</string>
+    <string name="lbl_scan_qr_for_start">Отсканируйте QR код объекта, чтобы начать обслуживание</string>
+    <string name="btn_scan">Сканировать</string>
 
     <string-array name="months">
         <item>Января</item>

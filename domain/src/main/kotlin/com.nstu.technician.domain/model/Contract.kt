@@ -1,6 +1,9 @@
 package com.nstu.technician.domain.model
-//
+
 //@androidx.room.Entity
-//data class Contract(
-//    oid: Int
-//): Entity(oid)
+//class Contract(
+//    oid: Int,
+//    val name: String,
+//    val INN: String,
+//    val address: Address
+//) : Entity(oid)

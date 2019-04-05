@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable name="viewModel" type="com.nstu.technician.feature.maintenance.MaintenanceViewModel"/>
+    </data>
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <include
+                layout="@layout/view_contract"/>
+
+        <include layout="@layout/view_detail_maintenance"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list_maintenance_jobs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone">
+
+        </androidx.recyclerview.widget.RecyclerView>
+        <LinearLayout
+                android:id="@+id/frame_message"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+            <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:text="@string/lbl_scan_qr_for_start"
+                    android:layout_margin="@dimen/default_margin"
+                    android:textAlignment="center"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:drawableTop="@drawable/ic_center_focus_weak_black" />
+
+            <Button
+                    android:id="@+id/btn_scan_qr"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/fld_height"
+                    android:layout_margin="@dimen/default_margin"
+                    android:text="@string/btn_scan"
+                    android:layout_gravity="end"
+                    android:background="@drawable/btn_round_black"
+                    android:textColor="@color/white"/>
+        </LinearLayout>
+    </LinearLayout>
+</layout>
