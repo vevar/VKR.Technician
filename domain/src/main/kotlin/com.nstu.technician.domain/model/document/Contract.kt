@@ -11,6 +11,7 @@ class Contract(
     val name: String,
     val INN: String,
     val address: Address,
+    val contractor: Contractor,
     docType: Type,
     number: String,
     date: OwnDateTime,

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:bind="http://schemas.android.com/apk/res-auto">
     <data>
         <variable name="viewModel" type="com.nstu.technician.feature.maintenance.MaintenanceViewModel"/>
     </data>
@@ -9,9 +9,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         <include
-                layout="@layout/view_contract"/>
+                layout="@layout/view_contract"
+                bind:contract="@{viewModel.maintenance.facility.contract}"/>
 
-        <include layout="@layout/view_detail_maintenance"/>
+        <include
+                layout="@layout/view_detail_maintenance"
+                bind:maintenance="@{viewModel.maintenance}"/>
 
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/list_maintenance_jobs"
