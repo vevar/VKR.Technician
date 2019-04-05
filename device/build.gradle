@@ -1,0 +1,40 @@
+apply plugin: 'com.android.library'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-kapt'
+
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion androidCompileSdkVersion
+    defaultConfig {
+        minSdkVersion androidMinSdkVersion
+        targetSdkVersion androidTargetSdkVersion
+        testInstrumentationRunner androidTestInstrumentationRunner
+        vectorDrawables.useSupportLibrary androidVDUseSupportLibrary
+        versionCode androidVersionCode
+        versionName androidVersionName
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+
+    buildTypes {
+        debug {
+            ext.enableCrashlytics = false
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+
+    def dependencies = rootProject.ext.deviceDependencies
+
+    implementation project(path: ':domain')
+}
