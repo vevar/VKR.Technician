@@ -5,6 +5,8 @@ import android.os.PersistableBundle
 import android.util.Log
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.nstu.technician.R
@@ -37,7 +39,12 @@ class LoginActivity : BaseActivity(), ErrorDialogFragment.ErrorDialogListener {
     }
 
     private fun setupViewModel(savedInstanceState: Bundle?) {
-        val factory = LoginViewModelFactory(this)
+        val factory = LoginViewModelFactory(object : LoginViewModel.LoginCallBack {
+            override fun onSetMessage(message: MutableLiveData<String>) {
+                message.value = resources.getString(R.string.incorrect_data_of_account)
+            }
+
+        })
         mViewModel = ViewModelProviders.of(this, factory).get(LoginViewModel::class.java)
         if (savedInstanceState != null) {
             mViewModel.username.value = savedInstanceState.getString(STATE_USERNAME) ?: ""

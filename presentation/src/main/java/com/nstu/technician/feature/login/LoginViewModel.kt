@@ -11,7 +11,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
-    private val baseActivity: BaseActivity
+    private val loginCallBack: LoginCallBack
 ) : ViewModel() {
     companion object {
         private const val TAG = "LoginViewModel"
@@ -26,7 +26,7 @@ class LoginViewModel(
     private val _technician: MutableLiveData<Technician> = MutableLiveData()
     val technician: LiveData<Technician>
         get() = _technician
-    private val _isFieldsFilled: MutableLiveData<Boolean> = MediatorLiveData<Boolean>()
+    val isFieldsFilled: LiveData<Boolean> = MediatorLiveData<Boolean>()
         .apply {
             addSource(username) {
                 this.value = it.isNotBlank() && password.value!!.isNotBlank()
@@ -35,13 +35,11 @@ class LoginViewModel(
                 this.value = it.isNotBlank() && username.value!!.isNotBlank()
             }
         }
-    val isFieldsFilled: LiveData<Boolean>
-        get() = _isFieldsFilled
 
     fun singIn() {
         launchDataLoad {
             delay(1_000)
-            message.value = baseActivity.getString(R.string.incorrect_data_of_account)
+            loginCallBack.onSetMessage(message)
         }
     }
 
@@ -52,10 +50,14 @@ class LoginViewModel(
                 block()
             } catch (exception: AuthUseCase.StudentNotFoundException) {
                 Log.d(TAG, exception.message)
-                message.value = baseActivity.getString(R.string.incorrect_data_of_account)
+                loginCallBack.onSetMessage(message)
             } finally {
                 _isLoading.value = false
             }
         }
+    }
+
+    interface LoginCallBack {
+        fun onSetMessage(message: MutableLiveData<String>)
     }
 }
