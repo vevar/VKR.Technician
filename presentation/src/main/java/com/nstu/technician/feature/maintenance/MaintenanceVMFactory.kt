@@ -2,8 +2,11 @@ package com.nstu.technician.feature.maintenance
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import javax.inject.Inject
 
-class MaintenanceVMFactory: ViewModelProvider.Factory {
+class MaintenanceVMFactory @Inject constructor(
+
+): ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
