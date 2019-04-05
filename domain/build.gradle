@@ -7,16 +7,13 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    def globalConfiguration = rootProject.extensions.getByName('ext')
-
-    compileSdkVersion 28
+    compileSdkVersion androidCompileSdkVersion
     defaultConfig {
-        minSdkVersion globalConfiguration['androidMinSdkVersion']
-        targetSdkVersion globalConfiguration['androidTargetSdkVersion']
-        testInstrumentationRunner globalConfiguration['androidTestInstrumentationRunner']
-        vectorDrawables.useSupportLibrary globalConfiguration['androidVDUseSupportLibrary']
-        versionCode globalConfiguration['androidVersionCode']
-        versionName globalConfiguration['androidVersionName']
+        minSdkVersion androidMinSdkVersion
+        targetSdkVersion androidTargetSdkVersion
+        testInstrumentationRunner androidTestInstrumentationRunner
+        versionCode androidVersionCode
+        versionName androidVersionName
     }
 
     sourceSets {
@@ -35,7 +32,6 @@ android {
 }
 
 dependencies {
-
     def dependencies = rootProject.ext.domainDependencies
 
     implementation dependencies.kotlinLib
