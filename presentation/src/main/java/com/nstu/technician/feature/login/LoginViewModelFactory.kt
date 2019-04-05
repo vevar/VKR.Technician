@@ -4,14 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.nstu.technician.feature.BaseActivity
 
-class LoginViewModelFactory(
-    private val loginCallBack: LoginViewModel.LoginCallBack
-) : ViewModelProvider.Factory {
+class LoginViewModelFactory : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
-            return LoginViewModel(loginCallBack) as T
+            return LoginViewModel() as T
         } else {
             throw IllegalArgumentException("ViewModel not found")
         }

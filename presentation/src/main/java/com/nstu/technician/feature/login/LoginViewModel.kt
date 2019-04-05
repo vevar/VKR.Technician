@@ -5,14 +5,11 @@ import androidx.lifecycle.*
 import com.alxminyaev.ratingnstustudent.domain.usecase.auth.AuthUseCase
 import com.nstu.technician.R
 import com.nstu.technician.domain.model.Technician
-import com.nstu.technician.feature.BaseActivity
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class LoginViewModel(
-    private val loginCallBack: LoginCallBack
-) : ViewModel() {
+class LoginViewModel : ViewModel() {
     companion object {
         private const val TAG = "LoginViewModel"
     }
@@ -22,7 +19,7 @@ class LoginViewModel(
     private val _isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
     val isLoading: LiveData<Boolean>
         get() = _isLoading
-    val message: MutableLiveData<String> = MutableLiveData()
+    val messageIdResource: MutableLiveData<Int?> = MutableLiveData(null)
     private val _technician: MutableLiveData<Technician> = MutableLiveData()
     val technician: LiveData<Technician>
         get() = _technician
@@ -39,7 +36,7 @@ class LoginViewModel(
     fun singIn() {
         launchDataLoad {
             delay(1_000)
-            loginCallBack.onSetMessage(message)
+            messageIdResource.value = R.string.incorrect_data_of_account
         }
     }
 
@@ -50,14 +47,9 @@ class LoginViewModel(
                 block()
             } catch (exception: AuthUseCase.StudentNotFoundException) {
                 Log.d(TAG, exception.message)
-                loginCallBack.onSetMessage(message)
             } finally {
                 _isLoading.value = false
             }
         }
-    }
-
-    interface LoginCallBack {
-        fun onSetMessage(message: MutableLiveData<String>)
     }
 }
