@@ -5,12 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.nstu.technician.R
 import com.nstu.technician.databinding.FragmentMaintenanceBinding
 import com.nstu.technician.di.component.DaggerMaintenanceComponent
 import com.nstu.technician.di.component.DaggerMaintenanceScreen
+import com.nstu.technician.domain.model.facility.Maintenance
 import com.nstu.technician.feature.App
+import com.nstu.technician.feature.BaseActivity
 import com.nstu.technician.feature.BaseFragment
 import java.lang.NullPointerException
 import javax.inject.Inject
@@ -22,6 +25,14 @@ class MaintenanceFragment : BaseFragment() {
 
     private lateinit var mViewModel: MaintenanceViewModel
     private lateinit var mBinding: FragmentMaintenanceBinding
+
+    private lateinit var mMaintenanceJobsRVAdapter: MaintenanceJobsRVAdapter
+
+    private val maintenanceObserver = Observer<Maintenance> { maintenance ->
+        if (maintenance.jobList != null) {
+            mMaintenanceJobsRVAdapter.setMaintenanceJobs(maintenance.jobList!!)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,20 +63,31 @@ class MaintenanceFragment : BaseFragment() {
         mBinding.apply {
             viewModel = mViewModel
             lifecycleOwner = this@MaintenanceFragment
+            mMaintenanceJobsRVAdapter = MaintenanceJobsRVAdapter()
             listMaintenanceJobs.apply {
-                adapter = MaintenanceJobsRVAdapter()
+                adapter = mMaintenanceJobsRVAdapter
             }
 
             btnScanQr.setOnClickListener {
-                // TODO run QR scanner
+                mViewModel.showListJobs()
             }
-
         }
+        val activity = activity as BaseActivity
+        activity.supportActionBar?.title = "${resources.getString(R.string.lbl_maintenance)} #${mViewModel.idMaintenance}"
+
         return mBinding.root
     }
 
     override fun onStart() {
         super.onStart()
+        mViewModel.maintenance.observe(this, maintenanceObserver)
         mViewModel.loadDetailMaintenance()
     }
+
+    override fun onStop() {
+        super.onStop()
+        mViewModel.maintenance.removeObserver(maintenanceObserver)
+    }
+
+
 }

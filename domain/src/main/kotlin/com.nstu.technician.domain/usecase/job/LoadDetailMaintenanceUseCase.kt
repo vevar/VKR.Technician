@@ -7,6 +7,7 @@ import com.nstu.technician.domain.model.document.Contractor
 import com.nstu.technician.domain.model.document.Document
 import com.nstu.technician.domain.model.facility.*
 import com.nstu.technician.domain.usecase.UseCase
+import kotlinx.coroutines.delay
 import java.util.*
 import javax.inject.Inject
 
@@ -14,6 +15,7 @@ class LoadDetailMaintenanceUseCase @Inject constructor(
 
 ) : UseCase<Maintenance, LoadDetailMaintenanceUseCase.Companion.Param>() {
     override suspend fun task(param: Param): Maintenance {
+        delay(1_000)
         return createMaintenance()
     }
 

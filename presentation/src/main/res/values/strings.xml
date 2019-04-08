@@ -13,7 +13,7 @@
     <string name="lbl_shot_street">ул</string>
     <string name="lbl_shot_home">д</string>
     <string name="lbl_shot_office">оф</string>
-
+    <string name="lbl_maintenance">Заявка</string>
 
     <!--FIELDS-->
     <string name="fld_login">Логин</string>

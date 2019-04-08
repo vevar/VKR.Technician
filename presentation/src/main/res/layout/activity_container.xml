@@ -15,8 +15,9 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorAccent"
-                app:titleTextColor="@color/white">
+                android:background="@color/black"
+                app:titleTextColor="@color/white"
+                android:theme="@style/ToolbarColoredBackArrow">
         </androidx.appcompat.widget.Toolbar>
         <fragment
                 android:id="@+id/host_fragment"

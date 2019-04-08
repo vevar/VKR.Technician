@@ -94,4 +94,9 @@ object BindingAdapters {
         }
     }
 
+    @BindingAdapter("app:setVisibility")
+    @JvmStatic
+    fun setVisibility(view: View, flag: Boolean) {
+        view.visibility = if (flag) View.VISIBLE else View.GONE
+    }
 }
