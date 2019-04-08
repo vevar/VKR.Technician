@@ -50,10 +50,22 @@ class MaintenanceFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_maintenance, container, false)
         mBinding.apply {
+            viewModel = mViewModel
+            lifecycleOwner = this@MaintenanceFragment
+            listMaintenanceJobs.apply {
+                adapter = MaintenanceJobsRVAdapter()
+            }
+
             btnScanQr.setOnClickListener {
                 // TODO run QR scanner
             }
+
         }
         return mBinding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+        mViewModel.loadDetailMaintenance()
     }
 }

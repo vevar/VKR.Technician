@@ -3,7 +3,9 @@ package com.nstu.technician.feature.maintenance
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.nstu.technician.domain.model.document.Contract
 import com.nstu.technician.domain.model.facility.Maintenance
 import com.nstu.technician.domain.usecase.CallUseCase
 import com.nstu.technician.domain.usecase.job.LoadDetailMaintenanceUseCase
@@ -17,16 +19,24 @@ class MaintenanceViewModel(
         private const val TAG = "MaintenanceViewModel"
     }
 
+
     private val _maintenance: MutableLiveData<Maintenance> = MutableLiveData()
     val maintenance: LiveData<Maintenance>
         get() = _maintenance
+    private val _contract: MutableLiveData<Contract> = MutableLiveData()
     val loader: LoaderVM = LoaderVM()
+    val contract: LiveData<Contract>
 
-    suspend fun loadDetailMaintenance() {
+    init {
+        contract = Transformations.map(_maintenance) { it.facility.contract }
+    }
+
+    fun loadDetailMaintenance() {
         loader.launchDataLoad {
             loadDetailMaintenanceUseCase.execute(object : CallUseCase<Maintenance> {
                 override suspend fun onSuccess(result: Maintenance) {
                     _maintenance.value = result
+                    _contract.value = result.facility.contract
                     Log.d(TAG, "LoadDetailMaintenanceUseCase is invoked success")
                 }
 

@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.nstu.technician.R
+import com.nstu.technician.domain.model.document.Contract
 import com.nstu.technician.domain.model.facility.Facility
 import com.nstu.technician.domain.model.facility.OwnDateTime
 import com.nstu.technician.feature.common.TypeNotification
@@ -76,7 +77,7 @@ object BindingAdapters {
             val address = facility.address
             val resources = view.resources
             val textAddress = "${resources.getString(R.string.lbl_shot_street)}. ${address.street} " +
-                    "${resources.getString(R.string.lbl_shot_street)}. ${address.home} " +
+                    "${resources.getString(R.string.lbl_shot_home)}. ${address.home} " +
                     "${resources.getString(R.string.lbl_shot_office)}. ${address.office}"
             view.text = textAddress
         }
@@ -84,11 +85,13 @@ object BindingAdapters {
 
     @BindingAdapter("app:setContractDate")
     @JvmStatic
-    fun setContractDate(view: TextView, ownDateTime: OwnDateTime) {
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = ownDateTime.timeInMS
-        val simpleDateFormat = SimpleDateFormat("dd.MM.YYYY", Locale.getDefault())
-        view.text = simpleDateFormat.format(calendar)
+    fun setContractDate(view: TextView, contract: Contract?) {
+        if (contract != null) {
+            val calendar = Calendar.getInstance()
+            calendar.timeInMillis = contract.date.timeInMS
+            val simpleDateFormat = SimpleDateFormat("dd.MM.YYYY", Locale.getDefault())
+            view.text = simpleDateFormat.format(calendar.time)
+        }
     }
 
 }

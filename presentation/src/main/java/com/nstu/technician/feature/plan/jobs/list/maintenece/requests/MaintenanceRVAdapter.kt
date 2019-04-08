@@ -102,6 +102,9 @@ class MaintenanceRVAdapter(
             startJob.setOnClickListener {
                 maintenanceListener.onStartJob(maintenance)
             }
+            itemView.setOnClickListener {
+                maintenanceListener.onStartJob(maintenance)
+            }
         }
 
         private fun getStringAddressFacility(maintenance: Maintenance): String {

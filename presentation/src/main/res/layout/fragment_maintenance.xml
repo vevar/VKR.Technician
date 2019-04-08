@@ -11,7 +11,7 @@
             android:layout_height="match_parent">
         <include
                 layout="@layout/view_contract"
-                bind:contract="@{viewModel.maintenance.facility.contract}"/>
+                bind:contract="@{viewModel.contract}"/>
 
         <include
                 layout="@layout/view_detail_maintenance"

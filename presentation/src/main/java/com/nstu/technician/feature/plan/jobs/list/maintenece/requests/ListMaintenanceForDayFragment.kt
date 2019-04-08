@@ -79,13 +79,16 @@ class ListMaintenanceForDayFragment : BaseFragment() {
                     if (checkPermissionLocation()) {
                         requestLocationPermission()
                     } else {
-                        val dest = PlanJobsFragmentDirections.actionPlanJobsDestToMapDest(maintenance.facility.oid)
+                        val dest =
+                            PlanJobsFragmentDirections.actionPlanJobsDestToMapDest(maintenance.facility.oid)
                         findNavController().navigate(dest)
                     }
                 }
 
                 override fun onStartJob(maintenance: Maintenance) {
-                    TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    val dest =
+                        PlanJobsFragmentDirections.actionPlanJobsDestToMaintenanceDest(maintenance.oid)
+                    findNavController().navigate(dest)
                 }
 
             })
