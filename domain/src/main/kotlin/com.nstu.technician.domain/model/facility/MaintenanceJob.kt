@@ -12,10 +12,12 @@ class MaintenanceJob(
     var endTime: OwnDateTime? = null
 
     enum class TypeState {
-
+        UNDEFINED,
+        COMPLETED,
+        NOT_COMPLETED
     }
 
     enum class JobType {
-
+        UNDEFINED
     }
 }

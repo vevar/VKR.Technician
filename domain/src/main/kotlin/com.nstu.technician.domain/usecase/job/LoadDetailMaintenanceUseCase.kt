@@ -52,6 +52,13 @@ class LoadDetailMaintenanceUseCase @Inject constructor(
             OwnDateTime(calendar.timeInMillis),
             artifact
         )
-        return Maintenance(1, facility, OwnDateTime(calendar.timeInMillis), 60, Maintenance.Type.MONTHLY)
+
+        val maintenance = Maintenance(1, facility, OwnDateTime(calendar.timeInMillis), 60, Maintenance.Type.MONTHLY)
+
+        val list = mutableListOf<MaintenanceJob>()
+        list.add(MaintenanceJob(1, MaintenanceJob.TypeState.NOT_COMPLETED, MaintenanceJob.JobType.UNDEFINED))
+
+        maintenance.jobList = list
+        return maintenance
     }
 }

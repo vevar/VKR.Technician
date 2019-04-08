@@ -1,12 +1,15 @@
 package com.nstu.technician.feature.maintenance
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.tabs.TabLayout
 import com.nstu.technician.R
 import com.nstu.technician.databinding.FragmentMaintenanceBinding
 import com.nstu.technician.di.component.DaggerMaintenanceComponent
@@ -20,6 +23,10 @@ import javax.inject.Inject
 
 class MaintenanceFragment : BaseFragment() {
 
+    companion object {
+        private const val TAG = "MaintenanceFragment"
+    }
+
     @Inject
     lateinit var mFactory: MaintenanceVMFactory
 
@@ -30,6 +37,7 @@ class MaintenanceFragment : BaseFragment() {
 
     private val maintenanceObserver = Observer<Maintenance> { maintenance ->
         if (maintenance.jobList != null) {
+            Log.d(TAG, "JobList isn't null")
             mMaintenanceJobsRVAdapter.setMaintenanceJobs(maintenance.jobList!!)
         }
     }
@@ -66,6 +74,7 @@ class MaintenanceFragment : BaseFragment() {
             mMaintenanceJobsRVAdapter = MaintenanceJobsRVAdapter()
             listMaintenanceJobs.apply {
                 adapter = mMaintenanceJobsRVAdapter
+                layoutManager = LinearLayoutManager(requireContext())
             }
 
             btnScanQr.setOnClickListener {
@@ -73,7 +82,8 @@ class MaintenanceFragment : BaseFragment() {
             }
         }
         val activity = activity as BaseActivity
-        activity.supportActionBar?.title = "${resources.getString(R.string.lbl_maintenance)} #${mViewModel.idMaintenance}"
+        activity.supportActionBar?.title =
+            "${resources.getString(R.string.lbl_maintenance)} #${mViewModel.idMaintenance}"
 
         return mBinding.root
     }
