@@ -7,9 +7,11 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.nstu.technician.R
-import com.nstu.technician.domain.model.facility.Address
 import com.nstu.technician.domain.model.facility.Facility
+import com.nstu.technician.domain.model.facility.OwnDateTime
 import com.nstu.technician.feature.common.TypeNotification
+import java.text.SimpleDateFormat
+import java.util.*
 
 object BindingAdapters {
 
@@ -70,7 +72,7 @@ object BindingAdapters {
     @BindingAdapter("app:setAddress")
     @JvmStatic
     fun setAddress(view: TextView, facility: Facility?) {
-        if (facility != null){
+        if (facility != null) {
             val address = facility.address
             val resources = view.resources
             val textAddress = "${resources.getString(R.string.lbl_shot_street)}. ${address.street} " +
@@ -80,5 +82,13 @@ object BindingAdapters {
         }
     }
 
+    @BindingAdapter("app:setContractDate")
+    @JvmStatic
+    fun setContractDate(view: TextView, ownDateTime: OwnDateTime) {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = ownDateTime.timeInMS
+        val simpleDateFormat = SimpleDateFormat("dd.MM.YYYY", Locale.getDefault())
+        view.text = simpleDateFormat.format(calendar)
+    }
 
 }

@@ -12,12 +12,13 @@ import com.nstu.technician.di.component.DaggerMaintenanceComponent
 import com.nstu.technician.di.component.DaggerMaintenanceScreen
 import com.nstu.technician.feature.App
 import com.nstu.technician.feature.BaseFragment
+import java.lang.NullPointerException
 import javax.inject.Inject
 
 class MaintenanceFragment : BaseFragment() {
 
     @Inject
-    private lateinit var mFactory: MaintenanceVMFactory
+    lateinit var mFactory: MaintenanceVMFactory
 
     private lateinit var mViewModel: MaintenanceViewModel
     private lateinit var mBinding: FragmentMaintenanceBinding
@@ -29,6 +30,9 @@ class MaintenanceFragment : BaseFragment() {
     }
 
     private fun setupViewModel() {
+        val args = MaintenanceFragmentArgs
+            .fromBundle(arguments ?: throw NullPointerException("args is null"))
+        mFactory.init(args.idMaintenance)
         mViewModel = ViewModelProviders.of(this, mFactory).get(MaintenanceViewModel::class.java)
     }
 

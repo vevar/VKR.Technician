@@ -20,7 +20,6 @@ class MaintenanceViewModel(
     private val _maintenance: MutableLiveData<Maintenance> = MutableLiveData()
     val maintenance: LiveData<Maintenance>
         get() = _maintenance
-
     val loader: LoaderVM = LoaderVM()
 
     suspend fun loadDetailMaintenance() {

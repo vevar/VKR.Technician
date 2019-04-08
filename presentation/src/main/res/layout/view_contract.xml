@@ -59,7 +59,7 @@
                     app:layout_constraintBottom_toBottomOf="@+id/lbl_period_contract"
                     app:layout_constraintTop_toTopOf="@+id/lbl_period_contract"
                     app:layout_constraintHorizontal_bias="1.0"
-                    android:text="@{contract.date}"
+                    app:setContractDate="@{contract.date}"
 
                     tools:text="11.02.2010 - 1.02.2020"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
