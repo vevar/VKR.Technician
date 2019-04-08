@@ -26,9 +26,9 @@ class PlanJobsViewModel(
     val data: LiveData<Data>
         get() = _data
 
-    private val _message: MutableLiveData<String> = MutableLiveData()
-    val message: LiveData<String>
-        get() = _message
+    private val _messageIdResource: MutableLiveData<Int> = MutableLiveData()
+    val message: LiveData<Int>
+        get() = _messageIdResource
     private val currentDate: Calendar = Calendar.getInstance()
 
 
