@@ -38,9 +38,7 @@ class PlanJobsViewModel(
                 override suspend fun onSuccess(result: List<Shift>) {
                     val indexCurrentShift = findIndexOfCurrentShift(result)
                     if (indexCurrentShift != null) {
-                        withContext(Dispatchers.Main) {
                             _data.value = Data(result, indexCurrentShift)
-                        }
                     } else {
                         throw NullPointerException("Current day not found")
                     }

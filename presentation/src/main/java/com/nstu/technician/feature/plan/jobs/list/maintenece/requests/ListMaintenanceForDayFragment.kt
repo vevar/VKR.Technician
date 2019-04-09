@@ -131,12 +131,6 @@ class ListMaintenanceForDayFragment : BaseFragment() {
     }
 
 
-    override fun onStop() {
-        super.onStop()
-        mViewModel.listMaintenance.removeObserver(listMaintenanceObserver)
-        Log.d(TAG, "${this} + fragment is stopped")
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "${this} + fragment is destroy")

@@ -33,11 +33,7 @@ class PlanJobsFragment : BaseFragment() {
     private var mDaysObserver = Observer<PlanJobsViewModel.Data> { data ->
         mPagerAdapter.setListShifts(data.shifts)
         mBinding.apply {
-            val index: Int = if (mViewModel.indexCurrentPosition != null) {
-                mViewModel.indexCurrentPosition!!
-            } else {
-                data.indexCurrentDay
-            }
+            val index: Int = mViewModel.indexCurrentPosition ?: data.indexCurrentDay
             Log.d(TAG, "Current index of tab: $index")
             viewPagerMaintenance.currentItem = index
         }
@@ -110,8 +106,4 @@ class PlanJobsFragment : BaseFragment() {
         mViewModel.loadPlanJobs()
     }
 
-    override fun onStop() {
-        super.onStop()
-        mViewModel.data.removeObserver(mDaysObserver)
-    }
 }

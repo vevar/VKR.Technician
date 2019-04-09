@@ -38,7 +38,7 @@ class ListMaintenanceForDayViewModel(private val loadListMaintenanceUseCase: Loa
                     override suspend fun onFailure(throwable: Throwable) {
                         Log.d(TAG, throwable.message)
                     }
-                }, LoadListMaintenanceUseCase.Companion.Param.forShift(idShift!!))
+                }, LoadListMaintenanceUseCase.Param.forShift(idShift!!))
             }
         } else {
             throw NullPointerException("idShift is null")
