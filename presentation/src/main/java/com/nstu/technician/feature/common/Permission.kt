@@ -1,12 +1,11 @@
 package com.nstu.technician.feature.common
 
 import android.Manifest
-import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
-import androidx.core.app.ActivityCompat
 import androidx.core.content.PermissionChecker
+import androidx.fragment.app.Fragment
 
 const val PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION = 1
 
@@ -17,9 +16,8 @@ fun checkPermissionLocation(context: Context): Boolean {
     ) != PackageManager.PERMISSION_GRANTED
 }
 
-fun requestLocationPermission(activity: Activity) {
-    ActivityCompat.requestPermissions(
-        activity,
+fun requestLocationPermission(fragment: Fragment) {
+    fragment.requestPermissions(
         arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
         PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION
     )

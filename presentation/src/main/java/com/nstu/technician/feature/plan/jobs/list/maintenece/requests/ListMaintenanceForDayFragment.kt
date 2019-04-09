@@ -78,7 +78,7 @@ class ListMaintenanceForDayFragment : BaseFragment() {
                 override fun onShowOnMap(maintenance: Maintenance) {
                     if (checkPermissionLocation(requireContext())) {
                         arguments?.putInt(EXTRA_ID_MAINTENANCE, maintenance.facility.oid)
-                        requestLocationPermission(requireActivity())
+                        requestLocationPermission(this@ListMaintenanceForDayFragment)
                     } else {
                         showOnMap(maintenance.facility.oid)
                     }
