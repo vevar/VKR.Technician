@@ -27,7 +27,6 @@ import javax.inject.Inject
 class GMapFragment : BaseFragment() {
     companion object {
         private const val TAG = "GMapFragment"
-        const val PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION = 1
     }
 
     @Inject
