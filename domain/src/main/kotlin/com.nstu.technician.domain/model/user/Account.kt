@@ -1,4 +1,4 @@
-package com.nstu.ratingnstustudent.domain.model
+package com.nstu.technician.domain.model.user
 
 import android.os.Parcel
 import android.os.Parcelable

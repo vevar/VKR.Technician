@@ -2,9 +2,9 @@ package com.nstu.technician.feature.login
 
 import android.util.Log
 import androidx.lifecycle.*
-import com.alxminyaev.ratingnstustudent.domain.usecase.auth.AuthUseCase
 import com.nstu.technician.R
-import com.nstu.technician.domain.model.Technician
+import com.nstu.technician.domain.model.user.Technician
+import com.nstu.technician.domain.usecase.auth.AuthUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -36,7 +36,7 @@ class LoginViewModel : ViewModel() {
     fun singIn() {
         launchDataLoad {
             delay(1_000)
-            messageIdResource.value = R.string.incorrect_data_of_account
+            messageIdResource.value = R.string.lbl_incorrect_data_of_account
         }
     }
 

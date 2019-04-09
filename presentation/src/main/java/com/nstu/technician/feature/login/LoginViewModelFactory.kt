@@ -1,17 +1,10 @@
 package com.nstu.technician.feature.login
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.nstu.technician.feature.BaseActivity
+import com.nstu.technician.feature.util.BaseViewModelFactory
 
-class LoginViewModelFactory : ViewModelProvider.Factory {
+class LoginViewModelFactory : BaseViewModelFactory<LoginViewModel>(LoginViewModel::class.java){
 
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
-            return LoginViewModel() as T
-        } else {
-            throw IllegalArgumentException("ViewModel not found")
-        }
+    override fun createViewModel(): LoginViewModel {
+        return LoginViewModel()
     }
 }
