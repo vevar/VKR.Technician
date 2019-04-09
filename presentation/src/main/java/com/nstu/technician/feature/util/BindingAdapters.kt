@@ -1,7 +1,5 @@
 package com.nstu.technician.feature.util
 
-import android.content.res.Resources
-import android.os.Build
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -49,9 +47,7 @@ object BindingAdapters {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 view.setTextColor(resources.getColor(R.color.white, theme))
             } else {
-                view.setTextColor(
-                    resources.getColor(R.color.white)
-                )
+                view.setTextColor(resources.getColor(R.color.white))
             }
         } else {
             view.isEnabled = false
@@ -64,39 +60,4 @@ object BindingAdapters {
         }
     }
 
-    @BindingAdapter("app:showIfListEmpty")
-    @JvmStatic
-    fun showIfListEmpty(view: View, list: List<Any>) {
-        view.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
-    }
-
-    @BindingAdapter("app:setAddress")
-    @JvmStatic
-    fun setAddress(view: TextView, facility: Facility?) {
-        if (facility != null) {
-            val address = facility.address
-            val resources = view.resources
-            val textAddress = "${resources.getString(R.string.lbl_shot_street)}. ${address.street} " +
-                    "${resources.getString(R.string.lbl_shot_home)}. ${address.home} " +
-                    "${resources.getString(R.string.lbl_shot_office)}. ${address.office}"
-            view.text = textAddress
-        }
-    }
-
-    @BindingAdapter("app:setContractDate")
-    @JvmStatic
-    fun setContractDate(view: TextView, contract: Contract?) {
-        if (contract != null) {
-            val calendar = Calendar.getInstance()
-            calendar.timeInMillis = contract.date.timeInMS
-            val simpleDateFormat = SimpleDateFormat("dd.MM.YYYY", Locale.getDefault())
-            view.text = simpleDateFormat.format(calendar.time)
-        }
-    }
-
-    @BindingAdapter("app:setVisibility")
-    @JvmStatic
-    fun setVisibility(view: View, flag: Boolean) {
-        view.visibility = if (flag) View.VISIBLE else View.GONE
-    }
 }
