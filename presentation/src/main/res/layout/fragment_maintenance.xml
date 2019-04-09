@@ -27,7 +27,9 @@
                     android:id="@+id/list_maintenance_jobs"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:setVisibility="@{viewModel.isListJobsVisible()}">
+                    app:setVisibility="@{viewModel.isListJobsVisible()}"
+
+                    tools:listItem="@layout/view_job">
 
             </androidx.recyclerview.widget.RecyclerView>
             <LinearLayout
