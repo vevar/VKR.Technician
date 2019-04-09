@@ -2,17 +2,17 @@
     <string name="app_name">VKR.Technician</string>
     <string name="authorization">Авторизация</string>
 
-    <string name="error">Ошибка</string>
-    <string name="ok">OK</string>
-    <string name="incorrect_data_of_account">Неверный логин или пароль</string>
-
-
     <!--LABELS-->
     <string name="lbl_shot_hour">ч</string>
     <string name="lbl_shot_minutes">мин</string>
     <string name="lbl_shot_street">ул</string>
     <string name="lbl_shot_home">д</string>
     <string name="lbl_shot_office">оф</string>
+    <string name="lbl_error">Ошибка</string>
+    <string name="lbl_ok">OK</string>
+    <string name="lbl_incorrect_data_of_account">Неверный логин или пароль</string>
+    <string name="lbl_take_tools">Заберите инструменты</string>
+    <string name="lbl_take_akt">Заберите акт</string>
 
 
     <!--FIELDS-->
@@ -42,6 +42,13 @@
         <item>Октября</item>
         <item>Ноября</item>
         <item>Декабря</item>
+    </string-array>
+
+    <string-array name="types_maintenance">
+        <item>Ежемесячное ТО</item>
+        <item>Разовая</item>
+        <item>Внеплановая</item>
+        <item>Повторная</item>
     </string-array>
 
 </resources>

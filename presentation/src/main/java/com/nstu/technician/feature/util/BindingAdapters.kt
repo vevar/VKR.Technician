@@ -1,15 +1,14 @@
 package com.nstu.technician.feature.util
 
 import android.view.View
-import android.widget.Button
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.nstu.technician.R
-import com.nstu.technician.domain.model.facility.Address
 import com.nstu.technician.domain.model.facility.Facility
-import com.nstu.technician.feature.common.TypeNotification
 
 object BindingAdapters {
+
+    private const val MINUTE_IN_HOUR = 60
 
     @BindingAdapter("app:showIfLoad")
     @JvmStatic
@@ -26,15 +25,42 @@ object BindingAdapters {
     @BindingAdapter("app:setAddress")
     @JvmStatic
     fun setAddress(view: TextView, facility: Facility?) {
-        if (facility != null){
+        if (facility != null) {
             val address = facility.address
             val resources = view.resources
             val textAddress = "${resources.getString(R.string.lbl_shot_street)}. ${address.street} " +
-                    "${resources.getString(R.string.lbl_shot_street)}. ${address.home} " +
+                    "${resources.getString(R.string.lbl_shot_home)}. ${address.home} " +
                     "${resources.getString(R.string.lbl_shot_office)}. ${address.office}"
             view.text = textAddress
         }
     }
 
+
+    @BindingAdapter("app:setTimeForJob")
+    @JvmStatic
+    fun setTimeForJob(view: TextView, durationInMinutes: Int) {
+        val resources = view.resources
+        val hours = durationInMinutes / MINUTE_IN_HOUR
+        val minutes = durationInMinutes % MINUTE_IN_HOUR
+        val text = if (hours > 0) {
+            if (minutes == 0) {
+                "$hours ${resources.getString(R.string.lbl_shot_hour)}."
+            } else {
+                "$hours ${resources.getString(R.string.lbl_shot_hour)}. " +
+                        "$minutes ${resources.getString(R.string.lbl_shot_minutes)}"
+            }
+        } else {
+            "$minutes ${resources.getString(R.string.lbl_shot_minutes)}"
+        }
+
+        view.text = text
+    }
+
+    @BindingAdapter("setTypeMaintenanceById")
+    @JvmStatic
+    fun setTypeMaintenanceById(view: TextView, index: Int) {
+        val array = view.resources.getStringArray(R.array.types_maintenance)
+        view.text = array[index]
+    }
 
 }

@@ -36,7 +36,7 @@ class LoginViewModel : ViewModel() {
     fun singIn() {
         launchDataLoad {
             delay(1_000)
-            messageIdResource.value = R.string.incorrect_data_of_account
+            messageIdResource.value = R.string.lbl_incorrect_data_of_account
         }
     }
 
