@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class LoadFacilityUseCase @Inject constructor(
 
-) : UseCase<Facility, LoadFacilityUseCase.Companion.Param>() {
+) : UseCase<Facility, LoadFacilityUseCase.Param>() {
 
     override suspend fun task(param: Param): Facility {
         val calendar = Calendar.getInstance()
@@ -19,7 +19,6 @@ class LoadFacilityUseCase @Inject constructor(
         return Facility(1, "NSTU", "123", address, OwnDateTime(calendar.timeInMillis))
     }
 
-    companion object {
         class Param private constructor(
             val idFacility: Int
         ) {
@@ -29,5 +28,4 @@ class LoadFacilityUseCase @Inject constructor(
                 }
             }
         }
-    }
 }

@@ -1,114 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="@dimen/default_radius"
-        android:layout_margin="@dimen/default_margin"
-        app:cardBackgroundColor="@color/white">
-    <LinearLayout
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable name="maintenance" type="com.nstu.technician.domain.model.facility.Maintenance"/>
+    </data>
+    <androidx.cardview.widget.CardView
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-        <TextView
-                android:id="@+id/maintenance_message"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/default_radius"
+            android:layout_margin="@dimen/default_margin"
+            app:cardBackgroundColor="@color/white">
+        <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:drawableStart="@drawable/ic_warning_white"
-                android:drawablePadding="@dimen/mini_margin"
-                android:visibility="gone"
-
-                style="@style/Warning"
-                tools:text="Заберите акт"/>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
             <TextView
-                    android:id="@+id/number"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/maintenance_message"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/default_margin"
-                    android:textColor="@color/gray"
-                    android:maxLines="1"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:padding="10dp"
+                    android:drawableStart="@drawable/ic_warning_white"
+                    android:drawablePadding="@dimen/mini_margin"
+                    android:visibility="gone"
 
-                    tools:text="#32"
-                    app:layout_constraintTop_toTopOf="@+id/name_facility"
-                    app:layout_constraintBottom_toBottomOf="@+id/name_facility"/>
-            <TextView
-                    android:id="@+id/name_facility"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/default_margin"
-                    android:textColor="@color/gray"
-                    android:maxLines="1"
-                    app:layout_constraintStart_toEndOf="@+id/number"
-                    app:layout_constraintEnd_toStartOf="@id/time_for_job"
+                    style="@style/Warning"
+                    tools:text="Заберите акт"/>
 
-                    tools:text="НГТУ (Новосибирский государственный технический университет)"
-                    android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/type_maintenance"/>
-            <TextView
-                    android:id="@+id/time_for_job"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/default_margin"
-                    android:textColor="@color/gray"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:drawableStart="@drawable/ic_time_gray"
-                    android:drawablePadding="@dimen/icon_padding"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                <TextView
+                        android:id="@+id/number"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/default_margin"
+                        android:textColor="@color/gray"
+                        android:maxLines="1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:text="@{maintenance.oid}"
 
-                    tools:text="2 часа"
-                    app:layout_constraintTop_toTopOf="@+id/name_facility"
-                    app:layout_constraintBottom_toBottomOf="@+id/name_facility"/>
-            <TextView
-                    android:id="@+id/address_facility"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/gray"
-                    app:layout_constraintTop_toBottomOf="@+id/name_facility"
-                    app:layout_constraintStart_toStartOf="@+id/number"
+                        tools:text="#32"
+                        app:layout_constraintTop_toTopOf="@+id/name_facility"
+                        app:layout_constraintBottom_toBottomOf="@+id/name_facility"/>
+                <TextView
+                        android:id="@+id/name_facility"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/default_margin"
+                        android:textColor="@color/gray"
+                        android:maxLines="1"
+                        app:layout_constraintStart_toEndOf="@+id/number"
+                        app:layout_constraintEnd_toStartOf="@id/time_for_job"
 
-                    tools:text="ул.Ватутина д. 245 оф.56"/>
-            <Button
-                    android:id="@+id/btn_show_on_map"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/fld_height"
-                    android:layout_marginStart="@dimen/default_margin"
-                    android:textColor="@color/black"
-                    android:layout_marginTop="@dimen/default_margin"
-                    android:background="@drawable/btn_round_glass"
-                    android:text="@string/btn_show_on_map"
-                    app:layout_constraintTop_toBottomOf="@+id/address_facility"
-                    app:layout_constraintStart_toStartOf="parent"/>
-            <Button
-                    android:id="@+id/btn_start_job"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/fld_height"
-                    android:layout_marginEnd="@dimen/default_margin"
-                    android:layout_marginStart="@dimen/default_margin"
-                    android:textColor="@color/black"
-                    android:background="@drawable/btn_round_glass"
-                    android:text="@string/btn_start"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/btn_show_on_map"
-                    app:layout_constraintStart_toEndOf="@+id/btn_show_on_map"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintBottom_toBottomOf="@+id/btn_show_on_map"/>
-            <TextView
-                    android:id="@+id/type_maintenance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/default_margin"
-                    android:layout_marginTop="@dimen/default_margin"
-                    android:textColor="@color/black"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                        tools:text="НГТУ (Новосибирский государственный технический университет)"
+                        android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/type_maintenance"/>
+                <TextView
+                        android:id="@+id/time_for_job"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/default_margin"
+                        android:textColor="@color/gray"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:drawableStart="@drawable/ic_time_gray"
+                        android:drawablePadding="@dimen/icon_padding"
 
-                    tools:text="Ежемесячное ТО"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
-</androidx.cardview.widget.CardView>
+                        tools:text="2 часа"
+                        app:layout_constraintTop_toTopOf="@+id/name_facility"
+                        app:layout_constraintBottom_toBottomOf="@+id/name_facility"/>
+                <TextView
+                        android:id="@+id/address_facility"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/gray"
+                        app:layout_constraintTop_toBottomOf="@+id/name_facility"
+                        app:layout_constraintStart_toStartOf="@+id/number"
+
+                        tools:text="ул.Ватутина д. 245 оф.56"/>
+                <Button
+                        android:id="@+id/btn_show_on_map"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/fld_height"
+                        android:layout_marginStart="@dimen/default_margin"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="@dimen/default_margin"
+                        android:background="@drawable/btn_round_glass"
+                        android:text="@string/btn_show_on_map"
+                        app:layout_constraintTop_toBottomOf="@+id/address_facility"
+                        app:layout_constraintStart_toStartOf="parent"/>
+                <Button
+                        android:id="@+id/btn_start_job"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/fld_height"
+                        android:layout_marginEnd="@dimen/default_margin"
+                        android:layout_marginStart="@dimen/default_margin"
+                        android:textColor="@color/black"
+                        android:background="@drawable/btn_round_glass"
+                        android:text="@string/btn_start"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/btn_show_on_map"
+                        app:layout_constraintStart_toEndOf="@+id/btn_show_on_map"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintBottom_toBottomOf="@+id/btn_show_on_map"/>
+                <TextView
+                        android:id="@+id/type_maintenance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/default_margin"
+                        android:layout_marginTop="@dimen/default_margin"
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+
+                        tools:text="Ежемесячное ТО"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</layout>
