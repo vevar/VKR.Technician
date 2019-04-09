@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.nstu.technician.R
 import com.nstu.technician.databinding.ActivityLoginBinding
-import com.nstu.technician.domain.model.Technician
+import com.nstu.technician.domain.model.user.Technician
 import com.nstu.technician.feature.BaseActivity
 import com.nstu.technician.feature.common.ErrorDialogFragment
 
