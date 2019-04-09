@@ -7,12 +7,14 @@ import com.nstu.technician.domain.usecase.CallUseCase
 import com.nstu.technician.domain.usecase.job.LoadListMaintenanceUseCase
 import kotlinx.coroutines.*
 
-class ListMaintenanceForDayViewModel(private val loadListMaintenanceUseCase: LoadListMaintenanceUseCase) : ViewModel() {
+class ListMaintenanceForDayViewModel(
+    private val idShift: Int,
+    private val loadListMaintenanceUseCase: LoadListMaintenanceUseCase
+) : ViewModel() {
     companion object {
         private const val TAG = "Maintenances_ViewModel"
     }
 
-    private var idShift: Int? = null
     private val _listMaintenance = MutableLiveData<List<Maintenance>>(listOf())
     val listMaintenance: LiveData<List<Maintenance>>
         get() = _listMaintenance
@@ -23,27 +25,18 @@ class ListMaintenanceForDayViewModel(private val loadListMaintenanceUseCase: Loa
     val message: LiveData<Int>
         get() = _messageIdResource
 
-    fun init(idShift: Int?) {
-        this.idShift = idShift
-    }
-
     fun loadListMaintenance() {
-        if (idShift != null) {
-            launchDataLoad {
-                loadListMaintenanceUseCase.execute(object : CallUseCase<List<Maintenance>> {
-                    override suspend fun onSuccess(result: List<Maintenance>) {
-                        _listMaintenance.value = result
-                    }
+        launchDataLoad {
+            loadListMaintenanceUseCase.execute(object : CallUseCase<List<Maintenance>> {
+                override suspend fun onSuccess(result: List<Maintenance>) {
+                    _listMaintenance.value = result
+                }
 
-                    override suspend fun onFailure(throwable: Throwable) {
-                        Log.d(TAG, throwable.message)
-                    }
-                }, LoadListMaintenanceUseCase.Param.forShift(idShift!!))
-            }
-        } else {
-            throw NullPointerException("idShift is null")
+                override suspend fun onFailure(throwable: Throwable) {
+                    Log.d(TAG, throwable.message)
+                }
+            }, LoadListMaintenanceUseCase.Param.forShift(idShift))
         }
-
     }
 
     private fun launchDataLoad(block: suspend () -> Unit): Job {

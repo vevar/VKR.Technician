@@ -22,8 +22,10 @@ import com.nstu.technician.feature.common.PERMISSIONS_REQUEST_CODE_ACCESS_COARSE
 import com.nstu.technician.feature.common.checkPermissionLocation
 import com.nstu.technician.feature.common.requestLocationPermission
 import com.nstu.technician.feature.plan.jobs.PlanJobsFragmentDirections
-import java.lang.NullPointerException
+import dagger.Module
+import dagger.Provides
 import javax.inject.Inject
+import javax.inject.Named
 
 class ListMaintenanceForDayFragment : BaseFragment() {
     companion object {
@@ -59,6 +61,7 @@ class ListMaintenanceForDayFragment : BaseFragment() {
 
     private fun initInjection() {
         val listMaintenanceComponent = DaggerListMaintenanceComponent.builder()
+            .listMaintenanceModule(ListMaintenanceModule(getIdShift()))
             .build()
 
         val screen = DaggerListMaintenanceScreen.builder()
@@ -67,6 +70,10 @@ class ListMaintenanceForDayFragment : BaseFragment() {
             .build()
 
         screen.inject(this)
+    }
+
+    private fun getIdShift(): Int {
+        return arguments?.getInt(EXTRA_ID_SHIFT) ?: throw NullPointerException("id shift is null")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -109,7 +116,6 @@ class ListMaintenanceForDayFragment : BaseFragment() {
     private fun setupViewModel() {
         mViewModel = ViewModelProviders.of(this, listMaintenanceForDayVMFactory)
             .get(ListMaintenanceForDayViewModel::class.java)
-        mViewModel.init(arguments?.getInt(EXTRA_ID_SHIFT))
     }
 
     override fun onStart() {
@@ -135,5 +141,14 @@ class ListMaintenanceForDayFragment : BaseFragment() {
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "${this} + fragment is destroy")
+    }
+}
+
+@Module
+class ListMaintenanceModule(private val idShift: Int) {
+    @Provides
+    @Named("idShift")
+    fun provideIdShift(): Int {
+        return idShift
     }
 }
