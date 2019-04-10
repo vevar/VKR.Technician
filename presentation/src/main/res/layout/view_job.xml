@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
     <data>
-        <variable name="maintenanceJob" type="com.nstu.technician.domain.model.facility.MaintenanceJob"/>
+        <variable name="maintenanceJob" type="com.nstu.technician.domain.model.facility.maintenance.MaintenanceJob"/>
     </data>
     <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"

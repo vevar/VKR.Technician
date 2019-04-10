@@ -1,8 +1,10 @@
-package com.nstu.technician.domain.model.facility
+package com.nstu.technician.domain.model.facility.maintenance
 
 import com.nstu.technician.domain.model.Artifact
 import com.nstu.technician.domain.model.Entity
 import com.nstu.technician.domain.model.document.Document
+import com.nstu.technician.domain.model.facility.Facility
+import com.nstu.technician.domain.model.common.OwnDateTime
 
 @androidx.room.Entity
 class Maintenance(

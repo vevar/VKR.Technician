@@ -1,6 +1,10 @@
 package com.nstu.technician.domain.usecase.job
 
+import com.nstu.technician.domain.model.common.Address
+import com.nstu.technician.domain.model.common.GPSPoint
+import com.nstu.technician.domain.model.common.OwnDateTime
 import com.nstu.technician.domain.model.facility.*
+import com.nstu.technician.domain.model.facility.maintenance.Maintenance
 import com.nstu.technician.domain.usecase.UseCase
 import java.util.*
 import javax.inject.Inject
@@ -22,9 +26,18 @@ class LoadListMaintenanceUseCase @Inject constructor(
         val calendar = Calendar.getInstance()
         val address = Address("Советская", "23", "111")
         address.location = GPSPoint(31.952854, 115.857342)
-        val facility = Facility(1, "NSTU", "123", address, OwnDateTime(calendar.timeInMillis))
+        val facility = Facility(1, "NSTU", "123", address,
+            OwnDateTime(calendar.timeInMillis)
+        )
 
-        return Maintenance(1, facility, OwnDateTime(calendar.timeInMillis), 60, Maintenance.Type.MONTHLY)
+        return Maintenance(
+            1,
+            facility,
+            OwnDateTime(calendar.timeInMillis),
+            60,
+            Maintenance.Type.MONTHLY,
+            Maintenance.State.NOT_COMPLETE
+        )
     }
 
     class Param private constructor(

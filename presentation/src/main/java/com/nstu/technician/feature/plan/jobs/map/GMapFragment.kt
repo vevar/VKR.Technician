@@ -18,7 +18,7 @@ import com.nstu.technician.databinding.FragmentMapBinding
 import com.nstu.technician.di.component.DaggerGMapComponent
 import com.nstu.technician.di.component.DaggerGMapScreen
 import com.nstu.technician.domain.model.facility.Facility
-import com.nstu.technician.domain.model.facility.GPSPoint
+import com.nstu.technician.domain.model.common.GPSPoint
 import com.nstu.technician.feature.App
 import com.nstu.technician.feature.BaseFragment
 import javax.inject.Inject

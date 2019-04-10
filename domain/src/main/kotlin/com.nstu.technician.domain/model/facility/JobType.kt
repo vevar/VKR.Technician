@@ -8,9 +8,7 @@ class JobType(
     oid: Int,
     val name: String,
     val description: String,
-    val duration: Int,
-    val costPerUnit: Int,
-    val serviceInterval: Int
+    val duration: Int
 ) : Entity(oid) {
     var impList: List<Implements>? = null
 }

@@ -15,7 +15,7 @@ import com.nstu.technician.R
 import com.nstu.technician.databinding.FragmentListMaintenanceBinding
 import com.nstu.technician.di.component.DaggerListMaintenanceComponent
 import com.nstu.technician.di.component.DaggerListMaintenanceScreen
-import com.nstu.technician.domain.model.facility.Maintenance
+import com.nstu.technician.domain.model.facility.maintenance.Maintenance
 import com.nstu.technician.feature.App
 import com.nstu.technician.feature.BaseFragment
 import com.nstu.technician.feature.common.PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION

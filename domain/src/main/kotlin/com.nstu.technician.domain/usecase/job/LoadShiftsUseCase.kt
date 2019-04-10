@@ -1,7 +1,7 @@
 package com.nstu.technician.domain.usecase.job
 
 import com.nstu.technician.domain.model.Shift
-import com.nstu.technician.domain.model.facility.OwnDateTime
+import com.nstu.technician.domain.model.common.OwnDateTime
 import com.nstu.technician.domain.usecase.UseCase
 import kotlinx.coroutines.delay
 import java.util.*

@@ -1,8 +1,8 @@
 package com.nstu.technician.domain.model
 
-import com.nstu.technician.domain.model.facility.GPSPoint
-import com.nstu.technician.domain.model.facility.Maintenance
-import com.nstu.technician.domain.model.facility.OwnDateTime
+import com.nstu.technician.domain.model.common.GPSPoint
+import com.nstu.technician.domain.model.facility.maintenance.Maintenance
+import com.nstu.technician.domain.model.common.OwnDateTime
 
 
 @androidx.room.Entity

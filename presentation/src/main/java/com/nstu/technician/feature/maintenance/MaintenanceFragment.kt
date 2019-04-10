@@ -9,12 +9,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.tabs.TabLayout
 import com.nstu.technician.R
 import com.nstu.technician.databinding.FragmentMaintenanceBinding
 import com.nstu.technician.di.component.DaggerMaintenanceComponent
 import com.nstu.technician.di.component.DaggerMaintenanceScreen
-import com.nstu.technician.domain.model.facility.Maintenance
+import com.nstu.technician.domain.model.facility.maintenance.Maintenance
 import com.nstu.technician.feature.App
 import com.nstu.technician.feature.BaseActivity
 import com.nstu.technician.feature.BaseFragment

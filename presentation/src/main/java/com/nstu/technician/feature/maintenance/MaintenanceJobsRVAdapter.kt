@@ -7,7 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.nstu.technician.R
 import com.nstu.technician.databinding.ViewJobBinding
-import com.nstu.technician.domain.model.facility.MaintenanceJob
+import com.nstu.technician.domain.model.facility.maintenance.MaintenanceJob
 
 class MaintenanceJobsRVAdapter : RecyclerView.Adapter<MaintenanceJobsRVAdapter.JobHolder>() {
 

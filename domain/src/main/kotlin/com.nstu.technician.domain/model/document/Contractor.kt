@@ -2,7 +2,7 @@ package com.nstu.technician.domain.model.document
 
 import androidx.room.Embedded
 import com.nstu.technician.domain.model.Entity
-import com.nstu.technician.domain.model.facility.Address
+import com.nstu.technician.domain.model.common.Address
 
 @androidx.room.Entity
 class Contractor(

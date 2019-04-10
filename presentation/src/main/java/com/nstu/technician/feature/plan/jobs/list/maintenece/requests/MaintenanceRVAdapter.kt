@@ -5,13 +5,12 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.nstu.technician.R
 import com.nstu.technician.databinding.ViewMaintenanceBinding
-import com.nstu.technician.domain.model.facility.Maintenance
+import com.nstu.technician.domain.model.facility.maintenance.Maintenance
 import com.nstu.technician.feature.common.TypeNotification
 import java.lang.IllegalArgumentException
 

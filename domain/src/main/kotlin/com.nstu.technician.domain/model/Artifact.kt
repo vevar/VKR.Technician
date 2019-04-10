@@ -1,7 +1,7 @@
 package com.nstu.technician.domain.model
 
 import androidx.room.Embedded
-import com.nstu.technician.domain.model.facility.OwnDateTime
+import com.nstu.technician.domain.model.common.OwnDateTime
 
 @androidx.room.Entity
 class Artifact(

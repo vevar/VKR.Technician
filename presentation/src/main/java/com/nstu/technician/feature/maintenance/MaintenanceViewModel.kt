@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.nstu.technician.domain.model.document.Contract
-import com.nstu.technician.domain.model.facility.Maintenance
+import com.nstu.technician.domain.model.facility.maintenance.Maintenance
 import com.nstu.technician.domain.usecase.CallUseCase
 import com.nstu.technician.domain.usecase.job.LoadDetailMaintenanceUseCase
 import com.nstu.technician.feature.common.LoaderVM

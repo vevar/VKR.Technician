@@ -1,4 +1,4 @@
-package com.nstu.technician.domain.model.facility
+package com.nstu.technician.domain.model.common
 
 data class Address(
     val street: String,

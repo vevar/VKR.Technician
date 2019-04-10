@@ -2,7 +2,7 @@ package com.nstu.technician.feature.plan.jobs.list.maintenece.requests
 
 import android.util.Log
 import androidx.lifecycle.*
-import com.nstu.technician.domain.model.facility.Maintenance
+import com.nstu.technician.domain.model.facility.maintenance.Maintenance
 import com.nstu.technician.domain.usecase.CallUseCase
 import com.nstu.technician.domain.usecase.job.LoadListMaintenanceUseCase
 import kotlinx.coroutines.*

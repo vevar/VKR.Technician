@@ -1,8 +1,8 @@
 package com.nstu.technician.domain.model.document
 
 import com.nstu.technician.domain.model.Artifact
-import com.nstu.technician.domain.model.facility.Address
-import com.nstu.technician.domain.model.facility.OwnDateTime
+import com.nstu.technician.domain.model.common.Address
+import com.nstu.technician.domain.model.common.OwnDateTime
 
 
 @androidx.room.Entity
