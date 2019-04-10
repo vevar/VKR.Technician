@@ -7,6 +7,7 @@
     <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/default_margin"
             app:cardCornerRadius="@dimen/default_radius">
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
@@ -25,6 +26,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/default_margin"
+                    android:drawableStart="@drawable/ic_cancel_black"
+                    android:drawablePadding="3dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/order_number"
                     app:layout_constraintTop_toTopOf="parent"
