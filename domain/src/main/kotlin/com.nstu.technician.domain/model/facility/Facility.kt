@@ -7,7 +7,6 @@ import com.nstu.technician.domain.model.common.OwnDateTime
 import com.nstu.technician.domain.model.document.Contract
 
 
-@androidx.room.Entity
 class Facility(
     oid: Int,
     val name: String,

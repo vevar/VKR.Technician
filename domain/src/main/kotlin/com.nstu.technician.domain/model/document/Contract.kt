@@ -4,8 +4,6 @@ import com.nstu.technician.domain.model.Artifact
 import com.nstu.technician.domain.model.common.Address
 import com.nstu.technician.domain.model.common.OwnDateTime
 
-
-@androidx.room.Entity
 class Contract(
     oid: Int,
     val name: String,

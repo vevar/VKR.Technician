@@ -6,7 +6,6 @@ import com.nstu.technician.domain.model.document.Document
 import com.nstu.technician.domain.model.facility.Facility
 import com.nstu.technician.domain.model.common.OwnDateTime
 
-@androidx.room.Entity
 class Maintenance(
     oid: Int,
     val facility: Facility,

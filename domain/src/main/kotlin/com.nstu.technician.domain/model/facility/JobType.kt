@@ -3,7 +3,6 @@ package com.nstu.technician.domain.model.facility
 import com.nstu.technician.domain.model.Entity
 import com.nstu.technician.domain.model.tool.Implements
 
-@androidx.room.Entity
 class JobType(
     oid: Int,
     val name: String,

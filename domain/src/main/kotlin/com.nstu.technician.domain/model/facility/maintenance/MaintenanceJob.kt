@@ -8,7 +8,6 @@ import com.nstu.technician.domain.model.common.OwnDateTime
 import com.nstu.technician.domain.model.tool.ComponentUnit
 import com.nstu.technician.domain.model.tool.Implements
 
-@androidx.room.Entity
 class MaintenanceJob(
     oid: Int,
     val jobState: TypeState,

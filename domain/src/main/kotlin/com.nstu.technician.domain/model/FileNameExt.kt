@@ -4,6 +4,4 @@ data class FileNameExt(
     val name: String,
     val path: String,
     val ext: String
-) {
-
-}
+)
