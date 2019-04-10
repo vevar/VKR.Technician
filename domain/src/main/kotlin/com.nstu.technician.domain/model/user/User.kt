@@ -1,8 +1,10 @@
 package com.nstu.technician.domain.model.user
 
+import androidx.room.Entity
+
+@Entity
 data class User(
     val id: Int,
-    val lastName: String,
-    val firstName: String,
-    val middleName:String
+    val sessionToken: String,
+    val account: Account
 )

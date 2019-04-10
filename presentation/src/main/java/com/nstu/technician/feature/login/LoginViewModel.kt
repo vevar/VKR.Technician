@@ -4,12 +4,15 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.nstu.technician.R
 import com.nstu.technician.domain.model.user.Technician
+import com.nstu.technician.domain.usecase.CallUseCase
 import com.nstu.technician.domain.usecase.auth.AuthUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(
+    private val authUseCase: AuthUseCase
+) : ViewModel() {
     companion object {
         private const val TAG = "LoginViewModel"
     }
@@ -35,7 +38,19 @@ class LoginViewModel : ViewModel() {
 
     fun singIn() {
         launchDataLoad {
-            delay(1_000)
+            if (username.value != null && password.value != password.value) {
+                authUseCase.execute(object : CallUseCase<Technician> {
+                    override suspend fun onSuccess(result: Technician) {
+                        _technician.value = result
+                    }
+
+                    override suspend fun onFailure(throwable: Throwable) {
+                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    }
+
+                }, AuthUseCase.Param.forAuth(username.value!!, password.value!!))
+            }
+
             messageIdResource.value = R.string.lbl_incorrect_data_of_account
         }
     }
@@ -45,8 +60,8 @@ class LoginViewModel : ViewModel() {
             try {
                 _isLoading.value = true
                 block()
-            } catch (exception: AuthUseCase.StudentNotFoundException) {
-                Log.d(TAG, exception.message)
+            } catch (throwable: Throwable) {
+                Log.d(TAG, throwable.message)
             } finally {
                 _isLoading.value = false
             }
