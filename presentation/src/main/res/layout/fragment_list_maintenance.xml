@@ -16,6 +16,7 @@
                 android:id="@+id/recycle_view_maintenance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:padding="@dimen/default_padding"
                 tools:listitem="@layout/view_maintenance"/>
 
         <ProgressBar

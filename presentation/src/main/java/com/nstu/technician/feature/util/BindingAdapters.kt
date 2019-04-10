@@ -16,6 +16,8 @@ import java.util.*
 
 object BindingAdapters {
 
+    private const val MINUTE_IN_HOUR = 60
+
     @BindingAdapter("app:showIfLoad")
     @JvmStatic
     fun showIfLoad(view: View, isLoading: Boolean) {
@@ -92,6 +94,33 @@ object BindingAdapters {
             val simpleDateFormat = SimpleDateFormat("dd.MM.YYYY", Locale.getDefault())
             view.text = simpleDateFormat.format(calendar.time)
         }
+    }
+
+    @BindingAdapter("app:setTimeForJob")
+    @JvmStatic
+    fun setTimeForJob(view: TextView, durationInMinutes: Int) {
+        val resources = view.resources
+        val hours = durationInMinutes / MINUTE_IN_HOUR
+        val minutes = durationInMinutes % MINUTE_IN_HOUR
+        val text = if (hours > 0) {
+            if (minutes == 0) {
+                "$hours ${resources.getString(R.string.lbl_shot_hour)}."
+            } else {
+                "$hours ${resources.getString(R.string.lbl_shot_hour)}. " +
+                        "$minutes ${resources.getString(R.string.lbl_shot_minutes)}"
+            }
+        } else {
+            "$minutes ${resources.getString(R.string.lbl_shot_minutes)}"
+        }
+
+        view.text = text
+    }
+
+    @BindingAdapter("setTypeMaintenanceById")
+    @JvmStatic
+    fun setTypeMaintenanceById(view: TextView, index: Int) {
+        val array = view.resources.getStringArray(R.array.types_maintenance)
+        view.text = array[index]
     }
 
     @BindingAdapter("app:setVisibility")

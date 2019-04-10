@@ -49,7 +49,7 @@ class MapViewModel(
                     Log.d(TAG, throwable.message)
                 }
 
-            }, LoadFacilityUseCase.Companion.Param.byIdFacility(idFacility))
+            }, LoadFacilityUseCase.Param.byIdFacility(idFacility))
         }
     }
 

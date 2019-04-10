@@ -1,15 +1,11 @@
 package com.nstu.technician.feature.plan.jobs.list.maintenece.requests
 
-import android.Manifest
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.ActivityCompat
-import androidx.core.content.PermissionChecker
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -22,14 +18,18 @@ import com.nstu.technician.di.component.DaggerListMaintenanceScreen
 import com.nstu.technician.domain.model.facility.Maintenance
 import com.nstu.technician.feature.App
 import com.nstu.technician.feature.BaseFragment
+import com.nstu.technician.feature.common.PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION
+import com.nstu.technician.feature.common.checkPermissionLocation
+import com.nstu.technician.feature.common.requestLocationPermission
 import com.nstu.technician.feature.plan.jobs.PlanJobsFragmentDirections
-import com.nstu.technician.feature.plan.jobs.map.GMapFragment
+import java.lang.NullPointerException
 import javax.inject.Inject
 
 class ListMaintenanceForDayFragment : BaseFragment() {
     companion object {
         private const val TAG = "Maintenance_Fragment"
         private const val EXTRA_ID_SHIFT = "EXTRA_ID_SHIFT"
+        private const val EXTRA_ID_MAINTENANCE = "EXTRA_ID_MAINTENANCE"
 
         fun newInstance(idShift: Int): ListMaintenanceForDayFragment {
             val fragment = ListMaintenanceForDayFragment()
@@ -76,12 +76,11 @@ class ListMaintenanceForDayFragment : BaseFragment() {
             object :
                 MaintenanceRVAdapter.MaintenanceListener {
                 override fun onShowOnMap(maintenance: Maintenance) {
-                    if (checkPermissionLocation()) {
-                        requestLocationPermission()
+                    if (checkPermissionLocation(requireContext())) {
+                        arguments?.putInt(EXTRA_ID_MAINTENANCE, maintenance.facility.oid)
+                        requestLocationPermission(this@ListMaintenanceForDayFragment)
                     } else {
-                        val dest =
-                            PlanJobsFragmentDirections.actionPlanJobsDestToMapDest(maintenance.facility.oid)
-                        findNavController().navigate(dest)
+                        showOnMap(maintenance.facility.oid)
                     }
                 }
 
@@ -104,26 +103,15 @@ class ListMaintenanceForDayFragment : BaseFragment() {
         return mBinding.root
     }
 
+    private fun showOnMap(idMaintenance: Int) {
+        val dest = PlanJobsFragmentDirections.actionPlanJobsDestToMapDest(idMaintenance)
+        findNavController().navigate(dest)
+    }
+
     private fun setupViewModel() {
         mViewModel = ViewModelProviders.of(this, listMaintenanceForDayVMFactory)
             .get(ListMaintenanceForDayViewModel::class.java)
         mViewModel.init(arguments?.getInt(EXTRA_ID_SHIFT))
-    }
-
-    private fun checkPermissionLocation(): Boolean {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && PermissionChecker.checkSelfPermission(
-            requireContext(),
-            Manifest.permission.ACCESS_COARSE_LOCATION
-        ) != PackageManager.PERMISSION_GRANTED
-    }
-
-    private fun requestLocationPermission() {
-        Log.d(TAG, "requestLocationPermission is called")
-        ActivityCompat.requestPermissions(
-            requireActivity(),
-            arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
-            GMapFragment.PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION
-        )
     }
 
     override fun onStart() {
@@ -133,11 +121,17 @@ class ListMaintenanceForDayFragment : BaseFragment() {
         Log.d(TAG, "${this} + fragment is started")
     }
 
-
-    override fun onStop() {
-        super.onStop()
-        mViewModel.listMaintenance.removeObserver(listMaintenanceObserver)
-        Log.d(TAG, "${this} + fragment is stopped")
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        when (requestCode) {
+            PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    val idMaintenance = arguments?.getInt(EXTRA_ID_MAINTENANCE)
+                        ?: throw NullPointerException("arg is null")
+                    showOnMap(idMaintenance)
+                }
+                return
+            }
+        }
     }
 
     override fun onDestroy() {

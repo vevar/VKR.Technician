@@ -19,9 +19,9 @@ class ListMaintenanceForDayViewModel(private val loadListMaintenanceUseCase: Loa
     private val _isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
     val isLoading: LiveData<Boolean>
         get() = _isLoading
-    private val _message: MutableLiveData<String> = MutableLiveData()
-    val message: LiveData<String>
-        get() = _message
+    private val _messageIdResource: MutableLiveData<Int> = MutableLiveData()
+    val message: LiveData<Int>
+        get() = _messageIdResource
 
     fun init(idShift: Int?) {
         this.idShift = idShift
@@ -38,7 +38,7 @@ class ListMaintenanceForDayViewModel(private val loadListMaintenanceUseCase: Loa
                     override suspend fun onFailure(throwable: Throwable) {
                         Log.d(TAG, throwable.message)
                     }
-                }, LoadListMaintenanceUseCase.Companion.Param.forShift(idShift!!))
+                }, LoadListMaintenanceUseCase.Param.forShift(idShift!!))
             }
         } else {
             throw NullPointerException("idShift is null")

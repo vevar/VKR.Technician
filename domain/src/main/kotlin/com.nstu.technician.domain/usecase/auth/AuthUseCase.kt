@@ -8,5 +8,5 @@ class AuthUseCase @Inject constructor() {
         TODO()
     }
 
-    inner class StudentNotFoundException : Throwable("Student not found")
+    class StudentNotFoundException : Throwable("Student not found")
 }

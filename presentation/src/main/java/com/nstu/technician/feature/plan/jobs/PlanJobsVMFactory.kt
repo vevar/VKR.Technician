@@ -1,20 +1,14 @@
 package com.nstu.technician.feature.plan.jobs
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.nstu.technician.domain.usecase.job.LoadShiftsUseCase
+import com.nstu.technician.feature.util.BaseViewModelFactory
 import javax.inject.Inject
 
 class PlanJobsVMFactory @Inject constructor(
     private val loadShiftsUseCase: LoadShiftsUseCase
-) : ViewModelProvider.Factory {
+) : BaseViewModelFactory<PlanJobsViewModel>(PlanJobsViewModel::class.java){
 
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(PlanJobsViewModel::class.java)) {
-            return PlanJobsViewModel(loadShiftsUseCase) as T
-        } else {
-            throw IllegalArgumentException("ViewModel not found")
-        }
+    override fun createViewModel(): PlanJobsViewModel {
+        return PlanJobsViewModel(loadShiftsUseCase)
     }
 }

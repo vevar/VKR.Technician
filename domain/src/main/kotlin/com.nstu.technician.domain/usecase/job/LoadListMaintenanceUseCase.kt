@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class LoadListMaintenanceUseCase @Inject constructor(
 
-) : UseCase<List<Maintenance>, LoadListMaintenanceUseCase.Companion.Param>() {
+) : UseCase<List<Maintenance>, LoadListMaintenanceUseCase.Param>() {
 
     override suspend fun task(param: Param): List<Maintenance> {
         val list = mutableListOf<Maintenance>()
@@ -27,16 +27,13 @@ class LoadListMaintenanceUseCase @Inject constructor(
         return Maintenance(1, facility, OwnDateTime(calendar.timeInMillis), 60, Maintenance.Type.MONTHLY)
     }
 
-    companion object {
-        class Param private constructor(
-            idShift: Int
-        ) {
-            companion object {
-                fun forShift(idShift: Int): Param {
-                    return Param(idShift)
-                }
+    class Param private constructor(
+        idShift: Int
+    ) {
+        companion object {
+            fun forShift(idShift: Int): Param {
+                return Param(idShift)
             }
         }
-
     }
 }
