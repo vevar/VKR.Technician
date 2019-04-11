@@ -1,19 +1,16 @@
 package com.nstu.technician.domain.model.facility
 
-import androidx.room.Embedded
-import com.nstu.technician.domain.model.Entity
 import com.nstu.technician.domain.model.common.Address
 import com.nstu.technician.domain.model.common.OwnDateTime
 import com.nstu.technician.domain.model.document.Contract
 
 
-class Facility(
-    oid: Int,
+data class Facility(
+    val oid: Int,
     val name: String,
     val identifier: String,
-    @Embedded val address: Address,
-    @Embedded val assingmentDate: OwnDateTime
-) : Entity(oid) {
-    @Embedded
+    val address: Address,
+    val assingmentDate: OwnDateTime
+) {
     var contract: Contract? = null
 }

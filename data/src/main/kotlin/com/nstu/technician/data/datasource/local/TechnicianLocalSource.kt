@@ -15,6 +15,6 @@ class TechnicianLocalSource @Inject constructor(
     }
 
     override fun save(technician: Technician) {
-        technicianDao.save(technician)
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

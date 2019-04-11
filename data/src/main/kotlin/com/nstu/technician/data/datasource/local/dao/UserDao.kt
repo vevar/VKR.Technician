@@ -9,9 +9,4 @@ import com.nstu.technician.domain.model.user.User
 @Dao
 interface UserDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun save(user: User)
-
-    @Query("SELECT * FROM user")
-    fun find(): User
 }

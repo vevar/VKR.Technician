@@ -5,8 +5,9 @@ import com.nstu.technician.data.datasource.cloud.api.UserApi
 import com.nstu.technician.domain.exceptions.UserNotFound
 import com.nstu.technician.domain.model.user.Account
 import com.nstu.technician.domain.model.user.User
+import javax.inject.Inject
 
-class UserCloudSource(
+class UserCloudSource @Inject constructor(
     private val userApi: UserApi
 ) : UserDataSource {
 

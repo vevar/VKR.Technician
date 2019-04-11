@@ -9,17 +9,16 @@ import javax.inject.Inject
 import javax.inject.Named
 
 class TechnicianRepositoryImpl @Inject constructor(
-    @Named("Local")
-    private val localTechnicianDataSource: TechnicianDataSource,
     @Named("Cloud")
     private val cloudTechnicianDataSource: TechnicianDataSource
 ) : TechnicianRepository {
 
     override suspend fun findByUser(user: User) = supervisorScope {
         val technician = cloudTechnicianDataSource.findByUser(user)
-        async {
-            localTechnicianDataSource.save(technician)
-        }
+//        TODO
+//        async {
+//            localTechnicianDataSource.save(technician)
+//        }
         technician
     }
 

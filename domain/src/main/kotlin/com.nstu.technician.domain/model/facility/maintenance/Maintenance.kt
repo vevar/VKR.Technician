@@ -1,19 +1,19 @@
 package com.nstu.technician.domain.model.facility.maintenance
 
 import com.nstu.technician.domain.model.common.Artifact
-import com.nstu.technician.domain.model.Entity
+import com.nstu.technician.domain.model.EntityLink
 import com.nstu.technician.domain.model.document.Document
 import com.nstu.technician.domain.model.facility.Facility
 import com.nstu.technician.domain.model.common.OwnDateTime
 
 class Maintenance(
-    oid: Int,
+    val oid: Int,
     val facility: Facility,
     val visitDate: OwnDateTime,
     val duration: Int,
     val maintenanceType: Type,
     var state: State
-) : Entity(oid) {
+) {
     var parent: Maintenance? = null
     var beginTime: OwnDateTime? = null
     var endTime: OwnDateTime? = null

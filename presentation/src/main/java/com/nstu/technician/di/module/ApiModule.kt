@@ -1,5 +1,6 @@
 package com.nstu.technician.di.module
 
+import com.nstu.technician.data.datasource.cloud.api.TechnicianApi
 import com.nstu.technician.data.datasource.cloud.api.UserApi
 import com.nstu.technician.data.network.RetrofitProvide
 import dagger.Module
@@ -13,5 +14,10 @@ class ApiModule(
     @Provides
     fun provideUserApi(): UserApi{
         return retrofitProvide.createUserApi()
+    }
+
+    @Provides
+    fun provideTechnicianApi(): TechnicianApi{
+        return retrofitProvide.createTechnicianApi()
     }
 }

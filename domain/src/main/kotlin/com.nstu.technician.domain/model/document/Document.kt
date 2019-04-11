@@ -1,16 +1,16 @@
 package com.nstu.technician.domain.model.document
 
 import com.nstu.technician.domain.model.common.Artifact
-import com.nstu.technician.domain.model.Entity
+import com.nstu.technician.domain.model.EntityLink
 import com.nstu.technician.domain.model.common.OwnDateTime
 
 open class Document(
-    oid: Int,
+    val oid: Int,
     val docType: Type,
     val number: String,
     val date: OwnDateTime,
     val artifact: Artifact
-) : Entity(oid) {
+){
 
     var state: State = State.UNDEFINED
 

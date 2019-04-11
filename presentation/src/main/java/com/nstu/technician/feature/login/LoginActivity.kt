@@ -5,13 +5,22 @@ import android.os.PersistableBundle
 import android.util.Log
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.nstu.technician.R
 import com.nstu.technician.databinding.ActivityLoginBinding
+import com.nstu.technician.di.component.DaggerLoginComponent
+import com.nstu.technician.di.component.DaggerLoginScreen
+import com.nstu.technician.di.module.ApiModule
+import com.nstu.technician.di.module.DaoModule
+import com.nstu.technician.di.module.DataSourceModule
+import com.nstu.technician.di.module.RepositoryModule
 import com.nstu.technician.domain.model.user.Technician
+import com.nstu.technician.feature.App
 import com.nstu.technician.feature.BaseActivity
 import com.nstu.technician.feature.common.ErrorDialogFragment
+import javax.inject.Inject
 
 class LoginActivity : BaseActivity(), ErrorDialogFragment.ErrorDialogListener {
 
@@ -23,6 +32,9 @@ class LoginActivity : BaseActivity(), ErrorDialogFragment.ErrorDialogListener {
         private const val STATE_MESSAGE = "STATE_MESSAGE"
     }
 
+    @Inject
+    lateinit var loginViewModelFactory: LoginViewModelFactory
+
     private lateinit var mBinding: ActivityLoginBinding
     private lateinit var mViewModel: LoginViewModel
 
@@ -32,13 +44,29 @@ class LoginActivity : BaseActivity(), ErrorDialogFragment.ErrorDialogListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setupInjection()
         setupViewModel(savedInstanceState)
         setupView(mViewModel)
     }
 
+    private fun setupInjection() {
+        val app = App.getApp(this)
+        val appComponent = app.getAppComponent()
+
+        val loginComponent = DaggerLoginComponent.builder()
+            .apiModule(ApiModule(app.retrofit))
+            .dataSourceModule(DataSourceModule())
+            .repositoryModule(RepositoryModule())
+            .build()
+        val loginScreen = DaggerLoginScreen.builder()
+            .appComponent(appComponent)
+            .loginComponent(loginComponent)
+            .build()
+        loginScreen.inject(this)
+    }
+
     private fun setupViewModel(savedInstanceState: Bundle?) {
-        val factory = LoginViewModelFactory()
-        mViewModel = ViewModelProviders.of(this, factory).get(LoginViewModel::class.java)
+        mViewModel = ViewModelProviders.of(this, loginViewModelFactory).get(LoginViewModel::class.java)
         if (savedInstanceState != null) {
             mViewModel.username.value = savedInstanceState.getString(STATE_USERNAME) ?: ""
             mViewModel.password.value = savedInstanceState.getString(STATE_PASSWORD) ?: ""

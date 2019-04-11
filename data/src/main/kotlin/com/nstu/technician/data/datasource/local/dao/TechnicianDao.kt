@@ -6,6 +6,4 @@ import com.nstu.technician.domain.model.user.Technician
 
 interface TechnicianDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun save(technician: Technician)
 }

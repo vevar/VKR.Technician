@@ -1,18 +1,18 @@
 package com.nstu.technician.domain.model.facility.maintenance
 
 import com.nstu.technician.domain.model.common.Artifact
-import com.nstu.technician.domain.model.Entity
+import com.nstu.technician.domain.model.EntityLink
 import com.nstu.technician.domain.model.Problem
 import com.nstu.technician.domain.model.facility.JobType
 import com.nstu.technician.domain.model.common.OwnDateTime
 import com.nstu.technician.domain.model.tool.ComponentUnit
 import com.nstu.technician.domain.model.tool.Implements
 
-class MaintenanceJob(
-    oid: Int,
+data class MaintenanceJob(
+    val oid: Int,
     val jobState: TypeState,
     val jobType: JobType
-) : Entity(oid) {
+) {
     var beginTime: OwnDateTime? = null
     var endTime: OwnDateTime? = null
     var beginPhoto: Artifact? = null

@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class RetrofitProvide {
 
     companion object {
-        const val END_POINT = ""
+        const val END_POINT = "http://217.71.138.9:4567"
     }
 
     private val retrofit: Retrofit = Retrofit.Builder()

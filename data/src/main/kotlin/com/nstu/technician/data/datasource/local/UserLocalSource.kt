@@ -11,7 +11,7 @@ class UserLocalSource @Inject constructor(
 ) : UserDataSource {
 
     override fun find(): User {
-        return userDao.find()
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun findByAccount(account: Account): User {
@@ -19,6 +19,6 @@ class UserLocalSource @Inject constructor(
     }
 
     override fun save(user: User) {
-        userDao.save(user)
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
