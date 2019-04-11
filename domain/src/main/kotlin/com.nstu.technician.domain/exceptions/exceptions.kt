@@ -1,3 +1,6 @@
 package com.nstu.technician.domain.exceptions
 
-class UserNotFound(message: String) : Throwable(message)
+class NetworkNotAvaible : Throwable("Network isn't available")
+
+class UserNotFound : Throwable("User not found")
+

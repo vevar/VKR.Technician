@@ -18,6 +18,7 @@ android {
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
     }
 
     buildTypes {
@@ -32,22 +33,24 @@ android {
 }
 
 dependencies {
-
     def dependencies = rootProject.ext.dataDependencies
-
+    def dependenciesTest = rootProject.ext.dataTestDependencies
+//  Kotlin
     implementation dependencies.kotlinLib
     implementation dependencies.kotlinCoroutinesCore
     implementation dependencies.kotlinCoroutinesAndroid
-
+//  Module
     implementation project(path: ':domain')
-
+//  Room
     implementation dependencies.roomRuntime
     kapt dependencies.roomCompiler
-
+//  DI
     implementation dependencies.inject
-
+//  Network
     implementation dependencies.retrofit
     implementation dependencies.retrofitGsonConverter
     implementation dependencies.okHttp3Logging
     implementation dependencies.gson
+//  Test
+    implementation dependenciesTest.junit
 }

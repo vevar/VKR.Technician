@@ -13,7 +13,7 @@ class TechnicianCloudSource @Inject constructor(
 
     override fun findByUser(user: User): Technician {
         val response = technicianApi.getTechnicianById(user.sessionToken, user.account.oid).execute()
-        return response.body() ?: throw UserNotFound("Technician not found")
+        return response.body() ?: throw UserNotFound()
     }
 
     override fun save(technician: Technician) {
