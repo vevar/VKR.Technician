@@ -9,7 +9,7 @@ import javax.inject.Singleton
 
 
 @Singleton
-@Component(modules = [EnvironmentModule::class, DaoModule::class, ApiModule::class])
+@Component(modules = [EnvironmentModule::class])
 interface AppComponent {
 
     fun context(): Context

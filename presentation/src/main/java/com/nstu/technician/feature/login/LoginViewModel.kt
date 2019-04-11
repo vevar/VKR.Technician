@@ -45,13 +45,11 @@ class LoginViewModel(
                     }
 
                     override suspend fun onFailure(throwable: Throwable) {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                        Log.d(TAG, throwable.message)
                     }
 
                 }, AuthUseCase.Param.forAuth(username.value!!, password.value!!))
             }
-
-            messageIdResource.value = R.string.lbl_incorrect_data_of_account
         }
     }
 
