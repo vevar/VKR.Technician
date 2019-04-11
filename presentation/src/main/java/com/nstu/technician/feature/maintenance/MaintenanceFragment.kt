@@ -11,13 +11,12 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nstu.technician.R
 import com.nstu.technician.databinding.FragmentMaintenanceBinding
-import com.nstu.technician.di.component.DaggerMaintenanceComponent
-import com.nstu.technician.di.component.DaggerMaintenanceScreen
+import com.nstu.technician.di.component.maintenance.DaggerMaintenanceComponent
+import com.nstu.technician.di.component.maintenance.DaggerMaintenanceScreen
 import com.nstu.technician.domain.model.facility.maintenance.Maintenance
 import com.nstu.technician.feature.App
 import com.nstu.technician.feature.BaseActivity
 import com.nstu.technician.feature.BaseFragment
-import java.lang.NullPointerException
 import javax.inject.Inject
 
 class MaintenanceFragment : BaseFragment() {

@@ -17,8 +17,11 @@ class ContainerActivity : BaseActivity() {
     companion object {
         private const val TAG = "ContainerActivity"
 
-        fun startActivity(activity: BaseActivity) {
+        private const val EXTRA_USER_ID = "EXTRA_USER_ID"
+
+        fun startActivity(activity: BaseActivity, userId: Int) {
             val intent = Intent(activity, ContainerActivity::class.java)
+            intent.putExtra(EXTRA_USER_ID, userId)
             activity.startActivity(intent)
         }
     }

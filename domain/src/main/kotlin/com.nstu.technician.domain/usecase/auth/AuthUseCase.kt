@@ -22,7 +22,7 @@ class AuthUseCase @Inject constructor(
         }
         async {
             accountRepository.save(param.account)
-        }.getCompleted()
+        }
         technicianRepository.findByUser(user)
     }
 

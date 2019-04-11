@@ -12,7 +12,7 @@ class LoginModule {
     @Provides
     fun provideLoginViewModelFactory(authUseCase: AuthUseCase): BaseViewModelFactory<LoginViewModel>{
         return BaseViewModelFactory(LoginViewModel::class.java){
-            LoginViewModel()
+            LoginViewModel(authUseCase)
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.nstu.technician.data.datasource.cloud
 
+import android.util.Log
 import com.nstu.technician.data.datasource.TechnicianDataSource
 import com.nstu.technician.data.datasource.cloud.api.TechnicianApi
 import com.nstu.technician.domain.exceptions.UserNotFound
@@ -11,8 +12,13 @@ class TechnicianCloudSource @Inject constructor(
     private val technicianApi: TechnicianApi
 ) : TechnicianDataSource {
 
+    companion object {
+        const val TAG = "NETWORK_TECHNICIAN"
+    }
+
     override fun findByUser(user: User): Technician {
         val response = technicianApi.getTechnicianById(user.sessionToken, user.account.oid).execute()
+        Log.d(TAG, "Code of response: ${response.code()}")
         return response.body() ?: throw UserNotFound("Technician not found")
     }
 

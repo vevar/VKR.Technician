@@ -5,22 +5,21 @@ import android.os.PersistableBundle
 import android.util.Log
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentFactory
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.nstu.technician.R
 import com.nstu.technician.databinding.ActivityLoginBinding
-import com.nstu.technician.di.component.DaggerLoginComponent
-import com.nstu.technician.di.component.DaggerLoginScreen
+import com.nstu.technician.di.component.login.DaggerLoginComponent
+import com.nstu.technician.di.component.login.DaggerLoginScreen
 import com.nstu.technician.di.module.ApiModule
-import com.nstu.technician.di.module.DaoModule
 import com.nstu.technician.di.module.DataSourceModule
 import com.nstu.technician.di.module.RepositoryModule
+import com.nstu.technician.di.module.model.LoginModule
 import com.nstu.technician.domain.model.user.Technician
 import com.nstu.technician.feature.App
 import com.nstu.technician.feature.BaseActivity
+import com.nstu.technician.feature.ContainerActivity
 import com.nstu.technician.feature.common.ErrorDialogFragment
-import javax.inject.Inject
 import com.nstu.technician.feature.util.BaseViewModelFactory
 import javax.inject.Inject
 
@@ -63,6 +62,7 @@ class LoginActivity : BaseActivity(), ErrorDialogFragment.ErrorDialogListener {
         val loginScreen = DaggerLoginScreen.builder()
             .appComponent(appComponent)
             .loginComponent(loginComponent)
+            .loginModule(LoginModule())
             .build()
         loginScreen.inject(this)
     }
@@ -77,6 +77,7 @@ class LoginActivity : BaseActivity(), ErrorDialogFragment.ErrorDialogListener {
 
         technicianObserver = Observer {
             Log.d(TAG, "Technician auth is success")
+            ContainerActivity.startActivity(this, it.user.oid)
         }
         messageObserver = Observer {
             if (it != null) {

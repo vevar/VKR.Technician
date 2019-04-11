@@ -1,4 +1,4 @@
-package com.nstu.technician.di.component
+package com.nstu.technician.di.component.maintenance
 
 import dagger.Component
 

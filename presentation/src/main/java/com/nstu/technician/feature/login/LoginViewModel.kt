@@ -38,14 +38,14 @@ class LoginViewModel(
 
     fun singIn() {
         launchDataLoad {
-            if (username.value != null && password.value != password.value) {
+            if (username.value != null && password.value != null) {
                 authUseCase.execute(object : CallUseCase<Technician> {
                     override suspend fun onSuccess(result: Technician) {
                         _technician.value = result
                     }
 
                     override suspend fun onFailure(throwable: Throwable) {
-                        Log.d(TAG, throwable.message)
+                        throwable.printStackTrace()
                     }
 
                 }, AuthUseCase.Param.forAuth(username.value!!, password.value!!))

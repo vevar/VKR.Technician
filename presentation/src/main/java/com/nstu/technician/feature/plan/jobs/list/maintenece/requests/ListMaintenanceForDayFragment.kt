@@ -16,7 +16,7 @@ import com.nstu.technician.databinding.FragmentListMaintenanceBinding
 import com.nstu.technician.di.component.list.maintenance.DaggerListMaintenanceComponent
 import com.nstu.technician.di.component.list.maintenance.DaggerListMaintenanceScreen
 import com.nstu.technician.di.module.model.ListMaintenanceModule
-import com.nstu.technician.domain.model.facility.Maintenance
+import com.nstu.technician.domain.model.facility.maintenance.Maintenance
 import com.nstu.technician.feature.App
 import com.nstu.technician.feature.BaseFragment
 import com.nstu.technician.feature.common.PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION
@@ -118,7 +118,6 @@ class ListMaintenanceForDayFragment : BaseFragment() {
     private fun setupViewModel() {
         mViewModel = ViewModelProviders.of(this, vmFactory)
             .get(ListMaintenanceForDayViewModel::class.java)
-        mViewModel.init(arguments?.getInt(EXTRA_ID_SHIFT))
     }
 
     override fun onStart() {
