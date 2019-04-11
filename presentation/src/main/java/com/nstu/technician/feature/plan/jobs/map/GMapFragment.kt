@@ -15,12 +15,15 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.nstu.technician.databinding.FragmentMapBinding
-import com.nstu.technician.di.component.DaggerGMapComponent
-import com.nstu.technician.di.component.DaggerGMapScreen
+import com.nstu.technician.di.component.map.DaggerGMapComponent
+import com.nstu.technician.di.component.map.DaggerGMapScreen
+import com.nstu.technician.di.module.model.MapModule
 import com.nstu.technician.domain.model.facility.Facility
 import com.nstu.technician.domain.model.facility.GPSPoint
 import com.nstu.technician.feature.App
 import com.nstu.technician.feature.BaseFragment
+import com.nstu.technician.feature.common.DEFAULT_VALUE_ARG
+import com.nstu.technician.feature.util.BaseViewModelFactory
 import javax.inject.Inject
 
 
@@ -30,7 +33,7 @@ class GMapFragment : BaseFragment() {
     }
 
     @Inject
-    lateinit var mapVMFactory: MapVMFactory
+    lateinit var mapVMFactory: BaseViewModelFactory<MapViewModel>
 
     private lateinit var mBinding: FragmentMapBinding
     private lateinit var mViewModel: MapViewModel
@@ -71,48 +74,46 @@ class GMapFragment : BaseFragment() {
 
     override fun onCreate(bundle: Bundle?) {
         super.onCreate(bundle)
-        setupInjection()
-        setupViewModel()
-    }
-
-    private fun setupInjection() {
-        val gMapComponent = DaggerGMapComponent.builder()
-            .build()
-
-        val gMapScreen = DaggerGMapScreen.builder()
-            .appComponent(App.getApp(requireContext()).getAppComponent())
-            .gMapComponent(gMapComponent)
-            .build()
-
-        gMapScreen.inject(this)
-    }
-
-    private fun setupViewModel() {
         val gMapFragmentArgs = GMapFragmentArgs.fromBundle(
             arguments ?: throw NullPointerException("Arguments are null")
         )
+        setupInjection(gMapFragmentArgs)
+        setupViewModel()
+    }
+
+    private fun setupInjection(gMapFragmentArgs: GMapFragmentArgs) {
+        val gMapComponent = DaggerGMapComponent.builder()
+            .build()
         gMapFragmentArgs.apply {
-            if (idFacility != -1) {
-                mapVMFactory.init(idFacility, object : MapViewModel.MapListener {
-                    override fun onUpdateDevicePosition(marker: MarkerOptions) {
-                        Log.d(TAG, "onUpdateDevicePosition is called")
-                    }
+            if (idFacility != DEFAULT_VALUE_ARG) {
 
-                    override fun onGoToDevicePosition(gpsPoint: GPSPoint) {
-                        Log.d(TAG, "onGoToDevicePosition is called")
-                    }
+                val gMapScreen = DaggerGMapScreen.builder()
+                    .appComponent(App.getApp(requireContext()).getAppComponent())
+                    .gMapComponent(gMapComponent)
+                    .mapModule(MapModule(idFacility, object : MapViewModel.MapListener {
+                        override fun onUpdateDevicePosition(marker: MarkerOptions) {
+                            Log.d(TAG, "onUpdateDevicePosition is called")
+                        }
 
-                    override fun onGoToMainTarget(gpsPoint: GPSPoint) {
-                        Log.d(TAG, "onGoToMainTarget is called")
-                        val latLng = LatLng(gpsPoint.geoy, gpsPoint.geox)
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
-                    }
-                })
-                mViewModel = ViewModelProviders.of(this@GMapFragment, mapVMFactory).get(MapViewModel::class.java)
-            } else {
-                throw IllegalArgumentException("idFacility must not equals -1")
+                        override fun onGoToDevicePosition(gpsPoint: GPSPoint) {
+                            Log.d(TAG, "onGoToDevicePosition is called")
+                        }
+
+                        override fun onGoToMainTarget(gpsPoint: GPSPoint) {
+                            Log.d(TAG, "onGoToMainTarget is called")
+                            val latLng = LatLng(gpsPoint.geoy, gpsPoint.geox)
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
+                        }
+                    })).build()
+                gMapScreen.inject(this@GMapFragment)
+            } else{
+                throw IllegalArgumentException("idFacility must not equals default")
             }
         }
+    }
+
+    private fun setupViewModel() {
+        mViewModel = ViewModelProviders.of(this@GMapFragment, mapVMFactory).get(MapViewModel::class.java)
     }
 
     override fun onStart() {

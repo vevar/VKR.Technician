@@ -13,8 +13,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nstu.technician.R
 import com.nstu.technician.databinding.FragmentListMaintenanceBinding
-import com.nstu.technician.di.component.DaggerListMaintenanceComponent
-import com.nstu.technician.di.component.DaggerListMaintenanceScreen
+import com.nstu.technician.di.component.list.maintenance.DaggerListMaintenanceComponent
+import com.nstu.technician.di.component.list.maintenance.DaggerListMaintenanceScreen
+import com.nstu.technician.di.module.model.ListMaintenanceModule
 import com.nstu.technician.domain.model.facility.Maintenance
 import com.nstu.technician.feature.App
 import com.nstu.technician.feature.BaseFragment
@@ -22,10 +23,8 @@ import com.nstu.technician.feature.common.PERMISSIONS_REQUEST_CODE_ACCESS_COARSE
 import com.nstu.technician.feature.common.checkPermissionLocation
 import com.nstu.technician.feature.common.requestLocationPermission
 import com.nstu.technician.feature.plan.jobs.PlanJobsFragmentDirections
-import dagger.Module
-import dagger.Provides
+import com.nstu.technician.feature.util.BaseViewModelFactory
 import javax.inject.Inject
-import javax.inject.Named
 
 class ListMaintenanceForDayFragment : BaseFragment() {
     companion object {
@@ -43,7 +42,7 @@ class ListMaintenanceForDayFragment : BaseFragment() {
     }
 
     @Inject
-    lateinit var listMaintenanceForDayVMFactory: ListMaintenanceForDayVMFactory
+    lateinit var vmFactory: BaseViewModelFactory<ListMaintenanceForDayViewModel>
 
     private lateinit var mBinding: FragmentListMaintenanceBinding
     private lateinit var mViewModel: ListMaintenanceForDayViewModel
@@ -61,19 +60,19 @@ class ListMaintenanceForDayFragment : BaseFragment() {
 
     private fun initInjection() {
         val listMaintenanceComponent = DaggerListMaintenanceComponent.builder()
-            .listMaintenanceModule(ListMaintenanceModule(getIdShift()))
             .build()
 
         val screen = DaggerListMaintenanceScreen.builder()
             .appComponent(App.getApp(requireContext()).getAppComponent())
             .listMaintenanceComponent(listMaintenanceComponent)
+            .listMaintenanceModule(ListMaintenanceModule(getIdShift()))
             .build()
 
         screen.inject(this)
     }
 
     private fun getIdShift(): Int {
-        return arguments?.getInt(EXTRA_ID_SHIFT) ?: throw NullPointerException("id shift is null")
+        return arguments?.getInt(EXTRA_ID_SHIFT) ?: throw NullPointerException("args(idShift) is null")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -85,6 +84,7 @@ class ListMaintenanceForDayFragment : BaseFragment() {
                 override fun onShowOnMap(maintenance: Maintenance) {
                     if (checkPermissionLocation(requireContext())) {
                         arguments?.putInt(EXTRA_ID_MAINTENANCE, maintenance.facility.oid)
+                            ?: NullPointerException("args is null")
                         requestLocationPermission(this@ListMaintenanceForDayFragment)
                     } else {
                         showOnMap(maintenance.facility.oid)
@@ -114,7 +114,7 @@ class ListMaintenanceForDayFragment : BaseFragment() {
     }
 
     private fun setupViewModel() {
-        mViewModel = ViewModelProviders.of(this, listMaintenanceForDayVMFactory)
+        mViewModel = ViewModelProviders.of(this, vmFactory)
             .get(ListMaintenanceForDayViewModel::class.java)
     }
 
@@ -144,11 +144,3 @@ class ListMaintenanceForDayFragment : BaseFragment() {
     }
 }
 
-@Module
-class ListMaintenanceModule(private val idShift: Int) {
-    @Provides
-    @Named("idShift")
-    fun provideIdShift(): Int {
-        return idShift
-    }
-}

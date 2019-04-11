@@ -12,6 +12,8 @@ import com.nstu.technician.databinding.ActivityLoginBinding
 import com.nstu.technician.domain.model.user.Technician
 import com.nstu.technician.feature.BaseActivity
 import com.nstu.technician.feature.common.ErrorDialogFragment
+import com.nstu.technician.feature.util.BaseViewModelFactory
+import javax.inject.Inject
 
 class LoginActivity : BaseActivity(), ErrorDialogFragment.ErrorDialogListener {
 
@@ -22,6 +24,9 @@ class LoginActivity : BaseActivity(), ErrorDialogFragment.ErrorDialogListener {
         private const val STATE_PASSWORD = "STATE_PASSWORD"
         private const val STATE_MESSAGE = "STATE_MESSAGE"
     }
+
+    @Inject
+    lateinit var vmFactory: BaseViewModelFactory<LoginViewModel>
 
     private lateinit var mBinding: ActivityLoginBinding
     private lateinit var mViewModel: LoginViewModel
@@ -37,8 +42,7 @@ class LoginActivity : BaseActivity(), ErrorDialogFragment.ErrorDialogListener {
     }
 
     private fun setupViewModel(savedInstanceState: Bundle?) {
-        val factory = LoginViewModelFactory()
-        mViewModel = ViewModelProviders.of(this, factory).get(LoginViewModel::class.java)
+        mViewModel = ViewModelProviders.of(this, vmFactory).get(LoginViewModel::class.java)
         if (savedInstanceState != null) {
             mViewModel.username.value = savedInstanceState.getString(STATE_USERNAME) ?: ""
             mViewModel.password.value = savedInstanceState.getString(STATE_PASSWORD) ?: ""

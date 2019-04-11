@@ -1,4 +1,4 @@
-package com.nstu.technician.di.component
+package com.nstu.technician.di.component.plan.jobs
 
 import com.nstu.technician.di.module.ApiModule
 import com.nstu.technician.di.module.DaoModule
