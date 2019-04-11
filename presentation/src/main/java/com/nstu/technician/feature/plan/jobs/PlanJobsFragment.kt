@@ -10,10 +10,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.nstu.technician.R
 import com.nstu.technician.databinding.FragmentPlanJobsBinding
-import com.nstu.technician.di.component.DaggerPlanJobsComponent
-import com.nstu.technician.di.component.DaggerPlanJobsScreen
+import com.nstu.technician.di.component.plan.jobs.DaggerPlanJobsComponent
+import com.nstu.technician.di.component.plan.jobs.DaggerPlanJobsScreen
+import com.nstu.technician.di.module.model.PlanJobsModule
 import com.nstu.technician.feature.App
 import com.nstu.technician.feature.BaseFragment
+import com.nstu.technician.feature.util.BaseViewModelFactory
 import java.util.*
 import javax.inject.Inject
 
@@ -24,7 +26,7 @@ class PlanJobsFragment : BaseFragment() {
     }
 
     @Inject
-    lateinit var planJobsVMFactory: PlanJobsVMFactory
+    lateinit var planJobsVMFactory: BaseViewModelFactory<PlanJobsViewModel>
 
     private lateinit var mBinding: FragmentPlanJobsBinding
     private lateinit var mViewModel: PlanJobsViewModel
@@ -52,6 +54,7 @@ class PlanJobsFragment : BaseFragment() {
         val jobsScreen = DaggerPlanJobsScreen.builder()
             .appComponent(App.getApp(requireContext()).getAppComponent())
             .planJobsComponent(planJobsComponent)
+            .planJobsModule(PlanJobsModule())
             .build()
 
         jobsScreen.inject(this)

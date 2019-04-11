@@ -21,6 +21,8 @@ import com.nstu.technician.feature.App
 import com.nstu.technician.feature.BaseActivity
 import com.nstu.technician.feature.common.ErrorDialogFragment
 import javax.inject.Inject
+import com.nstu.technician.feature.util.BaseViewModelFactory
+import javax.inject.Inject
 
 class LoginActivity : BaseActivity(), ErrorDialogFragment.ErrorDialogListener {
 
@@ -33,7 +35,7 @@ class LoginActivity : BaseActivity(), ErrorDialogFragment.ErrorDialogListener {
     }
 
     @Inject
-    lateinit var loginViewModelFactory: LoginViewModelFactory
+    lateinit var vmFactory: BaseViewModelFactory<LoginViewModel>
 
     private lateinit var mBinding: ActivityLoginBinding
     private lateinit var mViewModel: LoginViewModel
@@ -66,7 +68,7 @@ class LoginActivity : BaseActivity(), ErrorDialogFragment.ErrorDialogListener {
     }
 
     private fun setupViewModel(savedInstanceState: Bundle?) {
-        mViewModel = ViewModelProviders.of(this, loginViewModelFactory).get(LoginViewModel::class.java)
+        mViewModel = ViewModelProviders.of(this, vmFactory).get(LoginViewModel::class.java)
         if (savedInstanceState != null) {
             mViewModel.username.value = savedInstanceState.getString(STATE_USERNAME) ?: ""
             mViewModel.password.value = savedInstanceState.getString(STATE_PASSWORD) ?: ""
