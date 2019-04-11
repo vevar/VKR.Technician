@@ -1,6 +1,6 @@
-package com.nstu.technician.domain.model
+package com.nstu.technician.domain.model.common
 
-import com.nstu.technician.domain.model.common.OwnDateTime
+import com.nstu.technician.domain.model.FileNameExt
 
 
 data class Artifact(

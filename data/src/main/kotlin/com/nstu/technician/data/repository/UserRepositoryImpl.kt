@@ -4,6 +4,7 @@ import com.nstu.technician.data.datasource.UserDataSource
 import com.nstu.technician.domain.model.user.Account
 import com.nstu.technician.domain.model.user.User
 import com.nstu.technician.domain.repository.UserRepository
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.supervisorScope
 import javax.inject.Inject
@@ -20,12 +21,12 @@ class UserRepositoryImpl @Inject constructor(
         localUserDataSource.save(user)
     }
 
+    @ExperimentalCoroutinesApi
     override suspend fun findByAccount(account: Account) = supervisorScope {
         val user = cloudUserDataSource.findByAccount(account)
         async {
             localUserDataSource.save(user)
-        }
+        }.getCompleted()
         user
     }
-
 }

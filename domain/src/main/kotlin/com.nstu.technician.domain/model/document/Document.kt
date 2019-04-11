@@ -1,6 +1,6 @@
 package com.nstu.technician.domain.model.document
 
-import com.nstu.technician.domain.model.Artifact
+import com.nstu.technician.domain.model.common.Artifact
 import com.nstu.technician.domain.model.Entity
 import com.nstu.technician.domain.model.common.OwnDateTime
 

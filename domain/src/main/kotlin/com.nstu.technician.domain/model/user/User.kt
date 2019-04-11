@@ -1,7 +1,13 @@
 package com.nstu.technician.domain.model.user
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.nstu.technician.domain.model.EntityLink
+
+@Entity
 data class User(
-    val id: Int,
+    @PrimaryKey
+    val oid: Int,
     val sessionToken: String,
-    val account: Account
+    val account: EntityLink<Account>
 )

@@ -6,10 +6,7 @@ import com.nstu.technician.domain.repository.AccountRepository
 import com.nstu.technician.domain.repository.TechnicianRepository
 import com.nstu.technician.domain.repository.UserRepository
 import com.nstu.technician.domain.usecase.UseCase
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.supervisorScope
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 class AuthUseCase @Inject constructor(
@@ -18,16 +15,14 @@ class AuthUseCase @Inject constructor(
     private val accountRepository: AccountRepository
 ) : UseCase<Technician, AuthUseCase.Param>() {
 
+    @ExperimentalCoroutinesApi
     override suspend fun task(param: Param) = supervisorScope {
         val user = runBlocking {
             userRepository.findByAccount(param.account)
         }
-
-        coroutineScope {
-            async {
-                accountRepository.save(param.account)
-            }
-        }
+        async {
+            accountRepository.save(param.account)
+        }.getCompleted()
         technicianRepository.findByUser(user)
     }
 

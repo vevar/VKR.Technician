@@ -1,6 +1,6 @@
 package com.nstu.technician.domain.usecase.job
 
-import com.nstu.technician.domain.model.Artifact
+import com.nstu.technician.domain.model.common.Artifact
 import com.nstu.technician.domain.model.FileNameExt
 import com.nstu.technician.domain.model.common.Address
 import com.nstu.technician.domain.model.common.GPSPoint
@@ -46,8 +46,10 @@ class LoadDetailMaintenanceUseCase @Inject constructor(
         )
         val fileNameExt = FileNameExt("@File_Name", "@path", "ext")
         val artifact =
-            Artifact(1, Artifact.Type.DOC, "@name_artifact", fileNameExt,
-                OwnDateTime(calendar.timeInMillis), 1)
+            Artifact(
+                1, Artifact.Type.DOC, "@name_artifact", fileNameExt,
+                OwnDateTime(calendar.timeInMillis), 1
+            )
         val contractor = Contractor(1, "@Contractor_Name", address, "@INN")
         facility.contract = Contract(
             1,
