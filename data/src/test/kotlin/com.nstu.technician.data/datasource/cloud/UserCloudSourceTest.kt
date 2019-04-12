@@ -1,7 +1,7 @@
 package com.nstu.technician.data.datasource.cloud
 
 import com.nstu.technician.data.network.RetrofitProvide
-import com.nstu.technician.domain.exceptions.UserNotFound
+import com.nstu.technician.domain.exceptions.UserNotFoundException
 import com.nstu.technician.domain.model.user.Account
 import org.junit.Assert.*
 import org.junit.Test
@@ -24,7 +24,7 @@ class UserCloudSourceTest {
         try {
             val user = userCloudSource.findByAccount(account)
         }catch (throwable: Throwable){
-            assertTrue(throwable is UserNotFound)
+            assertTrue(throwable is UserNotFoundException)
         }
     }
 }

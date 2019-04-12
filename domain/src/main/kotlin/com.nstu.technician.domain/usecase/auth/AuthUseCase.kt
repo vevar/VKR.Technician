@@ -1,5 +1,6 @@
 package com.nstu.technician.domain.usecase.auth
 
+import com.nstu.technician.domain.exceptions.UserNotFoundException
 import com.nstu.technician.domain.model.user.Account
 import com.nstu.technician.domain.model.user.Technician
 import com.nstu.technician.domain.repository.AccountRepository
@@ -19,7 +20,7 @@ class AuthUseCase @Inject constructor(
     override suspend fun task(param: Param) = supervisorScope {
         val user = runBlocking {
             userRepository.findByAccount(param.account)
-        }
+        } ?: throw UserNotFoundException()
         async {
             accountRepository.save(param.account)
         }

@@ -1,8 +1,6 @@
 package com.nstu.technician.di.component
 
 import android.content.Context
-import com.nstu.technician.di.module.ApiModule
-import com.nstu.technician.di.module.DaoModule
 import com.nstu.technician.di.module.EnvironmentModule
 import dagger.Component
 import javax.inject.Singleton

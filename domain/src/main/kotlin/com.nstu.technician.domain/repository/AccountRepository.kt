@@ -4,6 +4,6 @@ import com.nstu.technician.domain.model.user.Account
 
 interface AccountRepository {
 
-    fun find(): Account
-    fun save(account: Account)
+    suspend fun find(): Account?
+    suspend fun save(account: Account)
 }

@@ -10,5 +10,5 @@ import retrofit2.http.Query
 interface TechnicianApi {
 
     @GET("/api/user/technician")
-    fun getTechnicianById(@Header("SessionToken") token: String, @Query("id") id: Int): Call<Technician>
+    fun getTechnicianById(@Query("id") id: Int): Call<Technician>
 }

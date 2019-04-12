@@ -1,14 +1,13 @@
-package com.nstu.technician.di.module
+package com.nstu.technician.data.di.model
 
 import com.nstu.technician.data.datasource.cloud.api.TechnicianApi
 import com.nstu.technician.data.datasource.cloud.api.UserApi
-import com.nstu.technician.data.network.RetrofitProvide
 import dagger.Module
 import dagger.Provides
 
 @Module
 class ApiModule(
-    private val retrofitProvide: RetrofitProvide
+    private val retrofitProvide: DataClient.RetrofitProvider
 ){
 
     @Provides

@@ -1,4 +1,4 @@
-package com.nstu.technician.di.module
+package com.nstu.technician.data.di.model
 
 import com.nstu.technician.data.database.AppDataBase
 import com.nstu.technician.data.datasource.local.dao.TechnicianDao

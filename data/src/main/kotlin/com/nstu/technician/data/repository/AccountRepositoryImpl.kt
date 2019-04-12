@@ -8,11 +8,11 @@ class AccountRepositoryImpl @Inject constructor(
 
 ): AccountRepository {
 
-    override fun find(): Account {
+    override suspend fun find(): Account {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun save(account: Account) {
+    override suspend fun save(account: Account) {
         //TODO need impl
     }
 }

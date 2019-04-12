@@ -25,6 +25,7 @@ ext {
     retrofitVersion = '2.5.0'
     retrofitGsonConverterVersion = '2.4.0'
     retrofitRxAdapterVersion = '2.3.0'
+    okHttp3Client_version = '3.14.1'
     okHttp3LoggingVersion = '3.6.0'
     rxJavaVersion = '2.1.0'
     rxAndroidVersion = '2.1.0'
@@ -94,9 +95,12 @@ ext {
             roomCompiler           : "androidx.room:room-compiler:${roomVersion}",
             retrofit               : "com.squareup.retrofit2:retrofit:${retrofitVersion}",
             retrofitGsonConverter  : "com.squareup.retrofit2:converter-gson:${retrofitGsonConverterVersion}",
+            okHttp3Client          : "com.squareup.okhttp3:okhttp:${okHttp3Client_version}",
             okHttp3Logging         : "com.squareup.okhttp3:logging-interceptor:${okHttp3LoggingVersion}",
             gson                   : "com.google.code.gson:gson:${gsonVersion}",
             inject                 : "javax.inject:javax.inject:1",
+            daggerCompiler         : "com.google.dagger:dagger-compiler:${daggerVersion}",
+            dagger                 : "com.google.dagger:dagger:${daggerVersion}",
     ]
 
     dataTestDependencies = [

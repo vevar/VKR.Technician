@@ -12,9 +12,7 @@ class GetUserUseCase @Inject constructor(
 
 
     override suspend fun task(param: Param): User {
-        val user = userRepository.findByAccount(param.account)
-        userRepository.save(user)
-        return user
+        TODO()
     }
 
     class Param private constructor(

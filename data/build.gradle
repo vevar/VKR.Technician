@@ -50,11 +50,15 @@ dependencies {
     kapt dependencies.roomCompiler
 //  DI
     implementation dependencies.inject
+    implementation dependencies.dagger
+    kapt dependencies.daggerCompiler
 //  Network
     implementation dependencies.retrofit
     implementation dependencies.retrofitGsonConverter
+    implementation dependencies.okHttp3Client
     implementation dependencies.okHttp3Logging
     implementation dependencies.gson
+
 //  Test
     implementation dependenciesTest.junit
 }

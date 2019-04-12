@@ -1,4 +1,4 @@
-package com.nstu.technician.di.module
+package com.nstu.technician.data.di.model
 
 import com.nstu.technician.data.datasource.TechnicianDataSource
 import com.nstu.technician.data.datasource.UserDataSource

@@ -1,6 +1,8 @@
 package com.nstu.technician.data.datasource.cloud
 
-import com.nstu.technician.data.network.RetrofitProvide
+import com.nstu.technician.data.network.retorfit.ApiProvider
+import com.nstu.technician.data.network.retorfit.Client
+import com.nstu.technician.data.network.retorfit.RetrofitBuilder
 import com.nstu.technician.domain.model.EntityLink
 import com.nstu.technician.domain.model.user.Account
 import com.nstu.technician.domain.model.user.User
@@ -10,15 +12,21 @@ import org.junit.Test
 
 class TechnicianCloudSourceTest {
 
-    private val retrofitProvide: RetrofitProvide = RetrofitProvide()
+    private val apiProvide: ApiProvider =
+        ApiProvider(RetrofitBuilder.builder().build())
     private val technicianCloudSource: TechnicianCloudSource =
-        TechnicianCloudSource(retrofitProvide.createTechnicianApi())
+        TechnicianCloudSource(apiProvide.createTechnicianApi())
 
     private lateinit var correctUser: User
     private val correctAccount: Account = Account(0, "root", "1234")
+
     @Before
     fun init() {
-        val userCloudSource = UserCloudSource(retrofitProvide.createUserApi())
+
+        RetrofitBuilder.builder()
+
+
+        val userCloudSource = UserCloudSource(apiProvide.createUserApi())
         correctUser = userCloudSource.findByAccount(correctAccount)
     }
 
