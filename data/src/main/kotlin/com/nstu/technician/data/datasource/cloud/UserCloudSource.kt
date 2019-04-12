@@ -18,7 +18,7 @@ class UserCloudSource @Inject constructor(
 
     override fun findByAccount(account: Account): User {
         val response = userApi.login(account).execute()
-//        Log.d(TAG, "Code of response: ${response.code()}")
+        Log.d(TAG, "Code of response: ${response.code()}")
         val user = response.body()
         return user ?: throw UserNotFound()
     }
