@@ -1,5 +1,6 @@
 package com.nstu.technician.data.datasource.cloud
 
+import android.util.Log
 import com.nstu.technician.data.datasource.UserDataSource
 import com.nstu.technician.data.datasource.cloud.api.UserApi
 import com.nstu.technician.domain.exceptions.UserNotFound
@@ -11,10 +12,15 @@ class UserCloudSource @Inject constructor(
     private val userApi: UserApi
 ) : UserDataSource {
 
+    companion object {
+        const val TAG = "NETWORK_USER_SOURCE"
+    }
+
     override fun findByAccount(account: Account): User {
         val response = userApi.login(account).execute()
+//        Log.d(TAG, "Code of response: ${response.code()}")
         val user = response.body()
-        return user ?: throw UserNotFound("User by account not found")
+        return user ?: throw UserNotFound()
     }
 
     override fun save(user: User) {
