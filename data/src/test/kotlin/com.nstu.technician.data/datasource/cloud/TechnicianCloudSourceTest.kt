@@ -6,25 +6,23 @@ import com.nstu.technician.data.network.retorfit.RetrofitBuilder
 import com.nstu.technician.domain.model.EntityLink
 import com.nstu.technician.domain.model.user.Account
 import com.nstu.technician.domain.model.user.User
+import okhttp3.OkHttpClient
 import org.junit.Assert.assertNotEquals
 import org.junit.Before
 import org.junit.Test
 
 class TechnicianCloudSourceTest {
 
-    private val apiProvide: ApiProvider =
-        ApiProvider(RetrofitBuilder.builder().build())
-    private val technicianCloudSource: TechnicianCloudSource =
-        TechnicianCloudSource(apiProvide.createTechnicianApi())
+    lateinit var apiProvide: ApiProvider
+    lateinit var technicianCloudSource: TechnicianCloudSource
 
     private lateinit var correctUser: User
     private val correctAccount: Account = Account(0, "root", "1234")
 
     @Before
     fun init() {
-
-        RetrofitBuilder.builder()
-
+        val retrofit = Client().buildRetrofit()
+        apiProvide = ApiProvider(retrofit)
 
         val userCloudSource = UserCloudSource(apiProvide.createUserApi())
         correctUser = userCloudSource.findByAccount(correctAccount)

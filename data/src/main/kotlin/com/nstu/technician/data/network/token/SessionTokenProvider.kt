@@ -1,6 +1,5 @@
 package com.nstu.technician.data.network.token
 
-import com.nstu.technician.data.network.token.AccessTokenProvider
 import com.nstu.technician.domain.repository.AccountRepository
 import com.nstu.technician.domain.repository.UserRepository
 import kotlinx.coroutines.runBlocking

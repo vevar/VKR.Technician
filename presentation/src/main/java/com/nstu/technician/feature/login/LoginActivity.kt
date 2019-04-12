@@ -8,14 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.nstu.technician.R
-import com.nstu.technician.data.di.component.DaggerLoginComponent
-import com.nstu.technician.data.di.model.ApiModule
-import com.nstu.technician.data.di.model.DataSourceModule
-import com.nstu.technician.data.di.model.RepositoryModule
-import com.nstu.technician.data.network.retorfit.ApiProvider
 import com.nstu.technician.databinding.ActivityLoginBinding
-import com.nstu.technician.di.component.login.DaggerLoginScreen
-import com.nstu.technician.di.module.model.LoginModule
 import com.nstu.technician.domain.model.user.Technician
 import com.nstu.technician.feature.App
 import com.nstu.technician.feature.BaseActivity
@@ -55,17 +48,17 @@ class LoginActivity : BaseActivity(), ErrorDialogFragment.ErrorDialogListener {
         val app = App.getApp(this)
         val appComponent = app.getAppComponent()
 
-        val loginComponent = DaggerLoginComponent.builder()
-            .apiModule(ApiModule(ApiProvider()))
-            .dataSourceModule(DataSourceModule())
-            .repositoryModule(RepositoryModule())
-            .build()
-        val loginScreen = DaggerLoginScreen.builder()
-            .appComponent(appComponent)
-            .loginComponent(loginComponent)
-            .loginModule(LoginModule())
-            .build()
-        loginScreen.inject(this)
+//        val loginComponent = AuthComponent.builder()
+//            .apiModule(ApiModule(ApiProvider()))
+//            .dataSourceModule(DataSourceModule())
+//            .repositoryModule(RepositoryModule())
+//            .build()
+//        val loginScreen = DaggerLoginScreen.builder()
+//            .appComponent(appComponent)
+//            .loginComponent(loginComponent)
+//            .loginModule(LoginModule())
+//            .build()
+//        loginScreen.inject(this)
     }
 
     private fun setupViewModel(savedInstanceState: Bundle?) {

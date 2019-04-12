@@ -1,9 +1,6 @@
 package com.nstu.technician.data.di.component
 
-import com.nstu.technician.data.di.model.ApiModule
-import com.nstu.technician.data.di.model.DaoModule
-import com.nstu.technician.data.di.model.DataSourceModule
-import com.nstu.technician.data.di.model.RepositoryModule
+import com.nstu.technician.data.di.model.*
 import com.nstu.technician.data.network.retorfit.Client
 import com.nstu.technician.domain.repository.AccountRepository
 import com.nstu.technician.domain.repository.TechnicianRepository
@@ -12,9 +9,9 @@ import dagger.Component
 
 @Component(
     modules = [ApiModule::class, DaoModule::class, DataSourceModule::class,
-        RepositoryModule::class]
+        RepositoryModule::class, InterceptorModule::class]
 )
-interface LoginComponent {
+interface AuthComponent {
 
     fun userRepository(): UserRepository
 

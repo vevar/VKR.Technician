@@ -2,21 +2,22 @@ package com.nstu.technician.data.di.model
 
 import com.nstu.technician.data.datasource.cloud.api.TechnicianApi
 import com.nstu.technician.data.datasource.cloud.api.UserApi
+import com.nstu.technician.data.network.retorfit.ApiProvider
 import dagger.Module
 import dagger.Provides
 
 @Module
 class ApiModule(
-    private val retrofitProvide: DataClient.RetrofitProvider
+    private val apiProvider: ApiProvider
 ){
 
     @Provides
     fun provideUserApi(): UserApi{
-        return retrofitProvide.createUserApi()
+        return apiProvider.createUserApi()
     }
 
     @Provides
     fun provideTechnicianApi(): TechnicianApi{
-        return retrofitProvide.createTechnicianApi()
+        return apiProvider.createTechnicianApi()
     }
 }
