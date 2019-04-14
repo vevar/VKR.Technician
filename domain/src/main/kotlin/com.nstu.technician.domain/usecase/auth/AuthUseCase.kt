@@ -24,7 +24,7 @@ class AuthUseCase @Inject constructor(
         async {
             accountRepository.save(param.account)
         }
-        technicianRepository.findByUser(user)
+        technicianRepository.findByUser(user) ?: throw UserNotFoundException()
     }
 
     class Param private constructor(

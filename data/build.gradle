@@ -19,6 +19,8 @@ android {
         testInstrumentationRunner androidTestInstrumentationRunner
         versionCode androidVersionCode
         versionName androidVersionName
+
+        testInstrumentationRunner "androidx.test.ext.junit.runners.AndroidJUnit4"
     }
 
     sourceSets {
@@ -39,6 +41,11 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
+
+    useLibrary 'android.test.runner'
+
+    useLibrary 'android.test.base'
+    useLibrary 'android.test.mock'
 }
 
 dependencies {
@@ -65,5 +72,20 @@ dependencies {
     implementation dependencies.gson
 
 //  Test
-    implementation dependenciesTest.junit
+    testImplementation dependenciesTest.junit
+    testImplementation dependenciesTest.core
+    testImplementation dependencies.dagger
+    kaptTest dependencies.daggerCompiler
+    kaptAndroidTest dependencies.daggerCompiler
+
+
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    androidTestImplementation 'androidx.test:core:1.1.0'
+    // AndroidJUnitRunner and JUnit Rules
+    androidTestImplementation 'androidx.test:runner:1.1.1'
+    androidTestImplementation 'androidx.test:rules:1.1.1'
+    // Assertions
+    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
+    androidTestImplementation 'androidx.test.ext:truth:1.1.0'
+    androidTestImplementation 'com.google.truth:truth:0.42'
 }

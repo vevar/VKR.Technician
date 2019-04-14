@@ -3,7 +3,11 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="com.nstu.technician.data">
 
+
     <application android:allowBackup="true"
-                 tools:ignore="GoogleAppIndexingWarning"/>
+                 tools:ignore="GoogleAppIndexingWarning">
+        <uses-library android:name="android.test.runner"
+                      android:required="false" />
+    </application>
 
 </manifest>

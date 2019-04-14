@@ -45,8 +45,10 @@ ext {
 
 //Testing
     junitVersion = '4.12'
-    runnerVersion = '1.1.1'
+    runnerVersion = '1.1.0'
     espressoVersion = '3.1.1'
+    coreTest_version = '1.0.0'
+    robolectric_version = '4.2'
 
 //Development
 //    ---
@@ -105,8 +107,10 @@ ext {
 
     dataTestDependencies = [
             junit   : "junit:junit:${junitVersion}",
-            runner  : "androidx.test:runner:${runnerVersion}",
-            espresso: "androidx.test.espresso:espresso-core:${espressoVersion}"
+            runner  : "androidx.test.ext:junit:${runnerVersion}",
+            espresso: "androidx.test.espresso:espresso-core:${espressoVersion}",
+            core    : "androidx.test:core:${coreTest_version}",
+            robolectric:"org.robolectric:robolectric:${robolectric_version}"
 
     ]
 

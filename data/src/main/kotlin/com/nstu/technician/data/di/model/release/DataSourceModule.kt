@@ -1,4 +1,4 @@
-package com.nstu.technician.data.di.model
+package com.nstu.technician.data.di.model.release
 
 import com.nstu.technician.data.datasource.TechnicianDataSource
 import com.nstu.technician.data.datasource.UserDataSource
@@ -11,7 +11,7 @@ import dagger.Provides
 import javax.inject.Named
 
 @Module
-abstract class DataSourceModule {
+class DataSourceModule {
 
     @Named("Local")
     @Provides

@@ -4,16 +4,17 @@ import com.nstu.technician.data.datasource.cloud.api.TechnicianApi
 import com.nstu.technician.data.datasource.cloud.api.UserApi
 import retrofit2.Retrofit
 
-class ApiProvider(
-    private val retrofit: Retrofit
+class ApiProvider
+    (
+    private val retrofitProvider: RetrofitProvider
 ) {
 
     fun createUserApi(): UserApi {
-        return retrofit.create(UserApi::class.java)
+        return retrofitProvider.getRetrofit().create(UserApi::class.java)
     }
 
     fun createTechnicianApi(): TechnicianApi {
-        return retrofit.create(TechnicianApi::class.java)
+        return retrofitProvider.getRetrofit().create(TechnicianApi::class.java)
     }
 
 }

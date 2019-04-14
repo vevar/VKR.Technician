@@ -1,8 +1,8 @@
 package com.nstu.technician.data.datasource.cloud
 
 import com.nstu.technician.data.network.retorfit.ApiProvider
-import com.nstu.technician.data.network.retorfit.Client
-import com.nstu.technician.data.network.retorfit.RetrofitBuilder
+import com.nstu.technician.data.client.ClientTest
+import com.nstu.technician.data.network.retorfit.RetrofitProvider
 import com.nstu.technician.domain.model.EntityLink
 import com.nstu.technician.domain.model.user.Account
 import com.nstu.technician.domain.model.user.User
@@ -21,8 +21,8 @@ class TechnicianCloudSourceTest {
 
     @Before
     fun init() {
-        val retrofit = Client().buildRetrofit()
-        apiProvide = ApiProvider(retrofit)
+
+        apiProvide = ApiProvider(ClientTest().buildRetrofitProvider())
 
         val userCloudSource = UserCloudSource(apiProvide.createUserApi())
         correctUser = userCloudSource.findByAccount(correctAccount)
