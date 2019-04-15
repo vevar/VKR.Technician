@@ -10,11 +10,11 @@ class TechnicianLocalSource @Inject constructor(
     private val technicianDao: TechnicianDao
 ) : TechnicianDataSource {
 
-    override fun findByUser(user: User): Technician {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun findByUser(user: User): Technician? {
+        return technicianDao.findByUserId(user.oid)
     }
 
     override fun save(technician: Technician) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        technicianDao.save(technician)
     }
 }

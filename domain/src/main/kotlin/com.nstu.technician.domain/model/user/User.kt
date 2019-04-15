@@ -13,7 +13,8 @@ import com.nstu.technician.domain.model.EntityLink
         entity = Account::class,
         parentColumns = ["oid"],
         childColumns = ["account_id"],
-        onDelete = CASCADE
+        onDelete = CASCADE,
+        onUpdate = CASCADE
     )]
 )
 data class User(
