@@ -10,11 +10,11 @@ class UserLocalSource @Inject constructor(
     private val userDao: UserDao
 ) : UserDataSource {
 
-    override fun find(): User {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun find(): User? {
+        return userDao.find()
     }
 
-    override fun findByAccount(account: Account): User {
+    override fun findByAccount(account: Account): User? {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
