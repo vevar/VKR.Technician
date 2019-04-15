@@ -24,7 +24,7 @@ class LoginViewModel(
     private val _isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
     val isLoading: LiveData<Boolean>
         get() = _isLoading
-    val messageIdResource: MutableLiveData<Int?> = MutableLiveData(null)
+    val messageIdResource: MutableLiveData<Int> = MutableLiveData(0)
     private val _technician: MutableLiveData<Technician> = MutableLiveData()
     val technician: LiveData<Technician>
         get() = _technician

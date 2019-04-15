@@ -14,21 +14,23 @@ class SessionTokenProvider @Inject constructor(
 
     override fun token(): String? {
         if (token == null) {
-            runBlocking {
-                token = userRepository.find()?.sessionToken
-                if (token == null) {
-                    val account = runBlocking {
-                        accountRepository.find()
-                    }
-                    if (account != null) {
-                        token = userRepository.findByAccount(account)?.sessionToken
+            token = runBlocking {
+                userRepository.find()?.sessionToken
+            }
+            if (token == null) {
+                val account = runBlocking {
+                    accountRepository.find()
+                }
+                if (account != null) {
+                    token = runBlocking {
+                        userRepository.findByAccount(account)?.sessionToken
                     }
                 }
             }
         }
-
         return token
     }
+
 
     override fun refreshToken(): String? {
         return runBlocking {

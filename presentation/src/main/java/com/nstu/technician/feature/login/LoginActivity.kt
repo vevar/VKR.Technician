@@ -8,13 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.nstu.technician.R
-import com.nstu.technician.data.di.component.AuthComponent
-import com.nstu.technician.data.di.component.DaggerAuthComponent
-import com.nstu.technician.data.di.model.ApiModule
-import com.nstu.technician.data.di.model.DataSourceModule
-import com.nstu.technician.data.di.model.RepositoryModule
-import com.nstu.technician.data.network.retorfit.ApiProvider
-import com.nstu.technician.data.network.retorfit.RetrofitProvider
 import com.nstu.technician.databinding.ActivityLoginBinding
 import com.nstu.technician.di.component.login.DaggerLoginScreen
 import com.nstu.technician.di.module.model.LoginModule
@@ -43,7 +36,7 @@ class LoginActivity : BaseActivity(), ErrorDialogFragment.ErrorDialogListener {
     private lateinit var mViewModel: LoginViewModel
 
     private lateinit var technicianObserver: Observer<Technician>
-    private lateinit var messageObserver: Observer<Int?>
+    private lateinit var messageObserver: Observer<Int>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,15 +63,16 @@ class LoginActivity : BaseActivity(), ErrorDialogFragment.ErrorDialogListener {
         if (savedInstanceState != null) {
             mViewModel.username.value = savedInstanceState.getString(STATE_USERNAME) ?: ""
             mViewModel.password.value = savedInstanceState.getString(STATE_PASSWORD) ?: ""
-            mViewModel.messageIdResource.value = savedInstanceState.getInt(STATE_MESSAGE)
+            mViewModel.messageIdResource.value = savedInstanceState.getInt(STATE_MESSAGE, 0)
         }
 
         technicianObserver = Observer {
             Log.d(TAG, "Technician auth is success")
             ContainerActivity.startActivity(this, it.user.oid)
+            finish()
         }
         messageObserver = Observer {
-            if (it != null) {
+            if (it != 0) {
                 val fragment = supportFragmentManager.findFragmentByTag(ErrorDialogFragment.TAG)
                         as? ErrorDialogFragment
 
@@ -123,7 +117,7 @@ class LoginActivity : BaseActivity(), ErrorDialogFragment.ErrorDialogListener {
 
     override fun onClickOk(dialogFragment: ErrorDialogFragment) {
         dialogFragment.dismiss()
-        mViewModel.messageIdResource.value = null
+        mViewModel.messageIdResource.value = 0
     }
 
     override fun onAttachFragment(fragment: Fragment) {
