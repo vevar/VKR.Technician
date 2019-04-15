@@ -3,6 +3,8 @@ package com.nstu.technician.feature.login
 import android.util.Log
 import androidx.lifecycle.*
 import com.nstu.technician.R
+import com.nstu.technician.domain.exceptions.UnauthorizedException
+import com.nstu.technician.domain.exceptions.UserNotFoundException
 import com.nstu.technician.domain.model.user.Technician
 import com.nstu.technician.domain.usecase.CallUseCase
 import com.nstu.technician.domain.usecase.auth.AuthUseCase
@@ -45,6 +47,9 @@ class LoginViewModel(
                     }
 
                     override suspend fun onFailure(throwable: Throwable) {
+                        if (throwable is UnauthorizedException || throwable is UserNotFoundException) {
+                            messageIdResource.value = R.string.lbl_incorrect_data_of_account
+                        }
                         throwable.printStackTrace()
                     }
 

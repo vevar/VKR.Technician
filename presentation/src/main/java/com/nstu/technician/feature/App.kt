@@ -2,6 +2,8 @@ package com.nstu.technician.feature
 
 import android.app.Application
 import android.content.Context
+import com.nstu.technician.data.DataClient
+import com.nstu.technician.data.network.retorfit.RetrofitProvider
 import com.nstu.technician.di.component.AppComponent
 import com.nstu.technician.di.component.DaggerAppComponent
 import com.nstu.technician.di.module.EnvironmentModule
@@ -9,6 +11,8 @@ import com.nstu.technician.di.module.EnvironmentModule
 class App : Application() {
 
     private lateinit var appComponent: AppComponent
+
+    private lateinit var dataClient: DataClient
 
     companion object {
         fun getApp(context: Context): App {
@@ -19,9 +23,13 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         initInjection()
+
+        dataClient = DataClient.initDataClient(this)
     }
 
-
+    fun getDataClient(): DataClient {
+        return dataClient
+    }
 
     private fun initInjection() {
         appComponent = DaggerAppComponent.builder()
