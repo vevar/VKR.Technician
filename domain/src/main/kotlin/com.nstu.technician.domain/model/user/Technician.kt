@@ -1,10 +1,8 @@
 package com.nstu.technician.domain.model.user
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
+import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
-import androidx.room.TypeConverters
+import com.nstu.technician.domain.ConverterEntity
 import com.nstu.technician.domain.Converters
 import com.nstu.technician.domain.model.EntityLink
 
@@ -17,8 +15,10 @@ import com.nstu.technician.domain.model.EntityLink
         onUpdate = CASCADE
     )]
 )
+@TypeConverters(value = [Converters::class])
 data class Technician(
+    @PrimaryKey
     val oid: Int,
-    @TypeConverters(Converters::class)
+    @TypeConverters(value = [ConverterEntity::class])
     @ColumnInfo(name = "user_id") var user: EntityLink<User>
 )

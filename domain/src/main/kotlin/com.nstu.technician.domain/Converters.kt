@@ -2,14 +2,33 @@ package com.nstu.technician.domain
 
 import androidx.room.TypeConverter
 import com.nstu.technician.domain.model.EntityLink
+import com.nstu.technician.domain.model.user.Account
+import com.nstu.technician.domain.model.user.User
 
-class Converters {
+object Converters {
+
     @TypeConverter
-    fun <T> fromEntityLint(entityLink: EntityLink<T>): Int {
-        return entityLink.oid
+    @JvmStatic
+    fun accountToOid(account: EntityLink<Account>): Int {
+        return ConverterEntity.fromEntityLint(account)
     }
 
-    fun <T> idToEntityLink(id: Int): EntityLink<T> {
-        return EntityLink(id)
+    @TypeConverter
+    @JvmStatic
+    fun toEntityLinkAccount(id: Int): EntityLink<Account> {
+        return ConverterEntity.idToEntityLink(id)
     }
+
+    @TypeConverter
+    @JvmStatic
+    fun userToOid(user: EntityLink<User>): Int {
+        return ConverterEntity.fromEntityLint(user)
+    }
+
+    @TypeConverter
+    @JvmStatic
+    fun toEntityLinkUser(id: Int): EntityLink<User> {
+        return ConverterEntity.idToEntityLink(id)
+    }
+
 }

@@ -1,10 +1,16 @@
 package com.nstu.technician.data.database
 
+import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.nstu.technician.data.datasource.local.dao.AccountDao
 import com.nstu.technician.data.datasource.local.dao.TechnicianDao
 import com.nstu.technician.data.datasource.local.dao.UserDao
+import com.nstu.technician.domain.model.user.Account
+import com.nstu.technician.domain.model.user.Technician
+import com.nstu.technician.domain.model.user.User
 
-abstract class AppDataBase: RoomDatabase() {
+@Database(entities = [User::class, Account::class, Technician::class], version = AppDataBase.VERSION_DATABASE)
+abstract class AppDataBase : RoomDatabase() {
 
     companion object {
         const val DATABASE_NAME = "com.nstu.technician.data.database"
@@ -12,6 +18,6 @@ abstract class AppDataBase: RoomDatabase() {
     }
 
     abstract fun getUserDao(): UserDao
-
     abstract fun getTechnicianDao(): TechnicianDao
+    abstract fun getAccountDao(): AccountDao
 }
