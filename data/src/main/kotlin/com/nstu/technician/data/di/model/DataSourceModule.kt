@@ -1,9 +1,12 @@
 package com.nstu.technician.data.di.model
 
+import com.nstu.technician.data.datasource.AccountDataSource
+import com.nstu.technician.data.datasource.LOCAL
 import com.nstu.technician.data.datasource.TechnicianDataSource
 import com.nstu.technician.data.datasource.UserDataSource
 import com.nstu.technician.data.datasource.cloud.TechnicianCloudSource
 import com.nstu.technician.data.datasource.cloud.UserCloudSource
+import com.nstu.technician.data.datasource.local.AccountLocalSource
 import com.nstu.technician.data.datasource.local.TechnicianLocalSource
 import com.nstu.technician.data.datasource.local.UserLocalSource
 import dagger.Module
@@ -11,7 +14,7 @@ import dagger.Provides
 import javax.inject.Named
 
 @Module
-abstract class DataSourceModule {
+class DataSourceModule {
 
     @Named("Local")
     @Provides
@@ -35,6 +38,12 @@ abstract class DataSourceModule {
     @Provides
     fun provideTechnicianCloudSource(technicianCloudSource: TechnicianCloudSource): TechnicianDataSource {
         return technicianCloudSource
+    }
+
+    @Named(LOCAL)
+    @Provides
+    fun provideAccountLocalData(accountLocalSource: AccountLocalSource): AccountDataSource {
+        return accountLocalSource
     }
 
 }

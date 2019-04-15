@@ -2,15 +2,10 @@ package com.nstu.technician.data.datasource.cloud
 
 import com.nstu.technician.data.datasource.TechnicianDataSource
 import com.nstu.technician.data.datasource.cloud.api.TechnicianApi
-import com.nstu.technician.data.network.constant.BAD_REQUEST
-import com.nstu.technician.data.network.constant.OK
-import com.nstu.technician.data.until.LogCodeOfResponse
-import com.nstu.technician.domain.exceptions.BadRequestException
-import com.nstu.technician.domain.exceptions.NetworkException
+import com.nstu.technician.data.until.logCodeOfResponse
 import com.nstu.technician.domain.exceptions.UserNotFoundException
 import com.nstu.technician.domain.model.user.Technician
 import com.nstu.technician.domain.model.user.User
-import okhttp3.*
 import javax.inject.Inject
 
 class TechnicianCloudSource @Inject constructor(
@@ -22,24 +17,10 @@ class TechnicianCloudSource @Inject constructor(
     }
 
     override fun findByUser(user: User): Technician {
-        val response = technicianApi.getTechnicianById(user.account.oid).execute()
+        val response = technicianApi.getTechnicianById(user.oid).execute()
         val code = response.code()
-        LogCodeOfResponse(TAG, code)
-
-        OkHttpClient.Builder()
-
-
-        return when (code) {
-            OK -> {
-                response.body() ?: throw UserNotFoundException()
-            }
-            BAD_REQUEST -> {
-                throw BadRequestException(response.message())
-            }
-            else -> {
-                throw NetworkException("$code :: ${response.message()}")
-            }
-        }
+        logCodeOfResponse(TAG, code)
+        return  response.body() ?: throw UserNotFoundException()
     }
 
     override fun save(technician: Technician) {

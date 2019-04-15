@@ -2,6 +2,8 @@ package com.nstu.technician.data.network.interceptor
 
 import com.nstu.technician.data.network.token.AccessTokenProvider
 import com.nstu.technician.data.network.constant.HEADER_SESSION_TOKEN
+import com.nstu.technician.data.network.constant.UNAUTHORIZED
+import com.nstu.technician.domain.exceptions.UnauthorizedException
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject
@@ -19,7 +21,7 @@ class AccessTokenInterceptor @Inject constructor(
                 .newBuilder()
                 .addHeader(HEADER_SESSION_TOKEN, "$token")
                 .build()
-            chain.proceed(authenticatedRequest)
+            return chain.proceed(authenticatedRequest)
         }
     }
 }

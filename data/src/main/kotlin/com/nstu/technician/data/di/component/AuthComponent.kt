@@ -1,7 +1,6 @@
 package com.nstu.technician.data.di.component
 
 import com.nstu.technician.data.di.model.*
-import com.nstu.technician.data.di.model.release.DataSourceModule
 import com.nstu.technician.domain.repository.AccountRepository
 import com.nstu.technician.domain.repository.TechnicianRepository
 import com.nstu.technician.domain.repository.UserRepository

@@ -4,8 +4,7 @@ import com.nstu.technician.data.datasource.cloud.api.TechnicianApi
 import com.nstu.technician.data.datasource.cloud.api.UserApi
 import retrofit2.Retrofit
 
-class ApiProvider
-    (
+class ApiProvider(
     private val retrofitProvider: RetrofitProvider
 ) {
 
