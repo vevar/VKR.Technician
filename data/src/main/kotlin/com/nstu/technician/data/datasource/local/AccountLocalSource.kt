@@ -8,11 +8,11 @@ import javax.inject.Inject
 class AccountLocalSource @Inject constructor(
     private val accountDao: AccountDao
 ) : AccountDataSource {
-    override fun find(): Account? {
+    override suspend fun find(): Account? {
         return accountDao.find()
     }
 
-    override fun save(account: Account) {
+    override suspend fun save(account: Account) {
         accountDao.save(account)
     }
 

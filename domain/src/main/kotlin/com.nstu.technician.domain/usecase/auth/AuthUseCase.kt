@@ -23,9 +23,7 @@ class AuthUseCase @Inject constructor(
             val user = runBlocking {
                 userRepository.findByAccount(param.account)
             } ?: throw UserNotFoundException()
-            async {
-                accountRepository.save(param.account)
-            }
+            accountRepository.save(param.account)
             technicianRepository.findByUser(user) ?: throw UserNotFoundException()
         } catch (throwable: NotFoundException) {
             throw UserNotFoundException()

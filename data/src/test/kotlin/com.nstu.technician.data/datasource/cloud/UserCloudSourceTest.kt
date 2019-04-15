@@ -21,14 +21,14 @@ class UserCloudSourceTest {
     }
 
     @Test
-    fun findById_CorrectAccount_ReturnsUser() {
+    suspend fun findById_CorrectAccount_ReturnsUser() {
         val account = Account(0, "root", "1234")
         val user = userCloudSource.findByAccount(account)
         assertNotEquals(null, user)
     }
 
     @Test
-    fun findById_IncorrectAccount_ReturnsUser() {
+    suspend fun findById_IncorrectAccount_ReturnsUser() {
         val account = Account(0, "roqot", "12w34")
         var user: User? = null
         try {

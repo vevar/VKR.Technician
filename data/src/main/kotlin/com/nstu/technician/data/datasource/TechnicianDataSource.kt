@@ -5,7 +5,7 @@ import com.nstu.technician.domain.model.user.User
 
 interface TechnicianDataSource {
 
-    fun findByUser(user: User): Technician?
+    suspend fun findByUser(user: User): Technician?
 
-    fun save(technician: Technician)
+    suspend fun save(technician: Technician)
 }

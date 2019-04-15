@@ -20,15 +20,15 @@ class OnlyCloudDataSource {
     @Provides
     fun provideUserLocalSource(): UserDataSource {
         return object : UserDataSource {
-            override fun findByAccount(account: Account): User? {
+            override suspend fun findByAccount(account: Account): User? {
                 return null
             }
 
-            override fun save(user: User) {
+            override suspend fun save(user: User) {
 
             }
 
-            override fun find(): User? {
+            override suspend fun find(): User? {
                 return null
             }
 
@@ -45,11 +45,11 @@ class OnlyCloudDataSource {
     @Provides
     fun provideTechnicianLocalSource(): TechnicianDataSource {
         return object : TechnicianDataSource {
-            override fun findByUser(user: User): Technician? {
+            override suspend fun findByUser(user: User): Technician? {
                 return null
             }
 
-            override fun save(technician: Technician) {
+            override suspend fun save(technician: Technician) {
             }
 
         }
@@ -65,11 +65,11 @@ class OnlyCloudDataSource {
     @Provides
     fun provideAccountLocalSource(): AccountDataSource {
         return object : AccountDataSource {
-            override fun find(): Account? {
+            override suspend fun find(): Account? {
                 return Account(0, "root", "1234")
             }
 
-            override fun save(account: Account) {
+            override suspend fun save(account: Account) {
             }
 
         }

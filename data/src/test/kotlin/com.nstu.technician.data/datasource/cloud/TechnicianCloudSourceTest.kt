@@ -11,6 +11,7 @@ import com.nstu.technician.domain.model.EntityLink
 import com.nstu.technician.domain.model.user.Account
 import com.nstu.technician.domain.model.user.Technician
 import com.nstu.technician.domain.model.user.User
+import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
@@ -26,18 +27,20 @@ class TechnicianCloudSourceTest {
 
     @Before
     fun init() {
-
         val apiProvider = ApiProvider(NetworkClientTest().buildRetrofitProvider())
 
         val userCloudSource = UserCloudSource(apiProvider.createUserApi())
-        correctUser = userCloudSource.findByAccount(correctAccount)
+        correctUser = runBlocking {
+            userCloudSource.findByAccount(correctAccount)
+        }
         technicianCloudSource = TechnicianCloudSource(apiProvider.createTechnicianApi())
     }
 
     @Test
     fun findById_CorrectUser_ReturnsTechnician() {
-
-        val technician = technicianCloudSource.findByUser(correctUser)
+        val technician = runBlocking {
+            technicianCloudSource.findByUser(correctUser)
+        }
         assertNotEquals(null, technician)
         val user = correctUser.copy()
         user.sessionToken = ""
@@ -52,17 +55,19 @@ class TechnicianCloudSourceTest {
         var technician: Technician? = null
         try {
             val user = correctUser.copy(3)
-            technician = technicianCloudSource.findByUser(user)
+            runBlocking {
+                technician = technicianCloudSource.findByUser(user)
+            }
         } catch (throwable: NotFoundException) {
-            throwable.printStackTrace()
+
         } finally {
             assertEquals(null, technician)
         }
     }
 
+
     @Test
     fun findById_IncorrectToken_ReturnUnauthorizedException() {
-
         val retrofitProvider = RetrofitProvider()
         val okHttpClient = OkHttpClient.Builder()
             .addInterceptor { chain ->
@@ -83,13 +88,16 @@ class TechnicianCloudSourceTest {
 
         var technician: Technician? = null
         try {
-            technician = technicianCloudSource.findByUser(user)
+            technician = runBlocking {
+                technicianCloudSource.findByUser(user)
+            }
         } catch (throwable: UnauthorizedException) {
-            throwable.printStackTrace()
+
         } finally {
             assertEquals(null, technician)
         }
     }
+
 
     @Test
     fun findById_TokenEmpty_ReturnUnauthorizedException() {
@@ -111,12 +119,13 @@ class TechnicianCloudSourceTest {
 
         var technician: Technician? = null
         try {
-            technician = technicianCloudSource.findByUser(correctUser)
+            technician = runBlocking {
+                technicianCloudSource.findByUser(correctUser)
+            }
         } catch (throwable: UnauthorizedException) {
-            throwable.printStackTrace()
+
         } finally {
             assertEquals(null, technician)
         }
-
     }
 }

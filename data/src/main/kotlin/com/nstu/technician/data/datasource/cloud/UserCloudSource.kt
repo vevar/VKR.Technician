@@ -16,18 +16,18 @@ class UserCloudSource @Inject constructor(
         const val TAG = "NETWORK_USER_SOURCE"
     }
 
-    override fun findByAccount(account: Account): User {
+    override suspend fun findByAccount(account: Account): User {
         val response = userApi.login(account).execute()
         Log.d(TAG, "Code of response: ${response.code()}")
         val user = response.body()
         return user ?: throw UserNotFoundException()
     }
 
-    override fun save(user: User) {
+    override suspend fun save(user: User) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun find(): User {
+    override suspend fun find(): User {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

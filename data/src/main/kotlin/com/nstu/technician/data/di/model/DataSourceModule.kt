@@ -1,9 +1,7 @@
 package com.nstu.technician.data.di.model
 
-import com.nstu.technician.data.datasource.AccountDataSource
-import com.nstu.technician.data.datasource.LOCAL
-import com.nstu.technician.data.datasource.TechnicianDataSource
-import com.nstu.technician.data.datasource.UserDataSource
+import com.nstu.technician.data.datasource.*
+import com.nstu.technician.data.datasource.cloud.ShiftCloudSource
 import com.nstu.technician.data.datasource.cloud.TechnicianCloudSource
 import com.nstu.technician.data.datasource.cloud.UserCloudSource
 import com.nstu.technician.data.datasource.local.AccountLocalSource
@@ -44,6 +42,12 @@ class DataSourceModule {
     @Provides
     fun provideAccountLocalData(accountLocalSource: AccountLocalSource): AccountDataSource {
         return accountLocalSource
+    }
+
+    @Named(CLOUD)
+    @Provides
+    fun provideShiftCloudSource(shiftCloudSource: ShiftCloudSource): ShiftDataSource {
+        return shiftCloudSource
     }
 
 }

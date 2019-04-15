@@ -16,14 +16,14 @@ class TechnicianCloudSource @Inject constructor(
         const val TAG = "NETWORK_TECHNICIAN"
     }
 
-    override fun findByUser(user: User): Technician {
+    override suspend fun findByUser(user: User): Technician {
         val response = technicianApi.getTechnicianById(user.oid).execute()
         val code = response.code()
         logCodeOfResponse(TAG, code)
         return  response.body() ?: throw UserNotFoundException()
     }
 
-    override fun save(technician: Technician) {
+    override suspend fun save(technician: Technician) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
