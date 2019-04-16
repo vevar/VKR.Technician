@@ -4,11 +4,10 @@ import androidx.room.*
 import com.nstu.technician.data.dto.EntityLink
 import com.nstu.technician.data.until.ConverterEntity
 import com.nstu.technician.data.until.EntityTypeConverters
-import com.nstu.technician.domain.model.user.User
 
 @Entity(
     foreignKeys = [ForeignKey(
-        entity = User::class,
+        entity = UserDTO::class,
         parentColumns = ["oid"],
         childColumns = ["user_id"],
         onDelete = ForeignKey.CASCADE,

@@ -2,32 +2,32 @@ package com.nstu.technician.data.until
 
 import androidx.room.TypeConverter
 import com.nstu.technician.data.dto.EntityLink
-import com.nstu.technician.domain.model.user.Account
-import com.nstu.technician.domain.model.user.User
+import com.nstu.technician.data.dto.user.AccountDTO
+import com.nstu.technician.data.dto.user.UserDTO
 
 object EntityTypeConverters {
 
     @TypeConverter
     @JvmStatic
-    fun accountToOid(account: EntityLink<Account>): Int {
+    fun accountToOid(account: EntityLink<AccountDTO>): Long {
         return ConverterEntity.fromEntityLint(account)
     }
 
     @TypeConverter
     @JvmStatic
-    fun toEntityLinkAccount(id: Int): EntityLink<Account> {
+    fun toEntityLinkAccount(id: Long): EntityLink<AccountDTO> {
         return ConverterEntity.idToEntityLink(id)
     }
 
     @TypeConverter
     @JvmStatic
-    fun userToOid(user: EntityLink<User>): Int {
+    fun userToOid(user: EntityLink<UserDTO>): Long{
         return ConverterEntity.fromEntityLint(user)
     }
 
     @TypeConverter
     @JvmStatic
-    fun toEntityLinkUser(id: Int): EntityLink<User> {
+    fun toEntityLinkUser(id: Long): EntityLink<UserDTO> {
         return ConverterEntity.idToEntityLink(id)
     }
 

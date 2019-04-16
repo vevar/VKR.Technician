@@ -4,11 +4,11 @@ import com.nstu.technician.data.dto.EntityLink
 
 class ConverterEntity{
     companion object {
-        fun <T> fromEntityLint(entityLink: EntityLink<T>): Int {
+        fun <T> fromEntityLint(entityLink: EntityLink<T>): Long {
             return entityLink.oid
         }
 
-        fun <T> idToEntityLink(id: Int): EntityLink<T> {
+        fun <T> idToEntityLink(id: Long): EntityLink<T> {
             return com.nstu.technician.data.dto.EntityLink(id)
         }
     }

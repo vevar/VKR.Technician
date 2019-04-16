@@ -74,10 +74,17 @@ fun convertToDTO(shift: Shift): ShiftDTO {
 }
 
 fun convertToModel(shiftDTO: ShiftDTO): Shift {
-    return Shift(
-        shiftDTO.oid,
-        shiftDTO.date
-    )
+    val shift = Shift(shiftDTO.oid, shiftDTO.date)
+    val points = shiftDTO.points
+    val visits = shiftDTO.visits
+
+    if (!points.isNullOrEmpty()) {
+        shift.points = points.filter { it.ref != null }.map { it.ref!! }
+    }
+    if (!visits.isNullOrEmpty()) {
+        shift.visits = visits.filter { it.ref != null }.map { convertToModel(it.ref!!) }
+    }
+    return shift
 }
 
 fun convertToModel(maintenanceDTO: MaintenanceDTO): Maintenance {
