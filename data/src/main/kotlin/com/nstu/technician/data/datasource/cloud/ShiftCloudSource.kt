@@ -10,8 +10,19 @@ class ShiftCloudSource @Inject constructor(
     private val shiftApi: ShiftApi
 ) : ShiftDataSource {
 
-    override suspend fun findByTechnicianIdAndTimePeriod(technicianId: Int, startTime: Long, endTime: Long): List<Shift> {
+    override suspend fun findById(id: Long): Shift? {
+        val response = shiftApi.getShiftFull(id).execute()
+
+        return response.body()
+    }
+
+    override suspend fun findByTechnicianIdAndTimePeriod(
+        technicianId: Long,
+        startTime: Long,
+        endTime: Long
+    ): List<Shift> {
         val response = shiftApi.getShiftToPeriod(technicianId, startTime, endTime).execute()
+
         return response.body() ?: throw NotFoundException(response.message())
     }
 }

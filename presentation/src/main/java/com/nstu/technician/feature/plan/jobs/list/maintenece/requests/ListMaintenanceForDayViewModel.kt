@@ -8,7 +8,7 @@ import com.nstu.technician.domain.usecase.job.LoadListMaintenanceUseCase
 import kotlinx.coroutines.*
 
 class ListMaintenanceForDayViewModel(
-    private val idShift: Int,
+    private val idShift: Long,
     private val loadListMaintenanceUseCase: LoadListMaintenanceUseCase
 ) : ViewModel() {
     companion object {

@@ -9,12 +9,16 @@ import javax.inject.Named
 
 class ShiftRepositoryImpl @Inject constructor(
     @Named(CLOUD)
-    private val shiftDataSource: ShiftDataSource
+    private val shiftCloudSource: ShiftDataSource
 ) : ShiftRepository {
 
+    override suspend fun findById(id: Long): Shift? {
+        return shiftCloudSource.findById(id)
+    }
+
     override suspend fun findByTechnicianIdAndTimePeriod(
-        technicianId: Int, startTime: Long, endTime: Long
-    ): List<Shift> {
-        return shiftDataSource.findByTechnicianIdAndTimePeriod(technicianId, startTime, endTime)
+        technicianId: Long, startTime: Long, endTime: Long
+    ): List<Shift>? {
+        return shiftCloudSource.findByTechnicianIdAndTimePeriod(technicianId, startTime, endTime)
     }
 }

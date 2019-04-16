@@ -10,7 +10,10 @@ interface ShiftApi {
 
     @GET("/api/shift/getToPeriod")
     fun getShiftToPeriod(
-        @Query("technicianid") id: Int, @Query("timeInMS1") timeMark1: Long, @Query("timeInMS2") timeMark2: Long
+        @Query("technicianid") id: Long, @Query("timeInMS1") timeMark1: Long, @Query("timeInMS2") timeMark2: Long
     ): Call<List<Shift>>
+
+    @GET("/api/shift/full")
+    fun getShiftFull(@Query("shiftid") shiftId: Long): Call<Shift>
 }
 

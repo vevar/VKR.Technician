@@ -7,7 +7,7 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-class ListMaintenanceModule(private val idShift: Int) {
+class ListMaintenanceModule(private val idShift: Long) {
 
     @Provides
     fun provideListMaintenanceForDayVMFactory(useCase: LoadListMaintenanceUseCase):
