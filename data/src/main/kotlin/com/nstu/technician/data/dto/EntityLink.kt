@@ -1,7 +1,8 @@
 package com.nstu.technician.data.dto
 
 data class EntityLink<T>(
-    val oid: Int
+    val oid: Long,
+    var ref: T?
 ) {
-    var ref: T? = null
+    constructor(oid: Long) : this(oid, null)
 }

@@ -1,22 +1,22 @@
 package com.nstu.technician.data.datasource.local.dao
 
 import androidx.room.*
-import com.nstu.technician.domain.model.user.Account
+import com.nstu.technician.data.dto.user.AccountDTO
 
 @Dao
 interface AccountDao {
-    @Query("SELECT * FROM account LIMIT 1")
-    fun find(): Account?
+    @Query("SELECT * FROM accountdto LIMIT 1")
+    fun find(): AccountDTO?
 
     @Transaction
-    fun save(account: Account) {
+    fun save(account: AccountDTO) {
         nukeTable()
         insert(account)
     }
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(account: Account)
+    fun insert(account: AccountDTO)
 
-    @Query("DELETE FROM user")
+    @Query("DELETE FROM userdto")
     fun nukeTable()
 }

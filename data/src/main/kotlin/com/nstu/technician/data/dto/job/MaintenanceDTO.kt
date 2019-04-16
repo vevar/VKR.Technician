@@ -4,14 +4,15 @@ import com.nstu.technician.data.dto.EntityLink
 import com.nstu.technician.data.dto.document.DocumentDTO
 import com.nstu.technician.domain.model.common.Artifact
 import com.nstu.technician.domain.model.common.OwnDateTime
+import com.nstu.technician.domain.model.facility.maintenance.Maintenance
 
 class MaintenanceDTO(
     val oid: Long,
     val facility: EntityLink<FacilityDTO>,
     val visitDate: OwnDateTime,
     val duration: Int,
-    val maintenanceType: Type,
-    var state: State
+    val maintenanceType: Maintenance.Type,
+    var state: Maintenance.State
 ) {
     var parent: EntityLink<MaintenanceDTO>? = null
     var beginTime: OwnDateTime? = null
@@ -20,15 +21,4 @@ class MaintenanceDTO(
     var workCompletionReport: EntityLink<DocumentDTO>? = null
     var voiceMassage: EntityLink<Artifact>? = null
 
-    enum class Type {
-        MONTHLY,
-        SINGLE,
-        UNPLANNED,
-        REPEATED,
-    }
-
-    enum class State {
-        COMPLETE,
-        NOT_COMPLETE
-    }
 }

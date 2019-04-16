@@ -1,12 +1,12 @@
 package com.nstu.technician.data.datasource
 
-import com.nstu.technician.domain.model.user.Account
-import com.nstu.technician.domain.model.user.User
+import com.nstu.technician.data.dto.user.AccountDTO
+import com.nstu.technician.data.dto.user.UserDTO
 
 interface UserDataSource {
-    suspend fun findByAccount(account: Account): User?
+    suspend fun findByAccount(account: AccountDTO): UserDTO?
 
-    suspend fun save(user: User)
+    suspend fun save(user: UserDTO)
 
-    suspend fun find(): User?
+    suspend fun find(): UserDTO?
 }

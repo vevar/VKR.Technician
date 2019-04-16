@@ -5,7 +5,7 @@ import com.nstu.technician.data.dto.EntityLink
 import com.nstu.technician.domain.model.user.Account
 import com.nstu.technician.domain.model.user.User
 
-object Converters {
+object EntityTypeConverters {
 
     @TypeConverter
     @JvmStatic

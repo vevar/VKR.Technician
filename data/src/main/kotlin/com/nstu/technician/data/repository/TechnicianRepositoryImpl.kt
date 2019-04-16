@@ -1,6 +1,8 @@
 package com.nstu.technician.data.repository
 
 import com.nstu.technician.data.datasource.TechnicianDataSource
+import com.nstu.technician.data.until.convertToModel
+import com.nstu.technician.domain.model.user.Technician
 import com.nstu.technician.domain.model.user.User
 import com.nstu.technician.domain.repository.TechnicianRepository
 import kotlinx.coroutines.supervisorScope
@@ -12,13 +14,12 @@ class TechnicianRepositoryImpl @Inject constructor(
     private val cloudTechnicianDataSource: TechnicianDataSource
 ) : TechnicianRepository {
 
-    override suspend fun findByUser(user: User) = supervisorScope {
-        val technician = cloudTechnicianDataSource.findByUserId(user.oid)
-//        TODO
-//        async {
-//            localTechnicianDataSource.save(technician)
-//        }
-        technician
+    override suspend fun findByUser(user: User): Technician?{
+        return supervisorScope {
+            cloudTechnicianDataSource.findByUserId(user.oid)?.let {
+                convertToModel(it)
+            }
+        }
     }
 
 

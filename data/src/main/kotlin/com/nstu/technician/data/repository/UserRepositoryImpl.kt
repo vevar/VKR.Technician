@@ -3,11 +3,12 @@ package com.nstu.technician.data.repository
 import com.nstu.technician.data.datasource.CLOUD
 import com.nstu.technician.data.datasource.LOCAL
 import com.nstu.technician.data.datasource.UserDataSource
+import com.nstu.technician.data.until.convertToDTO
+import com.nstu.technician.data.until.convertToModel
 import com.nstu.technician.domain.model.user.Account
 import com.nstu.technician.domain.model.user.User
 import com.nstu.technician.domain.repository.UserRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.async
 import kotlinx.coroutines.supervisorScope
 import javax.inject.Inject
 import javax.inject.Named
@@ -20,17 +21,23 @@ class UserRepositoryImpl @Inject constructor(
 ) : UserRepository {
 
     override suspend fun find(): User? {
-        return localUserDataSource.find()
+        return supervisorScope {
+            localUserDataSource.find()?.let {
+                convertToModel(it)
+            }
+        }
     }
 
     override suspend fun save(user: User) {
-        localUserDataSource.save(user)
+        localUserDataSource.save(convertToDTO(user))
     }
 
     @ExperimentalCoroutinesApi
-    override suspend fun findByAccount(account: Account) = supervisorScope {
-        val user = cloudUserDataSource.findByAccount(account)
-        user
+    override suspend fun findByAccount(account: Account): User? {
+        return supervisorScope {
+            cloudUserDataSource.findByAccount(convertToDTO(account))?.let {
+                convertToModel(it)
+            }
+        }
     }
-
 }

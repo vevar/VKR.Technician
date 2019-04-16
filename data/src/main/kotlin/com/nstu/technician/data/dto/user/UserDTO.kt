@@ -2,7 +2,7 @@ package com.nstu.technician.data.dto.user
 
 import androidx.room.*
 import com.nstu.technician.data.dto.EntityLink
-import com.nstu.technician.data.until.Converters
+import com.nstu.technician.data.until.EntityTypeConverters
 
 @Entity(
     foreignKeys = [ForeignKey(
@@ -13,7 +13,7 @@ import com.nstu.technician.data.until.Converters
         onUpdate = ForeignKey.CASCADE
     )]
 )
-@TypeConverters(value = [Converters::class])
+@TypeConverters(value = [EntityTypeConverters::class])
 data class UserDTO(
     @PrimaryKey
     val oid: Long,

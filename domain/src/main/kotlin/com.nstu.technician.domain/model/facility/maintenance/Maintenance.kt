@@ -1,12 +1,12 @@
 package com.nstu.technician.domain.model.facility.maintenance
 
 import com.nstu.technician.domain.model.common.Artifact
+import com.nstu.technician.domain.model.common.OwnDateTime
 import com.nstu.technician.domain.model.document.Document
 import com.nstu.technician.domain.model.facility.Facility
-import com.nstu.technician.domain.model.common.OwnDateTime
 
 class Maintenance(
-    val oid: Int,
+    val oid: Long,
     val facility: Facility,
     val visitDate: OwnDateTime,
     val duration: Int,
