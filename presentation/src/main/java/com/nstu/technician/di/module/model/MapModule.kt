@@ -8,7 +8,7 @@ import dagger.Provides
 
 @Module
 class MapModule(
-    private val idFacility: Int,
+    private val idFacility: Long,
     private val mapListener: MapViewModel.MapListener
 ) {
 

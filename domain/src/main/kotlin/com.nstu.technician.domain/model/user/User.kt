@@ -5,6 +5,7 @@ data class User(
     val lastName: String,
     val firstName: String,
     val middleName: String,
-    var sessionToken: String,
-    val account: Account
-)
+    var sessionToken: String
+){
+    var account: Account? = null
+}

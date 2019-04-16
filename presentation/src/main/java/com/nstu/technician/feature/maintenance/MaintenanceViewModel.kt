@@ -12,7 +12,7 @@ import com.nstu.technician.domain.usecase.job.LoadDetailMaintenanceUseCase
 import com.nstu.technician.feature.common.LoaderVM
 
 class MaintenanceViewModel(
-    val idMaintenance: Int,
+    val idMaintenance: Long,
     private val loadDetailMaintenanceUseCase: LoadDetailMaintenanceUseCase
 ) : ViewModel() {
     companion object {

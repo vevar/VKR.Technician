@@ -6,14 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.MarkerOptions
-import com.nstu.technician.domain.model.facility.Facility
 import com.nstu.technician.domain.model.common.GPSPoint
+import com.nstu.technician.domain.model.facility.Facility
 import com.nstu.technician.domain.usecase.CallUseCase
 import com.nstu.technician.domain.usecase.job.LoadFacilityUseCase
 import kotlinx.coroutines.launch
 
 class MapViewModel(
-    private val idFacility: Int,
+    private val idFacility: Long,
     private val loadFacilityUseCase: LoadFacilityUseCase,
     private val mapListener: MapListener
 ) : ViewModel() {

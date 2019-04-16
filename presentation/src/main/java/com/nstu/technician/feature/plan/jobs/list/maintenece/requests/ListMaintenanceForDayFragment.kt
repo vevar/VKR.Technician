@@ -82,7 +82,7 @@ class ListMaintenanceForDayFragment : BaseFragment() {
                 MaintenanceRVAdapter.MaintenanceListener {
                 override fun onShowOnMap(maintenance: Maintenance) {
                     if (checkPermissionLocation(requireContext())) {
-                        arguments?.putInt(EXTRA_ID_MAINTENANCE, maintenance.facility.oid)
+                        arguments?.putLong(EXTRA_ID_MAINTENANCE, maintenance.facility.oid)
                             ?: NullPointerException("args is null")
                         requestLocationPermission(this@ListMaintenanceForDayFragment)
                     } else {
@@ -109,7 +109,7 @@ class ListMaintenanceForDayFragment : BaseFragment() {
         return mBinding.root
     }
 
-    private fun showOnMap(idMaintenance: Int) {
+    private fun showOnMap(idMaintenance: Long) {
         val dest = PlanJobsFragmentDirections.actionPlanJobsDestToMapDest(idMaintenance)
         findNavController().navigate(dest)
     }
@@ -130,7 +130,7 @@ class ListMaintenanceForDayFragment : BaseFragment() {
         when (requestCode) {
             PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION -> {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    val idMaintenance = arguments?.getInt(EXTRA_ID_MAINTENANCE)
+                    val idMaintenance = arguments?.getLong(EXTRA_ID_MAINTENANCE)
                         ?: throw NullPointerException("arg is null")
                     showOnMap(idMaintenance)
                 }

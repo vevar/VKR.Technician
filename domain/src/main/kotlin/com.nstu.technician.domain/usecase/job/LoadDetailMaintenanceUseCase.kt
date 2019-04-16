@@ -1,14 +1,15 @@
 package com.nstu.technician.domain.usecase.job
 
-import com.nstu.technician.domain.model.common.Artifact
 import com.nstu.technician.domain.model.FileNameExt
 import com.nstu.technician.domain.model.common.Address
+import com.nstu.technician.domain.model.common.Artifact
 import com.nstu.technician.domain.model.common.GPSPoint
 import com.nstu.technician.domain.model.common.OwnDateTime
 import com.nstu.technician.domain.model.document.Contract
 import com.nstu.technician.domain.model.document.Contractor
 import com.nstu.technician.domain.model.document.Document
-import com.nstu.technician.domain.model.facility.*
+import com.nstu.technician.domain.model.facility.Facility
+import com.nstu.technician.domain.model.facility.JobType
 import com.nstu.technician.domain.model.facility.maintenance.Maintenance
 import com.nstu.technician.domain.model.facility.maintenance.MaintenanceJob
 import com.nstu.technician.domain.usecase.UseCase
@@ -26,10 +27,10 @@ class LoadDetailMaintenanceUseCase @Inject constructor(
 
     companion object {
         class Param private constructor(
-            val idMaintenance: Int
+            val idMaintenance: Long
         ) {
             companion object {
-                fun byId(idMaintenance: Int): Param {
+                fun byId(idMaintenance: Long): Param {
                     return Param(idMaintenance)
                 }
             }

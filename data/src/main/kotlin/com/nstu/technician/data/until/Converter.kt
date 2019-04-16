@@ -30,23 +30,27 @@ fun convertToDTO(user: User): UserDTO {
         user.firstName,
         user.middleName,
         user.sessionToken,
-        EntityLink(user.account.oid, convertToDTO(user.account))
+        user.account?.let {
+            EntityLink(it.oid, convertToDTO(it))
+        }?: throw IllegalStateException("Account must be set")
     )
-
 }
 
-
 fun convertToModel(userDTO: UserDTO): User {
-    return User(
+    val user = User(
         userDTO.oid,
         userDTO.lastName,
         userDTO.firstName,
         userDTO.middleName,
-        userDTO.sessionToken,
-        convertToModel(
+        userDTO.sessionToken
+    )
+    if (userDTO.account.ref != null) {
+        user.account = convertToModel(
             userDTO.account.ref ?: throw IllegalStateException("Account must be set")
         )
-    )
+    }
+
+    return user
 }
 
 fun convertToDTO(technician: Technician): TechnicianDTO {

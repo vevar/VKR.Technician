@@ -1,9 +1,9 @@
 package com.nstu.technician.domain.usecase.job
 
 import com.nstu.technician.domain.model.common.Address
-import com.nstu.technician.domain.model.facility.Facility
 import com.nstu.technician.domain.model.common.GPSPoint
 import com.nstu.technician.domain.model.common.OwnDateTime
+import com.nstu.technician.domain.model.facility.Facility
 import com.nstu.technician.domain.usecase.UseCase
 import java.util.*
 import javax.inject.Inject
@@ -22,10 +22,10 @@ class LoadFacilityUseCase @Inject constructor(
     }
 
         class Param private constructor(
-            val idFacility: Int
+            val idFacility: Long
         ) {
             companion object {
-                fun byIdFacility(idFacility: Int): Param {
+                fun byIdFacility(idFacility: Long): Param {
                     return Param(idFacility)
                 }
             }

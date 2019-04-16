@@ -28,8 +28,8 @@
             tools:layout="@layout/fragment_map">
         <argument
                 android:name="idFacility"
-                android:defaultValue="-1"
-                app:argType="integer"/>
+                android:defaultValue="-1L"
+                app:argType="long"/>
     </fragment>
 
     <fragment
@@ -38,7 +38,7 @@
             tools:layout="@layout/fragment_maintenance">
         <argument
                 android:name="idMaintenance"
-                android:defaultValue="-1"
-                app:argType="integer"/>
+                android:defaultValue="-1L"
+                app:argType="long"/>
     </fragment>
 </navigation>

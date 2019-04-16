@@ -3,7 +3,6 @@ package com.nstu.technician.feature.maintenance
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.nstu.technician.domain.usecase.job.LoadDetailMaintenanceUseCase
-import java.lang.IllegalStateException
 import javax.inject.Inject
 
 class
@@ -11,9 +10,9 @@ MaintenanceVMFactory @Inject constructor(
     private val loadDetailMaintenanceUseCase: LoadDetailMaintenanceUseCase
 ) : ViewModelProvider.Factory {
 
-    private var maintenanceId: Int? = null
+    private var maintenanceId: Long? = null
 
-    fun init(maintenanceId: Int) {
+    fun init(maintenanceId: Long) {
         this.maintenanceId = maintenanceId
     }
 
