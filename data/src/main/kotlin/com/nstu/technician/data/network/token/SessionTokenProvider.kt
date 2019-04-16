@@ -1,5 +1,6 @@
 package com.nstu.technician.data.network.token
 
+import com.nstu.technician.domain.exceptions.UserNotFoundException
 import com.nstu.technician.domain.repository.AccountRepository
 import com.nstu.technician.domain.repository.UserRepository
 import kotlinx.coroutines.runBlocking
@@ -32,19 +33,16 @@ class SessionTokenProvider @Inject constructor(
     }
 
 
-    override fun refreshToken(): String? {
-        return runBlocking {
-            val account = accountRepository.find()
+    override suspend fun refreshToken(): String? {
+        val account = accountRepository.find()
 
-            if (account != null) {
-                runBlocking {
-                    userRepository.findByAccount(account)?.sessionToken
-                }
-            } else {
-                null
-            }
+        return if (account != null) {
+            val user = userRepository.findByAccount(account) ?: throw UserNotFoundException()
+            userRepository.save(user)
+
+            user.sessionToken
+        } else {
+            null
         }
-
     }
-
 }

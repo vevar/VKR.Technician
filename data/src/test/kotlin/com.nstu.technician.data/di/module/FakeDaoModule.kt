@@ -19,6 +19,7 @@ class FakeDaoModule {
             override fun insert(user: User) {
             }
 
+
             override fun nukeTable() {
             }
 
