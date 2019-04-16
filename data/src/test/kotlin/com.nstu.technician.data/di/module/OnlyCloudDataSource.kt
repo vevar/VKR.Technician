@@ -45,7 +45,7 @@ class OnlyCloudDataSource {
     @Provides
     fun provideTechnicianLocalSource(): TechnicianDataSource {
         return object : TechnicianDataSource {
-            override suspend fun findByUser(user: User): Technician? {
+            override suspend fun findByUserId(user: User): Technician? {
                 return null
             }
 

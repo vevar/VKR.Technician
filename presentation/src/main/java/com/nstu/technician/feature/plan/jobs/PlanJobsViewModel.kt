@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 class PlanJobsViewModel(
-    private val technicianId: Int,
+    private val technicianId: Long,
     private val loadShiftsUseCase: LoadShiftsUseCase
 ) : ViewModel() {
     companion object {

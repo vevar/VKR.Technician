@@ -59,11 +59,11 @@ class PlanJobsFragment : BaseFragment() {
         jobsScreen.inject(this)
     }
 
-    private fun getTechnicianId(): Int {
-        val i = requireActivity().intent.extras?.let {
+    private fun getTechnicianId(): Long {
+        val technicianId = requireActivity().intent.extras?.let {
             PlanJobsFragmentArgs.fromBundle(it).technicianId
         }
-        return i ?: throw NullPointerException()
+        return technicianId ?: throw NullPointerException()
     }
 
     private fun setupViewModel(savedInstanceState: Bundle?) {

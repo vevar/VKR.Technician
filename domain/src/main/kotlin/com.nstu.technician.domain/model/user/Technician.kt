@@ -18,7 +18,7 @@ import com.nstu.technician.domain.model.EntityLink
 @TypeConverters(value = [Converters::class])
 data class Technician(
     @PrimaryKey
-    val oid: Int,
+    val oid: Long,
     @TypeConverters(value = [ConverterEntity::class])
     @ColumnInfo(name = "user_id") var user: EntityLink<User>
 )

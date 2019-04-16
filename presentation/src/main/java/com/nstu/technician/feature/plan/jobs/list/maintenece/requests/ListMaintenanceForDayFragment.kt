@@ -13,7 +13,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nstu.technician.R
 import com.nstu.technician.databinding.FragmentListMaintenanceBinding
-import com.nstu.technician.di.component.list.maintenance.DaggerListMaintenanceComponent
 import com.nstu.technician.di.component.list.maintenance.DaggerListMaintenanceScreen
 import com.nstu.technician.di.module.model.ListMaintenanceModule
 import com.nstu.technician.domain.model.facility.maintenance.Maintenance
@@ -32,10 +31,10 @@ class ListMaintenanceForDayFragment : BaseFragment() {
         private const val EXTRA_ID_SHIFT = "EXTRA_ID_SHIFT"
         private const val EXTRA_ID_MAINTENANCE = "EXTRA_ID_MAINTENANCE"
 
-        fun newInstance(idShift: Int): ListMaintenanceForDayFragment {
+        fun newInstance(idShift: Long): ListMaintenanceForDayFragment {
             val fragment = ListMaintenanceForDayFragment()
             val bundle = Bundle()
-            bundle.putInt(EXTRA_ID_SHIFT, idShift)
+            bundle.putLong(EXTRA_ID_SHIFT, idShift)
             fragment.arguments = bundle
             return fragment
         }
@@ -59,20 +58,20 @@ class ListMaintenanceForDayFragment : BaseFragment() {
     }
 
     private fun initInjection() {
-        val listMaintenanceComponent = DaggerListMaintenanceComponent.builder()
-            .build()
+        val app = App.getApp(requireContext())
+        val dataClient = app.getDataClient()
 
         val screen = DaggerListMaintenanceScreen.builder()
             .appComponent(App.getApp(requireContext()).getAppComponent())
-            .listMaintenanceComponent(listMaintenanceComponent)
+            .listMaintenanceComponent(dataClient.createListMaintenanceComponent())
             .listMaintenanceModule(ListMaintenanceModule(getIdShift()))
             .build()
 
         screen.inject(this)
     }
 
-    private fun getIdShift(): Int {
-        return arguments?.getInt(EXTRA_ID_SHIFT) ?: throw NullPointerException("args(idShift) is null")
+    private fun getIdShift(): Long {
+        return arguments?.getLong(EXTRA_ID_SHIFT) ?: throw NullPointerException("args(idShift) is null")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

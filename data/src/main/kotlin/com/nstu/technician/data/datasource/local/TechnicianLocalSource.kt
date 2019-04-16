@@ -10,8 +10,8 @@ class TechnicianLocalSource @Inject constructor(
     private val technicianDao: TechnicianDao
 ) : TechnicianDataSource {
 
-    override suspend fun findByUser(user: User): Technician? {
-        return technicianDao.findByUserId(user.oid)
+    override suspend fun findByUserId(userId: Long): Technician? {
+        return technicianDao.findByUserId(userId)
     }
 
     override suspend fun save(technician: Technician) {

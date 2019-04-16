@@ -7,7 +7,7 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-class PlanJobsModule(private val technicianId: Int) {
+class PlanJobsModule(private val technicianId: Long) {
 
     @Provides
     fun providePlanJobsViewModel(loadShiftsUseCase: LoadShiftsUseCase): BaseViewModelFactory<PlanJobsViewModel>{

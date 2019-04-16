@@ -1,5 +1,6 @@
 package com.nstu.technician.domain.usecase.job
 
+import com.nstu.technician.domain.exceptions.NotFoundException
 import com.nstu.technician.domain.model.Shift
 import com.nstu.technician.domain.model.common.OwnDateTime
 import com.nstu.technician.domain.repository.ShiftRepository
@@ -30,14 +31,14 @@ class LoadShiftsUseCase @Inject constructor(
             param.technicianId,
             startTime.timeInMillis,
             endTime.timeInMillis
-        )
+        ) ?: throw NotFoundException("List shifts not found")
     }
 
     class Param private constructor(
-        val technicianId: Int
+        val technicianId: Long
     ) {
         companion object {
-            fun forTechnician(technicianId: Int): Param {
+            fun forTechnician(technicianId: Long): Param {
                 return Param(technicianId)
             }
         }

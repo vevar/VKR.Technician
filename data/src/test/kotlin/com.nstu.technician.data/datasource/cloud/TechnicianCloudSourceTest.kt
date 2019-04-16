@@ -39,7 +39,7 @@ class TechnicianCloudSourceTest {
     @Test
     fun findById_CorrectUser_ReturnsTechnician() {
         val technician = runBlocking {
-            technicianCloudSource.findByUser(correctUser)
+            technicianCloudSource.findByUserId(correctUser)
         }
         assertNotEquals(null, technician)
         val user = correctUser.copy()
@@ -56,7 +56,7 @@ class TechnicianCloudSourceTest {
         try {
             val user = correctUser.copy(3)
             runBlocking {
-                technician = technicianCloudSource.findByUser(user)
+                technician = technicianCloudSource.findByUserId(user)
             }
         } catch (throwable: NotFoundException) {
 
@@ -89,7 +89,7 @@ class TechnicianCloudSourceTest {
         var technician: Technician? = null
         try {
             technician = runBlocking {
-                technicianCloudSource.findByUser(user)
+                technicianCloudSource.findByUserId(user)
             }
         } catch (throwable: UnauthorizedException) {
 
@@ -120,7 +120,7 @@ class TechnicianCloudSourceTest {
         var technician: Technician? = null
         try {
             technician = runBlocking {
-                technicianCloudSource.findByUser(correctUser)
+                technicianCloudSource.findByUserId(correctUser)
             }
         } catch (throwable: UnauthorizedException) {
 

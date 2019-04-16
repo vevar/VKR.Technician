@@ -3,10 +3,7 @@ package com.nstu.technician.data
 import android.content.Context
 import androidx.room.Room
 import com.nstu.technician.data.database.AppDataBase
-import com.nstu.technician.data.di.component.AuthComponent
-import com.nstu.technician.data.di.component.DaggerAuthComponent
-import com.nstu.technician.data.di.component.DaggerPlanJobsComponent
-import com.nstu.technician.data.di.component.PlanJobsComponent
+import com.nstu.technician.data.di.component.*
 import com.nstu.technician.data.di.model.ApiModule
 import com.nstu.technician.data.di.model.DaoModule
 import com.nstu.technician.data.di.model.DataSourceModule
@@ -63,6 +60,14 @@ class DataClient private constructor() {
 
     fun createPlanJobsComponent(): PlanJobsComponent {
         return DaggerPlanJobsComponent.builder()
+            .apiModule(ApiModule(ApiProvider(retrofitProvider)))
+            .dataSourceModule(DataSourceModule())
+            .repositoryModule(RepositoryModule())
+            .build()
+    }
+
+    fun createListMaintenanceComponent(): ListMaintenanceComponent {
+        return DaggerListMaintenanceComponent.builder()
             .apiModule(ApiModule(ApiProvider(retrofitProvider)))
             .dataSourceModule(DataSourceModule())
             .repositoryModule(RepositoryModule())

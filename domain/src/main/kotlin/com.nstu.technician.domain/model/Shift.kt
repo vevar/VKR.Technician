@@ -5,7 +5,7 @@ import com.nstu.technician.domain.model.facility.maintenance.Maintenance
 import com.nstu.technician.domain.model.common.OwnDateTime
 
 data class Shift(
-    val oid: Int,
+    val oid: Long,
     val date: OwnDateTime
 ) {
     var visits: List<Maintenance>? = null

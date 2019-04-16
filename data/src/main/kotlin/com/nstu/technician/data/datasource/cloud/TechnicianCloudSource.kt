@@ -16,11 +16,11 @@ class TechnicianCloudSource @Inject constructor(
         const val TAG = "NETWORK_TECHNICIAN"
     }
 
-    override suspend fun findByUser(user: User): Technician {
-        val response = technicianApi.getTechnicianById(user.oid).execute()
+    override suspend fun findByUserId(userId: Long): Technician {
+        val response = technicianApi.getTechnicianById(userId).execute()
         val code = response.code()
         logCodeOfResponse(TAG, code)
-        return  response.body() ?: throw UserNotFoundException()
+        return response.body() ?: throw UserNotFoundException()
     }
 
     override suspend fun save(technician: Technician) {

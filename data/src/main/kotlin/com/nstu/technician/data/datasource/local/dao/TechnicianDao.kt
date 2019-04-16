@@ -9,7 +9,7 @@ import com.nstu.technician.domain.model.user.Technician
 @Dao
 interface TechnicianDao {
     @Query("SELECT * FROM technician WHERE user_id=:userId")
-    fun findByUserId(userId: Int): Technician?
+    fun findByUserId(userId: Long): Technician?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun save(technician: Technician)
