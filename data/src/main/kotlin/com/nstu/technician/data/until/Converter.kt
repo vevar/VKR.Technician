@@ -1,15 +1,19 @@
 package com.nstu.technician.data.until
 
 import com.nstu.technician.data.dto.EntityLink
+import com.nstu.technician.data.dto.document.DocumentDTO
 import com.nstu.technician.data.dto.job.FacilityDTO
 import com.nstu.technician.data.dto.job.MaintenanceDTO
+import com.nstu.technician.data.dto.job.MaintenanceJobDTO
 import com.nstu.technician.data.dto.job.ShiftDTO
 import com.nstu.technician.data.dto.user.AccountDTO
 import com.nstu.technician.data.dto.user.TechnicianDTO
 import com.nstu.technician.data.dto.user.UserDTO
 import com.nstu.technician.domain.model.Shift
+import com.nstu.technician.domain.model.document.Document
 import com.nstu.technician.domain.model.facility.Facility
 import com.nstu.technician.domain.model.facility.maintenance.Maintenance
+import com.nstu.technician.domain.model.facility.maintenance.MaintenanceJob
 import com.nstu.technician.domain.model.user.Account
 import com.nstu.technician.domain.model.user.Technician
 import com.nstu.technician.domain.model.user.User
@@ -32,7 +36,7 @@ fun convertToDTO(user: User): UserDTO {
         user.sessionToken,
         user.account?.let {
             EntityLink(it.oid, convertToDTO(it))
-        }?: throw IllegalStateException("Account must be set")
+        } ?: throw IllegalStateException("Account must be set")
     )
 }
 
@@ -92,7 +96,7 @@ fun convertToModel(shiftDTO: ShiftDTO): Shift {
 }
 
 fun convertToModel(maintenanceDTO: MaintenanceDTO): Maintenance {
-    return Maintenance(
+    val maintenance = Maintenance(
         maintenanceDTO.oid,
         convertToModel(maintenanceDTO.facility.ref ?: throw IllegalStateException()),
         maintenanceDTO.visitDate,
@@ -100,6 +104,19 @@ fun convertToModel(maintenanceDTO: MaintenanceDTO): Maintenance {
         Maintenance.Type.values()[maintenanceDTO.maintenanceType],
         Maintenance.State.values()[maintenanceDTO.state]
     )
+    maintenance.beginTime = maintenanceDTO.beginTime
+    maintenance.endTime= maintenanceDTO.endTime
+    maintenance.jobList= maintenanceDTO.jobList?.filter { it.ref!=null }?.map { convertToModel(it.ref!!) }
+
+    return maintenance
+}
+
+fun convertToModel(documentDTO: DocumentDTO): Document {
+    TODO()
+}
+
+fun convertToModel(maintenanceJobDTO: MaintenanceJobDTO): MaintenanceJob {
+    TODO()
 }
 
 fun convertToDTO(maintenance: Maintenance): MaintenanceDTO {
