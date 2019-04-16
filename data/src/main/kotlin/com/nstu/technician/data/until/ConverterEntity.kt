@@ -1,6 +1,6 @@
-package com.nstu.technician.domain
+package com.nstu.technician.data.until
 
-import com.nstu.technician.domain.model.EntityLink
+import com.nstu.technician.data.dto.EntityLink
 
 class ConverterEntity{
     companion object {
@@ -9,7 +9,7 @@ class ConverterEntity{
         }
 
         fun <T> idToEntityLink(id: Int): EntityLink<T> {
-            return EntityLink(id)
+            return com.nstu.technician.data.dto.EntityLink(id)
         }
     }
 }

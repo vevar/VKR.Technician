@@ -10,6 +10,7 @@ import com.nstu.technician.domain.repository.ShiftRepository
 import com.nstu.technician.domain.usecase.job.LoadShiftsUseCase
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
 import org.junit.Before
 import org.junit.Test
 import java.util.*
@@ -43,6 +44,15 @@ class ShiftRepositoryTest {
         val shifts = runBlocking {
             shiftRepository.findByTechnicianIdAndTimePeriod(2, startTime.timeInMillis, endTime.timeInMillis)
         }
-        assertEquals(5, shifts.size)
+        assertEquals(5, shifts?.size)
     }
+
+    @Test
+    fun findById_correctShift_ReturnsShift(){
+        val shift = runBlocking {
+            shiftRepository.findById(2)
+        }
+        assertNotEquals(null, shift)
+    }
+
 }

@@ -29,7 +29,7 @@ class FakeDaoModule {
     @Provides
     fun provideTechnicianDao(): TechnicianDao {
         return object : TechnicianDao {
-            override fun findByUserId(userId: Int): Technician? {
+            override fun findByUserId(userId: Long): Technician? {
                 return null
             }
 

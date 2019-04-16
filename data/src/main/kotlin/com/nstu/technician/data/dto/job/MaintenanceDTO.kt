@@ -1,24 +1,24 @@
-package com.nstu.technician.domain.model.facility.maintenance
+package com.nstu.technician.data.dto.job
 
+import com.nstu.technician.data.dto.EntityLink
+import com.nstu.technician.data.dto.document.DocumentDTO
 import com.nstu.technician.domain.model.common.Artifact
-import com.nstu.technician.domain.model.document.Document
-import com.nstu.technician.domain.model.facility.Facility
 import com.nstu.technician.domain.model.common.OwnDateTime
 
-class Maintenance(
-    val oid: Int,
-    val facility: Facility,
+class MaintenanceDTO(
+    val oid: Long,
+    val facility: EntityLink<FacilityDTO>,
     val visitDate: OwnDateTime,
     val duration: Int,
     val maintenanceType: Type,
     var state: State
 ) {
-    var parent: Maintenance? = null
+    var parent: EntityLink<MaintenanceDTO>? = null
     var beginTime: OwnDateTime? = null
     var endTime: OwnDateTime? = null
-    var jobList: List<MaintenanceJob>? = null
-    var workCompletionReport: Document? = null
-    var voiceMassage: Artifact? = null
+    var jobList: List<EntityLink<MaintenanceJobDTO>>? = null
+    var workCompletionReport: EntityLink<DocumentDTO>? = null
+    var voiceMassage: EntityLink<Artifact>? = null
 
     enum class Type {
         MONTHLY,

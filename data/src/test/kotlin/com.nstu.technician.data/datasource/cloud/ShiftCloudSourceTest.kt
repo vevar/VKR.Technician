@@ -34,6 +34,6 @@ class ShiftCloudSourceTest {
         val shifts = runBlocking {
             shiftCloudSource.findByTechnicianIdAndTimePeriod(2, startTime.timeInMillis, endTime.timeInMillis)
         }
-        assertEquals(5, shifts.size)
+        assertEquals(5, shifts?.size)
     }
 }

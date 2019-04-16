@@ -1,7 +1,6 @@
 package com.nstu.technician.domain.model.facility.maintenance
 
 import com.nstu.technician.domain.model.common.Artifact
-import com.nstu.technician.domain.model.EntityLink
 import com.nstu.technician.domain.model.Problem
 import com.nstu.technician.domain.model.facility.JobType
 import com.nstu.technician.domain.model.common.OwnDateTime

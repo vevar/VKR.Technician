@@ -1,7 +1,7 @@
-package com.nstu.technician.domain
+package com.nstu.technician.data.until
 
 import androidx.room.TypeConverter
-import com.nstu.technician.domain.model.EntityLink
+import com.nstu.technician.data.dto.EntityLink
 import com.nstu.technician.domain.model.user.Account
 import com.nstu.technician.domain.model.user.User
 

@@ -7,7 +7,7 @@ import com.nstu.technician.data.network.retorfit.ApiProvider
 import com.nstu.technician.data.network.retorfit.RetrofitProvider
 import com.nstu.technician.domain.exceptions.NotFoundException
 import com.nstu.technician.domain.exceptions.UnauthorizedException
-import com.nstu.technician.domain.model.EntityLink
+import com.nstu.technician.data.dto.EntityLink
 import com.nstu.technician.domain.model.user.Account
 import com.nstu.technician.domain.model.user.Technician
 import com.nstu.technician.domain.model.user.User
@@ -39,14 +39,12 @@ class TechnicianCloudSourceTest {
     @Test
     fun findById_CorrectUser_ReturnsTechnician() {
         val technician = runBlocking {
-            technicianCloudSource.findByUserId(correctUser)
+            technicianCloudSource.findByUserId(correctUser.oid)
         }
         assertNotEquals(null, technician)
         val user = correctUser.copy()
         user.sessionToken = ""
-        val entityLink = EntityLink<User>(4)
-        entityLink.ref = user
-        val correctTechnician = Technician(2, entityLink)
+        val correctTechnician = Technician(2, user)
         assertEquals(correctTechnician, technician)
     }
 
@@ -56,7 +54,7 @@ class TechnicianCloudSourceTest {
         try {
             val user = correctUser.copy(3)
             runBlocking {
-                technician = technicianCloudSource.findByUserId(user)
+                technician = technicianCloudSource.findByUserId(user.oid)
             }
         } catch (throwable: NotFoundException) {
 
@@ -89,7 +87,7 @@ class TechnicianCloudSourceTest {
         var technician: Technician? = null
         try {
             technician = runBlocking {
-                technicianCloudSource.findByUserId(user)
+                technicianCloudSource.findByUserId(user.oid)
             }
         } catch (throwable: UnauthorizedException) {
 
@@ -120,7 +118,7 @@ class TechnicianCloudSourceTest {
         var technician: Technician? = null
         try {
             technician = runBlocking {
-                technicianCloudSource.findByUserId(correctUser)
+                technicianCloudSource.findByUserId(correctUser.oid)
             }
         } catch (throwable: UnauthorizedException) {
 

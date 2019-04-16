@@ -1,4 +1,4 @@
-package com.nstu.technician.domain.model
+package com.nstu.technician.data.dto
 
 data class EntityLink<T>(
     val oid: Int
