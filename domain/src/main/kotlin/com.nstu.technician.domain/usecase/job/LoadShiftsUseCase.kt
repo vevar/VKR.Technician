@@ -37,8 +37,8 @@ class LoadShiftsUseCase @Inject constructor(
         val technicianId: Int
     ) {
         companion object {
-            fun forTechnician(technicianId: Int) {
-                Param(technicianId)
+            fun forTechnician(technicianId: Int): Param {
+                return Param(technicianId)
             }
         }
     }

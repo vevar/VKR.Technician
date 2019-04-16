@@ -10,6 +10,10 @@
             android:label="@string/tlt_plan_jobs"
             tools:layout="@layout/fragment_plan_jobs">
 
+        <argument
+                android:name="technicianId"
+                app:argType="integer"
+                android:defaultValue="-1"/>
         <action android:id="@+id/action_plan_jobs_dest_to_map_dest"
                 app:destination="@id/map_dest"
                 app:popUpTo="@+id/plan_jobs_dest"/>

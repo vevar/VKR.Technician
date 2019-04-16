@@ -8,12 +8,11 @@ import androidx.lifecycle.viewModelScope
 import com.nstu.technician.domain.model.Shift
 import com.nstu.technician.domain.usecase.CallUseCase
 import com.nstu.technician.domain.usecase.job.LoadShiftsUseCase
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.*
 
 class PlanJobsViewModel(
+    private val technicianId: Int,
     private val loadShiftsUseCase: LoadShiftsUseCase
 ) : ViewModel() {
     companion object {
@@ -36,19 +35,15 @@ class PlanJobsViewModel(
         viewModelScope.launch {
             loadShiftsUseCase.execute(object : CallUseCase<List<Shift>> {
                 override suspend fun onSuccess(result: List<Shift>) {
-                    val indexCurrentShift = findIndexOfCurrentShift(result)
-                    if (indexCurrentShift != null) {
-                            _data.value = Data(result, indexCurrentShift)
-                    } else {
-                        throw NullPointerException("Current day not found")
-                    }
+                    val indexCurrentShift = findIndexOfCurrentShift(result) ?: 0
+                    _data.value = Data(result, indexCurrentShift)
                 }
 
                 override suspend fun onFailure(throwable: Throwable) {
                     Log.d(TAG, throwable.message)
                 }
 
-            }, Unit)
+            }, LoadShiftsUseCase.Param.forTechnician(technicianId))
         }
     }
 

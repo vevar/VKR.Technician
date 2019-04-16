@@ -68,7 +68,7 @@ class LoginActivity : BaseActivity(), ErrorDialogFragment.ErrorDialogListener {
 
         technicianObserver = Observer {
             Log.d(TAG, "Technician auth is success")
-            ContainerActivity.startActivity(this, it.user.oid)
+            ContainerActivity.startActivity(this, it.oid)
             finish()
         }
         messageObserver = Observer {

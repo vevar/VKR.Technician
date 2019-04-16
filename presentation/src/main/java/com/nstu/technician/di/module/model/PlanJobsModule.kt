@@ -7,12 +7,12 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-class PlanJobsModule {
+class PlanJobsModule(private val technicianId: Int) {
 
     @Provides
     fun providePlanJobsViewModel(loadShiftsUseCase: LoadShiftsUseCase): BaseViewModelFactory<PlanJobsViewModel>{
         return BaseViewModelFactory(PlanJobsViewModel::class.java){
-            PlanJobsViewModel(loadShiftsUseCase)
+            PlanJobsViewModel(technicianId, loadShiftsUseCase)
         }
     }
 }

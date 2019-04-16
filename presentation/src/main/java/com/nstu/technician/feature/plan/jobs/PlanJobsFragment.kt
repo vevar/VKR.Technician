@@ -10,7 +10,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.nstu.technician.R
 import com.nstu.technician.databinding.FragmentPlanJobsBinding
-import com.nstu.technician.di.component.plan.jobs.DaggerPlanJobsComponent
 import com.nstu.technician.di.component.plan.jobs.DaggerPlanJobsScreen
 import com.nstu.technician.di.module.model.PlanJobsModule
 import com.nstu.technician.feature.App
@@ -48,16 +47,23 @@ class PlanJobsFragment : BaseFragment() {
     }
 
     private fun setupInjection() {
-        val planJobsComponent = DaggerPlanJobsComponent.builder()
-            .build()
+        val app = App.getApp(requireContext())
+        val dataClient = app.getDataClient()
 
         val jobsScreen = DaggerPlanJobsScreen.builder()
-            .appComponent(App.getApp(requireContext()).getAppComponent())
-            .planJobsComponent(planJobsComponent)
-            .planJobsModule(PlanJobsModule())
+            .appComponent(app.getAppComponent())
+            .planJobsComponent(dataClient.createPlanJobsComponent())
+            .planJobsModule(PlanJobsModule(getTechnicianId()))
             .build()
 
         jobsScreen.inject(this)
+    }
+
+    private fun getTechnicianId(): Int {
+        val i = requireActivity().intent.extras?.let {
+            PlanJobsFragmentArgs.fromBundle(it).technicianId
+        }
+        return i ?: throw NullPointerException()
     }
 
     private fun setupViewModel(savedInstanceState: Bundle?) {
