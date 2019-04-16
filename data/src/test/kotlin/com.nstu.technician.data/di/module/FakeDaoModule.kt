@@ -2,8 +2,8 @@ package com.nstu.technician.data.di.module
 
 import com.nstu.technician.data.datasource.local.dao.TechnicianDao
 import com.nstu.technician.data.datasource.local.dao.UserDao
-import com.nstu.technician.domain.model.user.Technician
-import com.nstu.technician.domain.model.user.User
+import com.nstu.technician.data.dto.user.TechnicianDTO
+import com.nstu.technician.data.dto.user.UserDTO
 import dagger.Module
 import dagger.Provides
 
@@ -12,11 +12,11 @@ class FakeDaoModule {
     @Provides
     fun provideUserDao(): UserDao {
         return object : UserDao {
-            override fun find(): User? {
+            override fun find(): UserDTO? {
                 return null
             }
 
-            override fun insert(user: User) {
+            override fun insert(user: UserDTO) {
             }
 
 
@@ -29,11 +29,11 @@ class FakeDaoModule {
     @Provides
     fun provideTechnicianDao(): TechnicianDao {
         return object : TechnicianDao {
-            override fun findByUserId(userId: Long): Technician? {
+            override fun findByUserId(userId: Long): TechnicianDTO? {
                 return null
             }
 
-            override fun save(technician: Technician) {
+            override fun save(technician: TechnicianDTO) {
             }
         }
     }

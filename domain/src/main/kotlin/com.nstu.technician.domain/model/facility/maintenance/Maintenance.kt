@@ -21,6 +21,7 @@ class Maintenance(
     var voiceMassage: Artifact? = null
 
     enum class Type {
+        UNDEFINED_TYPE,
         MONTHLY,
         SINGLE,
         UNPLANNED,
@@ -28,6 +29,7 @@ class Maintenance(
     }
 
     enum class State {
+        UNDEFINED_TYPE,
         COMPLETE,
         NOT_COMPLETE
     }

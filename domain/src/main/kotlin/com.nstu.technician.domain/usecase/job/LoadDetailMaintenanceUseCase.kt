@@ -43,7 +43,7 @@ class LoadDetailMaintenanceUseCase @Inject constructor(
         val address = Address("Советская", "23", "111")
         address.location = GPSPoint(1, 31.952854, 115.857342)
         val facility = Facility(
-            1, "NSTU", "123", address,
+            1, "NSTU",  address,
             OwnDateTime(calendar.timeInMillis)
         )
         val fileNameExt = FileNameExt("@File_Name", "@path", "ext")

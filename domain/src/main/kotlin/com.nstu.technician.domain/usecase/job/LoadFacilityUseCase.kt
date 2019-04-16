@@ -16,7 +16,7 @@ class LoadFacilityUseCase @Inject constructor(
         val calendar = Calendar.getInstance()
         val address = Address("Советская", "23", "111")
         address.location = GPSPoint(1,55.008166, 82.937308)
-        return Facility(1, "NSTU", "123", address,
+        return Facility(1, "NSTU", address,
             OwnDateTime(calendar.timeInMillis)
         )
     }

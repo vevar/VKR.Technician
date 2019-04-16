@@ -97,8 +97,8 @@ fun convertToModel(maintenanceDTO: MaintenanceDTO): Maintenance {
         convertToModel(maintenanceDTO.facility.ref ?: throw IllegalStateException()),
         maintenanceDTO.visitDate,
         maintenanceDTO.duration,
-        maintenanceDTO.maintenanceType,
-        maintenanceDTO.state
+        Maintenance.Type.values()[maintenanceDTO.maintenanceType],
+        Maintenance.State.values()[maintenanceDTO.state]
     )
 }
 
@@ -108,8 +108,8 @@ fun convertToDTO(maintenance: Maintenance): MaintenanceDTO {
         EntityLink(maintenance.facility.oid, convertToDTO(maintenance.facility)),
         maintenance.visitDate,
         maintenance.duration,
-        maintenance.maintenanceType,
-        maintenance.state
+        maintenance.maintenanceType.ordinal,
+        maintenance.state.ordinal
     )
 }
 
@@ -117,7 +117,6 @@ fun convertToModel(facilityDTO: FacilityDTO): Facility {
     return Facility(
         facilityDTO.oid,
         facilityDTO.name,
-        facilityDTO.identifier,
         facilityDTO.address,
         facilityDTO.assingmentDate
     )
@@ -127,7 +126,6 @@ fun convertToDTO(facility: Facility): FacilityDTO {
     return FacilityDTO(
         facility.oid,
         facility.name,
-        facility.identifier,
         facility.address,
         facility.assingmentDate
     )

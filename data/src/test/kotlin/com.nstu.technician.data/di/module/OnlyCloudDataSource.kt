@@ -6,9 +6,9 @@ import com.nstu.technician.data.datasource.TechnicianDataSource
 import com.nstu.technician.data.datasource.UserDataSource
 import com.nstu.technician.data.datasource.cloud.TechnicianCloudSource
 import com.nstu.technician.data.datasource.cloud.UserCloudSource
-import com.nstu.technician.domain.model.user.Account
-import com.nstu.technician.domain.model.user.Technician
-import com.nstu.technician.domain.model.user.User
+import com.nstu.technician.data.dto.user.AccountDTO
+import com.nstu.technician.data.dto.user.TechnicianDTO
+import com.nstu.technician.data.dto.user.UserDTO
 import dagger.Module
 import dagger.Provides
 import javax.inject.Named
@@ -20,15 +20,15 @@ class OnlyCloudDataSource {
     @Provides
     fun provideUserLocalSource(): UserDataSource {
         return object : UserDataSource {
-            override suspend fun findByAccount(account: Account): User? {
+            override suspend fun findByAccount(account: AccountDTO): UserDTO? {
                 return null
             }
 
-            override suspend fun save(user: User) {
+            override suspend fun save(user: UserDTO) {
 
             }
 
-            override suspend fun find(): User? {
+            override suspend fun find(): UserDTO? {
                 return null
             }
 
@@ -45,11 +45,11 @@ class OnlyCloudDataSource {
     @Provides
     fun provideTechnicianLocalSource(): TechnicianDataSource {
         return object : TechnicianDataSource {
-            override suspend fun findByUserId(userId: Long): Technician? {
+            override suspend fun findByUserId(userId: Long): TechnicianDTO? {
                 return null
             }
 
-            override suspend fun save(technician: Technician) {
+            override suspend fun save(technician: TechnicianDTO) {
             }
 
         }
@@ -65,11 +65,11 @@ class OnlyCloudDataSource {
     @Provides
     fun provideAccountLocalSource(): AccountDataSource {
         return object : AccountDataSource {
-            override suspend fun find(): Account? {
-                return Account(0, "root", "1234")
+            override suspend fun find(): AccountDTO? {
+                return AccountDTO(0, "root", "1234")
             }
 
-            override suspend fun save(account: Account) {
+            override suspend fun save(account: AccountDTO) {
             }
 
         }

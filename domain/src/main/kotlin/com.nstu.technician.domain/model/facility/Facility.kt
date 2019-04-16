@@ -8,7 +8,6 @@ import com.nstu.technician.domain.model.document.Contract
 data class Facility(
     val oid: Long,
     val name: String,
-    val identifier: String,
     val address: Address,
     val assingmentDate: OwnDateTime
 ) {

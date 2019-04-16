@@ -50,7 +50,7 @@ class ShiftRepositoryTest {
     @Test
     fun findById_correctShift_ReturnsShift(){
         val shift = runBlocking {
-            shiftRepository.findById(2)
+            shiftRepository.findById(3)
         }
         assertNotEquals(null, shift)
     }
