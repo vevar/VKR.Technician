@@ -6,5 +6,4 @@ data class Address(
 ) {
     var location: GPSPoint? = null
     var office: String? = null
-
 }

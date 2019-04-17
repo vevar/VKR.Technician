@@ -19,5 +19,4 @@ class MaintenanceDTO(
     var jobList: List<EntityLink<MaintenanceJobDTO>>? = null
     var workCompletionReport: EntityLink<DocumentDTO>? = null
     var voiceMassage: EntityLink<Artifact>? = null
-
 }
