@@ -11,7 +11,7 @@ import com.nstu.technician.domain.model.facility.JobType
 
 class MaintenanceJobDTO(
     val oid: Long,
-    val jobState: TypeState,
+    val jobState: Int,
     val jobType: EntityLink<JobTypeDTO>
 ) {
     var beginTime: OwnDateTime? = null
@@ -22,10 +22,4 @@ class MaintenanceJobDTO(
     var components: List<EntityLink<ComponentUnitDTO>>? = null
     var duration: Int? = null  // in minutes
     var problem: EntityLink<ProblemDTO>? = null
-
-    enum class TypeState {
-        UNDEFINED,
-        COMPLETED,
-        NOT_COMPLETED
-    }
 }

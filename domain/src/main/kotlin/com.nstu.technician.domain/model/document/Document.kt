@@ -4,24 +4,11 @@ import com.nstu.technician.domain.model.common.Artifact
 import com.nstu.technician.domain.model.common.OwnDateTime
 
 open class Document(
-    val oid: Int,
-    val docType: Type,
-    val number: String,
-    val date: OwnDateTime,
-    val artifact: Artifact
+    open val oid: Long,
+    open val docType: Int,
+    open val number: String,
+    open val date: OwnDateTime,
+    open val artifact: Artifact
 ){
-
-    var state: State = State.UNDEFINED
-
-    enum class Type {
-        UNDEFINED
-    }
-
-    enum class State {
-        UNDEFINED,
-        OK,
-        NEED_EXTENTION,
-        CONTINUED,
-        DONE
-    }
+    var state: Int = 0
 }

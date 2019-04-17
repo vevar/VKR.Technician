@@ -11,10 +11,10 @@ data class ContractDTO(
     val INN: String,
     val address: Address,
     val contractor: EntityLink<ContractorDTO>,
-    val docType: DocumentDTO.Type,
+    val docType: Int,
     val number: String,
     val date: OwnDateTime,
     val artifact: EntityLink<Artifact>,
-    var state: DocumentDTO.State
+    var state: Int
 )
 

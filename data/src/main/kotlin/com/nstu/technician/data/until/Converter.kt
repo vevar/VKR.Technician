@@ -1,19 +1,25 @@
 package com.nstu.technician.data.until
 
 import com.nstu.technician.data.dto.EntityLink
+import com.nstu.technician.data.dto.document.ContractDTO
+import com.nstu.technician.data.dto.document.ContractorDTO
 import com.nstu.technician.data.dto.document.DocumentDTO
-import com.nstu.technician.data.dto.job.FacilityDTO
-import com.nstu.technician.data.dto.job.MaintenanceDTO
-import com.nstu.technician.data.dto.job.MaintenanceJobDTO
-import com.nstu.technician.data.dto.job.ShiftDTO
+import com.nstu.technician.data.dto.job.*
+import com.nstu.technician.data.dto.tool.ImplementUnitDTO
+import com.nstu.technician.data.dto.tool.ImplementsDTO
 import com.nstu.technician.data.dto.user.AccountDTO
 import com.nstu.technician.data.dto.user.TechnicianDTO
 import com.nstu.technician.data.dto.user.UserDTO
 import com.nstu.technician.domain.model.Shift
+import com.nstu.technician.domain.model.document.Contract
+import com.nstu.technician.domain.model.document.Contractor
 import com.nstu.technician.domain.model.document.Document
 import com.nstu.technician.domain.model.facility.Facility
+import com.nstu.technician.domain.model.facility.JobType
 import com.nstu.technician.domain.model.facility.maintenance.Maintenance
 import com.nstu.technician.domain.model.facility.maintenance.MaintenanceJob
+import com.nstu.technician.domain.model.tool.ImplementUnit
+import com.nstu.technician.domain.model.tool.Implements
 import com.nstu.technician.domain.model.user.Account
 import com.nstu.technician.domain.model.user.Technician
 import com.nstu.technician.domain.model.user.User
@@ -49,9 +55,7 @@ fun convertToModel(userDTO: UserDTO): User {
         userDTO.sessionToken
     )
     if (userDTO.account.ref != null) {
-        user.account = convertToModel(
-            userDTO.account.ref ?: throw IllegalStateException("Account must be set")
-        )
+        user.account = convertToModel(userDTO.account.ref ?: throw IllegalStateException("Account must be set"))
     }
 
     return user
@@ -101,12 +105,12 @@ fun convertToModel(maintenanceDTO: MaintenanceDTO): Maintenance {
         convertToModel(maintenanceDTO.facility.ref ?: throw IllegalStateException()),
         maintenanceDTO.visitDate,
         maintenanceDTO.duration,
-        Maintenance.Type.values()[maintenanceDTO.maintenanceType],
-        Maintenance.State.values()[maintenanceDTO.state]
+        maintenanceDTO.maintenanceType,
+        maintenanceDTO.state
     )
     maintenance.beginTime = maintenanceDTO.beginTime
-    maintenance.endTime= maintenanceDTO.endTime
-    maintenance.jobList= maintenanceDTO.jobList?.filter { it.ref!=null }?.map { convertToModel(it.ref!!) }
+    maintenance.endTime = maintenanceDTO.endTime
+    maintenance.jobList = maintenanceDTO.jobList?.filter { it.ref != null }?.map { convertToModel(it.ref!!) }
 
     return maintenance
 }
@@ -116,7 +120,40 @@ fun convertToModel(documentDTO: DocumentDTO): Document {
 }
 
 fun convertToModel(maintenanceJobDTO: MaintenanceJobDTO): MaintenanceJob {
-    TODO()
+    return MaintenanceJob(
+        maintenanceJobDTO.oid,
+        maintenanceJobDTO.jobState,
+        convertToModel(maintenanceJobDTO.jobType.ref ?: throw IllegalStateException("jobType must be set"))
+    )
+}
+
+fun convertToModel(jobTypeDTO: JobTypeDTO): JobType {
+    val jobType = JobType(
+        jobTypeDTO.oid,
+        jobTypeDTO.name,
+        jobTypeDTO.description,
+        jobTypeDTO.duration
+    )
+    jobType.impList = jobTypeDTO.impList?.map { implementsDTO ->
+        convertToModel(implementsDTO.ref ?: throw IllegalStateException("implementsDTO must be set"))
+    }
+    return jobType
+}
+
+fun convertToModel(implementsDTO: ImplementsDTO): Implements {
+    val implements = Implements(implementsDTO.oid, implementsDTO.name)
+    implements.units = implementsDTO.units?.map { implementUnitDTO ->
+        convertToModel(implementUnitDTO.ref ?: throw IllegalStateException("implementUnitDTO must be set"))
+    }
+
+    return implements
+}
+
+fun convertToModel(implementUnitDTO: ImplementUnitDTO): ImplementUnit {
+    return ImplementUnit(
+        implementUnitDTO.oid,
+        implementUnitDTO.code
+    )
 }
 
 fun convertToDTO(maintenance: Maintenance): MaintenanceDTO {
@@ -125,17 +162,47 @@ fun convertToDTO(maintenance: Maintenance): MaintenanceDTO {
         EntityLink(maintenance.facility.oid, convertToDTO(maintenance.facility)),
         maintenance.visitDate,
         maintenance.duration,
-        maintenance.maintenanceType.ordinal,
-        maintenance.state.ordinal
+        maintenance.maintenanceType,
+        maintenance.state
     )
 }
 
 fun convertToModel(facilityDTO: FacilityDTO): Facility {
-    return Facility(
+    val facility = Facility(
         facilityDTO.oid,
         facilityDTO.name,
         facilityDTO.address,
         facilityDTO.assingmentDate
+    )
+    facility.contract = facilityDTO.contract?.let { linkContractDTO ->
+        linkContractDTO.ref?.let { contractDTO ->
+            convertToModel(contractDTO)
+        }
+    }
+
+    return facility
+}
+
+fun convertToModel(contractDTO: ContractDTO): Contract {
+    return Contract(
+        contractDTO.oid,
+        contractDTO.name,
+        contractDTO.INN,
+        contractDTO.address,
+        convertToModel(contractDTO.contractor.ref ?: throw IllegalStateException("contractor must be set")),
+        contractDTO.docType,
+        contractDTO.number,
+        contractDTO.date,
+        contractDTO.artifact.ref ?: throw IllegalStateException("artifact must be set")
+    )
+}
+
+fun convertToModel(contractorDTO: ContractorDTO): Contractor {
+    return Contractor(
+        contractorDTO.oid,
+        contractorDTO.name,
+        contractorDTO.address,
+        contractorDTO.INN
     )
 }
 

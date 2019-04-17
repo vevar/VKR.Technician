@@ -1,5 +1,6 @@
 package com.nstu.technician.data.dto.job
 
+import com.nstu.technician.data.dto.EntityLink
 import com.nstu.technician.data.dto.tool.ImplementsDTO
 
 class JobTypeDTO (
@@ -8,5 +9,5 @@ class JobTypeDTO (
     val description: String,
     val duration: Int
 ) {
-    var impList: List<ImplementsDTO>? = null
+    var impList: List<EntityLink<ImplementsDTO>>? = null
 }

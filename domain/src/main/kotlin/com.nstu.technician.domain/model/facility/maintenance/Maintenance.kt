@@ -10,8 +10,8 @@ class Maintenance(
     val facility: Facility,
     val visitDate: OwnDateTime,
     val duration: Int,
-    val maintenanceType: Type,
-    var state: State
+    val maintenanceType: Int,
+    var state: Int
 ) {
     var parent: Maintenance? = null
     var beginTime: OwnDateTime? = null
@@ -19,18 +19,4 @@ class Maintenance(
     var jobList: List<MaintenanceJob>? = null
     var workCompletionReport: Document? = null
     var voiceMassage: Artifact? = null
-
-    enum class Type {
-        UNDEFINED_TYPE,
-        MONTHLY,
-        SINGLE,
-        UNPLANNED,
-        REPEATED,
-    }
-
-    enum class State {
-        UNDEFINED_TYPE,
-        COMPLETE,
-        NOT_COMPLETE
-    }
 }

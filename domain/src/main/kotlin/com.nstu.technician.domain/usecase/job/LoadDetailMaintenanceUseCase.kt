@@ -43,7 +43,7 @@ class LoadDetailMaintenanceUseCase @Inject constructor(
         val address = Address("Советская", "23", "111")
         address.location = GPSPoint(1, 31.952854, 115.857342)
         val facility = Facility(
-            1, "NSTU",  address,
+            1, "NSTU", address,
             OwnDateTime(calendar.timeInMillis)
         )
         val fileNameExt = FileNameExt("@File_Name", "@path", "ext")
@@ -59,7 +59,7 @@ class LoadDetailMaintenanceUseCase @Inject constructor(
             "@INN",
             address,
             contractor,
-            Document.Type.UNDEFINED,
+            0,
             "@Number",
             OwnDateTime(calendar.timeInMillis),
             artifact
@@ -70,8 +70,8 @@ class LoadDetailMaintenanceUseCase @Inject constructor(
             facility,
             OwnDateTime(calendar.timeInMillis),
             60,
-            Maintenance.Type.MONTHLY,
-            Maintenance.State.NOT_COMPLETE
+            1,
+            1
         )
 
         val list = mutableListOf<MaintenanceJob>()
@@ -79,7 +79,7 @@ class LoadDetailMaintenanceUseCase @Inject constructor(
         list.add(
             MaintenanceJob(
                 1,
-                MaintenanceJob.TypeState.NOT_COMPLETED,
+                1,
                 jobType
             )
         )

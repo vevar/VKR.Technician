@@ -8,8 +8,8 @@ import com.nstu.technician.domain.model.tool.ComponentUnit
 import com.nstu.technician.domain.model.tool.Implements
 
 data class MaintenanceJob(
-    val oid: Int,
-    val jobState: TypeState,
+    val oid: Long,
+    val jobState: Int,
     val jobType: JobType
 ) {
     var beginTime: OwnDateTime? = null
@@ -20,10 +20,4 @@ data class MaintenanceJob(
     var components: List<ComponentUnit>? = null
     var duration: Int? = null  // in minutes
     var problem: Problem? = null
-
-    enum class TypeState {
-        UNDEFINED,
-        COMPLETED,
-        NOT_COMPLETED
-    }
 }

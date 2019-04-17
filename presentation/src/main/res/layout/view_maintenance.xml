@@ -39,7 +39,6 @@
                         android:maxLines="1"
                         android:text="@{String.valueOf('#').concat(String.valueOf(maintenance.oid))}"
                         app:layout_constraintStart_toStartOf="parent"
-
                         tools:text="#32"
                         app:layout_constraintTop_toTopOf="@+id/name_facility"
                         app:layout_constraintBottom_toBottomOf="@+id/name_facility"/>
@@ -115,7 +114,7 @@
                         android:textColor="@color/black"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:setTypeMaintenanceById="@{maintenance.maintenanceType.ordinal}"
+                        app:setTypeMaintenanceById="@{maintenance.maintenanceType}"
                         tools:text="Ежемесячное ТО"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
