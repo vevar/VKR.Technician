@@ -9,7 +9,6 @@ import com.nstu.technician.domain.model.user.Technician
 import com.nstu.technician.domain.usecase.CallUseCase
 import com.nstu.technician.domain.usecase.auth.AuthUseCase
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class LoginViewModel(

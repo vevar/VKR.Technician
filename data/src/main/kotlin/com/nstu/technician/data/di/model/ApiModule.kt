@@ -1,5 +1,6 @@
 package com.nstu.technician.data.di.model
 
+import com.nstu.technician.data.datasource.cloud.api.FacilityApi
 import com.nstu.technician.data.datasource.cloud.api.ShiftApi
 import com.nstu.technician.data.datasource.cloud.api.TechnicianApi
 import com.nstu.technician.data.datasource.cloud.api.UserApi
@@ -25,5 +26,10 @@ class ApiModule(
     @Provides
     fun provideShiftApi(): ShiftApi {
         return apiProvider.createShiftApi()
+    }
+
+    @Provides
+    fun provideFacility(): FacilityApi{
+        return apiProvider.createFacilityApi()
     }
 }

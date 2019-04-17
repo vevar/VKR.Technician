@@ -1,24 +1,17 @@
 package com.nstu.technician.domain.usecase.job
 
-import com.nstu.technician.domain.model.common.Address
-import com.nstu.technician.domain.model.common.GPSPoint
-import com.nstu.technician.domain.model.common.OwnDateTime
+import com.nstu.technician.domain.exceptions.NotFoundException
 import com.nstu.technician.domain.model.facility.Facility
+import com.nstu.technician.domain.repository.FacilityRepository
 import com.nstu.technician.domain.usecase.UseCase
-import java.util.*
 import javax.inject.Inject
 
 class LoadFacilityUseCase @Inject constructor(
-
+    private val facilityRepository: FacilityRepository
 ) : UseCase<Facility, LoadFacilityUseCase.Param>() {
 
     override suspend fun task(param: Param): Facility {
-        val calendar = Calendar.getInstance()
-        val address = Address("Советская", "23", "111")
-        address.location = GPSPoint(1,55.008166, 82.937308)
-        return Facility(1, "NSTU", address,
-            OwnDateTime(calendar.timeInMillis)
-        )
+        return facilityRepository.findById(param.idFacility) ?: throw NotFoundException("Facility not found")
     }
 
         class Param private constructor(

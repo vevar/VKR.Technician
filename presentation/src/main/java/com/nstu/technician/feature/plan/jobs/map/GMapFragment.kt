@@ -15,11 +15,10 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.nstu.technician.databinding.FragmentMapBinding
-import com.nstu.technician.di.component.map.DaggerGMapComponent
 import com.nstu.technician.di.component.map.DaggerGMapScreen
 import com.nstu.technician.di.module.model.MapModule
-import com.nstu.technician.domain.model.facility.Facility
 import com.nstu.technician.domain.model.common.GPSPoint
+import com.nstu.technician.domain.model.facility.Facility
 import com.nstu.technician.feature.App
 import com.nstu.technician.feature.BaseFragment
 import com.nstu.technician.feature.common.DEFAULT_VALUE_ARG
@@ -82,14 +81,14 @@ class GMapFragment : BaseFragment() {
     }
 
     private fun setupInjection(gMapFragmentArgs: GMapFragmentArgs) {
-        val gMapComponent = DaggerGMapComponent.builder()
-            .build()
+        val app = App.getApp(requireContext())
+        val mapComponent = app.getDataClient().createMapComponent()
         gMapFragmentArgs.apply {
             if (idFacility != DEFAULT_VALUE_ARG) {
 
                 val gMapScreen = DaggerGMapScreen.builder()
                     .appComponent(App.getApp(requireContext()).getAppComponent())
-                    .gMapComponent(gMapComponent)
+                    .mapComponent(mapComponent)
                     .mapModule(MapModule(idFacility, object : MapViewModel.MapListener {
                         override fun onUpdateDevicePosition(marker: MarkerOptions) {
                             Log.d(TAG, "onUpdateDevicePosition is called")

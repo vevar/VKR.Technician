@@ -12,7 +12,6 @@ import com.nstu.technician.R
 import com.nstu.technician.databinding.ViewMaintenanceBinding
 import com.nstu.technician.domain.model.facility.maintenance.Maintenance
 import com.nstu.technician.feature.common.TypeNotification
-import java.lang.IllegalArgumentException
 
 class MaintenanceRVAdapter(
     context: Context,

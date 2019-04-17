@@ -1,6 +1,7 @@
 package com.nstu.technician.data.di.model
 
 import com.nstu.technician.data.datasource.*
+import com.nstu.technician.data.datasource.cloud.FacilityCloudSource
 import com.nstu.technician.data.datasource.cloud.ShiftCloudSource
 import com.nstu.technician.data.datasource.cloud.TechnicianCloudSource
 import com.nstu.technician.data.datasource.cloud.UserCloudSource
@@ -50,4 +51,9 @@ class DataSourceModule {
         return shiftCloudSource
     }
 
+    @Named(CLOUD)
+    @Provides
+    fun provideFacilityCloudSource(facilityCloudSource: FacilityCloudSource): FacilityDataSource {
+        return facilityCloudSource
+    }
 }

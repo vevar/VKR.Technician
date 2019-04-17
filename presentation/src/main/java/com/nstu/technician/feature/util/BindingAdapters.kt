@@ -32,11 +32,17 @@ object BindingAdapters {
         if (facility != null) {
             val address = facility.address
             val resources = view.resources
-            val textAddress = "${resources.getString(R.string.lbl_shot_street)}. ${address.street} " +
-                    "${resources.getString(R.string.lbl_shot_home)}. ${address.home} " +
-                    "${resources.getString(R.string.lbl_shot_office)}. ${address.office}"
-            view.text = textAddress
+
+            var stringAddress: String = "${resources.getString(R.string.lbl_shot_street)}. ${address.street}" +
+                    " ${resources.getString(R.string.lbl_shot_home)}. ${address.home}"
+            val office = address.office
+
+            if (office != null) {
+                stringAddress = "$stringAddress ${resources.getString(R.string.lbl_shot_office)}. $office"
+            }
+            view.text = stringAddress
         }
+
     }
 
     @BindingAdapter("app:setContractDate")

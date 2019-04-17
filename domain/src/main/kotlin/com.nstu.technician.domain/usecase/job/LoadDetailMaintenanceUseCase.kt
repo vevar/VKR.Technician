@@ -40,7 +40,7 @@ class LoadDetailMaintenanceUseCase @Inject constructor(
 
     private fun createMaintenance(): Maintenance {
         val calendar = Calendar.getInstance()
-        val address = Address("Советская", "23", "111")
+        val address = Address("Советская", "23")
         address.location = GPSPoint(1, 31.952854, 115.857342)
         val facility = Facility(
             1, "NSTU", address,

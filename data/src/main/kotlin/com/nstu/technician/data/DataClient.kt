@@ -73,4 +73,12 @@ class DataClient private constructor() {
             .repositoryModule(RepositoryModule())
             .build()
     }
+
+    fun createMapComponent(): MapComponent{
+        return DaggerMapComponent.builder()
+            .apiModule(ApiModule(ApiProvider(retrofitProvider)))
+            .dataSourceModule(DataSourceModule())
+            .repositoryModule(RepositoryModule())
+            .build()
+    }
 }
