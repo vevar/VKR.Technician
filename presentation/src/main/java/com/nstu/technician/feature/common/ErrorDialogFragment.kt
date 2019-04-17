@@ -37,10 +37,10 @@ class ErrorDialogFragment : DialogFragment() {
         val view = activity.layoutInflater.inflate(R.layout.dialog_error, null)
         val textView = view.findViewById<TextView>(R.id.message)
 
-        builder.setTitle(R.string.error)
+        builder.setTitle(R.string.lbl_error)
         textView.text = arguments?.getString(EXTRA_MESSAGE) ?: throw NullPointerException()
         builder.setView(view)
-            .setPositiveButton(R.string.ok) { _, _ ->
+            .setPositiveButton(R.string.lbl_ok) { _, _ ->
                 errorDialogListener?.onClickOk(this)
                     ?: throw IllegalStateException("errorDialogListener must be set")
             }

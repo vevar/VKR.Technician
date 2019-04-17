@@ -25,6 +25,7 @@ ext {
     retrofitVersion = '2.5.0'
     retrofitGsonConverterVersion = '2.4.0'
     retrofitRxAdapterVersion = '2.3.0'
+    okHttp3Client_version = '3.14.1'
     okHttp3LoggingVersion = '3.6.0'
     rxJavaVersion = '2.1.0'
     rxAndroidVersion = '2.1.0'
@@ -39,10 +40,15 @@ ext {
     legacyVersion = '1.0.0'
     materialVersion = '1.0.0'
 
+    googleServicesMaps_verion = '16.1.0'
+    playServiceLocation_version = '16.0.0'
+
 //Testing
     junitVersion = '4.12'
-    runnerVersion = '1.1.1'
+    runnerVersion = '1.1.0'
     espressoVersion = '3.1.1'
+    coreTest_version = '1.0.0'
+    robolectric_version = '4.2'
 
 //Development
 //    ---
@@ -63,7 +69,9 @@ ext {
             legacy                 : "androidx.legacy:legacy-support-v4:${legacyVersion}",
             material               : "com.google.android.material:material:${materialVersion}",
             navigationFragment     : "android.arch.navigation:navigation-fragment-ktx:${nav_version}",
-            navigationUI           : "android.arch.navigation:navigation-ui-ktx:${nav_version}"
+            navigationUI           : "android.arch.navigation:navigation-ui-ktx:${nav_version}",
+            googleServicesMaps     : "com.google.android.gms:play-services-maps:${googleServicesMaps_verion}",
+            playServiceLocation    : "com.google.android.gms:play-services-location:${playServiceLocation_version}"
     ]
 
     presentationTestDependencies = [
@@ -89,15 +97,21 @@ ext {
             roomCompiler           : "androidx.room:room-compiler:${roomVersion}",
             retrofit               : "com.squareup.retrofit2:retrofit:${retrofitVersion}",
             retrofitGsonConverter  : "com.squareup.retrofit2:converter-gson:${retrofitGsonConverterVersion}",
+            okHttp3Client          : "com.squareup.okhttp3:okhttp:${okHttp3Client_version}",
             okHttp3Logging         : "com.squareup.okhttp3:logging-interceptor:${okHttp3LoggingVersion}",
             gson                   : "com.google.code.gson:gson:${gsonVersion}",
             inject                 : "javax.inject:javax.inject:1",
+            daggerCompiler         : "com.google.dagger:dagger-compiler:${daggerVersion}",
+            dagger                 : "com.google.dagger:dagger:${daggerVersion}",
     ]
 
     dataTestDependencies = [
             junit   : "junit:junit:${junitVersion}",
-            runner  : "androidx.test:runner:${runnerVersion}",
-            espresso: "androidx.test.espresso:espresso-core:${espressoVersion}"
+            runner  : "androidx.test.ext:junit:${runnerVersion}",
+            espresso: "androidx.test.espresso:espresso-core:${espressoVersion}",
+            core    : "androidx.test:core:${coreTest_version}",
+            robolectric:"org.robolectric:robolectric:${robolectric_version}"
+
     ]
 
 

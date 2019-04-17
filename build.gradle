@@ -16,7 +16,7 @@ buildscript {
 
 allprojects {
     ext {
-        androidApplicationId = 'com.nstu.techinician'
+        androidApplicationId = 'com.nstu.technician'
         androidTestInstrumentationRunner = 'androidx.test.runner.AndroidJUnitRunner'
 
         androidVDUseSupportLibrary = true

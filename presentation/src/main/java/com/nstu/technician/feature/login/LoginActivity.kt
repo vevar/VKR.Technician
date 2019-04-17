@@ -9,9 +9,15 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.nstu.technician.R
 import com.nstu.technician.databinding.ActivityLoginBinding
-import com.nstu.technician.domain.model.Technician
+import com.nstu.technician.di.component.login.DaggerLoginScreen
+import com.nstu.technician.di.module.model.LoginModule
+import com.nstu.technician.domain.model.user.Technician
+import com.nstu.technician.feature.App
 import com.nstu.technician.feature.BaseActivity
+import com.nstu.technician.feature.ContainerActivity
 import com.nstu.technician.feature.common.ErrorDialogFragment
+import com.nstu.technician.feature.util.BaseViewModelFactory
+import javax.inject.Inject
 
 class LoginActivity : BaseActivity(), ErrorDialogFragment.ErrorDialogListener {
 
@@ -23,33 +29,50 @@ class LoginActivity : BaseActivity(), ErrorDialogFragment.ErrorDialogListener {
         private const val STATE_MESSAGE = "STATE_MESSAGE"
     }
 
+    @Inject
+    lateinit var vmFactory: BaseViewModelFactory<LoginViewModel>
+
     private lateinit var mBinding: ActivityLoginBinding
     private lateinit var mViewModel: LoginViewModel
 
     private lateinit var technicianObserver: Observer<Technician>
-    private lateinit var messageObserver: Observer<Int?>
+    private lateinit var messageObserver: Observer<Int>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setupInjection()
         setupViewModel(savedInstanceState)
         setupView(mViewModel)
     }
 
+    private fun setupInjection() {
+        val app = App.getApp(this)
+        val appComponent = app.getAppComponent()
+
+        val loginScreen = DaggerLoginScreen.builder()
+            .appComponent(appComponent)
+            .authComponent(app.getDataClient().getAuthComponent())
+            .loginModule(LoginModule())
+            .build()
+        loginScreen.inject(this)
+    }
+
     private fun setupViewModel(savedInstanceState: Bundle?) {
-        val factory = LoginViewModelFactory()
-        mViewModel = ViewModelProviders.of(this, factory).get(LoginViewModel::class.java)
+        mViewModel = ViewModelProviders.of(this, vmFactory).get(LoginViewModel::class.java)
         if (savedInstanceState != null) {
             mViewModel.username.value = savedInstanceState.getString(STATE_USERNAME) ?: ""
             mViewModel.password.value = savedInstanceState.getString(STATE_PASSWORD) ?: ""
-            mViewModel.messageIdResource.value = savedInstanceState.getInt(STATE_MESSAGE)
+            mViewModel.messageIdResource.value = savedInstanceState.getInt(STATE_MESSAGE, 0)
         }
 
         technicianObserver = Observer {
             Log.d(TAG, "Technician auth is success")
+            ContainerActivity.startActivity(this, it.oid)
+            finish()
         }
         messageObserver = Observer {
-            if (it != null) {
+            if (it != 0) {
                 val fragment = supportFragmentManager.findFragmentByTag(ErrorDialogFragment.TAG)
                         as? ErrorDialogFragment
 
@@ -94,7 +117,7 @@ class LoginActivity : BaseActivity(), ErrorDialogFragment.ErrorDialogListener {
 
     override fun onClickOk(dialogFragment: ErrorDialogFragment) {
         dialogFragment.dismiss()
-        mViewModel.messageIdResource.value = null
+        mViewModel.messageIdResource.value = 0
     }
 
     override fun onAttachFragment(fragment: Fragment) {

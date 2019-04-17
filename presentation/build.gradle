@@ -9,6 +9,10 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
+    compileOptions {
+        targetCompatibility = "8"
+        sourceCompatibility = "8"
+    }
 
     compileSdkVersion androidCompileSdkVersion
     defaultConfig {
@@ -26,7 +30,11 @@ android {
     }
     buildTypes {
         debug {
+            Properties properties = new Properties()
+            properties.load(project.rootProject.file('gradle.properties').newDataInputStream())
+            def FireFighter_GoogleMapApiKey = properties.getProperty('FireFighter_GoogleMapApiKey')
             ext.enableCrashlytics = false
+            resValue 'string', 'map_api_key', FireFighter_GoogleMapApiKey
         }
 
         release {
@@ -78,6 +86,10 @@ dependencies {
     implementation dependencies.lifeCycleViewModel
     implementation dependencies.navigationFragment
     implementation dependencies.navigationUI
+//    Map
+    implementation dependencies.googleServicesMaps
+    implementation dependencies.playServiceLocation
+
 //    Dagger
     implementation dependencies.dagger
     kapt dependencies.daggerCompiler
