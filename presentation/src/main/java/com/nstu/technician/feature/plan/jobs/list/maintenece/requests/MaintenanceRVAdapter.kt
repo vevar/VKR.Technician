@@ -66,41 +66,6 @@ class MaintenanceRVAdapter(
                     maintenanceListener.onStartJob(maintenance)
                 }
             }
-//            type.text = maintenance.maintenanceType.name
-
-            val randNotification = Math.random()
-            var typeNotification: TypeNotification? = null
-
-            var recMessage: String? = null
-            if (randNotification <= 0.33) {
-                typeNotification = TypeNotification.NOTIFICATION
-                recMessage = itemView.resources.getString(R.string.lbl_take_tools)
-
-            } else if (randNotification > 0.33 && randNotification <= 0.66) {
-                typeNotification = TypeNotification.WARNING
-                recMessage = itemView.resources.getString(R.string.lbl_take_akt)
-            } else {
-
-            }
-            if (recMessage != null) {
-                when (typeNotification) {
-                    TypeNotification.NOTIFICATION -> {
-                        message.text = recMessage
-                        message.setBackgroundResource(R.color.yellow)
-                        message.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_notification_white, 0, 0, 0)
-                        message.visibility = TextView.VISIBLE
-
-                    }
-                    TypeNotification.WARNING -> {
-                        message.text = recMessage
-                        message.setBackgroundResource(R.color.red)
-                        message.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_warning_white, 0, 0, 0)
-                        message.visibility = TextView.VISIBLE
-                    }
-                }
-            }
-
-
         }
     }
 
