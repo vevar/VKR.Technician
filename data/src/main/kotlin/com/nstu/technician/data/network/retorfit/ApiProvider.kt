@@ -1,9 +1,6 @@
 package com.nstu.technician.data.network.retorfit
 
-import com.nstu.technician.data.datasource.cloud.api.FacilityApi
-import com.nstu.technician.data.datasource.cloud.api.ShiftApi
-import com.nstu.technician.data.datasource.cloud.api.TechnicianApi
-import com.nstu.technician.data.datasource.cloud.api.UserApi
+import com.nstu.technician.data.datasource.cloud.api.*
 import retrofit2.Retrofit
 
 class ApiProvider(
@@ -24,6 +21,10 @@ class ApiProvider(
 
     fun createFacilityApi(): FacilityApi {
         return retrofitProvider.getRetrofit().create(FacilityApi::class.java)
+    }
+
+    fun createMaintenanceApi(): MaintenanceAPi{
+        return retrofitProvider.getRetrofit().create(MaintenanceAPi::class.java)
     }
 
 }
