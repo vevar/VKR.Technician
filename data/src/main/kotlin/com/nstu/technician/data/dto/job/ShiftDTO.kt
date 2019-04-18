@@ -7,6 +7,6 @@ import com.nstu.technician.domain.model.common.OwnDateTime
 data class ShiftDTO(
     val oid: Long,
     val date: OwnDateTime,
-    var visits: List<EntityLink<MaintenanceDTO>>? = null,
-    var points: List<EntityLink<GPSPoint>>? = null
+    val visits: List<EntityLink<MaintenanceDTO>>? = null,
+    val points: List<EntityLink<GPSPoint>>? = null
 )

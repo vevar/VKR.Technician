@@ -205,6 +205,13 @@ fun AddressDTO.convertToAddress(): Address {
     )
 }
 
+fun ShiftEntity.convertToShiftDTO(): ShiftDTO{
+    return ShiftDTO(
+        oid = oid,
+        date = date
+    )
+}
+
 fun FacilityEntity.convertToFacilityDTO(gpsEntity: GPSEntity): FacilityDTO {
     return FacilityDTO(
         oid = oid,
