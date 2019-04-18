@@ -11,5 +11,4 @@ import dagger.Component
 interface PlanJobsComponent {
 
     fun shiftRepository(): ShiftRepository
-
 }

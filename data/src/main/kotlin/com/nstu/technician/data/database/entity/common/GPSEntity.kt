@@ -2,6 +2,7 @@ package com.nstu.technician.data.database.entity.common
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import androidx.room.PrimaryKey
 import com.nstu.technician.data.database.entity.document.ContractEntity
 
 @Entity(
@@ -16,10 +17,8 @@ import com.nstu.technician.data.database.entity.document.ContractEntity
     ]
 )
 data class GPSEntity(
+    @PrimaryKey
     val oid: Long,
     val latitude: Double, //latitude
-    val longitude: Double, //longitude
-    val street: String? = null,
-    val home: String? = null,
-    val office: String? = null
+    val longitude: Double //longitude
 )

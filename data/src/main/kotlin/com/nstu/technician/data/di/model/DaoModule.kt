@@ -32,4 +32,19 @@ class DaoModule(private val appDataBase: AppDataBase) {
     fun provideFacilityDao(): FacilityDao{
         return appDataBase.getFacilityDao()
     }
+
+    @Provides
+    fun provideShiftDao():ShiftDao{
+        return appDataBase.getShiftDao()
+    }
+
+    @Provides
+    fun provideAddressDao(): AddressDao{
+        return appDataBase.getAddressDao()
+    }
+
+    @Provides
+    fun provideGPSDao():GpsDao{
+        return appDataBase.getGPSDao()
+    }
 }

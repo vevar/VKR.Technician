@@ -9,7 +9,6 @@ data class Facility(
     val oid: Long,
     val name: String,
     val address: Address,
-    val assingmentDate: OwnDateTime
-) {
-    var contract: Contract? = null
-}
+    val assingmentDate: OwnDateTime,
+    val contract: Contract? = null
+)

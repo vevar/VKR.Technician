@@ -11,11 +11,11 @@ class Maintenance(
     val visitDate: OwnDateTime,
     val duration: Int,
     val maintenanceType: Int,
-    var state: Int,
-    var parent: Maintenance? = null,
-    var beginTime: OwnDateTime? = null,
-    var endTime: OwnDateTime? = null,
-    var jobList: List<MaintenanceJob>? = null,
-    var workCompletionReport: Document? = null,
-    var voiceMassage: Artifact? = null
+    val state: Int,
+    val parent: Maintenance? = null,
+    val beginTime: OwnDateTime? = null,
+    val endTime: OwnDateTime? = null,
+    val jobList: List<MaintenanceJob>? = null,
+    val workCompletionReport: Document? = null,
+    val voiceMassage: Artifact? = null
 )

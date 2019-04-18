@@ -32,4 +32,9 @@ class RepositoryModule {
     fun provideFacilityRepository(facilityRepositoryImpl: FacilityRepositoryImpl): FacilityRepository {
         return facilityRepositoryImpl
     }
+
+    @Provides
+    fun provideMaintenanceRepository(maintenanceRepositoryImpl: MaintenanceRepositoryImpl): MaintenanceRepository{
+        return maintenanceRepositoryImpl
+    }
 }

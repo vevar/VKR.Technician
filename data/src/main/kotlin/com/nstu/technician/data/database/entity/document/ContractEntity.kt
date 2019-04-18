@@ -14,7 +14,9 @@ import com.nstu.technician.domain.model.common.OwnDateTime
         )
     ],
     indices = [
-        Index(value = ["address_id", "contractor_id", "artifact_id"])
+        Index(value = ["address_id"], unique = true),
+        Index(value = ["contractor_id"]),
+        Index(value = ["artifact_id"])
     ]
 )
 data class ContractEntity(

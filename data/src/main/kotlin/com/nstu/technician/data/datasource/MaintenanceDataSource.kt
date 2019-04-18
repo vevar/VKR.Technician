@@ -4,5 +4,5 @@ import com.nstu.technician.data.dto.job.MaintenanceDTO
 
 interface MaintenanceDataSource {
 
-    suspend fun saveAll(listMaintenance: List<MaintenanceDTO>)
+    suspend fun saveAllForShift(listMaintenance: List<MaintenanceDTO>, shiftId: Long)
 }

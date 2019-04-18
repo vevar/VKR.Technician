@@ -1,5 +1,6 @@
 package com.nstu.technician.domain.usecase.job
 
+import com.nstu.technician.domain.exceptions.NotFoundException
 import com.nstu.technician.domain.model.FileNameExt
 import com.nstu.technician.domain.model.common.Address
 import com.nstu.technician.domain.model.common.Artifact
@@ -12,17 +13,17 @@ import com.nstu.technician.domain.model.facility.Facility
 import com.nstu.technician.domain.model.facility.JobType
 import com.nstu.technician.domain.model.facility.maintenance.Maintenance
 import com.nstu.technician.domain.model.facility.maintenance.MaintenanceJob
+import com.nstu.technician.domain.repository.MaintenanceRepository
 import com.nstu.technician.domain.usecase.UseCase
 import kotlinx.coroutines.delay
 import java.util.*
 import javax.inject.Inject
 
 class LoadDetailMaintenanceUseCase @Inject constructor(
-
+    private val maintenanceRepository: MaintenanceRepository
 ) : UseCase<Maintenance, LoadDetailMaintenanceUseCase.Companion.Param>() {
     override suspend fun task(param: Param): Maintenance {
-        delay(1_000)
-        return createMaintenance()
+        return maintenanceRepository.findById(param.idMaintenance)?: throw NotFoundException("Maintenance not found")
     }
 
     companion object {
@@ -36,55 +37,5 @@ class LoadDetailMaintenanceUseCase @Inject constructor(
             }
         }
 
-    }
-
-    private fun createMaintenance(): Maintenance {
-        val calendar = Calendar.getInstance()
-        val address = Address("Советская", "23")
-        address.location = GPSPoint(1, 31.952854, 115.857342)
-        val facility = Facility(
-            1, "NSTU", address,
-            OwnDateTime(calendar.timeInMillis)
-        )
-        val fileNameExt = FileNameExt("@File_Name", "@path", "ext")
-        val artifact =
-            Artifact(
-                1, Artifact.Type.DOC, "@name_artifact", fileNameExt,
-                OwnDateTime(calendar.timeInMillis), 1
-            )
-        val contractor = Contractor(1, "@Contractor_Name", address, "@INN")
-        facility.contract = Contract(
-            1,
-            "@name_contract",
-            "@INN",
-            address,
-            contractor,
-            0,
-            "@Number",
-            OwnDateTime(calendar.timeInMillis),
-            artifact
-        )
-
-        val maintenance = Maintenance(
-            1,
-            facility,
-            OwnDateTime(calendar.timeInMillis),
-            60,
-            1,
-            1
-        )
-
-        val list = mutableListOf<MaintenanceJob>()
-        val jobType = JobType(1, "@Job_type", "description", 20)
-        list.add(
-            MaintenanceJob(
-                1,
-                1,
-                jobType
-            )
-        )
-
-        maintenance.jobList = list
-        return maintenance
     }
 }

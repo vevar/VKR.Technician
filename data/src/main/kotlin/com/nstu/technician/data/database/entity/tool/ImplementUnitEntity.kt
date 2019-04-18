@@ -9,5 +9,5 @@ data class ImplementUnitEntity(
     @PrimaryKey
     val oid: Long,
     val code: String,
-    @ColumnInfo(name = "implement_id") val implementsId: Long? = null
+    @ColumnInfo(name = "implements_id") val implementsId: Long? = null
 )

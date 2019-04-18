@@ -8,15 +8,14 @@ import com.nstu.technician.domain.model.common.OwnDateTime
 class MaintenanceDTO(
     val oid: Long,
     val facility: EntityLink<FacilityDTO>,
-    val visitDate: OwnDateTime,
+    val visitDate: Long,
     val duration: Int,
     val maintenanceType: Int,
-    var state: Int
-) {
-    var parent: EntityLink<MaintenanceDTO>? = null
-    var beginTime: OwnDateTime? = null
-    var endTime: OwnDateTime? = null
-    var jobList: List<EntityLink<MaintenanceJobDTO>>? = null
-    var workCompletionReport: EntityLink<DocumentDTO>? = null
-    var voiceMassage: EntityLink<Artifact>? = null
-}
+    val state: Int,
+    val parent: EntityLink<MaintenanceDTO>? = null,
+    val beginTime: Long? = null,
+    val endTime: Long? = null,
+    val jobList: List<EntityLink<MaintenanceJobDTO>>? = null,
+    val workCompletionReport: EntityLink<DocumentDTO>? = null,
+    val voiceMassage: EntityLink<Artifact>? = null
+)

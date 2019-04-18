@@ -8,7 +8,6 @@ open class Document(
     open val docType: Int,
     open val number: String,
     open val date: OwnDateTime,
-    open val artifact: Artifact
-){
-    var state: Int = 0
-}
+    open val artifact: Artifact,
+    open val state: Int = 0
+)

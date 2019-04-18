@@ -8,6 +8,9 @@ import javax.inject.Inject
 class ShiftCloudSource @Inject constructor(
     private val shiftApi: ShiftApi
 ) : ShiftDataSource {
+    override suspend fun save(shiftDTO: ShiftDTO) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     override suspend fun findById(id: Long): ShiftDTO? {
         val response = shiftApi.getShiftFull(id).execute()

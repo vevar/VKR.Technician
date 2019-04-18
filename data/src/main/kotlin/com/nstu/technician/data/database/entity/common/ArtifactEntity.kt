@@ -13,6 +13,6 @@ data class ArtifactEntity(
     val type: Int,
     val name: String,
     @Embedded val original: FileNameExt,
-    @Embedded val date: OwnDateTime,
+    val date: Long,
     val fileSize: Long
 )

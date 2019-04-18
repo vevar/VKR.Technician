@@ -9,7 +9,6 @@ data class AddressEntity(
     val oid: Int,
     val street: String,
     val home: String,
-    val latitude: Double,
-    val longitude: Double,
+    val gpsPointId: Long,
     val office: String? = null
 )

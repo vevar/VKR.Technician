@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nstu.technician.R
 import com.nstu.technician.databinding.FragmentMaintenanceBinding
-import com.nstu.technician.di.component.maintenance.DaggerMaintenanceComponent
 import com.nstu.technician.di.component.maintenance.DaggerMaintenanceScreen
 import com.nstu.technician.domain.model.facility.maintenance.Maintenance
 import com.nstu.technician.feature.App
@@ -54,13 +53,13 @@ class MaintenanceFragment : BaseFragment() {
     }
 
     private fun setupInjection() {
-        val maintenanceComponent = DaggerMaintenanceComponent.builder()
-            .build()
+        val dataClient = App.getApp(requireContext()).getDataClient()
 
         val screen = DaggerMaintenanceScreen.builder()
             .appComponent(App.getApp(requireContext()).getAppComponent())
-            .maintenanceComponent(maintenanceComponent)
+            .maintenanceComponent(dataClient.createMaintenanceComponent())
             .build()
+
         screen.inject(this)
     }
 

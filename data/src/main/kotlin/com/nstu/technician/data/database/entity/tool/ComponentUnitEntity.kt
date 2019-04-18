@@ -6,7 +6,7 @@ import androidx.room.*
     foreignKeys = [
         ForeignKey(
             entity = ComponentEntity::class,
-            parentColumns = ["id"],
+            parentColumns = ["oid"],
             childColumns = ["component_id"]
         )
     ],

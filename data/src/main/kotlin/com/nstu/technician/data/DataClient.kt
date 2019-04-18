@@ -21,6 +21,11 @@ class DataClient private constructor() {
     private var retrofitProvider: RetrofitProvider = RetrofitProvider()
     private lateinit var appDataBase: AppDataBase
 
+    private lateinit var daoModule: DaoModule
+    private lateinit var apiModule: ApiModule
+    private lateinit var dataSourceModule: DataSourceModule
+    private lateinit var repositoryModule: RepositoryModule
+
     @Inject
     lateinit var accessTokenInterceptor: AccessTokenInterceptor
 
@@ -30,7 +35,6 @@ class DataClient private constructor() {
             dataClient.appDataBase =
                 Room.databaseBuilder(context, AppDataBase::class.java, AppDataBase.DATABASE_NAME)
                     .build()
-
             dataClient.setupInjection()
 
             val okHttpClient = OkHttpClient.Builder()
@@ -39,6 +43,11 @@ class DataClient private constructor() {
                 .build()
 
             dataClient.retrofitProvider.addClient(okHttpClient)
+
+            dataClient.daoModule = DaoModule(dataClient.appDataBase)
+            dataClient.apiModule = ApiModule(ApiProvider(dataClient.retrofitProvider))
+            dataClient.dataSourceModule = DataSourceModule()
+            dataClient.repositoryModule = RepositoryModule()
 
             return dataClient
         }
@@ -61,6 +70,7 @@ class DataClient private constructor() {
     fun createPlanJobsComponent(): PlanJobsComponent {
         return DaggerPlanJobsComponent.builder()
             .apiModule(ApiModule(ApiProvider(retrofitProvider)))
+            .daoModule(daoModule)
             .dataSourceModule(DataSourceModule())
             .repositoryModule(RepositoryModule())
             .build()
@@ -74,11 +84,19 @@ class DataClient private constructor() {
             .build()
     }
 
-    fun createMapComponent(): MapComponent{
+    fun createMapComponent(): MapComponent {
         return DaggerMapComponent.builder()
             .apiModule(ApiModule(ApiProvider(retrofitProvider)))
             .dataSourceModule(DataSourceModule())
             .repositoryModule(RepositoryModule())
+            .build()
+    }
+
+    fun createMaintenanceComponent(): MaintenanceComponent {
+        return DaggerMaintenanceComponent.builder()
+            .daoModule(daoModule)
+            .dataSourceModule(dataSourceModule)
+            .repositoryModule(repositoryModule)
             .build()
     }
 }
