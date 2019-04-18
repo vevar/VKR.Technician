@@ -1,7 +1,7 @@
 package com.nstu.technician.domain.model.tool
 
 class ComponentUnit(
-    val oid: Int,
+    val oid: Long,
     val number: Int,
     val component: Component
 )
