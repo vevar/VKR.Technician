@@ -2,6 +2,7 @@ package com.nstu.technician.data.database.entity.job
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 import androidx.room.Relation
 import com.nstu.technician.data.database.entity.tool.ComponentUnitEntity
 import com.nstu.technician.data.database.entity.tool.ImplementsEntity
@@ -9,6 +10,7 @@ import com.nstu.technician.domain.model.common.OwnDateTime
 
 @Entity
 data class MaintenanceJobEntity(
+    @PrimaryKey
     val oid: Long,
     val jobState: Int,
     @ColumnInfo(name = "job_type_id") val jobTypeId: Long,

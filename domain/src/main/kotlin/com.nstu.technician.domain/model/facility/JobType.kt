@@ -6,7 +6,6 @@ data class JobType(
     val oid: Long,
     val name: String,
     val description: String,
-    val duration: Int
-) {
-    var impList: List<Implements>? = null
-}
+    val duration: Int,
+    val impList: List<Implements>? = null
+)

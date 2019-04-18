@@ -1,9 +1,6 @@
 package com.nstu.technician.data.database.entity.tool
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.Index
+import androidx.room.*
 
 @Entity(
     foreignKeys = [
@@ -18,6 +15,7 @@ import androidx.room.Index
     ]
 )
 data class ComponentEntity(
+    @PrimaryKey
     val oid: Long,
     val name: String,
     @ColumnInfo(name = "component_type_id") val componentTypeId: Long
