@@ -6,8 +6,7 @@ import com.nstu.technician.domain.model.common.OwnDateTime
 
 data class Shift(
     val oid: Long,
-    val date: OwnDateTime
-) {
-    var visits: List<Maintenance>? = null
-    var points: List<GPSPoint>? = null
-}
+    val date: OwnDateTime,
+    val visits: List<Maintenance>? = null,
+    val points: List<GPSPoint>? = null
+)

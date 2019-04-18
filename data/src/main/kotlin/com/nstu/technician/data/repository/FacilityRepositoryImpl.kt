@@ -17,11 +17,9 @@ class FacilityRepositoryImpl @Inject constructor(
 ) : FacilityRepository {
 
     override suspend fun findById(id: Long): Facility? {
-        return facilityLocalSource.findById(id)?.let { facilityDTO ->
-            convertToModel(facilityDTO)
-        } ?: facilityCloudSource.findById(id)?.also { facilityDTO ->
+        return (facilityLocalSource.findById(id) ?: facilityCloudSource.findById(id)?.also { facilityDTO ->
             facilityLocalSource.save(facilityDTO)
-        }?.let { facilityDTO ->
+        })?.let { facilityDTO ->
             convertToModel(facilityDTO)
         }
     }

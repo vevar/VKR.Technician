@@ -16,15 +16,18 @@ class ShiftRepositoryImpl @Inject constructor(
     @Named(CLOUD)
     private val shiftCloudSource: ShiftDataSource,
     @Named(LOCAL)
+    private val shiftLocalSource: ShiftDataSource,
+    @Named(LOCAL)
     private val maintenanceLocalSource: MaintenanceDataSource
 ) : ShiftRepository {
 
     override suspend fun findById(id: Long): Shift? {
-        return shiftCloudSource.findById(id)?.let {
-            convertToModel(it)
-        }?.apply {
-
-        }
+        return (
+                shiftLocalSource.findById(id) ?: shiftCloudSource.findById(id)
+                    ?.also { shiftDTO ->
+                        shiftLocalSource.save(shiftDTO)
+                    }
+                )?.let { convertToModel(it) }
     }
 
     override suspend fun findByTechnicianIdAndTimePeriod(

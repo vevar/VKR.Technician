@@ -1,5 +1,6 @@
 package com.nstu.technician.data.until
 
+import com.nstu.technician.data.database.entity.ShiftEntity
 import com.nstu.technician.data.database.entity.common.GPSEntity
 import com.nstu.technician.data.database.entity.job.FacilityEntity
 import com.nstu.technician.data.dto.EntityLink
@@ -72,17 +73,12 @@ fun convertToModel(technicianDTO: TechnicianDTO): Technician {
 }
 
 fun convertToModel(shiftDTO: ShiftDTO): Shift {
-    val shift = Shift(shiftDTO.oid, shiftDTO.date)
-    val points = shiftDTO.points
-    val visits = shiftDTO.visits
-
-    if (!points.isNullOrEmpty()) {
-        shift.points = points.filter { it.ref != null }.map { it.ref!! }
-    }
-    if (!visits.isNullOrEmpty()) {
-        shift.visits = visits.filter { it.ref != null }.map { convertToModel(it.ref!!) }
-    }
-    return shift
+    return Shift(
+        shiftDTO.oid,
+        shiftDTO.date,
+        visits = shiftDTO.visits?.filter { it.ref != null }?.map { convertToModel(it.ref!!) },
+        points = shiftDTO.points?.filter { it.ref != null }?.map { it.ref!! }
+    )
 }
 
 fun convertToModel(maintenanceDTO: MaintenanceDTO): Maintenance {
@@ -162,7 +158,13 @@ fun convertToModel(contractorDTO: ContractorDTO): Contractor {
     )
 }
 
-fun AddressDTO.convertToGpsEntity(): GPSEntity{
+fun ShiftDTO.convertToShiftEntity(): ShiftEntity {
+    return ShiftEntity(
+        oid, date
+    )
+}
+
+fun AddressDTO.convertToGpsEntity(): GPSEntity {
     return GPSEntity(
         oid = location.oid,
         office = office,

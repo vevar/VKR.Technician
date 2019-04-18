@@ -6,4 +6,5 @@ interface ShiftDataSource {
 
     suspend fun findByTechnicianIdAndTimePeriod(technicianId: Long, startTime: Long, endTime: Long): List<ShiftDTO>?
     suspend fun findById(id: Long): ShiftDTO?
+    suspend fun save(shiftDTO: ShiftDTO)
 }
