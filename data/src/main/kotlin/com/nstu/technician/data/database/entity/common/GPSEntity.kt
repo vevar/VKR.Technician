@@ -16,7 +16,7 @@ import com.nstu.technician.data.database.entity.document.ContractEntity
     ]
 )
 data class GPSEntity(
-    val oid: Int,
+    val oid: Long,
     val latitude: Double, //latitude
     val longitude: Double, //longitude
     val street: String? = null,

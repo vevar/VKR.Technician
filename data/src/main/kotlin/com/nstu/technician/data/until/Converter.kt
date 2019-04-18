@@ -1,9 +1,11 @@
 package com.nstu.technician.data.until
 
+import com.nstu.technician.data.database.entity.common.GPSEntity
+import com.nstu.technician.data.database.entity.job.FacilityEntity
 import com.nstu.technician.data.dto.EntityLink
+import com.nstu.technician.data.dto.common.AddressDTO
 import com.nstu.technician.data.dto.document.ContractDTO
 import com.nstu.technician.data.dto.document.ContractorDTO
-import com.nstu.technician.data.dto.document.DocumentDTO
 import com.nstu.technician.data.dto.job.*
 import com.nstu.technician.data.dto.tool.ImplementUnitDTO
 import com.nstu.technician.data.dto.tool.ImplementsDTO
@@ -11,9 +13,10 @@ import com.nstu.technician.data.dto.user.AccountDTO
 import com.nstu.technician.data.dto.user.TechnicianDTO
 import com.nstu.technician.data.dto.user.UserDTO
 import com.nstu.technician.domain.model.Shift
+import com.nstu.technician.domain.model.common.Address
+import com.nstu.technician.domain.model.common.GPSPoint
 import com.nstu.technician.domain.model.document.Contract
 import com.nstu.technician.domain.model.document.Contractor
-import com.nstu.technician.domain.model.document.Document
 import com.nstu.technician.domain.model.facility.Facility
 import com.nstu.technician.domain.model.facility.JobType
 import com.nstu.technician.domain.model.facility.maintenance.Maintenance
@@ -61,27 +64,10 @@ fun convertToModel(userDTO: UserDTO): User {
     return user
 }
 
-fun convertToDTO(technician: Technician): TechnicianDTO {
-    return TechnicianDTO(
-        technician.oid,
-        EntityLink(technician.user.oid, convertToDTO(technician.user))
-    )
-}
-
-
 fun convertToModel(technicianDTO: TechnicianDTO): Technician {
     return Technician(
         technicianDTO.oid,
         convertToModel(technicianDTO.user.ref ?: throw IllegalStateException("User must be set"))
-    )
-}
-
-fun convertToDTO(shift: Shift): ShiftDTO {
-    return ShiftDTO(
-        shift.oid,
-        shift.date,
-        shift.visits?.map { EntityLink(it.oid, convertToDTO(it)) },
-        shift.points?.map { EntityLink(it.oid, it) }
     )
 }
 
@@ -115,9 +101,6 @@ fun convertToModel(maintenanceDTO: MaintenanceDTO): Maintenance {
     return maintenance
 }
 
-fun convertToModel(documentDTO: DocumentDTO): Document {
-    TODO()
-}
 
 fun convertToModel(maintenanceJobDTO: MaintenanceJobDTO): MaintenanceJob {
     return MaintenanceJob(
@@ -132,46 +115,19 @@ fun convertToModel(jobTypeDTO: JobTypeDTO): JobType {
         jobTypeDTO.oid,
         jobTypeDTO.name,
         jobTypeDTO.description,
-        jobTypeDTO.duration
+        jobTypeDTO.duration,
+        jobTypeDTO.impList?.map { implementsDTO ->
+            implementsDTO.ref?.convertToImplement() ?: throw IllegalStateException("implementsDTO must be set")
+        }
     )
-    jobType.impList = jobTypeDTO.impList?.map { implementsDTO ->
-        convertToModel(implementsDTO.ref ?: throw IllegalStateException("implementsDTO must be set"))
-    }
     return jobType
-}
-
-fun convertToModel(implementsDTO: ImplementsDTO): Implements {
-    val implements = Implements(implementsDTO.oid, implementsDTO.name)
-    implements.units = implementsDTO.units?.map { implementUnitDTO ->
-        convertToModel(implementUnitDTO.ref ?: throw IllegalStateException("implementUnitDTO must be set"))
-    }
-
-    return implements
-}
-
-fun convertToModel(implementUnitDTO: ImplementUnitDTO): ImplementUnit {
-    return ImplementUnit(
-        implementUnitDTO.oid,
-        implementUnitDTO.code
-    )
-}
-
-fun convertToDTO(maintenance: Maintenance): MaintenanceDTO {
-    return MaintenanceDTO(
-        maintenance.oid,
-        EntityLink(maintenance.facility.oid, convertToDTO(maintenance.facility)),
-        maintenance.visitDate,
-        maintenance.duration,
-        maintenance.maintenanceType,
-        maintenance.state
-    )
 }
 
 fun convertToModel(facilityDTO: FacilityDTO): Facility {
     val facility = Facility(
         facilityDTO.oid,
         facilityDTO.name,
-        facilityDTO.address,
+        facilityDTO.address.convertToAddress(),
         facilityDTO.assingmentDate
     )
     facility.contract = facilityDTO.contract?.let { linkContractDTO ->
@@ -206,11 +162,61 @@ fun convertToModel(contractorDTO: ContractorDTO): Contractor {
     )
 }
 
-fun convertToDTO(facility: Facility): FacilityDTO {
+fun AddressDTO.convertToGpsEntity(): GPSEntity{
+    return GPSEntity(
+        oid = location.oid,
+        office = office,
+        home = home,
+        street = street,
+        latitude = location.geox,
+        longitude = location.geoy
+    )
+}
+
+fun FacilityDTO.convertToFacilityEntity(): FacilityEntity {
+    return FacilityEntity(
+        oid = oid,
+        name = name,
+        addressId = address.location.oid,
+        contractId = contract?.oid,
+        assingmentDate = assingmentDate
+    )
+}
+
+fun ImplementsDTO.convertToImplement(): Implements {
+    return Implements(
+        oid, name, units = units?.filter { it.ref != null }?.map { entityLink: EntityLink<ImplementUnitDTO> ->
+            entityLink.ref?.convertToImplementUnit()!!
+        }
+    )
+}
+
+fun ImplementUnitDTO.convertToImplementUnit(): ImplementUnit {
+    return ImplementUnit(
+        oid, code
+    )
+}
+
+fun AddressDTO.convertToAddress(): Address {
+    return Address(
+        street, home, location, office
+    )
+}
+
+fun FacilityEntity.convertToFacilityDTO(gpsEntity: GPSEntity): FacilityDTO {
     return FacilityDTO(
-        facility.oid,
-        facility.name,
-        facility.address,
-        facility.assingmentDate
+        oid = oid,
+        name = name,
+        address = gpsEntity.convertToAddressDTO(),
+        assingmentDate = assingmentDate
+    )
+}
+
+fun GPSEntity.convertToAddressDTO(): AddressDTO {
+    return AddressDTO(
+        street = street ?: throw NullPointerException("street must be set"),
+        home = home ?: throw NullPointerException("home must be set"),
+        location = GPSPoint(oid, latitude, longitude),
+        office = office
     )
 }

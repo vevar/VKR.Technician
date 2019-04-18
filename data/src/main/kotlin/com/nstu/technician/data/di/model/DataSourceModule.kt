@@ -5,10 +5,7 @@ import com.nstu.technician.data.datasource.cloud.FacilityCloudSource
 import com.nstu.technician.data.datasource.cloud.ShiftCloudSource
 import com.nstu.technician.data.datasource.cloud.TechnicianCloudSource
 import com.nstu.technician.data.datasource.cloud.UserCloudSource
-import com.nstu.technician.data.datasource.local.AccountLocalSource
-import com.nstu.technician.data.datasource.local.MaintenanceLocalSource
-import com.nstu.technician.data.datasource.local.TechnicianLocalSource
-import com.nstu.technician.data.datasource.local.UserLocalSource
+import com.nstu.technician.data.datasource.local.*
 import dagger.Module
 import dagger.Provides
 import javax.inject.Named
@@ -36,8 +33,14 @@ class DataSourceModule {
 
     @Named(LOCAL)
     @Provides
-    fun provideMaintenanceLocalSource(maintenanceLocalSource: MaintenanceLocalSource): MaintenanceDataSource{
+    fun provideMaintenanceLocalSource(maintenanceLocalSource: MaintenanceLocalSource): MaintenanceDataSource {
         return maintenanceLocalSource
+    }
+
+    @Named(LOCAL)
+    @Provides
+    fun provideFacilityLocalSource(facilityLocalSource: FacilityLocalSource): FacilityDataSource {
+        return facilityLocalSource
     }
 
     @Named(CLOUD)
