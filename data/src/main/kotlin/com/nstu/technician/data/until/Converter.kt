@@ -88,12 +88,12 @@ fun convertToModel(maintenanceDTO: MaintenanceDTO): Maintenance {
     return Maintenance(
         maintenanceDTO.oid,
         convertToModel(maintenanceDTO.facility.ref ?: throw IllegalStateException()),
-        OwnDateTime(maintenanceDTO.visitDate),
+        maintenanceDTO.visitDate,
         maintenanceDTO.duration,
         maintenanceDTO.maintenanceType,
         maintenanceDTO.state,
-        beginTime = if (maintenanceDTO.beginTime != null) OwnDateTime(maintenanceDTO.beginTime) else null,
-        endTime = if (maintenanceDTO.endTime != null) OwnDateTime(maintenanceDTO.endTime) else null,
+        beginTime = maintenanceDTO.beginTime,
+        endTime = maintenanceDTO.endTime,
         jobList = maintenanceDTO.jobList?.filter { it.ref != null }?.map { convertToModel(it.ref!!) }
     )
 }
@@ -155,13 +155,13 @@ fun ShiftDTO.convertToShiftEntity(): ShiftEntity {
 fun MaintenanceDTO.convertToMaintenanceEntity(shiftId: Long): MaintenanceEntity {
     return MaintenanceEntity(
         oid = oid,
-        beginTime = beginTime,
-        endTime = endTime,
+        beginTime = beginTime?.timeInMS,
+        endTime = endTime?.timeInMS,
         facilityId = facility.oid,
         duration = duration,
         maintenanceType = maintenanceType,
         state = state,
-        visitDate = visitDate,
+        visitDate = visitDate.timeInMS,
         maintenanceParentId = parent?.oid,
         voiceMessageId = voiceMassage?.oid,
         workCompletionReportId = workCompletionReport?.oid,
@@ -169,11 +169,21 @@ fun MaintenanceDTO.convertToMaintenanceEntity(shiftId: Long): MaintenanceEntity 
     )
 }
 
-fun AddressDTO.convertToGpsEntity(): GPSEntity {
+fun AddressDTO.convertToAddressEntity(gpsPointId: Long): AddressEntity {
+    return AddressEntity(
+        oid = 0,
+        home = home,
+        office = office,
+        street = street,
+        gpsPointId = gpsPointId
+    )
+}
+
+fun GPSPointDTO.convertToGpsEntity(): GPSEntity {
     return GPSEntity(
-        oid = location.oid,
-        latitude = location.geox,
-        longitude = location.geoy
+        oid = oid,
+        latitude = geox,
+        longitude = geoy
     )
 }
 
@@ -215,12 +225,12 @@ fun MaintenanceDTO.convertToMaintenance(): Maintenance {
     return Maintenance(
         oid = oid,
         facility = facility.convertToObject { it.convertToFacility() },
-        visitDate = OwnDateTime(visitDate),
+        visitDate = visitDate,
         state = state,
         maintenanceType = maintenanceType,
         duration = duration,
-        endTime = if (endTime != null) OwnDateTime(endTime) else null,
-        beginTime = if (beginTime != null) OwnDateTime(beginTime) else null
+        endTime = endTime,
+        beginTime = beginTime
     )
 }
 
@@ -252,12 +262,12 @@ fun MaintenanceEntity.convertToMaintenanceDTO(facilityDTO: FacilityDTO): Mainten
     return MaintenanceDTO(
         oid = oid,
         facility = EntityLink(facilityDTO.oid, facilityDTO),
-        visitDate = visitDate,
+        visitDate = OwnDateTime(visitDate),
         state = state,
         maintenanceType = maintenanceType,
         duration = duration,
-        endTime = endTime,
-        beginTime = beginTime
+        endTime = if (endTime != null) OwnDateTime(endTime) else null,
+        beginTime = if (beginTime != null) OwnDateTime(beginTime) else null
     )
 }
 

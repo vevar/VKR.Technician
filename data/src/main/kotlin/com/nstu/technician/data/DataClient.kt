@@ -21,10 +21,10 @@ class DataClient private constructor() {
     private var retrofitProvider: RetrofitProvider = RetrofitProvider()
     private lateinit var appDataBase: AppDataBase
 
-    private lateinit var daoModule: DaoModule
-    private lateinit var apiModule: ApiModule
-    private lateinit var dataSourceModule: DataSourceModule
-    private lateinit var repositoryModule: RepositoryModule
+//    private lateinit var daoModule: DaoModule
+//    private lateinit var apiModule: ApiModule
+//    private lateinit var dataSourceModule: DataSourceModule
+//    private lateinit var repositoryModule: RepositoryModule
 
     @Inject
     lateinit var accessTokenInterceptor: AccessTokenInterceptor
@@ -44,10 +44,10 @@ class DataClient private constructor() {
 
             dataClient.retrofitProvider.addClient(okHttpClient)
 
-            dataClient.daoModule = DaoModule(dataClient.appDataBase)
-            dataClient.apiModule = ApiModule(ApiProvider(dataClient.retrofitProvider))
-            dataClient.dataSourceModule = DataSourceModule()
-            dataClient.repositoryModule = RepositoryModule()
+//            dataClient.daoModule = DaoModule(dataClient.appDataBase)
+//            dataClient.apiModule = ApiModule(ApiProvider(dataClient.retrofitProvider))
+//            dataClient.dataSourceModule = DataSourceModule()
+//            dataClient.repositoryModule = RepositoryModule()
 
             return dataClient
         }
@@ -70,7 +70,7 @@ class DataClient private constructor() {
     fun createPlanJobsComponent(): PlanJobsComponent {
         return DaggerPlanJobsComponent.builder()
             .apiModule(ApiModule(ApiProvider(retrofitProvider)))
-            .daoModule(daoModule)
+            .daoModule(DaoModule(appDataBase))
             .dataSourceModule(DataSourceModule())
             .repositoryModule(RepositoryModule())
             .build()
@@ -79,6 +79,7 @@ class DataClient private constructor() {
     fun createListMaintenanceComponent(): ListMaintenanceComponent {
         return DaggerListMaintenanceComponent.builder()
             .apiModule(ApiModule(ApiProvider(retrofitProvider)))
+            .daoModule(DaoModule(appDataBase))
             .dataSourceModule(DataSourceModule())
             .repositoryModule(RepositoryModule())
             .build()
@@ -87,6 +88,7 @@ class DataClient private constructor() {
     fun createMapComponent(): MapComponent {
         return DaggerMapComponent.builder()
             .apiModule(ApiModule(ApiProvider(retrofitProvider)))
+            .daoModule(DaoModule(appDataBase))
             .dataSourceModule(DataSourceModule())
             .repositoryModule(RepositoryModule())
             .build()
@@ -94,9 +96,10 @@ class DataClient private constructor() {
 
     fun createMaintenanceComponent(): MaintenanceComponent {
         return DaggerMaintenanceComponent.builder()
-            .daoModule(daoModule)
-            .dataSourceModule(dataSourceModule)
-            .repositoryModule(repositoryModule)
+            .apiModule(ApiModule(ApiProvider(retrofitProvider)))
+            .daoModule(DaoModule(appDataBase))
+            .dataSourceModule(DataSourceModule())
+            .repositoryModule(RepositoryModule())
             .build()
     }
 }

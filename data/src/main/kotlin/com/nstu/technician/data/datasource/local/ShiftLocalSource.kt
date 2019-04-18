@@ -11,7 +11,8 @@ class ShiftLocalSource @Inject constructor(
     private val maintenanceDao: MaintenanceDao,
     private val facilityDao: FacilityDao,
     private val addressDao: AddressDao,
-    private val gpsDao: GpsDao
+    private val gpsDao: GpsDao,
+    private val utilDao: UtilDao
 ) : ShiftDataSource {
     override suspend fun findByTechnicianIdAndTimePeriod(
         technicianId: Long,
@@ -39,20 +40,30 @@ class ShiftLocalSource @Inject constructor(
                 })
             }
         }
-
     }
 
     override suspend fun save(shiftDTO: ShiftDTO) {
+        utilDao.transation {
+            shiftDao.save(shiftDTO.convertToShiftEntity())
+            shiftDTO.visits?.let { listMaintenance ->
+                listMaintenance.map { link ->
+                    link.convertToObject { maintenanceDTO ->
+                        val facilityEntity = maintenanceDTO.facility.convertToObject { facilityDTO ->
+                            val gpsEntity = facilityDTO.address.location.convertToGpsEntity()
+                            gpsDao.save(gpsEntity)
+                            addressDao.save(facilityDTO.address.convertToAddressEntity(gpsEntity.oid))
+                            facilityDTO.convertToFacilityEntity()
+                        }.also {
+                        }
+                        facilityDao.save(facilityEntity)
+                        maintenanceDTO.convertToMaintenanceEntity(shiftDTO.oid)
 
-        shiftDao.save(shiftDTO.convertToShiftEntity())
-        shiftDTO.visits?.let { listMaintenance ->
-            listMaintenance.map { link ->
-                link.convertToObject { maintenanceDTO ->
-                    maintenanceDTO.convertToMaintenanceEntity(shiftDTO.oid)
+                    }
+                }.also { listMaintenanceEntities ->
+                    maintenanceDao.saveAll(listMaintenanceEntities)
                 }
-            }.also { listMaintenanceEntities ->
-                maintenanceDao.saveAll(listMaintenanceEntities)
             }
         }
+
     }
 }
