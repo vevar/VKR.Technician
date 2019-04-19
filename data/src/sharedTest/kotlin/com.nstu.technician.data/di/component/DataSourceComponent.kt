@@ -1,6 +1,7 @@
 package com.nstu.technician.data.di.component
 
 import com.nstu.technician.data.datasource.AddressDataSource
+import com.nstu.technician.data.datasource.FacilityDataSource
 import com.nstu.technician.data.datasource.LOCAL
 import com.nstu.technician.data.di.model.ApiModule
 import com.nstu.technician.data.di.model.DaoModule
@@ -13,4 +14,7 @@ interface DataSourceComponent {
 
     @Named(LOCAL)
     fun addressDataSource(): AddressDataSource
+
+    @Named(LOCAL)
+    fun facilityDataSource(): FacilityDataSource
 }
