@@ -20,6 +20,8 @@ allprojects {
         androidTestInstrumentationRunner = 'androidx.test.runner.AndroidJUnitRunner'
 
         androidVDUseSupportLibrary = true
+
+        testApplicationId = 'com.nstu.technician.test'
     }
 }
 

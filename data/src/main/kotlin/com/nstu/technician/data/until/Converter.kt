@@ -218,8 +218,8 @@ fun GPSPointDTO.convertToGPSPoint(): GPSPoint {
 fun GPSPointDTO.convertToGPSEntity(): GPSEntity {
     return GPSEntity(
         oid = oid,
-        latitude = geox,
-        longitude = geoy
+        latitude = geoy,
+        longitude = geox
     )
 }
 

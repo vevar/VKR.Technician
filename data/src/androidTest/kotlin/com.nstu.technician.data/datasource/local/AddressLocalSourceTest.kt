@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.filters.SmallTest
 import com.nstu.technician.data.TestAppDataBase
 import com.nstu.technician.data.datasource.AddressDataSource
 import com.nstu.technician.data.di.component.DaggerDataSourceComponent
@@ -12,12 +11,11 @@ import com.nstu.technician.data.di.model.DaoModule
 import com.nstu.technician.data.di.model.DataSourceModule
 import com.nstu.technician.data.dto.common.AddressDTO
 import com.nstu.technician.data.dto.common.GPSPointDTO
+import junit.framework.Assert.assertEquals
 import org.junit.After
-import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.io.IOException
 
 @RunWith(AndroidJUnit4::class)
 class AddressLocalSourceTest {
@@ -39,23 +37,21 @@ class AddressLocalSourceTest {
     }
 
     @After
-    @Throws(IOException::class)
     fun closeDb() {
         testAppDataBase.close()
     }
 
 
     @Test
-    @Throws(IOException::class)
-    @SmallTest
     fun writeAndReadAddress() {
-        val addressDTO = AddressDTO(
+        val expectedAddressDTO = AddressDTO(
             street = "Пупкина", office = "11", home = "2",
             location = GPSPointDTO(1, 54.04, 54.05)
         )
-        addressLocalSource.save(addressDTO)
-        val actualAddress = addressLocalSource.findById(addressDTO.location.oid)
-        assertEquals(addressDTO, actualAddress)
+        addressLocalSource.save(expectedAddressDTO)
+        val actualAddress = addressLocalSource.findById(expectedAddressDTO.location.oid)
+
+        assertEquals(expectedAddressDTO, actualAddress)
     }
 
 }

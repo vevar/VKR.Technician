@@ -30,8 +30,8 @@ class AddressLocalSource @Inject constructor(
     override fun save(obj: AddressDTO) {
         utilDao.transaction {
             val gpsPointDTO = obj.location
-            gpsPointDataSource.save(gpsPointDTO)
             addressDao.save(obj.convertToAddressEntity(gpsPointDTO.oid))
+            gpsPointDataSource.save(gpsPointDTO)
         }
     }
 
