@@ -8,6 +8,7 @@ import com.nstu.technician.data.datasource.local.dao.UtilDao
 import com.nstu.technician.data.dto.common.AddressDTO
 import com.nstu.technician.data.until.convertToAddressDTO
 import com.nstu.technician.data.until.convertToAddressEntity
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -19,7 +20,7 @@ class AddressLocalSource @Inject constructor(
 ) : AddressDataSource {
 
 
-    override fun findById(id: Long): AddressDTO? {
+    override suspend fun findById(id: Long): AddressDTO? {
         return addressDao.findById(id)?.let { addressEntity ->
             gpsPointDataSource.findById(addressEntity.gpsPointId)?.let { gpsPointDTO ->
                 addressEntity.convertToAddressDTO(gpsPointDTO)
@@ -27,15 +28,17 @@ class AddressLocalSource @Inject constructor(
         }
     }
 
-    override fun save(obj: AddressDTO) {
+    override suspend fun save(obj: AddressDTO) {
         utilDao.transaction {
             val gpsPointDTO = obj.location
             addressDao.save(obj.convertToAddressEntity(gpsPointDTO.oid))
-            gpsPointDataSource.save(gpsPointDTO)
+            runBlocking {
+                gpsPointDataSource.save(gpsPointDTO)
+            }
         }
     }
 
-    override fun delete(id: Long) {
+    override suspend fun delete(id: Long) {
 
     }
 }
