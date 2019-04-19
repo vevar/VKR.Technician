@@ -1,12 +1,13 @@
 package com.nstu.technician.data.dto.document
 
+import com.nstu.technician.data.dto.EntityDTO
 import com.nstu.technician.data.dto.EntityLink
+import com.nstu.technician.data.dto.common.ArtifactDTO
 import com.nstu.technician.domain.model.common.Address
-import com.nstu.technician.domain.model.common.Artifact
 import com.nstu.technician.domain.model.common.OwnDateTime
 
 data class ContractDTO(
-    val oid: Long,
+    override val oid: Long,
     val name: String,
     val INN: String,
     val address: Address,
@@ -14,7 +15,7 @@ data class ContractDTO(
     val docType: Int,
     val number: String,
     val date: OwnDateTime,
-    val artifact: EntityLink<Artifact>,
-    var state: Int
-)
+    val artifact: EntityLink<ArtifactDTO>,
+    val state: Int
+): EntityDTO(oid)
 

@@ -1,6 +1,8 @@
 package com.nstu.technician.data.dto.tool
 
+import com.nstu.technician.data.dto.EntityDTO
+
 class ComponentTypeDTO(
-    val oid: Long,
+    override val oid: Long,
     val name: String
-)
+): EntityDTO(oid)

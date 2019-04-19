@@ -1,12 +1,13 @@
 package com.nstu.technician.data.dto.job
 
+import com.nstu.technician.data.dto.EntityDTO
 import com.nstu.technician.data.dto.EntityLink
-import com.nstu.technician.domain.model.common.GPSPoint
+import com.nstu.technician.data.dto.common.GPSPointDTO
 import com.nstu.technician.domain.model.common.OwnDateTime
 
 data class ShiftDTO(
-    val oid: Long,
+    override val oid: Long,
     val date: OwnDateTime,
     val visits: List<EntityLink<MaintenanceDTO>>? = null,
-    val points: List<EntityLink<GPSPoint>>? = null
-)
+    val points: List<EntityLink<GPSPointDTO>>? = null
+): EntityDTO(oid)
