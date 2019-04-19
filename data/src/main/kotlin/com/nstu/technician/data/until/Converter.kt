@@ -179,13 +179,7 @@ fun AddressDTO.convertToAddressEntity(gpsPointId: Long): AddressEntity {
     )
 }
 
-fun GPSPointDTO.convertToGpsEntity(): GPSEntity {
-    return GPSEntity(
-        oid = oid,
-        latitude = geox,
-        longitude = geoy
-    )
-}
+
 
 fun FacilityDTO.convertToFacilityEntity(): FacilityEntity {
     return FacilityEntity(
@@ -219,6 +213,22 @@ fun AddressDTO.convertToAddress(): Address {
 
 fun GPSPointDTO.convertToGPSPoint(): GPSPoint {
     return GPSPoint(oid, geoy, geox)
+}
+
+fun GPSPointDTO.convertToGPSEntity(): GPSEntity {
+    return GPSEntity(
+        oid = oid,
+        latitude = geox,
+        longitude = geoy
+    )
+}
+
+fun GPSEntity.convertToGpsPointDTO(): GPSPointDTO {
+    return GPSPointDTO(
+        oid = oid,
+        geox = longitude,
+        geoy = latitude
+    )
 }
 
 fun MaintenanceDTO.convertToMaintenance(): Maintenance {
@@ -289,10 +299,3 @@ fun AddressEntity.convertToAddressDTO(gpsPointDTO: GPSPointDTO): AddressDTO {
     )
 }
 
-fun GPSEntity.convertToGpsPointDTO(): GPSPointDTO {
-    return GPSPointDTO(
-        oid = oid,
-        geox = longitude,
-        geoy = latitude
-    )
-}

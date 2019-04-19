@@ -4,9 +4,10 @@ import androidx.room.Dao
 import androidx.room.Transaction
 
 @Dao
-interface UtilDao {
+abstract class UtilDao {
+
     @Transaction
-    fun <T> transation(function: () -> T){
+    open fun  transaction(function: () -> Unit) {
         function.invoke()
     }
 }

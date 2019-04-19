@@ -1,17 +1,21 @@
 package com.nstu.technician.data.datasource.local
 
+import com.nstu.technician.data.datasource.GPSPointDataSource
+import com.nstu.technician.data.datasource.LOCAL
 import com.nstu.technician.data.datasource.ShiftDataSource
 import com.nstu.technician.data.datasource.local.dao.*
 import com.nstu.technician.data.dto.job.ShiftDTO
 import com.nstu.technician.data.until.*
 import javax.inject.Inject
+import javax.inject.Named
 
 class ShiftLocalSource @Inject constructor(
     private val shiftDao: ShiftDao,
     private val maintenanceDao: MaintenanceDao,
     private val facilityDao: FacilityDao,
     private val addressDao: AddressDao,
-    private val gpsDao: GpsDao,
+    @Named(LOCAL)
+    private val gpsPointDataSource: GPSPointDataSource,
     private val utilDao: UtilDao
 ) : ShiftDataSource {
     override suspend fun findByTechnicianIdAndTimePeriod(
@@ -29,10 +33,12 @@ class ShiftLocalSource @Inject constructor(
                     it.map { maintenanceEntity ->
                         val facilityDTO = facilityDao.findById(maintenanceEntity.facilityId)?.let { facilityEntity ->
                             val addressDTO = addressDao.findById(facilityEntity.addressId)?.let { addressEntity ->
-                                gpsDao.findById(addressEntity.gpsPointId)?.convertToGpsPointDTO()?.let { GPSPointDTO ->
-                                    addressEntity.convertToAddressDTO(GPSPointDTO)
+                                gpsPointDataSource.findById(addressEntity.gpsPointId)?.let { gpsPointDTO ->
+                                    addressEntity.convertToAddressDTO(gpsPointDTO)
                                 }
+
                             } ?: throw NullPointerException("address not found")
+
                             facilityEntity.convertToFacilityDTO(addressDTO)
                         } ?: throw NullPointerException("facility not found")
                         maintenanceEntity.convertToMaintenanceDTO(facilityDTO)
@@ -43,15 +49,16 @@ class ShiftLocalSource @Inject constructor(
     }
 
     override suspend fun save(shiftDTO: ShiftDTO) {
-        utilDao.transation {
+        utilDao.transaction {
             shiftDao.save(shiftDTO.convertToShiftEntity())
             shiftDTO.visits?.let { listMaintenance ->
                 listMaintenance.map { link ->
                     link.convertToObject { maintenanceDTO ->
                         val facilityEntity = maintenanceDTO.facility.convertToObject { facilityDTO ->
-                            val gpsEntity = facilityDTO.address.location.convertToGpsEntity()
-                            gpsDao.save(gpsEntity)
-                            addressDao.save(facilityDTO.address.convertToAddressEntity(gpsEntity.oid))
+                            val addressDTO = facilityDTO.address
+                            val gpsPointDTO = addressDTO.location
+                            gpsPointDataSource.save(gpsPointDTO)
+                            addressDao.save(addressDTO.convertToAddressEntity(gpsPointDTO.oid))
                             facilityDTO.convertToFacilityEntity()
                         }.also {
                         }

@@ -8,7 +8,6 @@ import com.nstu.technician.data.datasource.cloud.UserCloudSource
 import com.nstu.technician.data.datasource.local.*
 import dagger.Module
 import dagger.Provides
-import java.util.*
 import javax.inject.Named
 
 @Module
@@ -48,6 +47,12 @@ class DataSourceModule {
     @Provides
     fun provideShiftLocalSource(shiftLocalSource: ShiftLocalSource): ShiftDataSource{
         return shiftLocalSource
+    }
+
+    @Named(LOCAL)
+    @Provides
+    fun provideGPSPointLocalSource(gpsPointLocalSource: GPSPointLocalSource):GPSPointDataSource{
+        return gpsPointLocalSource
     }
 
     @Named(CLOUD)

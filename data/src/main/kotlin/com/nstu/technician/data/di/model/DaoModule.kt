@@ -47,4 +47,9 @@ class DaoModule(private val appDataBase: AppDataBase) {
     fun provideGPSDao():GpsDao{
         return appDataBase.getGPSDao()
     }
+
+    @Provides
+    fun provideUtilDao(): UtilDao{
+        return appDataBase.getUtilDao()
+    }
 }

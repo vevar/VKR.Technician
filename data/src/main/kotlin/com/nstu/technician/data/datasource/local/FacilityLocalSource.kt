@@ -28,6 +28,6 @@ class FacilityLocalSource @Inject constructor(
 
     override suspend fun save(facilityDTO: FacilityDTO) {
         facilityDao.save(facilityDTO.convertToFacilityEntity())
-        gpsDao.save(facilityDTO.address.location.convertToGpsEntity())
+        gpsDao.save(facilityDTO.address.location.convertToGPSEntity())
     }
 }
