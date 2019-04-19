@@ -11,6 +11,7 @@ import com.nstu.technician.data.di.model.DaoModule
 import com.nstu.technician.data.di.model.DataSourceModule
 import com.nstu.technician.data.dto.common.AddressDTO
 import com.nstu.technician.data.dto.common.GPSPointDTO
+import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -48,8 +49,12 @@ class AddressLocalSourceTest {
             street = "Пупкина", office = "11", home = "2",
             location = GPSPointDTO(1, 54.04, 54.05)
         )
-        addressLocalSource.save(expectedAddressDTO)
-        val actualAddress = addressLocalSource.findById(expectedAddressDTO.location.oid)
+        runBlocking {
+            addressLocalSource.save(expectedAddressDTO)
+        }
+        val actualAddress = runBlocking {
+            addressLocalSource.findById(expectedAddressDTO.location.oid)
+        }
 
         assertEquals(expectedAddressDTO, actualAddress)
     }

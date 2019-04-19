@@ -56,11 +56,11 @@ class FacilityLocalSourceTest {
             oid = 1, name = "Пушка", address = addressDTO, assingmentDate = OwnDateTime(1554713066603)
         )
 
-        val actualAddress = runBlocking {
+        runBlocking {
             facilityDataSource.save(facilityDTO)
-            runBlocking {
-                facilityDataSource.findById(facilityDTO.oid)
-            }
+        }
+        val actualAddress = runBlocking {
+            facilityDataSource.findById(facilityDTO.oid)
         }
 
         assertEquals(actualAddress, facilityDTO)

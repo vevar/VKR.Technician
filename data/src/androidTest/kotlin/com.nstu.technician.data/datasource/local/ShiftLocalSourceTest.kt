@@ -61,11 +61,11 @@ class ShiftLocalSourceTest {
             date = OwnDateTime(1554713066603)
         )
 
-        val actualShiftDTO = runBlocking {
+        runBlocking {
             shiftLocalSource.save(expectedShiftDTO)
-            runBlocking {
-                shiftLocalSource.findById(facilityDTO.oid)
-            }
+        }
+        val actualShiftDTO = runBlocking {
+            shiftLocalSource.findById(facilityDTO.oid)
         }
 
         Assert.assertEquals(expectedShiftDTO, actualShiftDTO)
