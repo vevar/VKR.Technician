@@ -6,6 +6,7 @@ import com.nstu.technician.data.datasource.ShiftDataSource
 import com.nstu.technician.data.datasource.local.dao.*
 import com.nstu.technician.data.dto.job.ShiftDTO
 import com.nstu.technician.data.until.*
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -57,7 +58,9 @@ class ShiftLocalSource @Inject constructor(
                         val facilityEntity = maintenanceDTO.facility.convertToObject { facilityDTO ->
                             val addressDTO = facilityDTO.address
                             val gpsPointDTO = addressDTO.location
-                            gpsPointDataSource.save(gpsPointDTO)
+                            runBlocking {
+                                gpsPointDataSource.save(gpsPointDTO)
+                            }
                             addressDao.save(addressDTO.convertToAddressEntity(gpsPointDTO.oid))
                             facilityDTO.convertToFacilityEntity()
                         }.also {
