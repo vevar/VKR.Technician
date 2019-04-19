@@ -5,6 +5,7 @@ import com.nstu.technician.data.database.entity.common.AddressEntity
 import com.nstu.technician.data.database.entity.common.GPSEntity
 import com.nstu.technician.data.database.entity.job.FacilityEntity
 import com.nstu.technician.data.database.entity.job.MaintenanceEntity
+import com.nstu.technician.data.dto.EntityDTO
 import com.nstu.technician.data.dto.EntityLink
 import com.nstu.technician.data.dto.common.AddressDTO
 import com.nstu.technician.data.dto.common.GPSPointDTO
@@ -79,7 +80,7 @@ fun convertToModel(shiftDTO: ShiftDTO): Shift {
         shiftDTO.oid,
         shiftDTO.date,
         visits = shiftDTO.visits?.filter { it.ref != null }?.map { convertToModel(it.ref!!) },
-        points = shiftDTO.points?.filter { it.ref != null }?.map { it.ref!! }
+        points = shiftDTO.points?.filter { it.ref != null }?.map { it.ref?.convertToGPSPoint()!! }
     )
 }
 
@@ -141,7 +142,7 @@ fun convertToModel(contractorDTO: ContractorDTO): Contractor {
 }
 
 
-fun <F, T> EntityLink<F>.convertToObject(function: (F) -> T): T {
+fun <F : EntityDTO, T> EntityLink<F>.convertToObject(function: (F) -> T): T {
     return ref?.let(function) ?: throw IllegalStateException("ref must be set")
 }
 
@@ -178,7 +179,6 @@ fun AddressDTO.convertToAddressEntity(gpsPointId: Long): AddressEntity {
         gpsPointId = gpsPointId
     )
 }
-
 
 
 fun FacilityDTO.convertToFacilityEntity(): FacilityEntity {

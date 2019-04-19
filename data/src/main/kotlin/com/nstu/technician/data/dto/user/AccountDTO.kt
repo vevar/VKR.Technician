@@ -1,12 +1,9 @@
 package com.nstu.technician.data.dto.user
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import com.nstu.technician.data.dto.EntityDTO
 
-@Entity
 data class AccountDTO(
-    @PrimaryKey
-    val oid: Long,
+    override val oid: Long,
     var login: String,
     var password: String
-)
+):EntityDTO(oid)
