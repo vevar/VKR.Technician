@@ -9,12 +9,7 @@ import com.nstu.technician.data.datasource.MaintenanceDataSource
 import com.nstu.technician.data.di.component.DaggerDataSourceComponent
 import com.nstu.technician.data.di.model.DaoModule
 import com.nstu.technician.data.di.model.DataSourceModule
-import com.nstu.technician.data.dto.EntityLink
-import com.nstu.technician.data.dto.common.AddressDTO
-import com.nstu.technician.data.dto.common.GPSPointDTO
-import com.nstu.technician.data.dto.job.FacilityDTO
-import com.nstu.technician.data.dto.job.MaintenanceDTO
-import com.nstu.technician.domain.model.common.OwnDateTime
+import com.nstu.technician.data.dto.getMaintenaceDTO
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -49,34 +44,14 @@ class MaintenanceLocalSourceTest {
 
     @Test
     fun writeAndRead() {
-        val time = OwnDateTime(1554713066603)
-        val expectedMaintenanceDTO = MaintenanceDTO(
-            oid = 23,
-            facility = EntityLink(
-                FacilityDTO(
-                    oid = 1,
-                    name = "Пушка",
-                    address = AddressDTO(
-                        street = "Пупкина", office = "11", home = "2",
-                        location = GPSPointDTO(1, 54.04, 54.05)
-                    ),
-                    assingmentDate = time
-                )
-            ),
-            endTime = time,
-            beginTime = time,
-            duration = 30,
-            maintenanceType = 1,
-            state = 1,
-            visitDate = time
-        )
+        val expectedMaintenanceDTO = getMaintenaceDTO(478)
+
         runBlocking {
             maintenanceDataSource.save(expectedMaintenanceDTO)
         }
         val actual = runBlocking {
             maintenanceDataSource.findById(expectedMaintenanceDTO.oid)
         }
-
         assertEquals(expectedMaintenanceDTO, actual)
     }
 }
