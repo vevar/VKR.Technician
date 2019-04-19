@@ -171,7 +171,7 @@ fun MaintenanceDTO.convertToMaintenanceEntity(shiftId: Long): MaintenanceEntity 
 
 fun AddressDTO.convertToAddressEntity(gpsPointId: Long): AddressEntity {
     return AddressEntity(
-        oid = 0,
+        oid = gpsPointId,
         home = home,
         office = office,
         street = street,

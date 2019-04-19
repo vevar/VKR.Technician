@@ -45,14 +45,20 @@ class DataSourceModule {
 
     @Named(LOCAL)
     @Provides
-    fun provideShiftLocalSource(shiftLocalSource: ShiftLocalSource): ShiftDataSource{
+    fun provideShiftLocalSource(shiftLocalSource: ShiftLocalSource): ShiftDataSource {
         return shiftLocalSource
     }
 
     @Named(LOCAL)
     @Provides
-    fun provideGPSPointLocalSource(gpsPointLocalSource: GPSPointLocalSource):GPSPointDataSource{
+    fun provideGPSPointLocalSource(gpsPointLocalSource: GPSPointLocalSource): GPSPointDataSource {
         return gpsPointLocalSource
+    }
+
+    @Named(LOCAL)
+    @Provides
+    fun provideAddressLocalSource(addressLocalSource: AddressLocalSource): AddressDataSource {
+        return addressLocalSource
     }
 
     @Named(CLOUD)

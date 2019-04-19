@@ -24,8 +24,16 @@ android {
     }
 
     sourceSets {
+        String sharedTestDir = 'src/sharedTest/kotlin'
         main.java.srcDirs += 'src/main/kotlin'
-        test.java.srcDirs += 'src/test/kotlin'
+        test.java{
+            srcDirs += sharedTestDir
+            srcDirs += 'src/test/kotlin'
+        }
+        androidTest.java{
+            srcDirs += sharedTestDir
+            srcDirs += 'src/androidTest/kotlin'
+        }
     }
 
     buildTypes {
