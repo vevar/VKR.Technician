@@ -12,6 +12,14 @@ class UserCloudSource @Inject constructor(
     private val userApi: UserApi
 ) : UserDataSource {
 
+    override suspend fun findById(id: Long): UserDTO? {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun delete(id: Long) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     companion object {
         const val TAG = "NETWORK_USER_SOURCE"
     }

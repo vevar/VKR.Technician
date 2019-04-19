@@ -5,6 +5,9 @@ import com.nstu.technician.data.database.entity.common.AddressEntity
 import com.nstu.technician.data.database.entity.common.GPSEntity
 import com.nstu.technician.data.database.entity.job.FacilityEntity
 import com.nstu.technician.data.database.entity.job.MaintenanceEntity
+import com.nstu.technician.data.database.entity.user.AccountEntity
+import com.nstu.technician.data.database.entity.user.TechnicianEntity
+import com.nstu.technician.data.database.entity.user.UserEntity
 import com.nstu.technician.data.dto.EntityDTO
 import com.nstu.technician.data.dto.EntityLink
 import com.nstu.technician.data.dto.common.AddressDTO
@@ -38,6 +41,44 @@ fun convertToDTO(account: Account): AccountDTO {
 
 fun convertToModel(account: AccountDTO): Account {
     return Account(account.oid, account.login, account.password)
+}
+
+fun AccountEntity.convertToAccountDTO(): AccountDTO {
+    return AccountDTO(oid, login, password)
+}
+
+fun AccountDTO.convertToAccountEntity(): AccountEntity {
+    return AccountEntity(oid, login, password)
+}
+
+fun TechnicianDTO.convertToTechnicianEntity(): TechnicianEntity {
+    return TechnicianEntity(oid, userId = user.oid)
+}
+
+fun TechnicianEntity.convertToTechnicianDTO(userDTO: UserDTO): TechnicianDTO {
+    return TechnicianDTO(oid, EntityLink(userDTO))
+}
+
+fun UserDTO.convertToUserEntity(): UserEntity {
+    return UserEntity(
+        oid = oid,
+        firstName = firstName,
+        lastName = lastName,
+        middleName = middleName,
+        sessionToken = sessionToken,
+        accountId = account.oid
+    )
+}
+
+fun UserEntity.convertToUserDTO(account: AccountDTO): UserDTO {
+    return UserDTO(
+        oid = oid,
+        sessionToken = sessionToken,
+        middleName = middleName,
+        lastName = lastName,
+        firstName = firstName,
+        account = EntityLink(account)
+    )
 }
 
 fun convertToDTO(user: User): UserDTO {
@@ -144,6 +185,10 @@ fun convertToModel(contractorDTO: ContractorDTO): Contractor {
 
 fun <F : EntityDTO, T> EntityLink<F>.convertToObject(function: (F) -> T): T {
     return ref?.let(function) ?: throw IllegalStateException("ref must be set")
+}
+
+fun <F : EntityDTO> EntityLink<F>.getObject(): F {
+    return ref ?: throw IllegalStateException("ref must be set")
 }
 
 fun ShiftDTO.convertToShiftEntity(): ShiftEntity {

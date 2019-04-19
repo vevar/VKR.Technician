@@ -21,11 +21,6 @@ class DataClient private constructor() {
     private var retrofitProvider: RetrofitProvider = RetrofitProvider()
     private lateinit var appDataBase: AppDataBase
 
-//    private lateinit var daoModule: DaoModule
-//    private lateinit var apiModule: ApiModule
-//    private lateinit var dataSourceModule: DataSourceModule
-//    private lateinit var repositoryModule: RepositoryModule
-
     @Inject
     lateinit var accessTokenInterceptor: AccessTokenInterceptor
 
@@ -43,11 +38,6 @@ class DataClient private constructor() {
                 .build()
 
             dataClient.retrofitProvider.addClient(okHttpClient)
-
-//            dataClient.daoModule = DaoModule(dataClient.appDataBase)
-//            dataClient.apiModule = ApiModule(ApiProvider(dataClient.retrofitProvider))
-//            dataClient.dataSourceModule = DataSourceModule()
-//            dataClient.repositoryModule = RepositoryModule()
 
             return dataClient
         }
