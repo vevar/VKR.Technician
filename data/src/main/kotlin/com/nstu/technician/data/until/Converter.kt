@@ -2,6 +2,7 @@ package com.nstu.technician.data.until
 
 import com.nstu.technician.data.database.entity.ShiftEntity
 import com.nstu.technician.data.database.entity.common.AddressEntity
+import com.nstu.technician.data.database.entity.common.ArtifactEntity
 import com.nstu.technician.data.database.entity.common.GPSEntity
 import com.nstu.technician.data.database.entity.job.FacilityEntity
 import com.nstu.technician.data.database.entity.job.MaintenanceEntity
@@ -11,6 +12,7 @@ import com.nstu.technician.data.database.entity.user.UserEntity
 import com.nstu.technician.data.dto.EntityDTO
 import com.nstu.technician.data.dto.EntityLink
 import com.nstu.technician.data.dto.common.AddressDTO
+import com.nstu.technician.data.dto.common.ArtifactDTO
 import com.nstu.technician.data.dto.common.GPSPointDTO
 import com.nstu.technician.data.dto.document.ContractorDTO
 import com.nstu.technician.data.dto.job.*
@@ -78,6 +80,28 @@ fun UserEntity.convertToUserDTO(account: AccountDTO): UserDTO {
         lastName = lastName,
         firstName = firstName,
         account = EntityLink(account)
+    )
+}
+
+fun ArtifactEntity.convertToArtifactDTO(): ArtifactDTO {
+    return ArtifactDTO(
+        oid = oid,
+        type = type,
+        original = original,
+        name = name,
+        fileSize = fileSize,
+        date = OwnDateTime(date)
+    )
+}
+
+fun ArtifactDTO.convertToArtifactEntitty(): ArtifactEntity {
+    return ArtifactEntity(
+        oid = oid,
+        date = date.timeInMS,
+        fileSize = fileSize,
+        name = name,
+        original = original,
+        type = type
     )
 }
 

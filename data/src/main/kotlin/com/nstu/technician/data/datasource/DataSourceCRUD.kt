@@ -6,5 +6,4 @@ interface DataSourceCRUD<T> {
 
     suspend fun save(obj: T)
 
-    suspend fun delete(id: Long)
 }
