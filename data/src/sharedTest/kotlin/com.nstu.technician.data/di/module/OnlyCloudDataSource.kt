@@ -24,10 +24,6 @@ class OnlyCloudDataSource {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
-            override suspend fun delete(id: Long) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
             override suspend fun findByAccount(account: AccountDTO): UserDTO? {
                 return null
             }

@@ -31,7 +31,7 @@ android {
     buildTypes {
         debug {
             Properties properties = new Properties()
-            properties.load(project.rootProject.file('gradle.properties').newDataInputStream())
+            properties.load(project.rootProject.file('local.properties').newDataInputStream())
             def FireFighter_GoogleMapApiKey = properties.getProperty('FireFighter_GoogleMapApiKey')
             ext.enableCrashlytics = false
             resValue 'string', 'map_api_key', FireFighter_GoogleMapApiKey

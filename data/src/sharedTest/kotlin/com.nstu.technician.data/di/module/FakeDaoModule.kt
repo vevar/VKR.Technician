@@ -1,5 +1,7 @@
 package com.nstu.technician.data.di.module
 
+import com.nstu.technician.data.database.entity.user.TechnicianEntity
+import com.nstu.technician.data.database.entity.user.UserEntity
 import com.nstu.technician.data.datasource.local.dao.TechnicianDao
 import com.nstu.technician.data.datasource.local.dao.UserDao
 import com.nstu.technician.data.dto.user.TechnicianDTO
@@ -12,13 +14,13 @@ class FakeDaoModule {
     @Provides
     fun provideUserDao(): UserDao {
         return object : UserDao {
-            override fun find(): UserDTO? {
+            override fun insert(user: UserEntity) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun find(): UserEntity? {
                 return null
             }
-
-            override fun insert(user: UserDTO) {
-            }
-
 
             override fun nukeTable() {
             }
@@ -29,11 +31,12 @@ class FakeDaoModule {
     @Provides
     fun provideTechnicianDao(): TechnicianDao {
         return object : TechnicianDao {
-            override fun findByUserId(userId: Long): TechnicianDTO? {
-                return null
+            override fun save(technician: TechnicianEntity) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
-            override fun save(technician: TechnicianDTO) {
+            override fun findByUserId(userId: Long): TechnicianEntity? {
+                return null
             }
         }
     }
