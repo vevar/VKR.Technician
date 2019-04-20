@@ -43,4 +43,5 @@ abstract class AppDataBase : RoomDatabase() {
     abstract fun getGPSDao(): GpsDao
     abstract fun getUtilDao(): UtilDao
     abstract fun getArtifactDao(): ArtifactDao
+    abstract fun getContractDao(): ContractDao
 }

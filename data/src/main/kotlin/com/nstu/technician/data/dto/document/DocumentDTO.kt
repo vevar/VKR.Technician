@@ -7,21 +7,9 @@ import com.nstu.technician.domain.model.common.OwnDateTime
 
 open class DocumentDTO(
     override val oid: Long,
-    val docType: Type,
-    val number: String,
-    val date: OwnDateTime,
-    val artifact: EntityLink<ArtifactDTO>,
-    var state: State
-): EntityDTO(oid) {
-    enum class Type {
-        UNDEFINED
-    }
-
-    enum class State {
-        UNDEFINED,
-        OK,
-        NEED_EXTENTION,
-        CONTINUED,
-        DONE
-    }
-}
+    open val docType: Int,
+    open val number: String,
+    open val date: OwnDateTime,
+    open val artifact: EntityLink<ArtifactDTO>,
+    open val state: Int
+) : EntityDTO(oid)

@@ -57,4 +57,9 @@ class DaoModule(private val appDataBase: AppDataBase) {
     fun provideUtilDao(): UtilDao{
         return appDataBase.getUtilDao()
     }
+
+    @Provides
+    fun provideContractDao(): ContractDao{
+        return appDataBase.getContractDao()
+    }
 }

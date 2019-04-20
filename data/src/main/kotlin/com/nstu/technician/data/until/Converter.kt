@@ -4,6 +4,7 @@ import com.nstu.technician.data.database.entity.ShiftEntity
 import com.nstu.technician.data.database.entity.common.AddressEntity
 import com.nstu.technician.data.database.entity.common.ArtifactEntity
 import com.nstu.technician.data.database.entity.common.GPSEntity
+import com.nstu.technician.data.database.entity.document.ContractEntity
 import com.nstu.technician.data.database.entity.job.FacilityEntity
 import com.nstu.technician.data.database.entity.job.MaintenanceEntity
 import com.nstu.technician.data.database.entity.user.AccountEntity
@@ -14,6 +15,7 @@ import com.nstu.technician.data.dto.EntityLink
 import com.nstu.technician.data.dto.common.AddressDTO
 import com.nstu.technician.data.dto.common.ArtifactDTO
 import com.nstu.technician.data.dto.common.GPSPointDTO
+import com.nstu.technician.data.dto.document.ContractDTO
 import com.nstu.technician.data.dto.document.ContractorDTO
 import com.nstu.technician.data.dto.job.*
 import com.nstu.technician.data.dto.tool.ImplementUnitDTO
@@ -368,3 +370,19 @@ fun AddressEntity.convertToAddressDTO(gpsPointDTO: GPSPointDTO): AddressDTO {
     )
 }
 
+fun ContractEntity.convertToContract(
+    artifactDTO: ArtifactDTO,
+    contractorDTO: ContractorDTO,
+    facilityDTO: FacilityDTO
+): ContractDTO {
+    return ContractDTO(
+        oid = oid,
+        state = state,
+        artifact = EntityLink(artifactDTO),
+        date = OwnDateTime(date),
+        number = number,
+        docType = docType,
+        contractor = EntityLink(contractorDTO),
+        facility = EntityLink(facilityDTO)
+    )
+}
