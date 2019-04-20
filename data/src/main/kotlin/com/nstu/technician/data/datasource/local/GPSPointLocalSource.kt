@@ -19,7 +19,4 @@ class GPSPointLocalSource @Inject constructor(
         gpsDao.save(obj.convertToGPSEntity())
     }
 
-    override suspend fun delete(id: Long) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 }

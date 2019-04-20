@@ -17,5 +17,4 @@ class ArtifactLocalSource @Inject constructor(
     override suspend fun save(obj: ArtifactDTO) {
         artifactDao.save(obj.convertToArtifactEntitty())
     }
-
 }

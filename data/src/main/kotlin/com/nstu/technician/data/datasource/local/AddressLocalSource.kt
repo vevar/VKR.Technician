@@ -37,8 +37,4 @@ class AddressLocalSource @Inject constructor(
             }
         }
     }
-
-    override suspend fun delete(id: Long) {
-
-    }
 }

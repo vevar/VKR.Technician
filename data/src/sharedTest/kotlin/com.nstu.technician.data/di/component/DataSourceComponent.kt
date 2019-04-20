@@ -21,4 +21,7 @@ interface DataSourceComponent {
 
     @Named(LOCAL)
     fun maintenanceDataSource(): MaintenanceDataSource
+
+    @Named(LOCAL)
+    fun artifactDataSource(): ArtifactDataSource
 }

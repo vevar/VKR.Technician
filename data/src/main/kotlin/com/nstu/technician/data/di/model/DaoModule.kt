@@ -49,6 +49,11 @@ class DaoModule(private val appDataBase: AppDataBase) {
     }
 
     @Provides
+    fun provideArtifactDao(): ArtifactDao{
+        return appDataBase.getArtifactDao()
+    }
+
+    @Provides
     fun provideUtilDao(): UtilDao{
         return appDataBase.getUtilDao()
     }

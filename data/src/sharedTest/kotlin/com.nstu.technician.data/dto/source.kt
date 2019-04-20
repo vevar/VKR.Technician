@@ -1,6 +1,7 @@
 package com.nstu.technician.data.dto
 
 import com.nstu.technician.data.dto.common.AddressDTO
+import com.nstu.technician.data.dto.common.ArtifactDTO
 import com.nstu.technician.data.dto.common.GPSPointDTO
 import com.nstu.technician.data.dto.job.FacilityDTO
 import com.nstu.technician.data.dto.job.JobTypeDTO
@@ -8,9 +9,10 @@ import com.nstu.technician.data.dto.job.MaintenanceDTO
 import com.nstu.technician.data.dto.job.MaintenanceJobDTO
 import com.nstu.technician.data.dto.tool.ImplementUnitDTO
 import com.nstu.technician.data.dto.tool.ImplementsDTO
+import com.nstu.technician.domain.model.FileNameExt
 import com.nstu.technician.domain.model.common.OwnDateTime
 
-fun getMaintenaceDTO(oid: Long): MaintenanceDTO {
+fun getMaintenanceDTO(oid: Long): MaintenanceDTO {
 
     return MaintenanceDTO(
         oid = oid,
@@ -101,5 +103,16 @@ fun getJobTypeDTO(): JobTypeDTO {
         name = "job type name",
         description = "@description",
         impList = getListSomeObject { EntityLink(getImplementsDTO(it)) }
+    )
+}
+
+fun getArtifactDTO(oid: Long, type: Int): ArtifactDTO {
+    return ArtifactDTO(
+        oid = oid,
+        date = getOwnTime(),
+        fileSize = 234,
+        name = "SomeFileName",
+        original = FileNameExt("asd", "tyui", "jpg"),
+        type = type
     )
 }
