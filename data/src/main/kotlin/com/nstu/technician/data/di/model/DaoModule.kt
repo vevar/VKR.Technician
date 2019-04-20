@@ -62,4 +62,9 @@ class DaoModule(private val appDataBase: AppDataBase) {
     fun provideContractDao(): ContractDao{
         return appDataBase.getContractDao()
     }
+
+    @Provides
+    fun provideContractorDao(): ContractorDao{
+        return appDataBase.getContractorDao()
+    }
 }
