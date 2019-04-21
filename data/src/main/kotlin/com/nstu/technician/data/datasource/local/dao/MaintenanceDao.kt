@@ -5,10 +5,14 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.nstu.technician.data.database.entity.job.MaintenanceEntity
-import com.nstu.technician.data.dto.job.MaintenanceDTO
 
 @Dao
 interface MaintenanceDao {
+    @Query("SELECT * FROM maintenanceentity WHERE oid=:id")
+    fun findById(id: Long): MaintenanceEntity?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun save(maintenanceEntity: MaintenanceEntity)
 
     @Query("SELECT * FROM maintenanceentity WHERE shift_id=:shiftId")
     fun findByIdShift(shiftId: Long): List<MaintenanceEntity>?

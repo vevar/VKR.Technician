@@ -6,7 +6,7 @@ import com.nstu.technician.data.dto.common.ArtifactDTO
 import com.nstu.technician.data.dto.document.DocumentDTO
 import com.nstu.technician.domain.model.common.OwnDateTime
 
-class MaintenanceDTO(
+data class MaintenanceDTO(
     override val oid: Long,
     val facility: EntityLink<FacilityDTO>,
     val visitDate: OwnDateTime,
@@ -18,5 +18,6 @@ class MaintenanceDTO(
     val endTime: OwnDateTime? = null,
     val jobList: List<EntityLink<MaintenanceJobDTO>>? = null,
     val workCompletionReport: EntityLink<DocumentDTO>? = null,
-    val voiceMassage: EntityLink<ArtifactDTO>? = null
+    val voiceMassage: EntityLink<ArtifactDTO>? = null,
+    var shift: EntityLink<ShiftDTO>? = null
 ): EntityDTO(oid)

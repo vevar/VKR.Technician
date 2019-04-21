@@ -67,4 +67,9 @@ class DaoModule(private val appDataBase: AppDataBase) {
     fun provideContractorDao(): ContractorDao{
         return appDataBase.getContractorDao()
     }
+
+    @Provides
+    fun provideGPSPointFromShiftDao(): GPSPointFromShiftDao{
+        return appDataBase.getGPSPointFromShiftDao()
+    }
 }

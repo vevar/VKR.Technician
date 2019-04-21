@@ -22,8 +22,9 @@ data class ContractEntity(
     val oid: Long,
     val docType: Int,
     val number: String,
-    @ColumnInfo(name = "contractor_id") val contractorId: Long,
     val date: Long,
+    val state: Int,
+    @ColumnInfo(name = "contractor_id") val contractorId: Long,
     @ColumnInfo(name = "artifact_id") val artifactId: Long,
-    val state: Int
+    @ColumnInfo(name = "facility_id") val facilityId: Long?
 )

@@ -8,7 +8,7 @@ import com.nstu.technician.data.dto.tool.ComponentUnitDTO
 import com.nstu.technician.data.dto.tool.ImplementsDTO
 import com.nstu.technician.domain.model.common.OwnDateTime
 
-class MaintenanceJobDTO(
+data class MaintenanceJobDTO(
     override val oid: Long,
     val jobState: Int,
     val jobType: EntityLink<JobTypeDTO>,

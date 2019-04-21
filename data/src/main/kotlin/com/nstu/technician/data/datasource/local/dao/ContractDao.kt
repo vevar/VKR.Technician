@@ -13,5 +13,5 @@ interface ContractDao {
     fun save(contractEntity: ContractEntity)
 
     @Query("SELECT * FROM contractentity WHERE oid=:id")
-    fun findById(id: Long): ContractEntity
+    fun findById(id: Long): ContractEntity?
 }

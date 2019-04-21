@@ -75,7 +75,7 @@ class DataSourceModule {
 
     @Named(LOCAL)
     @Provides
-    fun provideContractorLocalSource(contractorLocalSource: ContractorLocalSource): ContractorDataSource{
+    fun provideContractorLocalSource(contractorLocalSource: ContractorLocalSource): ContractorDataSource {
         return contractorLocalSource
     }
 

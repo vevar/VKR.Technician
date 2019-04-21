@@ -1,18 +1,11 @@
 package com.nstu.technician.data.database.entity.job
 
-import androidx.room.*
-import com.nstu.technician.data.database.entity.ShiftEntity
-import com.nstu.technician.domain.model.Shift
-import com.nstu.technician.domain.model.common.OwnDateTime
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Index
+import androidx.room.PrimaryKey
 
 @Entity(
-    foreignKeys = [
-        ForeignKey(
-            entity = ShiftEntity::class,
-            parentColumns = ["oid"],
-            childColumns = ["shift_id"]
-        )
-    ],
     indices = [
         Index(value = ["shift_id"])
     ]

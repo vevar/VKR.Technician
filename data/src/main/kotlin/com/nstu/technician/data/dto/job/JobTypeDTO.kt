@@ -4,7 +4,7 @@ import com.nstu.technician.data.dto.EntityDTO
 import com.nstu.technician.data.dto.EntityLink
 import com.nstu.technician.data.dto.tool.ImplementsDTO
 
-class JobTypeDTO(
+data class JobTypeDTO(
     override val oid: Long,
     val name: String,
     val description: String,

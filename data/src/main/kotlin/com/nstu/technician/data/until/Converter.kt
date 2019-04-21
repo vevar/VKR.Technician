@@ -7,6 +7,7 @@ import com.nstu.technician.data.database.entity.common.GPSEntity
 import com.nstu.technician.data.database.entity.document.ContractEntity
 import com.nstu.technician.data.database.entity.document.ContractorEntity
 import com.nstu.technician.data.database.entity.job.FacilityEntity
+import com.nstu.technician.data.database.entity.job.GPSPointFromShiftEntity
 import com.nstu.technician.data.database.entity.job.MaintenanceEntity
 import com.nstu.technician.data.database.entity.user.AccountEntity
 import com.nstu.technician.data.database.entity.user.TechnicianEntity
@@ -41,7 +42,6 @@ import com.nstu.technician.domain.model.user.User
 fun convertToDTO(account: Account): AccountDTO {
     return AccountDTO(account.oid, account.login, account.password)
 }
-
 
 fun convertToModel(account: AccountDTO): Account {
     return Account(account.oid, account.login, account.password)
@@ -314,18 +314,12 @@ fun FacilityDTO.convertToFacility(): Facility {
     )
 }
 
-fun ShiftEntity.convertToShiftDTO(): ShiftDTO {
-    return ShiftDTO(
-        oid = oid,
-        date = date
-    )
-}
-
-fun ShiftEntity.convertToShiftDTO(listMaintenanceEntities: List<MaintenanceDTO>): ShiftDTO {
+fun ShiftEntity.convertToShiftDTO(points: List<GPSPointDTO>?, visits: List<MaintenanceDTO>?): ShiftDTO {
     return ShiftDTO(
         oid = oid,
         date = date,
-        visits = listMaintenanceEntities.map { EntityLink(oid, it) }
+        points = points?.map { EntityLink(it) },
+        visits = visits?.map { EntityLink(it) }
     )
 }
 
@@ -360,10 +354,9 @@ fun AddressEntity.convertToAddressDTO(gpsPointDTO: GPSPointDTO): AddressDTO {
     )
 }
 
-fun ContractEntity.convertToContract(
+fun ContractEntity.convertToContractDTO(
     artifactDTO: ArtifactDTO,
-    contractorDTO: ContractorDTO,
-    facilityDTO: FacilityDTO
+    contractorDTO: ContractorDTO
 ): ContractDTO {
     return ContractDTO(
         oid = oid,
@@ -372,24 +365,54 @@ fun ContractEntity.convertToContract(
         date = OwnDateTime(date),
         number = number,
         docType = docType,
-        contractor = EntityLink(contractorDTO),
-        facility = EntityLink(facilityDTO)
+        contractor = EntityLink(contractorDTO)
     )
 }
-fun ContractorEntity.convertToContractorDTO(addressDTO: AddressDTO): ContractorDTO{
+
+fun ContractDTO.convertToContractEntity(): ContractEntity {
+    return ContractEntity(
+        oid = oid,
+        state = state,
+        number = number,
+        docType = docType,
+        date = date.timeInMS,
+        artifactId = artifact.oid,
+        contractorId = contractor.oid,
+        facilityId = facility?.oid
+    )
+}
+
+fun ContractorEntity.convertToContractorDTO(addressDTO: AddressDTO): ContractorDTO {
     return ContractorDTO(
-        oid= oid,
+        oid = oid,
         name = name,
         INN = INN,
         address = addressDTO
     )
 }
 
-fun ContractorDTO.convertToContractorEntity(): ContractorEntity{
+fun ContractorDTO.convertToContractorEntity(): ContractorEntity {
     return ContractorEntity(
         oid = oid,
         INN = INN,
         name = name,
         addressId = address.location.oid
+    )
+}
+
+fun GPSPointDTO.convertToGPSPointFromShiftEntity(shiftId: Long): GPSPointFromShiftEntity {
+    return GPSPointFromShiftEntity(
+        oid = oid,
+        latitude = geoy,
+        longitude = geox,
+        shiftId = shiftId
+    )
+}
+
+fun GPSPointFromShiftEntity.convertToGpsPointDTO(): GPSPointDTO {
+    return GPSPointDTO(
+        oid = oid,
+        geox = longitude,
+        geoy = latitude
     )
 }

@@ -5,10 +5,7 @@ import com.nstu.technician.data.dto.common.ArtifactDTO
 import com.nstu.technician.data.dto.common.GPSPointDTO
 import com.nstu.technician.data.dto.document.ContractDTO
 import com.nstu.technician.data.dto.document.ContractorDTO
-import com.nstu.technician.data.dto.job.FacilityDTO
-import com.nstu.technician.data.dto.job.JobTypeDTO
-import com.nstu.technician.data.dto.job.MaintenanceDTO
-import com.nstu.technician.data.dto.job.MaintenanceJobDTO
+import com.nstu.technician.data.dto.job.*
 import com.nstu.technician.data.dto.tool.ImplementUnitDTO
 import com.nstu.technician.data.dto.tool.ImplementsDTO
 import com.nstu.technician.domain.model.FileNameExt
@@ -18,7 +15,7 @@ fun getMaintenanceDTO(oid: Long): MaintenanceDTO {
 
     return MaintenanceDTO(
         oid = oid,
-        facility = EntityLink(getFacilityDTO()),
+        facility = EntityLink(getFacilityDTO(oid)),
         endTime = getOwnTime(),
         beginTime = getOwnTime(),
         duration = 30,
@@ -32,18 +29,49 @@ fun getMaintenanceDTO(oid: Long): MaintenanceDTO {
     )
 }
 
+fun getMaintenanceDTOWithShiftDTO(oid: Long, shiftDTO: ShiftDTO): MaintenanceDTO {
+    val maintenanceDTO = getMaintenanceDTO(oid)
+    maintenanceDTO.shift = EntityLink(shiftDTO)
+    return maintenanceDTO
+}
+
+private fun getShiftDTO_STUB(oid: Long): ShiftDTO {
+    return ShiftDTO(
+        oid = oid,
+        date = getOwnTime()
+    )
+}
+
+fun getShiftDTO(oid: Long): ShiftDTO {
+    return ShiftDTO(
+        oid = oid,
+        date = getOwnTime(),
+        points = getListSomeObject { EntityLink(getGPSPointDTO(it)) },
+        visits = getListSomeObject { EntityLink(getMaintenanceDTOWithShiftDTO(it, getShiftDTO_STUB(oid))) }
+    )
+}
+
 fun getOwnTime(): OwnDateTime {
     return OwnDateTime(1554713066603)
 }
 
-fun getFacilityDTO(): FacilityDTO {
+fun getFacilityDTO(oid: Long): FacilityDTO {
     return FacilityDTO(
-        oid = 4,
+        oid = oid,
         name = "Пушка",
         address = getAddressDTO(378),
-        assingmentDate = getOwnTime(),
-        contract = null
+        assingmentDate = getOwnTime()
     )
+}
+
+fun getFacilityDTOWithContractDTO(oid: Long): FacilityDTO {
+    val facilityDTO = getFacilityDTO(oid)
+    val contractDTO = getContractDTO(372)
+
+    facilityDTO.contract = EntityLink(contractDTO)
+    contractDTO.facility = EntityLink(facilityDTO)
+
+    return facilityDTO
 }
 
 fun getAddressDTO(oid: Long): AddressDTO {
@@ -85,8 +113,7 @@ fun getMaintenanceJobDTO(oid: Long): MaintenanceJobDTO {
 fun getImplementsDTO(oid: Long): ImplementsDTO {
     return ImplementsDTO(
         oid = oid,
-        name = "Hammer",
-        units = getListSomeObject { EntityLink(getImplementUnitDTO(it)) }
+        name = "Hammer"
     )
 }
 
@@ -119,20 +146,30 @@ fun getArtifactDTO(oid: Long, type: Int): ArtifactDTO {
     )
 }
 
-fun getContractDTO(oid: Long): ContractDTO{
+fun getContractDTO(oid: Long): ContractDTO {
     return ContractDTO(
         oid = oid,
-        artifact = EntityLink(getArtifactDTO(32,1)),
+        artifact = EntityLink(getArtifactDTO(32, 1)),
         contractor = EntityLink(getContractorDTO(852)),
         date = getOwnTime(),
         docType = 1,
         number = "123",
-        facility = EntityLink(getFacilityDTO()),
         state = 1
     )
 }
 
-fun getContractorDTO(oid: Long): ContractorDTO{
+fun getContractDTOWithFacilityDTO(oid: Long): ContractDTO {
+    val contractDTO = getContractDTO(oid)
+
+    val facilityDTO = getFacilityDTO(oid)
+
+    facilityDTO.contract = EntityLink(contractDTO)
+    contractDTO.facility = EntityLink(facilityDTO)
+
+    return contractDTO
+}
+
+fun getContractorDTO(oid: Long): ContractorDTO {
     return ContractorDTO(
         oid = oid,
         address = getAddressDTO(5364),

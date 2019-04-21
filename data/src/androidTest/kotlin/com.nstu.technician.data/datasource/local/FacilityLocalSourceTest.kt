@@ -9,10 +9,7 @@ import com.nstu.technician.data.datasource.FacilityDataSource
 import com.nstu.technician.data.di.component.DaggerDataSourceComponent
 import com.nstu.technician.data.di.model.DaoModule
 import com.nstu.technician.data.di.model.DataSourceModule
-import com.nstu.technician.data.dto.common.AddressDTO
-import com.nstu.technician.data.dto.common.GPSPointDTO
-import com.nstu.technician.data.dto.job.FacilityDTO
-import com.nstu.technician.domain.model.common.OwnDateTime
+import com.nstu.technician.data.dto.getFacilityDTO
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -48,13 +45,7 @@ class FacilityLocalSourceTest {
 
     @Test
     fun writeAndRead() {
-        val addressDTO = AddressDTO(
-            street = "Пупкина", office = "11", home = "2",
-            location = GPSPointDTO(1, 54.04, 54.05)
-        )
-        val facilityDTO = FacilityDTO(
-            oid = 1, name = "Пушка", address = addressDTO, assingmentDate = OwnDateTime(1554713066603)
-        )
+        val facilityDTO = getFacilityDTO(3428)
 
         runBlocking {
             facilityDataSource.save(facilityDTO)

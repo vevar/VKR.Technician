@@ -1,23 +1,22 @@
 package com.nstu.technician.data.datasource.local
 
-import com.nstu.technician.data.datasource.GPSPointDataSource
 import com.nstu.technician.data.datasource.LOCAL
+import com.nstu.technician.data.datasource.MaintenanceDataSource
 import com.nstu.technician.data.datasource.ShiftDataSource
-import com.nstu.technician.data.datasource.local.dao.*
+import com.nstu.technician.data.datasource.local.dao.GPSPointFromShiftDao
+import com.nstu.technician.data.datasource.local.dao.ShiftDao
+import com.nstu.technician.data.datasource.local.dao.UtilDao
 import com.nstu.technician.data.dto.job.ShiftDTO
 import com.nstu.technician.data.until.*
-import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import javax.inject.Named
 
 class ShiftLocalSource @Inject constructor(
+    private val utilDao: UtilDao,
     private val shiftDao: ShiftDao,
-    private val maintenanceDao: MaintenanceDao,
-    private val facilityDao: FacilityDao,
-    private val addressDao: AddressDao,
+    private val gpsPointFromShiftDao: GPSPointFromShiftDao,
     @Named(LOCAL)
-    private val gpsPointDataSource: GPSPointDataSource,
-    private val utilDao: UtilDao
+    private val maintenanceLocalSource: MaintenanceDataSource
 ) : ShiftDataSource {
     override suspend fun findByTechnicianIdAndTimePeriod(
         technicianId: Long,
@@ -28,52 +27,25 @@ class ShiftLocalSource @Inject constructor(
     }
 
     override suspend fun findById(id: Long): ShiftDTO? {
-        return shiftDao.findById(id)?.let { shiftEntity ->
-            maintenanceDao.findByIdShift(shiftEntity.oid)?.let { listMaintenanceEntities ->
-                shiftEntity.convertToShiftDTO(listMaintenanceEntities.let {
-                    it.map { maintenanceEntity ->
-                        val facilityDTO = facilityDao.findById(maintenanceEntity.facilityId)?.let { facilityEntity ->
-                            val addressDTO = addressDao.findById(facilityEntity.addressId)?.let { addressEntity ->
-                                gpsPointDataSource.findById(addressEntity.gpsPointId)?.let { gpsPointDTO ->
-                                    addressEntity.convertToAddressDTO(gpsPointDTO)
-                                }
+        val visits = maintenanceLocalSource.findByShiftId(id)
+        val points = gpsPointFromShiftDao.findByShiftId(id)?.map { it.convertToGpsPointDTO() }
 
-                            } ?: throw NullPointerException("address not found")
-
-                            facilityEntity.convertToFacilityDTO(addressDTO)
-                        } ?: throw NullPointerException("facility not found")
-                        maintenanceEntity.convertToMaintenanceDTO(facilityDTO)
-                    }
-                })
-            }
-        }
+        return shiftDao.findById(id)?.convertToShiftDTO(points, visits)
     }
 
     override suspend fun save(shiftDTO: ShiftDTO) {
         utilDao.transaction {
             shiftDao.save(shiftDTO.convertToShiftEntity())
-            shiftDTO.visits?.let { listMaintenance ->
-                listMaintenance.map { link ->
-                    link.convertToObject { maintenanceDTO ->
-                        val facilityEntity = maintenanceDTO.facility.convertToObject { facilityDTO ->
-                            val addressDTO = facilityDTO.address
-                            val gpsPointDTO = addressDTO.location
-                            runBlocking {
-                                gpsPointDataSource.save(gpsPointDTO)
-                            }
-                            addressDao.save(addressDTO.convertToAddressEntity(gpsPointDTO.oid))
-                            facilityDTO.convertToFacilityEntity()
-                        }.also {
-                        }
-                        facilityDao.save(facilityEntity)
-                        maintenanceDTO.convertToMaintenanceEntity(shiftDTO.oid)
-
-                    }
-                }.also { listMaintenanceEntities ->
-                    maintenanceDao.saveAll(listMaintenanceEntities)
-                }
+            val gpsPoints = shiftDTO.points?.map {
+                it.getObject().convertToGPSPointFromShiftEntity(shiftDTO.oid)
+            }
+            gpsPoints?.let {
+                gpsPointFromShiftDao.saveAll(gpsPoints)
+            }
+            val visits = shiftDTO.visits?.map { it.getObject() }
+            visits?.let {
+                maintenanceLocalSource.saveAllForShift(visits, shiftDTO.oid)
             }
         }
-
     }
 }

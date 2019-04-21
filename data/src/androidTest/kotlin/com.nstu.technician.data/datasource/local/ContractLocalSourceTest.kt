@@ -1,5 +1,6 @@
 package com.nstu.technician.data.datasource.local
 
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.nstu.technician.data.database.AppDataBase
 import com.nstu.technician.data.datasource.ContractDataSource
 import com.nstu.technician.data.dto.getContractDTO
@@ -10,8 +11,11 @@ import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
 
+@RunWith(AndroidJUnit4::class)
 class ContractLocalSourceTest {
+
     private lateinit var contractLocalSource: ContractDataSource
     private lateinit var dataBase: AppDataBase
 
