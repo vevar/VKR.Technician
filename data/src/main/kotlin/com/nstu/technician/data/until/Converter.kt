@@ -199,16 +199,6 @@ fun convertToModel(facilityDTO: FacilityDTO): Facility {
     return facility
 }
 
-fun convertToModel(contractorDTO: ContractorDTO): Contractor {
-    return Contractor(
-        contractorDTO.oid,
-        contractorDTO.name,
-        contractorDTO.address,
-        contractorDTO.INN
-    )
-}
-
-
 fun <F : EntityDTO, T> EntityLink<F>.convertToObject(function: (F) -> T): T {
     return ref?.let(function) ?: throw IllegalStateException("ref must be set")
 }

@@ -67,6 +67,12 @@ class DataSourceModule {
         return artifactLocalSource
     }
 
+    @Named(LOCAL)
+    @Provides
+    fun provideContractLocalSource(contractLocalSource: ContractLocalSource): ContractDataSource{
+        return contractLocalSource
+    }
+
     @Named(CLOUD)
     @Provides
     fun provideShiftCloudSource(shiftCloudSource: ShiftCloudSource): ShiftDataSource {

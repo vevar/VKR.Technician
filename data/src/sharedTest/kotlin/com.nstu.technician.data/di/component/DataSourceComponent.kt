@@ -24,4 +24,8 @@ interface DataSourceComponent {
 
     @Named(LOCAL)
     fun artifactDataSource(): ArtifactDataSource
+
+    @Named(LOCAL)
+    fun contractDataSource(): ContractDataSource
+
 }

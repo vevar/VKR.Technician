@@ -3,6 +3,8 @@ package com.nstu.technician.data.dto
 import com.nstu.technician.data.dto.common.AddressDTO
 import com.nstu.technician.data.dto.common.ArtifactDTO
 import com.nstu.technician.data.dto.common.GPSPointDTO
+import com.nstu.technician.data.dto.document.ContractDTO
+import com.nstu.technician.data.dto.document.ContractorDTO
 import com.nstu.technician.data.dto.job.FacilityDTO
 import com.nstu.technician.data.dto.job.JobTypeDTO
 import com.nstu.technician.data.dto.job.MaintenanceDTO
@@ -114,5 +116,27 @@ fun getArtifactDTO(oid: Long, type: Int): ArtifactDTO {
         name = "SomeFileName",
         original = FileNameExt("asd", "tyui", "jpg"),
         type = type
+    )
+}
+
+fun getContractDTO(oid: Long): ContractDTO{
+    return ContractDTO(
+        oid = oid,
+        artifact = EntityLink(getArtifactDTO(32,1)),
+        contractor = EntityLink(getContractorDTO(852)),
+        date = getOwnTime(),
+        docType = 1,
+        number = "123",
+        facility = EntityLink(getFacilityDTO()),
+        state = 1
+    )
+}
+
+fun getContractorDTO(oid: Long): ContractorDTO{
+    return ContractorDTO(
+        oid = oid,
+        address = getAddressDTO(5364),
+        INN = "8793412",
+        name = "gaga"
     )
 }
