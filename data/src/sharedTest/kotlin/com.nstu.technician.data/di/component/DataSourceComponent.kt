@@ -28,4 +28,6 @@ interface DataSourceComponent {
     @Named(LOCAL)
     fun contractDataSource(): ContractDataSource
 
+    @Named(LOCAL)
+    fun contractorDataSource(): ContractorDataSource
 }
