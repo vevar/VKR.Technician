@@ -9,7 +9,7 @@ import com.nstu.technician.data.database.entity.document.ContractorEntity
 @Dao
 interface ContractorDao {
     @Query("SELECT * FROM contractorentity WHERE oid=:id")
-    fun findById(id: Long): ContractorEntity
+    fun findById(id: Long): ContractorEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun save(contractorEntity: ContractorEntity)

@@ -73,6 +73,12 @@ class DataSourceModule {
         return contractLocalSource
     }
 
+    @Named(LOCAL)
+    @Provides
+    fun provideContractorLocalSource(contractorLocalSource: ContractorLocalSource): ContractorDataSource{
+        return contractorLocalSource
+    }
+
     @Named(CLOUD)
     @Provides
     fun provideShiftCloudSource(shiftCloudSource: ShiftCloudSource): ShiftDataSource {

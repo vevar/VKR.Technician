@@ -5,6 +5,7 @@ import com.nstu.technician.data.database.entity.common.AddressEntity
 import com.nstu.technician.data.database.entity.common.ArtifactEntity
 import com.nstu.technician.data.database.entity.common.GPSEntity
 import com.nstu.technician.data.database.entity.document.ContractEntity
+import com.nstu.technician.data.database.entity.document.ContractorEntity
 import com.nstu.technician.data.database.entity.job.FacilityEntity
 import com.nstu.technician.data.database.entity.job.MaintenanceEntity
 import com.nstu.technician.data.database.entity.user.AccountEntity
@@ -27,7 +28,6 @@ import com.nstu.technician.domain.model.Shift
 import com.nstu.technician.domain.model.common.Address
 import com.nstu.technician.domain.model.common.GPSPoint
 import com.nstu.technician.domain.model.common.OwnDateTime
-import com.nstu.technician.domain.model.document.Contractor
 import com.nstu.technician.domain.model.facility.Facility
 import com.nstu.technician.domain.model.facility.JobType
 import com.nstu.technician.domain.model.facility.maintenance.Maintenance
@@ -374,5 +374,22 @@ fun ContractEntity.convertToContract(
         docType = docType,
         contractor = EntityLink(contractorDTO),
         facility = EntityLink(facilityDTO)
+    )
+}
+fun ContractorEntity.convertToContractorDTO(addressDTO: AddressDTO): ContractorDTO{
+    return ContractorDTO(
+        oid= oid,
+        name = name,
+        INN = INN,
+        address = addressDTO
+    )
+}
+
+fun ContractorDTO.convertToContractorEntity(): ContractorEntity{
+    return ContractorEntity(
+        oid = oid,
+        INN = INN,
+        name = name,
+        addressId = address.location.oid
     )
 }
