@@ -43,4 +43,10 @@ abstract class AppDataBase : RoomDatabase() {
     abstract fun getContractDao(): ContractDao
     abstract fun getContractorDao(): ContractorDao
     abstract fun getGPSPointFromShiftDao(): GPSPointFromShiftDao
+    abstract fun getImplementsDao(): ImplementDao
+    abstract fun getImplementUnitDao(): ImplementUnitDao
+    abstract fun getComponentDao(): ComponentDao
+    abstract fun getComponentTypeDao(): ComponentTypeDao
+    abstract fun getComponentUnitDao(): ComponentUnitDao
+    abstract fun getJobTypeDao(): JobTypeDao
 }

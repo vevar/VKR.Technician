@@ -69,7 +69,7 @@ class DataSourceModule {
 
     @Named(LOCAL)
     @Provides
-    fun provideContractLocalSource(contractLocalSource: ContractLocalSource): ContractDataSource{
+    fun provideContractLocalSource(contractLocalSource: ContractLocalSource): ContractDataSource {
         return contractLocalSource
     }
 
@@ -81,8 +81,38 @@ class DataSourceModule {
 
     @Named(LOCAL)
     @Provides
-    fun provideImplementUnitLocalSource(implementUnitLocalSource: ImplementUnitLocalSource): ImplementUnitDataSource{
+    fun provideImplementUnitLocalSource(implementUnitLocalSource: ImplementUnitLocalSource): ImplementUnitDataSource {
         return implementUnitLocalSource
+    }
+
+    @Named(LOCAL)
+    @Provides
+    fun provideImplementsLocalSource(implementsLocalSource: ImplementsLocalSource): ImplementsDataSource {
+        return implementsLocalSource
+    }
+
+    @Named(LOCAL)
+    @Provides
+    fun provideJobTypeLocalSource(jobTypeLocalSource: JobTypeLocalSource): JobTypeDataSource {
+        return jobTypeLocalSource
+    }
+
+    @Named(LOCAL)
+    @Provides
+    fun provideComponentLocalSource(componentLocalSource: ComponentLocalSource): ComponentDataSource {
+        return componentLocalSource
+    }
+
+    @Named(LOCAL)
+    @Provides
+    fun provideComponentTypeLocalSource(componentTypeLocalSource: ComponentTypeLocalSource): ComponentTypeDataSource {
+        return componentTypeLocalSource
+    }
+
+    @Named(LOCAL)
+    @Provides
+    fun provideComponentUnitLocalSource(componentUnitLocalSource: ComponentUnitLocalSource): ComponentUnitDataSource {
+        return componentUnitLocalSource
     }
 
     @Named(CLOUD)

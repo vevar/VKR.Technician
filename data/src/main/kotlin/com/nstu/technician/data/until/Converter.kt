@@ -10,6 +10,7 @@ import com.nstu.technician.data.database.entity.job.FacilityEntity
 import com.nstu.technician.data.database.entity.job.GPSPointFromShiftEntity
 import com.nstu.technician.data.database.entity.job.MaintenanceEntity
 import com.nstu.technician.data.database.entity.tool.ImplementUnitEntity
+import com.nstu.technician.data.database.entity.tool.ImplementsEntity
 import com.nstu.technician.data.database.entity.user.AccountEntity
 import com.nstu.technician.data.database.entity.user.TechnicianEntity
 import com.nstu.technician.data.database.entity.user.UserEntity
@@ -253,11 +254,26 @@ fun FacilityDTO.convertToFacilityEntity(): FacilityEntity {
     )
 }
 
+fun ImplementsDTO.convertToImplementsEntity(maintenanceJobId: Long): ImplementsEntity {
+    return ImplementsEntity(
+        oid = oid,
+        name = name,
+        maintenanceJobId = maintenanceJobId
+    )
+}
+
 fun ImplementsDTO.convertToImplement(): Implements {
     return Implements(
         oid, name, units = units?.filter { it.ref != null }?.map { entityLink: EntityLink<ImplementUnitDTO> ->
             entityLink.ref?.convertToImplementUnit()!!
         }
+    )
+}
+
+fun ImplementsEntity.convertToImplementsDTO(): ImplementsDTO{
+    return ImplementsDTO(
+        oid = oid,
+        name = name
     )
 }
 
@@ -267,7 +283,7 @@ fun ImplementUnitDTO.convertToImplementUnit(): ImplementUnit {
     )
 }
 
-fun ImplementUnitDTO.convertToImplementUnitEntity(): ImplementUnitEntity{
+fun ImplementUnitDTO.convertToImplementUnitEntity(): ImplementUnitEntity {
     return ImplementUnitEntity(
         oid = oid,
         code = code,

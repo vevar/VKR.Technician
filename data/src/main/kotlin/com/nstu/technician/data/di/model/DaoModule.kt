@@ -72,4 +72,33 @@ class DaoModule(private val appDataBase: AppDataBase) {
     fun provideGPSPointFromShiftDao(): GPSPointFromShiftDao{
         return appDataBase.getGPSPointFromShiftDao()
     }
+
+    @Provides
+    fun provideImplementsDao(): ImplementDao{
+        return appDataBase.getImplementsDao()
+    }
+
+    @Provides
+    fun provideImplementUnitDao(): ImplementUnitDao{
+        return appDataBase.getImplementUnitDao()
+    }
+
+    @Provides
+    fun provideComponentDao():ComponentDao{
+        return appDataBase.getComponentDao()
+    }
+
+    @Provides
+    fun provideComponentTypeDao(): ComponentTypeDao{
+        return appDataBase.getComponentTypeDao()
+    }
+
+    @Provides
+    fun provideComponentUnitDao(): ComponentUnitDao{
+        return appDataBase.getComponentUnitDao()
+    }
+    @Provides
+    fun provideJobTypeDao():JobTypeDao{
+        return appDataBase.getJobTypeDao()
+    }
 }
