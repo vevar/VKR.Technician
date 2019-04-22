@@ -9,6 +9,7 @@ import com.nstu.technician.data.database.entity.document.ContractorEntity
 import com.nstu.technician.data.database.entity.job.FacilityEntity
 import com.nstu.technician.data.database.entity.job.GPSPointFromShiftEntity
 import com.nstu.technician.data.database.entity.job.MaintenanceEntity
+import com.nstu.technician.data.database.entity.tool.ImplementUnitEntity
 import com.nstu.technician.data.database.entity.user.AccountEntity
 import com.nstu.technician.data.database.entity.user.TechnicianEntity
 import com.nstu.technician.data.database.entity.user.UserEntity
@@ -263,6 +264,22 @@ fun ImplementsDTO.convertToImplement(): Implements {
 fun ImplementUnitDTO.convertToImplementUnit(): ImplementUnit {
     return ImplementUnit(
         oid, code
+    )
+}
+
+fun ImplementUnitDTO.convertToImplementUnitEntity(): ImplementUnitEntity{
+    return ImplementUnitEntity(
+        oid = oid,
+        code = code,
+        implementsId = impl.oid
+    )
+}
+
+fun ImplementUnitEntity.convertToImplementUnitDTO(implementsDTO: ImplementsDTO): ImplementUnitDTO {
+    return ImplementUnitDTO(
+        oid = oid,
+        code = code,
+        impl = EntityLink(implementsDTO)
     )
 }
 

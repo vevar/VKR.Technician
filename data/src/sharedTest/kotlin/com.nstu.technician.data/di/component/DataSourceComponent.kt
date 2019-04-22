@@ -30,4 +30,7 @@ interface DataSourceComponent {
 
     @Named(LOCAL)
     fun contractorDataSource(): ContractorDataSource
+
+    @Named(LOCAL)
+    fun implementUnitDataSource(): ImplementUnitDataSource
 }
