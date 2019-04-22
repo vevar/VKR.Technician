@@ -1,24 +1,31 @@
 package com.nstu.technician.data.datasource.local
 
 import com.nstu.technician.data.datasource.ImplementUnitDataSource
-import com.nstu.technician.data.datasource.LOCAL
 import com.nstu.technician.data.datasource.local.dao.ImplementUnitDao
 import com.nstu.technician.data.dto.tool.ImplementUnitDTO
+import com.nstu.technician.data.dto.tool.ImplementsDTO
+import com.nstu.technician.data.until.convertToImplementUnitDTO
+import com.nstu.technician.data.until.convertToImplementUnitEntity
 import javax.inject.Inject
-import javax.inject.Named
 
 class ImplementUnitLocalSource @Inject constructor(
-    private val implementUnitDao: ImplementUnitDao,
-    @Named(LOCAL)
-    private val implementsLocalSource: ImplementsLocalSource
+    private val implementUnitDao: ImplementUnitDao
 ) : ImplementUnitDataSource {
 
-    override suspend fun findById(id: Long): ImplementUnitDTO? {
-        TODO()
+    override fun saveAll(list: List<ImplementUnitDTO>) {
+        implementUnitDao.saveAll(list.map { implementUnitDTO ->
+            implementUnitDTO.convertToImplementUnitEntity()
+        })
     }
 
-    override suspend fun save(obj: ImplementUnitDTO) {
-        TODO()
+
+    override fun findByImplement(implements: ImplementsDTO): List<ImplementUnitDTO> {
+        return implementUnitDao.findByImplementsId(implements.oid).map { implementUnitEntity ->
+            implementUnitEntity.convertToImplementUnitDTO(implements)
+        }
     }
 
+    override fun save(implementUnitDTO: ImplementUnitDTO) {
+        implementUnitDao.save(implementUnitDTO.convertToImplementUnitEntity())
+    }
 }

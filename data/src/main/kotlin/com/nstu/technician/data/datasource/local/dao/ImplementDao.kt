@@ -18,4 +18,7 @@ interface ImplementDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun save(implementsEntity: ImplementsEntity)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun saveAll(list: List<ImplementsEntity>)
+
 }

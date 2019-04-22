@@ -10,23 +10,17 @@ import javax.inject.Inject
 class ImplementsLocalSource @Inject constructor(
     private val implementDao: ImplementDao
 ) : ImplementsDataSource {
-    override suspend fun saveForMaintenaceJob(implementsDTO: ImplementsDTO, maintenanceJobId: Long) {
-        implementDao.save(implementsDTO.convertToImplementsEntity(maintenanceJobId))
+
+    override suspend fun saveAllForMaintenanceJob(list: List<ImplementsDTO>, maintenanceJobId: Long) {
+        implementDao.saveAll(list.map{implementsDTO ->
+            implementsDTO.convertToImplementsEntity(maintenanceJobId)
+        })
     }
 
     override suspend fun findByMaintenanceJobId(maintenanceJobId: Long): List<ImplementsDTO> {
         return implementDao.findByMaintenanceJobId(maintenanceJobId).map { implementsEntity ->
             implementsEntity.convertToImplementsDTO()
         }
-    }
-
-
-    override suspend fun findById(id: Long): ImplementsDTO? {
-        TODO()
-    }
-
-    override suspend fun save(obj: ImplementsDTO) {
-        TODO()
     }
 
 }

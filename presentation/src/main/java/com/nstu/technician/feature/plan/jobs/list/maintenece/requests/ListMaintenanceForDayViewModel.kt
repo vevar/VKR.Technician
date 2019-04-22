@@ -1,6 +1,5 @@
 package com.nstu.technician.feature.plan.jobs.list.maintenece.requests
 
-import android.database.sqlite.SQLiteConstraintException
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

@@ -1,18 +1,9 @@
 package com.nstu.technician.data.database.entity.job
 
 import androidx.room.*
-import com.nstu.technician.data.database.entity.common.AddressEntity
-import com.nstu.technician.data.database.entity.common.GPSEntity
 import com.nstu.technician.domain.model.common.OwnDateTime
 
 @Entity(
-    foreignKeys = [
-        ForeignKey(
-            entity = AddressEntity::class,
-            parentColumns = ["oid"],
-            childColumns = ["address_id"]
-        )
-    ],
     indices = [
         Index(value = ["address_id", "contract_id"])
     ]

@@ -2,9 +2,9 @@ package com.nstu.technician.data.datasource
 
 import com.nstu.technician.data.dto.tool.ImplementsDTO
 
-interface ImplementsDataSource: DataSourceCRUD<ImplementsDTO> {
+interface ImplementsDataSource {
 
-    suspend fun saveForMaintenaceJob(implementsDTO: ImplementsDTO, maintenanceJobId: Long)
+    suspend fun saveAllForMaintenanceJob(list: List<ImplementsDTO>, maintenanceJobId: Long)
 
     suspend fun findByMaintenanceJobId(maintenanceJobId: Long): List<ImplementsDTO>
 }

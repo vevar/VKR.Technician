@@ -1,7 +1,9 @@
 package com.nstu.technician.data.database.entity.user
 
-import androidx.room.*
-import com.nstu.technician.data.until.EntityTypeConverters
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.PrimaryKey
 
 @Entity(
     foreignKeys = [ForeignKey(
@@ -12,7 +14,6 @@ import com.nstu.technician.data.until.EntityTypeConverters
         onUpdate = ForeignKey.CASCADE
     )]
 )
-@TypeConverters(value = [EntityTypeConverters::class])
 data class UserEntity(
     @PrimaryKey
     val oid: Long,

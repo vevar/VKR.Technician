@@ -7,8 +7,6 @@ import com.nstu.technician.data.datasource.ShiftDataSource
 import com.nstu.technician.data.until.convertToModel
 import com.nstu.technician.domain.model.Shift
 import com.nstu.technician.domain.repository.ShiftRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Named
 

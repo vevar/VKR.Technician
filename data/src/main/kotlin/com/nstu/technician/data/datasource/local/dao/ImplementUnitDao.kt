@@ -14,4 +14,10 @@ interface ImplementUnitDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun save(implementUnitEntity: ImplementUnitEntity)
+
+    @Query("SELECT * FROM implementunitentity WHERE implements_id=:implementsId")
+    fun findByImplementsId(implementsId: Long): List<ImplementUnitEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun saveAll(list: List<ImplementUnitEntity>)
 }

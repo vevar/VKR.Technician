@@ -18,13 +18,13 @@ class MaintenanceLocalSource @Inject constructor(
     @Named(LOCAL)
     private val facilityLocalSource: FacilityDataSource
 ) : MaintenanceDataSource {
+
     override suspend fun findByShiftId(shiftId: Long): List<MaintenanceDTO>? {
         return maintenanceDao.findByIdShift(shiftId)?.map { maintenanceEntity ->
             facilityLocalSource.findById(maintenanceEntity.facilityId)?.let { facilityDTO ->
                 maintenanceEntity.convertToMaintenanceDTO(facilityDTO)
             } ?: throw IllegalStateException("facility must be set for maintenance")
         }
-
     }
 
     override suspend fun findById(id: Long): MaintenanceDTO? {

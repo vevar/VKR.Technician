@@ -13,11 +13,11 @@ data class MaintenanceJobDTO(
     val jobState: Int,
     val jobType: EntityLink<JobTypeDTO>,
     var beginTime: OwnDateTime? = null,
-    var endTime: OwnDateTime? = null,
-    var beginPhoto: EntityLink<ArtifactDTO>? = null,
-    var endPhoto: EntityLink<ArtifactDTO>? = null,
-    var implList: List<EntityLink<ImplementsDTO>>? = null,
-    var components: List<EntityLink<ComponentUnitDTO>>? = null,
-    var duration: Int? = null,  // in minutes
-    var problem: EntityLink<ProblemDTO>? = null
+    val endTime: OwnDateTime? = null,
+    val beginPhoto: EntityLink<ArtifactDTO>? = null,
+    val endPhoto: EntityLink<ArtifactDTO>? = null,
+    val implList: List<EntityLink<ImplementsDTO>>? = null,
+    val components: List<EntityLink<ComponentUnitDTO>>? = null,
+    val duration: Int? = null,  // in minutes
+    val problem: EntityLink<ProblemDTO>? = null
 ) : EntityDTO(oid)

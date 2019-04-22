@@ -6,11 +6,17 @@ import com.nstu.technician.data.dto.job.FacilityDTO
 import com.nstu.technician.domain.model.common.OwnDateTime
 
 data class ContractDTO(
+    @Transient
     override val oid: Long,
+    @Transient
     override val docType: Int,
+    @Transient
     override val number: String,
+    @Transient
     override val date: OwnDateTime,
+    @Transient
     override val artifact: EntityLink<ArtifactDTO>,
+    @Transient
     override val state: Int,
     val contractor: EntityLink<ContractorDTO>,
     var facility: EntityLink<FacilityDTO>? = null

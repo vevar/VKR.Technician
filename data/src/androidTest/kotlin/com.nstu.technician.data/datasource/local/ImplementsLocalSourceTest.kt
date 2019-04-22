@@ -1,10 +1,8 @@
 package com.nstu.technician.data.datasource.local
 
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.nstu.technician.data.database.AppDataBase
-import com.nstu.technician.data.datasource.ImplementUnitDataSource
-import com.nstu.technician.data.dto.getImplementUnitDTO
-import com.nstu.technician.data.dto.getListSomeObject
+import com.nstu.technician.data.datasource.ImplementsDataSource
+import com.nstu.technician.data.dto.getMaintenanceJobDTO
 import com.nstu.technician.data.until.getObject
 import com.nstu.technician.data.util.DataBaseProvider
 import com.nstu.technician.data.util.DataSourceComponentBuilder
@@ -13,12 +11,10 @@ import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
-import org.junit.runner.RunWith
 
-@RunWith(AndroidJUnit4::class)
-class ImplementUnitLocalSourceTest {
+class ImplementsLocalSourceTest {
 
-    private lateinit var implementUnitLocalSource: ImplementUnitDataSource
+    private lateinit var implementsDataSource: ImplementsDataSource
     private lateinit var dataBase: AppDataBase
 
     @Before
@@ -29,7 +25,7 @@ class ImplementUnitLocalSourceTest {
             .dataBase(dataBase)
             .build()
 
-        implementUnitLocalSource = dataSourceComponent.implementUnitDataSource()
+        implementsDataSource = dataSourceComponent.implementsDataSource()
     }
 
     @After
@@ -39,13 +35,14 @@ class ImplementUnitLocalSourceTest {
 
     @Test
     fun writeAndFindByImplements() {
-        val expected = getListSomeObject { getImplementUnitDTO(it) }
-        val implementsDTO = expected[0].impl.getObject()
+        val maintenanceJobDTO = getMaintenanceJobDTO(1124)
+        val expected = maintenanceJobDTO.implList?.map { it.getObject() } ?: throw IllegalStateException("implList must be set")
+
         runBlocking {
-            implementUnitLocalSource.saveAll(expected)
+            implementsDataSource.saveAllForMaintenanceJob(expected, maintenanceJobDTO.oid)
         }
         val actual = runBlocking {
-            implementUnitLocalSource.findByImplement(implementsDTO)
+            implementsDataSource.findByMaintenanceJobId(maintenanceJobDTO.oid)
         }
 
         Assert.assertEquals(expected, actual)
