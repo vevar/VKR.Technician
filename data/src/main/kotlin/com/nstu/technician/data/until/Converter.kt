@@ -6,12 +6,8 @@ import com.nstu.technician.data.database.entity.common.ArtifactEntity
 import com.nstu.technician.data.database.entity.common.GPSEntity
 import com.nstu.technician.data.database.entity.document.ContractEntity
 import com.nstu.technician.data.database.entity.document.ContractorEntity
-import com.nstu.technician.data.database.entity.job.FacilityEntity
-import com.nstu.technician.data.database.entity.job.GPSPointFromShiftEntity
-import com.nstu.technician.data.database.entity.job.MaintenanceEntity
-import com.nstu.technician.data.database.entity.job.MaintenanceJobEntity
-import com.nstu.technician.data.database.entity.tool.ImplementUnitEntity
-import com.nstu.technician.data.database.entity.tool.ImplementsEntity
+import com.nstu.technician.data.database.entity.job.*
+import com.nstu.technician.data.database.entity.tool.*
 import com.nstu.technician.data.database.entity.user.AccountEntity
 import com.nstu.technician.data.database.entity.user.TechnicianEntity
 import com.nstu.technician.data.database.entity.user.UserEntity
@@ -24,9 +20,7 @@ import com.nstu.technician.data.dto.common.GPSPointDTO
 import com.nstu.technician.data.dto.document.ContractDTO
 import com.nstu.technician.data.dto.document.ContractorDTO
 import com.nstu.technician.data.dto.job.*
-import com.nstu.technician.data.dto.tool.ComponentUnitDTO
-import com.nstu.technician.data.dto.tool.ImplementUnitDTO
-import com.nstu.technician.data.dto.tool.ImplementsDTO
+import com.nstu.technician.data.dto.tool.*
 import com.nstu.technician.data.dto.user.AccountDTO
 import com.nstu.technician.data.dto.user.TechnicianDTO
 import com.nstu.technician.data.dto.user.UserDTO
@@ -359,7 +353,12 @@ fun ShiftEntity.convertToShiftDTO(points: List<GPSPointDTO>?, visits: List<Maint
     )
 }
 
-fun MaintenanceEntity.convertToMaintenanceDTO(facilityDTO: FacilityDTO): MaintenanceDTO {
+fun MaintenanceEntity.convertToMaintenanceDTO(
+    facilityDTO: FacilityDTO,
+    jobList: List<MaintenanceJobDTO>,
+    parent: MaintenanceDTO?,
+    voiceMessage: ArtifactDTO?
+): MaintenanceDTO {
     return MaintenanceDTO(
         oid = oid,
         facility = EntityLink(facilityDTO.oid, facilityDTO),
@@ -368,7 +367,10 @@ fun MaintenanceEntity.convertToMaintenanceDTO(facilityDTO: FacilityDTO): Mainten
         maintenanceType = maintenanceType,
         duration = duration,
         endTime = if (endTime != null) OwnDateTime(endTime) else null,
-        beginTime = if (beginTime != null) OwnDateTime(beginTime) else null
+        beginTime = if (beginTime != null) OwnDateTime(beginTime) else null,
+        jobList = jobList.map { EntityLink(it) },
+        parent = parent?.let { EntityLink(it) },
+        voiceMassage = voiceMessage?.let { EntityLink(it) }
     )
 }
 
@@ -487,5 +489,64 @@ fun MaintenanceJobEntity.convertToMaintenanceJobDTO(
         problem = problemDTO?.let { EntityLink(it) },
         components = components.map { EntityLink(it) },
         implList = implList.map { EntityLink(it) }
+    )
+}
+
+fun ComponentUnitEntity.convertToComponentUnitDTO(componentDTO: ComponentDTO): ComponentUnitDTO {
+    return ComponentUnitDTO(
+        oid = oid,
+        number = number,
+        component = EntityLink(componentDTO)
+    )
+}
+
+fun ComponentUnitDTO.convertToComponentUnitEntity(maintenanceJobId: Long): ComponentUnitEntity {
+    return ComponentUnitEntity(
+        oid = oid,
+        number = number,
+        maintenanceJobId = maintenanceJobId,
+        componentId = component.oid
+    )
+}
+
+fun ComponentDTO.convertToComponentEntity(): ComponentEntity {
+    return ComponentEntity(
+        oid = oid,
+        name = name,
+        componentTypeId = componentType.oid
+    )
+}
+
+fun ComponentEntity.convertToComponentDTO(componentTypeDTO: ComponentTypeDTO): ComponentDTO {
+    return ComponentDTO(
+        oid = oid,
+        name = name,
+        componentType = EntityLink(componentTypeDTO)
+    )
+}
+
+fun ComponentTypeEntity.convertToComponentTypeDTO(): ComponentTypeDTO {
+    return ComponentTypeDTO(
+        oid = oid,
+        name = name
+    )
+}
+
+fun ComponentTypeDTO.convertToComponentTypeEntity(): ComponentTypeEntity {
+    return ComponentTypeEntity(
+        oid = oid,
+        name = name
+    )
+}
+
+fun JobTypeEntity.convertToJobTypeDTO(): JobTypeDTO {
+    return JobTypeDTO(
+        oid, name, description, duration
+    )
+}
+
+fun JobTypeDTO.convertToJobTypeEntity(): JobTypeEntity {
+    return JobTypeEntity(
+        oid, name, description, duration
     )
 }

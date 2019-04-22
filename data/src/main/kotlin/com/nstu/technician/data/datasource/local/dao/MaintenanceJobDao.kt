@@ -13,5 +13,8 @@ interface MaintenanceJobDao {
     fun save(maintenanceEntity: MaintenanceJobEntity)
 
     @Query("SELECT * FROM maintenancejobentity WHERE oid=:id")
-    fun findById(id: Long): MaintenanceJobEntity
+    fun findById(id: Long): MaintenanceJobEntity?
+
+    @Query("SELECT * FROM maintenancejobentity WHERE maintenance_id=:maintenanceId")
+    fun findByMaintenanceId(maintenanceId: Long): List<MaintenanceJobEntity>
 }

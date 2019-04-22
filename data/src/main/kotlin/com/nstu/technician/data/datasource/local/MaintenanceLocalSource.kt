@@ -1,8 +1,6 @@
 package com.nstu.technician.data.datasource.local
 
-import com.nstu.technician.data.datasource.FacilityDataSource
-import com.nstu.technician.data.datasource.LOCAL
-import com.nstu.technician.data.datasource.MaintenanceDataSource
+import com.nstu.technician.data.datasource.*
 import com.nstu.technician.data.datasource.local.dao.MaintenanceDao
 import com.nstu.technician.data.datasource.local.dao.UtilDao
 import com.nstu.technician.data.dto.job.MaintenanceDTO
@@ -16,25 +14,36 @@ class MaintenanceLocalSource @Inject constructor(
     private val utilDao: UtilDao,
     private val maintenanceDao: MaintenanceDao,
     @Named(LOCAL)
-    private val facilityLocalSource: FacilityDataSource
+    private val facilityLocalSource: FacilityDataSource,
+    @Named(LOCAL)
+    private val maintenanceJobLocalSource: MaintenanceJobDataSource,
+    @Named(LOCAL)
+    private val artifactLocalSource: ArtifactDataSource
 ) : MaintenanceDataSource {
 
     override suspend fun findByShiftId(shiftId: Long): List<MaintenanceDTO>? {
         return maintenanceDao.findByIdShift(shiftId)?.map { maintenanceEntity ->
-            facilityLocalSource.findById(maintenanceEntity.facilityId)?.let { facilityDTO ->
-                maintenanceEntity.convertToMaintenanceDTO(facilityDTO)
-            } ?: throw IllegalStateException("facility must be set for maintenance")
+            val facilityDTO = facilityLocalSource.findById(maintenanceEntity.facilityId) ?: throw IllegalStateException(
+                "facility must be set"
+            )
+            val jobList = maintenanceJobLocalSource.findByMaintenanceId(maintenanceEntity.oid)
+            val parent = maintenanceEntity.maintenanceParentId?.let { findById(it) }
+            val voiceMessage = maintenanceEntity.voiceMessageId?.let { artifactLocalSource.findById(it) }
+
+            maintenanceEntity.convertToMaintenanceDTO(facilityDTO, jobList, parent, voiceMessage)
         }
     }
 
     override suspend fun findById(id: Long): MaintenanceDTO? {
         return maintenanceDao.findById(id)?.let { maintenanceEntity ->
-            val facilityDTO = facilityLocalSource.findById(maintenanceEntity.facilityId)
-            return if (facilityDTO != null) {
-                maintenanceEntity.convertToMaintenanceDTO(facilityDTO)
-            } else {
-                null
-            }
+            val facilityDTO = facilityLocalSource.findById(maintenanceEntity.facilityId) ?: throw IllegalStateException(
+                "facility must be set"
+            )
+            val jobList = maintenanceJobLocalSource.findByMaintenanceId(maintenanceEntity.oid)
+            val parent = maintenanceEntity.maintenanceParentId?.let { findById(it) }
+            val voiceMessage = maintenanceEntity.voiceMessageId?.let { artifactLocalSource.findById(it) }
+
+            maintenanceEntity.convertToMaintenanceDTO(facilityDTO, jobList, parent, voiceMessage)
         }
     }
 

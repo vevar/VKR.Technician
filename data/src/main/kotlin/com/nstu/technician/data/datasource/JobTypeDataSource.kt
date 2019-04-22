@@ -1,4 +1,7 @@
 package com.nstu.technician.data.datasource
 
-interface JobTypeDataSource {
+import com.nstu.technician.data.dto.job.JobTypeDTO
+
+interface JobTypeDataSource: DataSourceCRUD<JobTypeDTO> {
+
 }

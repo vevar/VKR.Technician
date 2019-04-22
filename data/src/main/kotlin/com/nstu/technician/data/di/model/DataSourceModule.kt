@@ -117,8 +117,14 @@ class DataSourceModule {
 
     @Named(LOCAL)
     @Provides
-    fun provideMaintenanceJobLocalSource(maintenanceJobLocalSource: MaintenanceJobLocalSource): MaintenanceJobDataSource{
+    fun provideMaintenanceJobLocalSource(maintenanceJobLocalSource: MaintenanceJobLocalSource): MaintenanceJobDataSource {
         return maintenanceJobLocalSource
+    }
+
+    @Named(LOCAL)
+    @Provides
+    fun provideProblemLocalSource(problemLocalSource: ProblemLocalSource): ProblemDataSource {
+        return problemLocalSource
     }
 
     @Named(CLOUD)

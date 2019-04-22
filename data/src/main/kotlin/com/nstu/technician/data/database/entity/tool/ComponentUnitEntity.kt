@@ -18,5 +18,6 @@ data class ComponentUnitEntity(
     @PrimaryKey
     val oid: Long,
     val number: Int,
-    @ColumnInfo(name = "component_id") val componentId: Long
+    @ColumnInfo(name = "component_id") val componentId: Long,
+    @ColumnInfo(name = "maintenance_job_id") val maintenanceJobId: Long
 )

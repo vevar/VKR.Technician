@@ -4,4 +4,5 @@ import com.nstu.technician.data.dto.job.MaintenanceJobDTO
 
 interface MaintenanceJobDataSource: DataSourceCRUD<MaintenanceJobDTO> {
 
+    suspend fun findByMaintenanceId(maintenanceId: Long): List<MaintenanceJobDTO>
 }

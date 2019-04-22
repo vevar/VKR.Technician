@@ -10,7 +10,7 @@ import com.nstu.technician.data.database.entity.tool.ImplementUnitEntity
 interface ImplementUnitDao {
 
     @Query("SELECT * FROM implementunitentity WHERE oid=:id")
-    fun findById(id: Long): ImplementUnitEntity
+    fun findById(id: Long): ImplementUnitEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun save(implementUnitEntity: ImplementUnitEntity)

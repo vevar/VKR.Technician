@@ -106,4 +106,9 @@ class DaoModule(private val appDataBase: AppDataBase) {
     fun provideMaintenanceJobDao(): MaintenanceJobDao{
         return appDataBase.getMaintenanceJobDao()
     }
+
+    @Provides
+    fun provideProblemDao(): ProblemDao{
+        return appDataBase.getProblemDao()
+    }
 }

@@ -1,4 +1,6 @@
 package com.nstu.technician.data.datasource
 
-interface ComponentTypeDataSource {
+import com.nstu.technician.data.dto.tool.ComponentTypeDTO
+
+interface ComponentTypeDataSource : DataSourceCRUD<ComponentTypeDTO>{
 }

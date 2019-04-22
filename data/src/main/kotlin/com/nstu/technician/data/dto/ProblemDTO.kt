@@ -1,6 +1,6 @@
 package com.nstu.technician.data.dto
 
-class ProblemDTO(
+data class ProblemDTO(
     override val oid: Long,
     val ProblemType: Type,
     val comment: String

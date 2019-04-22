@@ -10,7 +10,7 @@ import com.nstu.technician.data.database.entity.tool.ImplementsEntity
 interface ImplementDao {
 
     @Query("SELECT * FROM implementsentity WHERE oid=:id")
-    fun findById(id: Long): ImplementsEntity
+    fun findById(id: Long): ImplementsEntity?
 
     @Query("SELECT * FROM implementsentity WHERE maintenance_job_id=:maintenanceJobId")
     fun findByMaintenanceJobId(maintenanceJobId: Long): List<ImplementsEntity>

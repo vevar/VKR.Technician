@@ -2,6 +2,7 @@ package com.nstu.technician.data
 
 import androidx.room.Database
 import com.nstu.technician.data.database.AppDataBase
+import com.nstu.technician.data.database.entity.ProblemEntity
 import com.nstu.technician.data.database.entity.ShiftEntity
 import com.nstu.technician.data.database.entity.common.AddressEntity
 import com.nstu.technician.data.database.entity.common.ArtifactEntity
@@ -19,7 +20,7 @@ import com.nstu.technician.data.database.entity.user.UserEntity
         ArtifactEntity::class, GPSEntity::class, ContractEntity::class, ContractorEntity::class,
         FacilityEntity::class, JobTypeEntity::class, MaintenanceEntity::class, MaintenanceJobEntity::class,
         ComponentEntity::class, ComponentUnitEntity::class, ComponentTypeEntity::class, ImplementsEntity::class
-        ,ImplementUnitEntity::class, ShiftEntity::class, GPSPointFromShiftEntity::class],
+        , ImplementUnitEntity::class, ShiftEntity::class, GPSPointFromShiftEntity::class, ProblemEntity::class],
     version = AppDataBase.VERSION_DATABASE
 )
 abstract class TestAppDataBase : AppDataBase() {

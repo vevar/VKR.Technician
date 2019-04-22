@@ -17,7 +17,7 @@ class MaintenanceEntity(
     val visitDate: Long,
     val duration: Int,
     val maintenanceType: Int,
-    var state: Int,
+    val state: Int,
     @ColumnInfo(name = "maintenance_parent_id") val maintenanceParentId: Long? = null,
     val beginTime: Long? = null,
     val endTime: Long? = null,
