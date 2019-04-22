@@ -12,7 +12,7 @@ data class MaintenanceJobDTO(
     override val oid: Long,
     val jobState: Int,
     val jobType: EntityLink<JobTypeDTO>,
-    var beginTime: OwnDateTime? = null,
+    val beginTime: OwnDateTime? = null,
     val endTime: OwnDateTime? = null,
     val beginPhoto: EntityLink<ArtifactDTO>? = null,
     val endPhoto: EntityLink<ArtifactDTO>? = null,

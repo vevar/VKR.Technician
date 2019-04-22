@@ -115,6 +115,12 @@ class DataSourceModule {
         return componentUnitLocalSource
     }
 
+    @Named(LOCAL)
+    @Provides
+    fun provideMaintenanceJobLocalSource(maintenanceJobLocalSource: MaintenanceJobLocalSource): MaintenanceJobDataSource{
+        return maintenanceJobLocalSource
+    }
+
     @Named(CLOUD)
     @Provides
     fun provideShiftCloudSource(shiftCloudSource: ShiftCloudSource): ShiftDataSource {

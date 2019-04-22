@@ -49,4 +49,5 @@ abstract class AppDataBase : RoomDatabase() {
     abstract fun getComponentTypeDao(): ComponentTypeDao
     abstract fun getComponentUnitDao(): ComponentUnitDao
     abstract fun getJobTypeDao(): JobTypeDao
+    abstract fun getMaintenanceJobDao(): MaintenanceJobDao
 }

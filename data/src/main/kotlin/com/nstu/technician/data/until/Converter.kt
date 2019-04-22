@@ -9,6 +9,7 @@ import com.nstu.technician.data.database.entity.document.ContractorEntity
 import com.nstu.technician.data.database.entity.job.FacilityEntity
 import com.nstu.technician.data.database.entity.job.GPSPointFromShiftEntity
 import com.nstu.technician.data.database.entity.job.MaintenanceEntity
+import com.nstu.technician.data.database.entity.job.MaintenanceJobEntity
 import com.nstu.technician.data.database.entity.tool.ImplementUnitEntity
 import com.nstu.technician.data.database.entity.tool.ImplementsEntity
 import com.nstu.technician.data.database.entity.user.AccountEntity
@@ -16,12 +17,14 @@ import com.nstu.technician.data.database.entity.user.TechnicianEntity
 import com.nstu.technician.data.database.entity.user.UserEntity
 import com.nstu.technician.data.dto.EntityDTO
 import com.nstu.technician.data.dto.EntityLink
+import com.nstu.technician.data.dto.ProblemDTO
 import com.nstu.technician.data.dto.common.AddressDTO
 import com.nstu.technician.data.dto.common.ArtifactDTO
 import com.nstu.technician.data.dto.common.GPSPointDTO
 import com.nstu.technician.data.dto.document.ContractDTO
 import com.nstu.technician.data.dto.document.ContractorDTO
 import com.nstu.technician.data.dto.job.*
+import com.nstu.technician.data.dto.tool.ComponentUnitDTO
 import com.nstu.technician.data.dto.tool.ImplementUnitDTO
 import com.nstu.technician.data.dto.tool.ImplementsDTO
 import com.nstu.technician.data.dto.user.AccountDTO
@@ -270,7 +273,7 @@ fun ImplementsDTO.convertToImplement(): Implements {
     )
 }
 
-fun ImplementsEntity.convertToImplementsDTO(): ImplementsDTO{
+fun ImplementsEntity.convertToImplementsDTO(): ImplementsDTO {
     return ImplementsDTO(
         oid = oid,
         name = name
@@ -447,5 +450,42 @@ fun GPSPointFromShiftEntity.convertToGpsPointDTO(): GPSPointDTO {
         oid = oid,
         geox = longitude,
         geoy = latitude
+    )
+}
+
+fun MaintenanceJobDTO.convertToMaintenanceJobEntity(): MaintenanceJobEntity {
+    return MaintenanceJobEntity(
+        oid = oid,
+        jobState = jobState,
+        jobTypeId = jobType.oid,
+        beginPhotoId = beginPhoto?.oid,
+        endPhotoId = endPhoto?.oid,
+        beginTime = beginTime?.timeInMS,
+        duration = duration,
+        endTime = endTime?.timeInMS,
+        problemId = problem?.oid
+    )
+}
+
+fun MaintenanceJobEntity.convertToMaintenanceJobDTO(
+    jobTypeDTO: JobTypeDTO,
+    components: List<ComponentUnitDTO>,
+    implList: List<ImplementsDTO>,
+    beginPhoto: ArtifactDTO?,
+    endPhoto: ArtifactDTO?,
+    problemDTO: ProblemDTO?
+): MaintenanceJobDTO {
+    return MaintenanceJobDTO(
+        oid = oid,
+        endTime = endTime?.let { OwnDateTime(it) },
+        duration = duration,
+        beginTime = beginTime?.let { OwnDateTime(it) },
+        jobState = jobState,
+        jobType = EntityLink(jobTypeDTO),
+        beginPhoto = beginPhoto?.let { EntityLink(it) },
+        endPhoto = endPhoto?.let { EntityLink(it) },
+        problem = problemDTO?.let { EntityLink(it) },
+        components = components.map { EntityLink(it) },
+        implList = implList.map { EntityLink(it) }
     )
 }
