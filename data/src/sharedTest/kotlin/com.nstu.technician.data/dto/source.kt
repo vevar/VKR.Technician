@@ -31,7 +31,6 @@ fun getMaintenanceDTO(oid: Long): MaintenanceDTO {
 
 fun getMaintenanceDTOWithShiftDTO(oid: Long, shiftDTO: ShiftDTO): MaintenanceDTO {
     val maintenanceDTO = getMaintenanceDTO(oid)
-    maintenanceDTO.shift = EntityLink(shiftDTO)
     return maintenanceDTO
 }
 
@@ -87,7 +86,7 @@ fun getGPSPointDTO(oid: Long): GPSPointDTO {
 
 fun <T> getListSomeObject(function: (oid: Long) -> T): List<T> {
     val list = mutableListOf<T>()
-    for (i in 0L..5L) {
+    for (i in 1L..5L) {
         val elem = function.invoke(i)
         list.add(elem)
     }

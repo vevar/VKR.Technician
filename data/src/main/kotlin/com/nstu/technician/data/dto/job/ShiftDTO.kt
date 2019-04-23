@@ -9,5 +9,5 @@ data class ShiftDTO(
     override val oid: Long,
     val date: OwnDateTime,
     val points: List<EntityLink<GPSPointDTO>>? = null,
-    var visits: List<EntityLink<MaintenanceDTO>>? = null
+    val visits: List<EntityLink<MaintenanceDTO>>? = null
 ): EntityDTO(oid)

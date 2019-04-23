@@ -17,4 +17,7 @@ interface MaintenanceJobDao {
 
     @Query("SELECT * FROM maintenancejobentity WHERE maintenance_id=:maintenanceId")
     fun findByMaintenanceId(maintenanceId: Long): List<MaintenanceJobEntity>
+
+    @Insert
+    fun saveAll(list: List<MaintenanceJobEntity>)
 }

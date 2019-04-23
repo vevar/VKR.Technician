@@ -36,4 +36,7 @@ interface DataSourceComponent {
 
     @Named(LOCAL)
     fun implementsDataSource(): ImplementsDataSource
+
+    @Named(LOCAL)
+    fun maintenanceJobDataSource(): MaintenanceJobDataSource
 }

@@ -1,5 +1,6 @@
 package com.nstu.technician.data.datasource.local
 
+import com.nstu.technician.data.database.entity.job.MaintenanceEntity
 import com.nstu.technician.data.datasource.*
 import com.nstu.technician.data.datasource.local.dao.MaintenanceDao
 import com.nstu.technician.data.datasource.local.dao.UtilDao
@@ -7,6 +8,7 @@ import com.nstu.technician.data.dto.job.MaintenanceDTO
 import com.nstu.technician.data.until.convertToMaintenanceDTO
 import com.nstu.technician.data.until.convertToMaintenanceEntity
 import com.nstu.technician.data.until.getObject
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -21,8 +23,23 @@ class MaintenanceLocalSource @Inject constructor(
     private val artifactLocalSource: ArtifactDataSource
 ) : MaintenanceDataSource {
 
-    override suspend fun findByShiftId(shiftId: Long): List<MaintenanceDTO>? {
-        return maintenanceDao.findByIdShift(shiftId)?.map { maintenanceEntity ->
+    private suspend fun saveToMaintenanceEntity(maintenanceDTO: MaintenanceDTO, shiftId: Long) {
+        utilDao.transaction {
+            runBlocking {
+                facilityLocalSource.save(maintenanceDTO.facility.getObject())
+                maintenanceDTO.jobList?.map { it.getObject() }?.let { jobs ->
+                    maintenanceJobLocalSource.saveAllForMaintenance(jobs, maintenanceDTO.oid)
+                    maintenanceDTO.voiceMassage?.getObject()?.let {
+                        artifactLocalSource.save(it)
+                    }
+                }
+            }
+            maintenanceDao.save(maintenanceDTO.convertToMaintenanceEntity(shiftId))
+        }
+    }
+
+    private suspend fun getMaintenanceDTO(maintenanceEntity: MaintenanceEntity): MaintenanceDTO {
+        return runBlocking {
             val facilityDTO = facilityLocalSource.findById(maintenanceEntity.facilityId) ?: throw IllegalStateException(
                 "facility must be set"
             )
@@ -31,41 +48,32 @@ class MaintenanceLocalSource @Inject constructor(
             val voiceMessage = maintenanceEntity.voiceMessageId?.let { artifactLocalSource.findById(it) }
 
             maintenanceEntity.convertToMaintenanceDTO(facilityDTO, jobList, parent, voiceMessage)
+        }
+    }
+
+    override suspend fun findByShiftId(shiftId: Long): List<MaintenanceDTO>? {
+        return maintenanceDao.findByIdShift(shiftId)?.map { maintenanceEntity ->
+            getMaintenanceDTO(maintenanceEntity)
         }
     }
 
     override suspend fun findById(id: Long): MaintenanceDTO? {
         return maintenanceDao.findById(id)?.let { maintenanceEntity ->
-            val facilityDTO = facilityLocalSource.findById(maintenanceEntity.facilityId) ?: throw IllegalStateException(
-                "facility must be set"
-            )
-            val jobList = maintenanceJobLocalSource.findByMaintenanceId(maintenanceEntity.oid)
-            val parent = maintenanceEntity.maintenanceParentId?.let { findById(it) }
-            val voiceMessage = maintenanceEntity.voiceMessageId?.let { artifactLocalSource.findById(it) }
-
-            maintenanceEntity.convertToMaintenanceDTO(facilityDTO, jobList, parent, voiceMessage)
+            getMaintenanceDTO(maintenanceEntity)
         }
     }
 
-    override suspend fun save(obj: MaintenanceDTO) {
-        utilDao.transaction {
-            facilityLocalSource.save(obj.facility.getObject())
-            maintenanceDao.save(
-                obj.convertToMaintenanceEntity(
-                    obj.shift?.oid ?: throw IllegalStateException("shift must be set")
-                )
-            )
-        }
+    override suspend fun saveForShift(maintenanceDTO: MaintenanceDTO, shiftId: Long) {
+        saveToMaintenanceEntity(maintenanceDTO, shiftId)
     }
 
     override suspend fun saveAllForShift(listMaintenance: List<MaintenanceDTO>, shiftId: Long) {
-        val list = listMaintenance.apply {
-            forEach { maintenanceDTO ->
-                facilityLocalSource.save(maintenanceDTO.facility.getObject())
+        utilDao.transaction {
+            listMaintenance.apply {
+                forEach { maintenanceDTO ->
+                    saveToMaintenanceEntity(maintenanceDTO, shiftId)
+                }
             }
-        }.map { maintenanceDTO ->
-            maintenanceDTO.convertToMaintenanceEntity(shiftId)
         }
-        maintenanceDao.saveAll(list)
     }
 }

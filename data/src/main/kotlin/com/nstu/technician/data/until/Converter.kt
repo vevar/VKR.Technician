@@ -353,9 +353,9 @@ fun ShiftEntity.convertToShiftDTO(points: List<GPSPointDTO>?, visits: List<Maint
     )
 }
 
-fun MaintenanceEntity.convertToMaintenanceDTO(
+suspend fun MaintenanceEntity.convertToMaintenanceDTO(
     facilityDTO: FacilityDTO,
-    jobList: List<MaintenanceJobDTO>,
+    jobList: List<MaintenanceJobDTO>?,
     parent: MaintenanceDTO?,
     voiceMessage: ArtifactDTO?
 ): MaintenanceDTO {
@@ -368,7 +368,7 @@ fun MaintenanceEntity.convertToMaintenanceDTO(
         duration = duration,
         endTime = if (endTime != null) OwnDateTime(endTime) else null,
         beginTime = if (beginTime != null) OwnDateTime(beginTime) else null,
-        jobList = jobList.map { EntityLink(it) },
+        jobList = jobList?.map { EntityLink(it) },
         parent = parent?.let { EntityLink(it) },
         voiceMassage = voiceMessage?.let { EntityLink(it) }
     )
@@ -455,7 +455,7 @@ fun GPSPointFromShiftEntity.convertToGpsPointDTO(): GPSPointDTO {
     )
 }
 
-fun MaintenanceJobDTO.convertToMaintenanceJobEntity(): MaintenanceJobEntity {
+fun MaintenanceJobDTO.convertToMaintenanceJobEntity(maintenanceJobId: Long): MaintenanceJobEntity {
     return MaintenanceJobEntity(
         oid = oid,
         jobState = jobState,
@@ -465,11 +465,12 @@ fun MaintenanceJobDTO.convertToMaintenanceJobEntity(): MaintenanceJobEntity {
         beginTime = beginTime?.timeInMS,
         duration = duration,
         endTime = endTime?.timeInMS,
-        problemId = problem?.oid
+        problemId = problem?.oid,
+        maintenanceId = maintenanceJobId
     )
 }
 
-fun MaintenanceJobEntity.convertToMaintenanceJobDTO(
+suspend fun MaintenanceJobEntity.convertToMaintenanceJobDTO(
     jobTypeDTO: JobTypeDTO,
     components: List<ComponentUnitDTO>,
     implList: List<ImplementsDTO>,

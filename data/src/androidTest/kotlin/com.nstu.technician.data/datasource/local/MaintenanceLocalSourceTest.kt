@@ -9,8 +9,8 @@ import com.nstu.technician.data.datasource.MaintenanceDataSource
 import com.nstu.technician.data.di.component.DaggerDataSourceComponent
 import com.nstu.technician.data.di.model.DaoModule
 import com.nstu.technician.data.di.model.DataSourceModule
-import com.nstu.technician.data.dto.getMaintenanceDTOWithShiftDTO
 import com.nstu.technician.data.dto.getShiftDTO
+import com.nstu.technician.data.until.getObject
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -45,15 +45,16 @@ class MaintenanceLocalSourceTest {
 
     @Test
     fun writeAndRead() {
-        val shiftDTO = getShiftDTO(687)
-        val expectedMaintenanceDTO = getMaintenanceDTOWithShiftDTO(478, shiftDTO)
+        val shiftDTO =  getShiftDTO(687)
+        val visits = shiftDTO.visits?.map { it.getObject() } ?: throw NullPointerException()
+        val expected = visits[0]
 
         runBlocking {
-            maintenanceDataSource.save(expectedMaintenanceDTO)
+            maintenanceDataSource.saveAllForShift(visits, shiftDTO.oid)
         }
         val actual = runBlocking {
-            maintenanceDataSource.findById(expectedMaintenanceDTO.oid)
+            maintenanceDataSource.findById(expected.oid)
         }
-        assertEquals(expectedMaintenanceDTO, actual)
+        assertEquals(expected, actual)
     }
 }
