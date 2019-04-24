@@ -13,6 +13,7 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.lang.Exception
 
 @RunWith(AndroidJUnit4::class)
 class MaintenanceJobLocalSourceTest {
@@ -47,6 +48,22 @@ class MaintenanceJobLocalSourceTest {
         }
         val actual = runBlocking {
             maintenanceJobLocalSource.findById(expected.oid)
+        }
+
+        Assert.assertEquals(expected, actual)
+    }
+
+    @Test
+    fun writeAndFindByMaintenanceId() {
+        val maintenanceDTO = getMaintenanceDTO(124)
+        val expected =
+            maintenanceDTO.jobList?.map { it.getObject() } ?: throw IllegalStateException("implList must be set")
+
+        runBlocking {
+            maintenanceJobLocalSource.saveAllForMaintenance(expected, maintenanceDTO.oid)
+        }
+        val actual = runBlocking {
+            maintenanceJobLocalSource.findByMaintenanceId(maintenanceDTO.oid)
         }
 
         Assert.assertEquals(expected, actual)

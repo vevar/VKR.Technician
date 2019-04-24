@@ -8,6 +8,7 @@ import com.nstu.technician.data.datasource.local.dao.UtilDao
 import com.nstu.technician.data.dto.job.MaintenanceJobDTO
 import com.nstu.technician.data.dto.tool.ComponentDTO
 import com.nstu.technician.data.dto.tool.ComponentUnitDTO
+import com.nstu.technician.data.until.convertToComponentEntity
 import com.nstu.technician.data.until.convertToComponentUnitDTO
 import com.nstu.technician.data.until.convertToComponentUnitEntity
 import com.nstu.technician.data.until.getObject
@@ -21,14 +22,14 @@ class ComponentUnitLocalSource @Inject constructor(
     private val utilDao: UtilDao,
     private val componentUnitDao: ComponentUnitDao,
     @Named(LOCAL)
-    private val componentDataSource: ComponentDataSource
+    private val componentLocalSource: ComponentDataSource
 ) : ComponentUnitDataSource {
 
 
     override suspend fun findByMaintenanceJob(maintenanceId: Long): List<ComponentUnitDTO> {
         return componentUnitDao.findByMaintenanceJob(maintenanceId).map { componentUnitEntity ->
             withContext(Dispatchers.IO) {
-                val componentDTO = componentDataSource.findById(componentUnitEntity.componentId)
+                val componentDTO = componentLocalSource.findById(componentUnitEntity.componentId)
                 componentUnitEntity.convertToComponentUnitDTO(
                     componentDTO ?: throw IllegalStateException("component must be set")
                 )
@@ -43,11 +44,12 @@ class ComponentUnitLocalSource @Inject constructor(
                 components.add(it.component.getObject())
             }
             runBlocking {
-                componentDataSource.saveAll(components.toList())
+                componentLocalSource.saveAll(components.toList())
             }
-            componentUnitDao.saveAll(list.map { componentUnitDTO ->
-                componentUnitDTO.convertToComponentUnitEntity(maintenanceJobDTO.oid)
-            })
+            list.map { componentUnitDTO -> componentUnitDTO.convertToComponentUnitEntity(maintenanceJobDTO.oid) }
+                .forEach {
+                    componentUnitDao.save(it)
+                }
         }
     }
 }

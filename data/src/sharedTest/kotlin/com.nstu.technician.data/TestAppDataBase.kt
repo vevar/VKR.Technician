@@ -20,7 +20,8 @@ import com.nstu.technician.data.database.entity.user.UserEntity
         ArtifactEntity::class, GPSEntity::class, ContractEntity::class, ContractorEntity::class,
         FacilityEntity::class, JobTypeEntity::class, MaintenanceEntity::class, MaintenanceJobEntity::class,
         ComponentEntity::class, ComponentUnitEntity::class, ComponentTypeEntity::class, ImplementsEntity::class
-        , ImplementUnitEntity::class, ShiftEntity::class, GPSPointFromShiftEntity::class, ProblemEntity::class],
+        , ImplementUnitEntity::class, ShiftEntity::class, GPSPointFromShiftEntity::class, ProblemEntity::class,
+        JobTypeImplementsJoin::class],
     version = AppDataBase.VERSION_DATABASE
 )
 abstract class TestAppDataBase : AppDataBase() {

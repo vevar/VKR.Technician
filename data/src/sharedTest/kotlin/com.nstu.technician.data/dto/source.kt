@@ -1,13 +1,13 @@
 package com.nstu.technician.data.dto
 
+import com.nstu.technician.data.database.entity.tool.ComponentUnitEntity
 import com.nstu.technician.data.dto.common.AddressDTO
 import com.nstu.technician.data.dto.common.ArtifactDTO
 import com.nstu.technician.data.dto.common.GPSPointDTO
 import com.nstu.technician.data.dto.document.ContractDTO
 import com.nstu.technician.data.dto.document.ContractorDTO
 import com.nstu.technician.data.dto.job.*
-import com.nstu.technician.data.dto.tool.ImplementUnitDTO
-import com.nstu.technician.data.dto.tool.ImplementsDTO
+import com.nstu.technician.data.dto.tool.*
 import com.nstu.technician.domain.model.FileNameExt
 import com.nstu.technician.domain.model.common.OwnDateTime
 
@@ -97,15 +97,38 @@ fun getMaintenanceJobDTO(oid: Long): MaintenanceJobDTO {
     return MaintenanceJobDTO(
         oid = oid,
         jobState = 1,
-        jobType = EntityLink(getJobTypeDTO()),
+        jobType = EntityLink(getJobTypeDTO(2789)),
         duration = 12,
         beginTime = getOwnTime(),
         endTime = getOwnTime(),
         implList = getListSomeObject { EntityLink(getImplementsDTO(it)) },
         beginPhoto = null,
         endPhoto = null,
-        components = null,
+        components = getListSomeObject { EntityLink(getComponentUnitDTO(it)) },
         problem = null
+    )
+}
+
+fun getComponentUnitDTO(oid: Long): ComponentUnitDTO {
+    return ComponentUnitDTO(
+        oid = oid,
+        number = 124,
+        component = EntityLink(getComponentDTO(17))
+    )
+}
+
+fun getComponentDTO(oid: Long): ComponentDTO {
+    return ComponentDTO(
+        oid = oid,
+        name = "Component Name",
+        componentType = EntityLink(getComponentTypeDTO(oid))
+    )
+}
+
+fun getComponentTypeDTO(oid: Long): ComponentTypeDTO {
+    return ComponentTypeDTO(
+        oid = oid,
+        name = "Type Name"
     )
 }
 
@@ -124,9 +147,9 @@ fun getImplementUnitDTO(oid: Long): ImplementUnitDTO {
     )
 }
 
-fun getJobTypeDTO(): JobTypeDTO {
+fun getJobTypeDTO(oid: Long): JobTypeDTO {
     return JobTypeDTO(
-        oid = 12,
+        oid = oid,
         duration = 894,
         name = "job type name",
         description = "@description",

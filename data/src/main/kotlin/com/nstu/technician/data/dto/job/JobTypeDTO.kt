@@ -9,5 +9,5 @@ data class JobTypeDTO(
     val name: String,
     val description: String,
     val duration: Int,
-    val impList: List<EntityLink<ImplementsDTO>>? = null
+    val impList: List<EntityLink<ImplementsDTO>>
 ) : EntityDTO(oid)

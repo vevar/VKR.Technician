@@ -21,7 +21,8 @@ import com.nstu.technician.data.datasource.local.dao.*
         ArtifactEntity::class, GPSEntity::class, ContractEntity::class, ContractorEntity::class,
         FacilityEntity::class, JobTypeEntity::class, MaintenanceEntity::class, MaintenanceJobEntity::class,
         ComponentEntity::class, ComponentUnitEntity::class, ComponentTypeEntity::class, ImplementsEntity::class
-        , ImplementUnitEntity::class, ShiftEntity::class, GPSPointFromShiftEntity::class, ProblemEntity::class],
+        , ImplementUnitEntity::class, ShiftEntity::class, GPSPointFromShiftEntity::class, ProblemEntity::class,
+        JobTypeImplementsJoin::class],
     version = AppDataBase.VERSION_DATABASE
 )
 abstract class AppDataBase : RoomDatabase() {

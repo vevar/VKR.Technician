@@ -2,6 +2,7 @@ package com.nstu.technician.data.datasource.local
 
 import com.nstu.technician.data.database.AppDataBase
 import com.nstu.technician.data.datasource.ImplementsDataSource
+import com.nstu.technician.data.dto.getJobTypeDTO
 import com.nstu.technician.data.dto.getMaintenanceJobDTO
 import com.nstu.technician.data.until.getObject
 import com.nstu.technician.data.util.DataBaseProvider
@@ -34,15 +35,38 @@ class ImplementsLocalSourceTest {
     }
 
     @Test
-    fun writeAndFindByImplements() {
+    fun writeAndFindByMaintenanceJob() {
         val maintenanceJobDTO = getMaintenanceJobDTO(1124)
-        val expected = maintenanceJobDTO.implList?.map { it.getObject() } ?: throw IllegalStateException("implList must be set")
+        val expected =
+            maintenanceJobDTO.implList?.map { it.getObject() } ?: throw IllegalStateException("implList must be set")
 
         runBlocking {
-            implementsDataSource.saveAllForMaintenanceJob(expected, maintenanceJobDTO.oid)
+            expected.forEach {
+                implementsDataSource.saveForMaintenanceJob(it, maintenanceJobDTO.oid)
+            }
         }
         val actual = runBlocking {
             implementsDataSource.findByMaintenanceJobId(maintenanceJobDTO.oid)
+        }
+
+        Assert.assertEquals(expected, actual)
+    }
+
+    @Test
+    fun writeAndFindByJobType() {
+        val jobTypeDTO = getJobTypeDTO(1124)
+        val expected = jobTypeDTO.impList.map {
+            it.getObject()
+        }
+
+        runBlocking {
+            expected.forEach {
+                implementsDataSource.saveForMaintenanceJob(it,1)
+                implementsDataSource.saveForJobTypeId(it, jobTypeDTO.oid)
+            }
+        }
+        val actual = runBlocking {
+            implementsDataSource.findByJobTypeId(jobTypeDTO.oid)
         }
 
         Assert.assertEquals(expected, actual)

@@ -24,6 +24,7 @@ import com.nstu.technician.data.dto.tool.*
 import com.nstu.technician.data.dto.user.AccountDTO
 import com.nstu.technician.data.dto.user.TechnicianDTO
 import com.nstu.technician.data.dto.user.UserDTO
+import com.nstu.technician.domain.model.Entity
 import com.nstu.technician.domain.model.Shift
 import com.nstu.technician.domain.model.common.Address
 import com.nstu.technician.domain.model.common.GPSPoint
@@ -248,6 +249,12 @@ fun FacilityDTO.convertToFacilityEntity(): FacilityEntity {
         addressId = address.location.oid,
         contractId = contract?.oid,
         assingmentDate = assingmentDate
+    )
+}
+
+fun ImplementsDTO.convertToJobTypeImplementsJoin(jobTypeId: Long): JobTypeImplementsJoin {
+    return JobTypeImplementsJoin(
+        oid = 0, jobTypeId = jobTypeId, implementsId = oid
     )
 }
 
@@ -540,9 +547,13 @@ fun ComponentTypeDTO.convertToComponentTypeEntity(): ComponentTypeEntity {
     )
 }
 
-fun JobTypeEntity.convertToJobTypeDTO(): JobTypeDTO {
+fun JobTypeEntity.convertToJobTypeDTO(implements: List<ImplementsDTO>): JobTypeDTO {
     return JobTypeDTO(
-        oid, name, description, duration
+        oid = oid,
+        name = name,
+        description = description,
+        duration = duration,
+        impList = implements.map { implementsDTO -> EntityLink(implementsDTO) }
     )
 }
 

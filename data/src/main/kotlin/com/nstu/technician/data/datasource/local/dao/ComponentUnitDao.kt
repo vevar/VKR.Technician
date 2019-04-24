@@ -13,5 +13,5 @@ interface ComponentUnitDao {
     fun findByMaintenanceJob(id: Long): List<ComponentUnitEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun saveAll(list: List<ComponentUnitEntity>)
+    fun save(componentUnitEntity: ComponentUnitEntity)
 }

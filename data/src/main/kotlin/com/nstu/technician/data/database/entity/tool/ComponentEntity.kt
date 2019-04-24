@@ -3,13 +3,6 @@ package com.nstu.technician.data.database.entity.tool
 import androidx.room.*
 
 @Entity(
-    foreignKeys = [
-        ForeignKey(
-            entity = ComponentTypeEntity::class,
-            parentColumns = ["oid"],
-            childColumns = ["component_type_id"]
-        )
-    ],
     indices = [
         Index(value = ["component_type_id"])
     ]

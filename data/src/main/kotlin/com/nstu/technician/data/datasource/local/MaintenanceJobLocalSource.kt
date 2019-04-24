@@ -9,7 +9,6 @@ import com.nstu.technician.data.until.convertToMaintenanceJobDTO
 import com.nstu.technician.data.until.convertToMaintenanceJobEntity
 import com.nstu.technician.data.until.getObject
 import kotlinx.coroutines.runBlocking
-import java.sql.SQLException
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -33,7 +32,7 @@ class MaintenanceJobLocalSource @Inject constructor(
     }
 
     private suspend fun getMaintenanceJobDTO(maintenanceJobEntity: MaintenanceJobEntity): MaintenanceJobDTO {
-        val jobTypeDTO = jobTypeLocalSource.findById(maintenanceJobEntity.oid)
+        val jobTypeDTO = jobTypeLocalSource.findById(maintenanceJobEntity.jobTypeId)
             ?: throw IllegalStateException("jobTypeDTO must be set")
         val implList = implementsLocalSource.findByMaintenanceJobId(maintenanceJobEntity.oid)
         val components = componentUnitLocalSource.findByMaintenanceJob(maintenanceJobEntity.oid)
@@ -56,9 +55,10 @@ class MaintenanceJobLocalSource @Inject constructor(
             runBlocking {
                 jobTypeLocalSource.save(maintenanceJobDTO.jobType.getObject())
                 maintenanceJobDTO.implList?.let {
-                    implementsLocalSource.saveAllForMaintenanceJob(it.map { entityLink ->
-                        entityLink.getObject()
-                    }, maintenanceJobDTO.oid)
+                    it.map { entityLink -> entityLink.getObject() }
+                        .forEach { implementsDTO ->
+                            implementsLocalSource.saveForMaintenanceJob(implementsDTO, maintenanceJobDTO.oid)
+                        }
                 }
                 maintenanceJobDTO.components?.map { entityLink -> entityLink.getObject() }?.let {
                     componentUnitLocalSource.saveAllForMaintenanceJob(it, maintenanceJobDTO)
@@ -73,11 +73,7 @@ class MaintenanceJobLocalSource @Inject constructor(
                     problemLocalSource.save(it)
                 }
             }
-            try {
-                maintenanceJobDao.save(maintenanceJobDTO.convertToMaintenanceJobEntity(maintenanceId))
-            } catch (exception: SQLException) {
-
-            }
+            maintenanceJobDao.save(maintenanceJobDTO.convertToMaintenanceJobEntity(maintenanceId))
         }
     }
 

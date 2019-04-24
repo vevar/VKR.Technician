@@ -17,19 +17,25 @@ class ComponentLocalSource @Inject constructor(
     private val utilDao: UtilDao,
     private val componentDao: ComponentDao,
     @Named(LOCAL)
-    private val componentTypeDataSource: ComponentTypeDataSource
+    private val componentTypeLocalSource: ComponentTypeDataSource
 ) : ComponentDataSource {
 
     override suspend fun saveAll(list: List<ComponentDTO>) {
-        componentDao.saveAll(list.map { componentDTO ->
-            componentDTO.convertToComponentEntity()
-        })
+        utilDao.transaction {
+            val componentsEntities = runBlocking {
+                list.map { componentDTO ->
+                    componentTypeLocalSource.save(componentDTO.componentType.getObject())
+                    componentDTO.convertToComponentEntity()
+                }
+            }
+            componentDao.saveAll(componentsEntities)
+        }
     }
 
     override suspend fun findById(id: Long): ComponentDTO? {
         return componentDao.findById(id)?.let { componentEntity ->
             val componentTypeDTO =
-                componentTypeDataSource.findById(componentEntity.componentTypeId)
+                componentTypeLocalSource.findById(componentEntity.componentTypeId)
                     ?: throw IllegalStateException("componentTypeDTO must be set")
             componentEntity.convertToComponentDTO(componentTypeDTO)
         }
@@ -38,7 +44,7 @@ class ComponentLocalSource @Inject constructor(
     override suspend fun save(obj: ComponentDTO) {
         utilDao.transaction {
             runBlocking {
-                componentTypeDataSource.save(obj.componentType.getObject())
+                componentTypeLocalSource.save(obj.componentType.getObject())
             }
             componentDao.save(obj.convertToComponentEntity())
         }
