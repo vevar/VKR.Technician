@@ -9,6 +9,7 @@ ext {
 
     kotlin_version = '1.3.21'
     kotlin_coroutines_version = '1.1.1'
+    kotlin_serialization_version = '0.11.0'
 //Android
     androidCompileSdkVersion = 28
     androidMinSdkVersion = 21
@@ -84,9 +85,10 @@ ext {
             kotlinLib              : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}",
             kotlinCoroutinesCore   : "org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlin_coroutines_version}",
             kotlinCoroutinesAndroid: "org.jetbrains.kotlinx:kotlinx-coroutines-android:${kotlin_coroutines_version}",
+            kotlinSerialization    : "org.jetbrains.kotlinx:kotlinx-serialization-runtime:${kotlin_serialization_version}",
             inject                 : "javax.inject:javax.inject:1",
             roomRuntime            : "androidx.room:room-runtime:${roomVersion}",
-            roomCompiler           : "androidx.room:room-compiler:${roomVersion}"
+            roomCompiler           : "androidx.room:room-compiler:${roomVersion}",
     ]
 
     dataDependencies = [
@@ -106,11 +108,11 @@ ext {
     ]
 
     dataTestDependencies = [
-            junit   : "junit:junit:${junitVersion}",
-            runner  : "androidx.test.ext:junit:${runnerVersion}",
-            espresso: "androidx.test.espresso:espresso-core:${espressoVersion}",
-            core    : "androidx.test:core:${coreTest_version}",
-            robolectric:"org.robolectric:robolectric:${robolectric_version}"
+            junit      : "junit:junit:${junitVersion}",
+            runner     : "androidx.test.ext:junit:${runnerVersion}",
+            espresso   : "androidx.test.espresso:espresso-core:${espressoVersion}",
+            core       : "androidx.test:core:${coreTest_version}",
+            robolectric: "org.robolectric:robolectric:${robolectric_version}"
 
     ]
 

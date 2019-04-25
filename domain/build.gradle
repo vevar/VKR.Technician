@@ -6,6 +6,9 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlinx-serialization'
+
+
 android {
     compileOptions {
         targetCompatibility = "8"
@@ -42,6 +45,7 @@ dependencies {
     implementation dependencies.kotlinLib
     implementation dependencies.kotlinCoroutinesCore
     implementation dependencies.kotlinCoroutinesAndroid
+    implementation dependencies.kotlinSerialization
 
     implementation dependencies.roomRuntime
     kapt dependencies.roomCompiler
