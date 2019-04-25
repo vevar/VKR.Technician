@@ -6,7 +6,9 @@ import com.nstu.technician.domain.model.common.OwnDateTime
 import com.nstu.technician.domain.model.facility.JobType
 import com.nstu.technician.domain.model.tool.ComponentUnit
 import com.nstu.technician.domain.model.tool.Implements
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class MaintenanceJob(
     val oid: Long,
     val jobState: Int,

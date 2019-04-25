@@ -4,7 +4,9 @@ import com.nstu.technician.domain.model.common.Artifact
 import com.nstu.technician.domain.model.common.OwnDateTime
 import com.nstu.technician.domain.model.document.Document
 import com.nstu.technician.domain.model.facility.Facility
+import kotlinx.serialization.Serializable
 
+@Serializable
 class Maintenance(
     val oid: Long,
     val facility: Facility,

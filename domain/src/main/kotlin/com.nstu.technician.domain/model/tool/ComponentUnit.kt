@@ -1,6 +1,9 @@
 package com.nstu.technician.domain.model.tool
 
-class ComponentUnit(
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class ComponentUnit(
     val oid: Long,
     val number: Int,
     val component: Component

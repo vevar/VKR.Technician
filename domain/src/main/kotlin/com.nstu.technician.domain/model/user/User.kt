@@ -1,5 +1,8 @@
 package com.nstu.technician.domain.model.user
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class User(
     val oid: Long,
     val lastName: String,
