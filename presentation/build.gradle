@@ -33,7 +33,7 @@ android {
             Properties properties = new Properties()
             properties.load(project.rootProject.file('local.properties').newDataInputStream())
             def FireFighter_GoogleMapApiKey = properties.getProperty('FireFighter_GoogleMapApiKey')
-            ext.enableCrashlytics = false
+            ext.enableCrashlytics = true
             resValue 'string', 'map_api_key', FireFighter_GoogleMapApiKey
         }
 

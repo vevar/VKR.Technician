@@ -37,8 +37,8 @@
             android:name="com.nstu.technician.feature.maintenance.MaintenanceFragment"
             tools:layout="@layout/fragment_maintenance">
         <argument
-                android:name="idMaintenance"
-                android:defaultValue="-1L"
-                app:argType="long"/>
+                android:name="maintenance"
+                app:argType="com.nstu.technician.domain.model.facility.maintenance.Maintenance"
+                app:nullable="false"/>
     </fragment>
 </navigation>
