@@ -21,7 +21,7 @@ fun getMaintenanceDTO(oid: Long): MaintenanceDTO {
         maintenanceType = 2,
         state = 1,
         visitDate = getOwnTime(),
-        jobList = getListSomeObject { EntityLink(getMaintenanceJobDTO(it)) },
+        jobList = getListSomeObject { EntityLink(getMaintenanceJobDTO(getRandomId())) },
         parent = null,
         voiceMassage = null,
         workCompletionReport = null
