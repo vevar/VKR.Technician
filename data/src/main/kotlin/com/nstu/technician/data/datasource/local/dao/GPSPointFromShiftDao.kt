@@ -10,11 +10,9 @@ import com.nstu.technician.data.database.entity.job.GPSPointFromShiftEntity
 interface GPSPointFromShiftDao {
 
     @Query("SELECT * FROM gpspointfromshiftentity WHERE shift_id=:shiftId")
-    fun findByShiftId(shiftId: Long): List<GPSPointFromShiftEntity>?
+    fun findByShiftId(shiftId: Long): List<GPSPointFromShiftEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun save(gpsPointFromShiftEntity: GPSPointFromShiftEntity)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun saveAll(list: List<GPSPointFromShiftEntity>)
 }
