@@ -22,9 +22,9 @@ class ShiftCloudSource @Inject constructor(
         technicianId: Long,
         startTime: Long,
         endTime: Long
-    ): List<ShiftDTO>? {
+    ): List<ShiftDTO> {
         val response = shiftApi.getShiftToPeriod(technicianId, startTime, endTime).execute()
 
-        return response.body()
+        return response.body() ?: listOf()
     }
 }

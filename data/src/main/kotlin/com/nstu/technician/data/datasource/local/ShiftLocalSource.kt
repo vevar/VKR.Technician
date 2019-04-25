@@ -25,7 +25,7 @@ class ShiftLocalSource @Inject constructor(
         technicianId: Long,
         startTime: Long,
         endTime: Long
-    ): List<ShiftDTO>? {
+    ): List<ShiftDTO> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

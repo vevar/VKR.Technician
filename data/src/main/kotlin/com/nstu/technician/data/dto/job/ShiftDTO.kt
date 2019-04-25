@@ -9,8 +9,8 @@ import com.nstu.technician.domain.model.common.OwnDateTime
 data class ShiftDTO(
     override val oid: Long,
     val date: OwnDateTime,
-    val points: List<EntityLink<GPSPointDTO>>? = null,
-    val visits: List<EntityLink<MaintenanceDTO>>? = null
+    val points: List<EntityLink<GPSPointDTO>>,
+    val visits: List<EntityLink<MaintenanceDTO>>
 ) : EntityDTO(oid) {
 
     override fun equals(other: Any?): Boolean {
@@ -30,8 +30,8 @@ data class ShiftDTO(
     override fun hashCode(): Int {
         var result = oid.hashCode()
         result = 31 * result + date.hashCode()
-        result = 31 * result + (points?.hashCode() ?: 0)
-        result = 31 * result + (visits?.hashCode() ?: 0)
+        result = 31 * result + points.hashCode()
+        result = 31 * result + visits.hashCode()
         return result
     }
 }

@@ -15,7 +15,7 @@ interface MaintenanceDao {
     fun save(maintenanceEntity: MaintenanceEntity)
 
     @Query("SELECT * FROM maintenanceentity WHERE shift_id=:shiftId")
-    fun findByIdShift(shiftId: Long): List<MaintenanceEntity>?
+    fun findByIdShift(shiftId: Long): List<MaintenanceEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun saveAll(listMaintenance: List<MaintenanceEntity>)

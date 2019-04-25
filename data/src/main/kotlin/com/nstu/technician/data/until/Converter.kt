@@ -141,15 +141,6 @@ fun convertToModel(technicianDTO: TechnicianDTO): Technician {
     )
 }
 
-fun convertToModel(shiftDTO: ShiftDTO): Shift {
-    return Shift(
-        shiftDTO.oid,
-        shiftDTO.date,
-        visits = shiftDTO.visits?.filter { it.ref != null }?.map { convertToModel(it.ref!!) },
-        points = shiftDTO.points?.filter { it.ref != null }?.map { it.ref?.convertToGPSPoint()!! }
-    )
-}
-
 fun convertToModel(maintenanceDTO: MaintenanceDTO): Maintenance {
 
     return Maintenance(
@@ -212,6 +203,14 @@ fun ShiftDTO.convertToShiftEntity(): ShiftEntity {
     )
 }
 
+fun ShiftDTO.convertToShiftModel(): Shift {
+    return Shift(
+        oid = oid,
+        date = date,
+        points = points.map { it.getObject().convertToGPSPoint() },
+        visits = visits.map { it.getObject().convertToMaintenance() }
+    )
+}
 
 fun MaintenanceDTO.convertToMaintenanceEntity(shiftId: Long): MaintenanceEntity {
     return MaintenanceEntity(
@@ -349,12 +348,12 @@ fun FacilityDTO.convertToFacility(): Facility {
     )
 }
 
-fun ShiftEntity.convertToShiftDTO(points: List<GPSPointDTO>?, visits: List<MaintenanceDTO>?): ShiftDTO {
+fun ShiftEntity.convertToShiftDTO(points: List<GPSPointDTO>, visits: List<MaintenanceDTO>): ShiftDTO {
     return ShiftDTO(
         oid = oid,
         date = date,
-        points = points?.map { EntityLink(it) },
-        visits = visits?.map { EntityLink(it) }
+        points = points.map { EntityLink(it) },
+        visits = visits.map { EntityLink(it) }
     )
 }
 

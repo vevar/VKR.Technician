@@ -51,8 +51,8 @@ class MaintenanceLocalSource @Inject constructor(
         }
     }
 
-    override suspend fun findByShiftId(shiftId: Long): List<MaintenanceDTO>? {
-        return maintenanceDao.findByIdShift(shiftId)?.map { maintenanceEntity ->
+    override suspend fun findByShiftId(shiftId: Long): List<MaintenanceDTO> {
+        return maintenanceDao.findByIdShift(shiftId).map { maintenanceEntity ->
             getMaintenanceDTO(maintenanceEntity)
         }
     }
