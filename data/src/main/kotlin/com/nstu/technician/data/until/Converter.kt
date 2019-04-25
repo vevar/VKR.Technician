@@ -24,7 +24,6 @@ import com.nstu.technician.data.dto.tool.*
 import com.nstu.technician.data.dto.user.AccountDTO
 import com.nstu.technician.data.dto.user.TechnicianDTO
 import com.nstu.technician.data.dto.user.UserDTO
-import com.nstu.technician.domain.model.Entity
 import com.nstu.technician.domain.model.Shift
 import com.nstu.technician.domain.model.common.Address
 import com.nstu.technician.domain.model.common.GPSPoint
@@ -258,11 +257,10 @@ fun ImplementsDTO.convertToJobTypeImplementsJoin(jobTypeId: Long): JobTypeImplem
     )
 }
 
-fun ImplementsDTO.convertToImplementsEntity(maintenanceJobId: Long): ImplementsEntity {
+fun ImplementsDTO.convertToImplementsEntity(): ImplementsEntity {
     return ImplementsEntity(
         oid = oid,
-        name = name,
-        maintenanceJobId = maintenanceJobId
+        name = name
     )
 }
 
@@ -477,7 +475,7 @@ fun MaintenanceJobDTO.convertToMaintenanceJobEntity(maintenanceJobId: Long): Mai
     )
 }
 
-suspend fun MaintenanceJobEntity.convertToMaintenanceJobDTO(
+fun MaintenanceJobEntity.convertToMaintenanceJobDTO(
     jobTypeDTO: JobTypeDTO,
     components: List<ComponentUnitDTO>,
     implList: List<ImplementsDTO>,

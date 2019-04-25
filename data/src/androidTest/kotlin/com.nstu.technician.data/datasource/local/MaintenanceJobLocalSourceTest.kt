@@ -13,7 +13,6 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.lang.Exception
 
 @RunWith(AndroidJUnit4::class)
 class MaintenanceJobLocalSourceTest {
@@ -65,6 +64,7 @@ class MaintenanceJobLocalSourceTest {
         val actual = runBlocking {
             maintenanceJobLocalSource.findByMaintenanceId(maintenanceDTO.oid)
         }
+
 
         Assert.assertEquals(expected, actual)
     }

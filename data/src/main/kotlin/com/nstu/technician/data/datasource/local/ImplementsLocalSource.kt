@@ -5,7 +5,6 @@ import com.nstu.technician.data.datasource.local.dao.ImplementDao
 import com.nstu.technician.data.dto.tool.ImplementsDTO
 import com.nstu.technician.data.until.convertToImplementsDTO
 import com.nstu.technician.data.until.convertToImplementsEntity
-import com.nstu.technician.data.until.convertToJobTypeImplementsJoin
 import javax.inject.Inject
 
 class ImplementsLocalSource @Inject constructor(
@@ -13,7 +12,8 @@ class ImplementsLocalSource @Inject constructor(
 ) : ImplementsDataSource {
 
     override suspend fun saveForJobTypeId(implementsDTO: ImplementsDTO, jobTypeId: Long) {
-        implementDao.saveForJobTypeId(implementsDTO.convertToJobTypeImplementsJoin(jobTypeId))
+        implementDao.save(implementsDTO.convertToImplementsEntity())
+        implementDao.saveForJobTypeId(jobTypeId, implementsDTO.oid)
     }
 
     override suspend fun findByJobTypeId(jobTypeId: Long): List<ImplementsDTO> {
@@ -22,7 +22,8 @@ class ImplementsLocalSource @Inject constructor(
     }
 
     override suspend fun saveForMaintenanceJob(implements: ImplementsDTO, maintenanceJobId: Long) {
-        implementDao.save(implements.convertToImplementsEntity(maintenanceJobId))
+        implementDao.save(implements.convertToImplementsEntity())
+        implementDao.saveForMaintenanceJob(maintenanceJobId, implements.oid)
     }
 
     override suspend fun findByMaintenanceJobId(maintenanceJobId: Long): List<ImplementsDTO> {
@@ -30,5 +31,4 @@ class ImplementsLocalSource @Inject constructor(
             implementsEntity.convertToImplementsDTO()
         }
     }
-
 }

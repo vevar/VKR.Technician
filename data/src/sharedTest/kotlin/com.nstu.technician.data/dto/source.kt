@@ -1,6 +1,5 @@
 package com.nstu.technician.data.dto
 
-import com.nstu.technician.data.database.entity.tool.ComponentUnitEntity
 import com.nstu.technician.data.dto.common.AddressDTO
 import com.nstu.technician.data.dto.common.ArtifactDTO
 import com.nstu.technician.data.dto.common.GPSPointDTO
@@ -46,7 +45,7 @@ fun getShiftDTO(oid: Long): ShiftDTO {
         oid = oid,
         date = getOwnTime(),
         points = getListSomeObject { EntityLink(getGPSPointDTO(it)) },
-        visits = getListSomeObject { EntityLink(getMaintenanceDTOWithShiftDTO(it, getShiftDTO_STUB(oid))) }
+        visits = getListSomeObject { EntityLink(getMaintenanceDTO(getRandomId())) }
     )
 }
 
@@ -93,6 +92,8 @@ fun <T> getListSomeObject(function: (oid: Long) -> T): List<T> {
     return list
 }
 
+fun getRandomId(): Long = (Math.random() * 100000 + 1).toLong()
+
 fun getMaintenanceJobDTO(oid: Long): MaintenanceJobDTO {
     return MaintenanceJobDTO(
         oid = oid,
@@ -104,7 +105,7 @@ fun getMaintenanceJobDTO(oid: Long): MaintenanceJobDTO {
         implList = getListSomeObject { EntityLink(getImplementsDTO(it)) },
         beginPhoto = null,
         endPhoto = null,
-        components = getListSomeObject { EntityLink(getComponentUnitDTO(it)) },
+        components = getListSomeObject { EntityLink(getComponentUnitDTO(getRandomId())) },
         problem = null
     )
 }

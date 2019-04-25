@@ -4,7 +4,12 @@ import com.nstu.technician.data.database.entity.job.MaintenanceJobEntity
 import com.nstu.technician.data.datasource.*
 import com.nstu.technician.data.datasource.local.dao.MaintenanceJobDao
 import com.nstu.technician.data.datasource.local.dao.UtilDao
+import com.nstu.technician.data.dto.ProblemDTO
+import com.nstu.technician.data.dto.common.ArtifactDTO
+import com.nstu.technician.data.dto.job.JobTypeDTO
 import com.nstu.technician.data.dto.job.MaintenanceJobDTO
+import com.nstu.technician.data.dto.tool.ComponentUnitDTO
+import com.nstu.technician.data.dto.tool.ImplementsDTO
 import com.nstu.technician.data.until.convertToMaintenanceJobDTO
 import com.nstu.technician.data.until.convertToMaintenanceJobEntity
 import com.nstu.technician.data.until.getObject
@@ -32,18 +37,27 @@ class MaintenanceJobLocalSource @Inject constructor(
     }
 
     private suspend fun getMaintenanceJobDTO(maintenanceJobEntity: MaintenanceJobEntity): MaintenanceJobDTO {
-        val jobTypeDTO = jobTypeLocalSource.findById(maintenanceJobEntity.jobTypeId)
-            ?: throw IllegalStateException("jobTypeDTO must be set")
-        val implList = implementsLocalSource.findByMaintenanceJobId(maintenanceJobEntity.oid)
-        val components = componentUnitLocalSource.findByMaintenanceJob(maintenanceJobEntity.oid)
-        val beginPhoto = maintenanceJobEntity.beginPhotoId?.let { artifactLocalSource.findById(it) }
-        val endPhoto = maintenanceJobEntity.endPhotoId?.let { artifactLocalSource.findById(it) }
-        val problemDTO = maintenanceJobEntity.problemId?.let { problemLocalSource.findById(it) }
+        var jobTypeDTO: JobTypeDTO? = null
+        var implList: List<ImplementsDTO>? = null
+        var components: List<ComponentUnitDTO>? = null
+        var beginPhoto: ArtifactDTO? = null
+        var endPhoto: ArtifactDTO? = null
+        var problemDTO: ProblemDTO? = null
+
+        runBlocking {
+            jobTypeDTO = jobTypeLocalSource.findById(maintenanceJobEntity.jobTypeId)
+                ?: throw IllegalStateException("jobTypeDTO must be set")
+            implList = implementsLocalSource.findByMaintenanceJobId(maintenanceJobEntity.oid)
+            components = componentUnitLocalSource.findByMaintenanceJob(maintenanceJobEntity.oid)
+            beginPhoto = maintenanceJobEntity.beginPhotoId?.let { artifactLocalSource.findById(it) }
+            endPhoto = maintenanceJobEntity.endPhotoId?.let { artifactLocalSource.findById(it) }
+            problemDTO = maintenanceJobEntity.problemId?.let { problemLocalSource.findById(it) }
+        }
 
         return maintenanceJobEntity.convertToMaintenanceJobDTO(
-            jobTypeDTO = jobTypeDTO,
-            implList = implList,
-            components = components,
+            jobTypeDTO = jobTypeDTO ?: throw IllegalStateException("jobTypeDTO must be set"),
+            implList = implList ?: throw IllegalStateException("implList must be set"),
+            components = components ?: throw IllegalStateException("components must be set"),
             endPhoto = endPhoto,
             beginPhoto = beginPhoto,
             problemDTO = problemDTO

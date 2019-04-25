@@ -39,4 +39,15 @@ interface DataSourceComponent {
 
     @Named(LOCAL)
     fun maintenanceJobDataSource(): MaintenanceJobDataSource
+
+    @Named(LOCAL)
+    fun componentTypeLocalSource(): ComponentTypeDataSource
+
+    @Named(LOCAL)
+    fun componentUnitLocalSource(): ComponentUnitDataSource
+
+    @Named(LOCAL)
+    fun componentLocalSource(): ComponentDataSource
+
+
 }
