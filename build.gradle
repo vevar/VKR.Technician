@@ -1,7 +1,5 @@
 apply from: 'buildsystem/dependencies.gradle'
 
-apply plugin: 'kotlinx-serialization'
-
 buildscript {
 
     repositories {
