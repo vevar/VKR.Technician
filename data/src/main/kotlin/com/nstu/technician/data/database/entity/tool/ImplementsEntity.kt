@@ -7,5 +7,6 @@ import androidx.room.PrimaryKey
 data class ImplementsEntity(
     @PrimaryKey
     val oid: Long,
-    val name: String
+    val name: String,
+    val currentNumber: Int
 )

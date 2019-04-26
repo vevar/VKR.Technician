@@ -5,12 +5,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Artifact(
-    val oid: Int,
+    val oid: Long,
     val type: Type,
     val name: String,
     val original: FileNameExt,
     val date: OwnDateTime,
-    val fileSize: Int
+    val fileSize: Long
 ):java.io.Serializable {
     enum class Type :java.io.Serializable{
         IMAGE,

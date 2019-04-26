@@ -83,6 +83,13 @@ object BindingAdapters {
         view.text = array[index]
     }
 
+    @BindingAdapter("app:setTypeStateOfJob")
+    @JvmStatic
+    fun setTypeStateOfJob(view: TextView, index: Int){
+        val array = view.resources.getStringArray(R.array.types_job_state)
+        view.text = array[index]
+    }
+
     @BindingAdapter("app:setVisibility")
     @JvmStatic
     fun setVisibility(view: View, flag: Boolean) {

@@ -17,7 +17,7 @@ class Maintenance(
     val parent: Maintenance? = null,
     val beginTime: OwnDateTime? = null,
     val endTime: OwnDateTime? = null,
-    val jobList: List<MaintenanceJob>? = null,
+    val jobList: List<MaintenanceJob>,
     val workCompletionReport: Document? = null,
     val voiceMassage: Artifact? = null
 ):java.io.Serializable

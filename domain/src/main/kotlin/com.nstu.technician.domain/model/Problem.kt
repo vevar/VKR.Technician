@@ -4,8 +4,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Problem(
-    val oid: Int,
-    val ProblemType: Type,
+    val oid: Long,
+    val type: Type,
     val comment: String
 ):java.io.Serializable  {
 

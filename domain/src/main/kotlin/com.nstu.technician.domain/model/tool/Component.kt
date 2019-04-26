@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 data class Component(
     val oid: Long,
     val name: String,
-    val componentType: ComponentType
+    val type: ComponentType
 ):java.io.Serializable

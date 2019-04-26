@@ -122,7 +122,7 @@ fun getComponentDTO(oid: Long): ComponentDTO {
     return ComponentDTO(
         oid = oid,
         name = "Component Name",
-        componentType = EntityLink(getComponentTypeDTO(oid))
+        type = EntityLink(getComponentTypeDTO(oid))
     )
 }
 

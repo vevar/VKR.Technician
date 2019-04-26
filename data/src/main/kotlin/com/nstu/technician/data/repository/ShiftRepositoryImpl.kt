@@ -28,10 +28,7 @@ class ShiftRepositoryImpl @Inject constructor(
     ): List<Shift> {
         return shiftCloudSource.findByTechnicianIdAndTimePeriod(technicianId, startTime, endTime).let { shifts ->
             shifts.map { shiftDTO ->
-                shiftCloudSource.findById(shiftDTO.oid)?.let {
-//                    shiftLocalSource.save(it)
-                    it.convertToShiftModel()
-                } ?: throw NotFoundException("shift by id(${shiftDTO.oid}) not found")
+                shiftCloudSource.findById(shiftDTO.oid)?.convertToShiftModel() ?: throw NotFoundException("shift by id(${shiftDTO.oid}) not found")
             }
         }
     }

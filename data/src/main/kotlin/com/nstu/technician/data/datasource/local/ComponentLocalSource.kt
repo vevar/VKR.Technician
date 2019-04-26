@@ -24,7 +24,7 @@ class ComponentLocalSource @Inject constructor(
         utilDao.transaction {
             val componentsEntities = runBlocking {
                 list.map { componentDTO ->
-                    componentTypeLocalSource.save(componentDTO.componentType.getObject())
+                    componentTypeLocalSource.save(componentDTO.type.getObject())
                     componentDTO.convertToComponentEntity()
                 }
             }
@@ -44,7 +44,7 @@ class ComponentLocalSource @Inject constructor(
     override suspend fun save(obj: ComponentDTO) {
         utilDao.transaction {
             runBlocking {
-                componentTypeLocalSource.save(obj.componentType.getObject())
+                componentTypeLocalSource.save(obj.type.getObject())
             }
             componentDao.save(obj.convertToComponentEntity())
         }

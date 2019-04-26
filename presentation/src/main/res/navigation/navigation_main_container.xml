@@ -40,5 +40,18 @@
                 android:name="maintenance"
                 app:argType="com.nstu.technician.domain.model.facility.maintenance.Maintenance"
                 app:nullable="false"/>
+        <action android:id="@+id/action_maintenance_dest_to_jobListFragment"
+                app:destination="@id/jobListFragment"
+                app:popUpTo="@id/plan_jobs_dest"/>
     </fragment>
+    <fragment android:id="@+id/jobListFragment"
+              android:name="com.nstu.technician.feature.maintenance.JobListFragment"
+              android:label="JobListFragment"
+              tools:layout="@layout/fragment_job_list">
+        <argument
+                android:name="maintenance"
+                app:argType="com.nstu.technician.domain.model.facility.maintenance.Maintenance"
+                app:nullable="false"/>
+    </fragment>
+
 </navigation>

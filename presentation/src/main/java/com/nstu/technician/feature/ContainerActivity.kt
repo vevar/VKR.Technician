@@ -31,7 +31,7 @@ class ContainerActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_container)
-        setSupportActionBar(mBinding.toolbar)
+        setSupportActionBar(findViewById(R.id.toolbar))
         val host: NavHostFragment = supportFragmentManager
             .findFragmentById(R.id.host_fragment) as NavHostFragment? ?: return
         host.arguments = navArgs<PlanJobsFragmentArgs>().value.toBundle()

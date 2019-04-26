@@ -4,6 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ComponentType(
-    val oid: Int,
+    val oid: Long,
     val name: String
 ):java.io.Serializable

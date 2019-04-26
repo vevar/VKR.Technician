@@ -17,7 +17,7 @@ data class MaintenanceJobDTO(
     val endTime: OwnDateTime? = null,
     val beginPhoto: EntityLink<ArtifactDTO>? = null,
     val endPhoto: EntityLink<ArtifactDTO>? = null,
-    val implList: List<EntityLink<ImplementsDTO>>? = null,
+    val implList: List<EntityLink<ImplementsDTO>>,
     val components: List<EntityLink<ComponentUnitDTO>>? = null,
     val duration: Int? = null,  // in minutes
     val problem: EntityLink<ProblemDTO>? = null

@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 data class Implements(
     val oid: Long,
     val name: String,
-    val units: List<ImplementUnit>? = null
+    val currentNumber: Int
 ):java.io.Serializable

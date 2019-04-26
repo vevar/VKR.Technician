@@ -9,9 +9,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.nstu.technician.BR
 import com.nstu.technician.R
-import com.nstu.technician.databinding.FragmentMaintenanceBinding
+import com.nstu.technician.databinding.FragmentJobListBinding
 import com.nstu.technician.di.component.maintenance.DaggerMaintenanceScreen
 import com.nstu.technician.di.module.model.MaintenanceModule
 import com.nstu.technician.domain.model.facility.maintenance.Maintenance
@@ -21,21 +22,24 @@ import com.nstu.technician.feature.BaseFragment
 import com.nstu.technician.feature.util.BaseViewModelFactory
 import javax.inject.Inject
 
-class MaintenanceFragment : BaseFragment() {
+class JobListFragment: BaseFragment() {
 
     companion object {
-        private const val TAG = "MaintenanceFragment"
+        private const val TAG = "JobListFragment"
     }
 
     @Inject
     lateinit var mFactory: BaseViewModelFactory<MaintenanceViewModel>
 
     private lateinit var mViewModel: MaintenanceViewModel
-    private lateinit var mBinding: FragmentMaintenanceBinding
+    private lateinit var mBinding: FragmentJobListBinding
+
+    private lateinit var mMaintenanceJobsRVAdapter: MaintenanceJobsRVAdapter
 
     private val maintenanceObserver = Observer<Maintenance> { maintenance ->
         mBinding.notifyPropertyChanged(BR.maintenance)
         mBinding.notifyPropertyChanged(BR.contract)
+        mMaintenanceJobsRVAdapter.setMaintenance(maintenance)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,17 +71,14 @@ class MaintenanceFragment : BaseFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_maintenance, container, false)
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_job_list, container, false)
         mBinding.apply {
             viewModel = mViewModel
-            lifecycleOwner = this@MaintenanceFragment
-
-            btnScanQr.setOnClickListener {
-                mViewModel.maintenance.value?.let {
-                    val action = MaintenanceFragmentDirections.actionMaintenanceDestToJobListFragment(it)
-                    findNavController().navigate(action)
-                }
-
+            lifecycleOwner = this@JobListFragment
+            mMaintenanceJobsRVAdapter = MaintenanceJobsRVAdapter()
+            listMaintenanceJobs.apply {
+                adapter = mMaintenanceJobsRVAdapter
+                layoutManager = LinearLayoutManager(requireContext())
             }
         }
         val activity = activity as BaseActivity

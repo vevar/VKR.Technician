@@ -6,5 +6,5 @@ import com.nstu.technician.data.dto.EntityLink
 data class ComponentDTO (
     override val oid: Long,
     val name: String,
-    val componentType: EntityLink<ComponentTypeDTO>
+    val type: EntityLink<ComponentTypeDTO>
 ): EntityDTO(oid)

@@ -24,16 +24,18 @@ import com.nstu.technician.data.dto.tool.*
 import com.nstu.technician.data.dto.user.AccountDTO
 import com.nstu.technician.data.dto.user.TechnicianDTO
 import com.nstu.technician.data.dto.user.UserDTO
+import com.nstu.technician.domain.model.MiniShift
+import com.nstu.technician.domain.model.Problem
 import com.nstu.technician.domain.model.Shift
 import com.nstu.technician.domain.model.common.Address
+import com.nstu.technician.domain.model.common.Artifact
 import com.nstu.technician.domain.model.common.GPSPoint
 import com.nstu.technician.domain.model.common.OwnDateTime
 import com.nstu.technician.domain.model.facility.Facility
 import com.nstu.technician.domain.model.facility.JobType
 import com.nstu.technician.domain.model.facility.maintenance.Maintenance
 import com.nstu.technician.domain.model.facility.maintenance.MaintenanceJob
-import com.nstu.technician.domain.model.tool.ImplementUnit
-import com.nstu.technician.domain.model.tool.Implements
+import com.nstu.technician.domain.model.tool.*
 import com.nstu.technician.domain.model.user.Account
 import com.nstu.technician.domain.model.user.Technician
 import com.nstu.technician.domain.model.user.User
@@ -141,43 +143,6 @@ fun convertToModel(technicianDTO: TechnicianDTO): Technician {
     )
 }
 
-fun convertToModel(maintenanceDTO: MaintenanceDTO): Maintenance {
-
-    return Maintenance(
-        maintenanceDTO.oid,
-        convertToModel(maintenanceDTO.facility.ref ?: throw IllegalStateException()),
-        maintenanceDTO.visitDate,
-        maintenanceDTO.duration,
-        maintenanceDTO.maintenanceType,
-        maintenanceDTO.state,
-        beginTime = maintenanceDTO.beginTime,
-        endTime = maintenanceDTO.endTime,
-        jobList = maintenanceDTO.jobList?.filter { it.ref != null }?.map { convertToModel(it.ref!!) }
-    )
-}
-
-
-fun convertToModel(maintenanceJobDTO: MaintenanceJobDTO): MaintenanceJob {
-    return MaintenanceJob(
-        maintenanceJobDTO.oid,
-        maintenanceJobDTO.jobState,
-        convertToModel(maintenanceJobDTO.jobType.ref ?: throw IllegalStateException("jobType must be set"))
-    )
-}
-
-fun convertToModel(jobTypeDTO: JobTypeDTO): JobType {
-    val jobType = JobType(
-        jobTypeDTO.oid,
-        jobTypeDTO.name,
-        jobTypeDTO.description,
-        jobTypeDTO.duration,
-        jobTypeDTO.impList?.map { implementsDTO ->
-            implementsDTO.ref?.convertToImplement() ?: throw IllegalStateException("implementsDTO must be set")
-        }
-    )
-    return jobType
-}
-
 fun convertToModel(facilityDTO: FacilityDTO): Facility {
     val facility = Facility(
         facilityDTO.oid,
@@ -189,12 +154,8 @@ fun convertToModel(facilityDTO: FacilityDTO): Facility {
     return facility
 }
 
-fun <F : EntityDTO, T> EntityLink<F>.convertToObject(function: (F) -> T): T {
-    return ref?.let(function) ?: throw IllegalStateException("ref must be set")
-}
-
 fun <F : EntityDTO> EntityLink<F>.getObject(): F {
-    return ref ?: throw IllegalStateException("ref must be set")
+    return ref ?: throw IllegalStateException("ref(${this.javaClass}) must be set")
 }
 
 fun ShiftDTO.convertToShiftEntity(): ShiftEntity {
@@ -209,6 +170,13 @@ fun ShiftDTO.convertToShiftModel(): Shift {
         date = date,
         points = points.map { it.getObject().convertToGPSPoint() },
         visits = visits.map { it.getObject().convertToMaintenance() }
+    )
+}
+
+fun ShiftDTO.convertToMiniShift(): MiniShift {
+    return MiniShift(
+        oid = oid,
+        date = date
     )
 }
 
@@ -259,22 +227,22 @@ fun ImplementsDTO.convertToJobTypeImplementsJoin(jobTypeId: Long): JobTypeImplem
 fun ImplementsDTO.convertToImplementsEntity(): ImplementsEntity {
     return ImplementsEntity(
         oid = oid,
-        name = name
+        name = name,
+        currentNumber = currentNubmer
     )
 }
 
 fun ImplementsDTO.convertToImplement(): Implements {
     return Implements(
-        oid, name, units = units?.filter { it.ref != null }?.map { entityLink: EntityLink<ImplementUnitDTO> ->
-            entityLink.ref?.convertToImplementUnit()!!
-        }
+        oid, name, currentNubmer
     )
 }
 
 fun ImplementsEntity.convertToImplementsDTO(): ImplementsDTO {
     return ImplementsDTO(
         oid = oid,
-        name = name
+        name = name,
+        currentNubmer = currentNumber
     )
 }
 
@@ -329,14 +297,14 @@ fun GPSEntity.convertToGpsPointDTO(): GPSPointDTO {
 fun MaintenanceDTO.convertToMaintenance(): Maintenance {
     return Maintenance(
         oid = oid,
-        facility = facility.convertToObject { it.convertToFacility() },
+        facility = facility.getObject().convertToFacility(),
         visitDate = visitDate,
         state = state,
         maintenanceType = maintenanceType,
         duration = duration,
         endTime = endTime,
         beginTime = beginTime,
-        jobList = jobList.map { it.getObject().convertToMaintenanceJobEntity() })
+        jobList = jobList.map { it.getObject().convertToMaintenanceJob() })
 }
 
 fun FacilityDTO.convertToFacility(): Facility {
@@ -357,9 +325,9 @@ fun ShiftEntity.convertToShiftDTO(points: List<GPSPointDTO>, visits: List<Mainte
     )
 }
 
-suspend fun MaintenanceEntity.convertToMaintenanceDTO(
+fun MaintenanceEntity.convertToMaintenanceDTO(
     facilityDTO: FacilityDTO,
-    jobList: List<MaintenanceJobDTO>?,
+    jobList: List<MaintenanceJobDTO>,
     parent: MaintenanceDTO?,
     voiceMessage: ArtifactDTO?
 ): MaintenanceDTO {
@@ -372,7 +340,7 @@ suspend fun MaintenanceEntity.convertToMaintenanceDTO(
         duration = duration,
         endTime = if (endTime != null) OwnDateTime(endTime) else null,
         beginTime = if (beginTime != null) OwnDateTime(beginTime) else null,
-        jobList = jobList?.map { EntityLink(it) },
+        jobList = jobList.map { EntityLink(it) },
         parent = parent?.let { EntityLink(it) },
         voiceMassage = voiceMessage?.let { EntityLink(it) }
     )
@@ -463,8 +431,27 @@ fun MaintenanceJobDTO.convertToMaintenanceJob(): MaintenanceJob {
     return MaintenanceJob(
         oid = oid,
         duration = duration,
-        beginPhoto = beginPhoto.getObject()
-        )
+        beginPhoto = beginPhoto?.ref?.convertToArtifact(),
+        endPhoto = endPhoto?.ref?.convertToArtifact(),
+        jobState = jobState,
+        components = components?.map { it.getObject().convertToComponentUnit() },
+        implList = implList.map { it.getObject().convertToImplement() },
+        problem = problem?.ref?.convertToProblem(),
+        jobType = jobType.getObject().convertToJobType(),
+        beginTime = beginTime,
+        endTime = endTime
+    )
+}
+
+fun ArtifactDTO.convertToArtifact(): Artifact {
+    return Artifact(
+        oid = oid,
+        date = date,
+        name = name,
+        fileSize = fileSize,
+        original = original,
+        type = Artifact.Type.values()[type]
+    )
 }
 
 fun MaintenanceJobDTO.convertToMaintenanceJobEntity(maintenanceJobId: Long): MaintenanceJobEntity {
@@ -522,11 +509,27 @@ fun ComponentUnitDTO.convertToComponentUnitEntity(maintenanceJobId: Long): Compo
     )
 }
 
+fun ComponentUnitDTO.convertToComponentUnit(): ComponentUnit {
+    return ComponentUnit(
+        oid = oid,
+        component = component.getObject().convertToComponent(),
+        number = number
+    )
+}
+
 fun ComponentDTO.convertToComponentEntity(): ComponentEntity {
     return ComponentEntity(
         oid = oid,
         name = name,
-        componentTypeId = componentType.oid
+        componentTypeId = type.oid
+    )
+}
+
+fun ComponentDTO.convertToComponent(): Component {
+    return Component(
+        oid = oid,
+        name = name,
+        type = type.getObject().convertToComponentType()
     )
 }
 
@@ -534,7 +537,7 @@ fun ComponentEntity.convertToComponentDTO(componentTypeDTO: ComponentTypeDTO): C
     return ComponentDTO(
         oid = oid,
         name = name,
-        componentType = EntityLink(componentTypeDTO)
+        type = EntityLink(componentTypeDTO)
     )
 }
 
@@ -547,6 +550,13 @@ fun ComponentTypeEntity.convertToComponentTypeDTO(): ComponentTypeDTO {
 
 fun ComponentTypeDTO.convertToComponentTypeEntity(): ComponentTypeEntity {
     return ComponentTypeEntity(
+        oid = oid,
+        name = name
+    )
+}
+
+fun ComponentTypeDTO.convertToComponentType(): ComponentType {
+    return ComponentType(
         oid = oid,
         name = name
     )
@@ -565,5 +575,23 @@ fun JobTypeEntity.convertToJobTypeDTO(implements: List<ImplementsDTO>): JobTypeD
 fun JobTypeDTO.convertToJobTypeEntity(): JobTypeEntity {
     return JobTypeEntity(
         oid, name, description, duration
+    )
+}
+
+fun JobTypeDTO.convertToJobType(): JobType {
+    return JobType(
+        oid = oid,
+        name = name,
+        duration = duration,
+        description = description,
+        impList = impList.map { it.getObject().convertToImplement() }
+    )
+}
+
+fun ProblemDTO.convertToProblem(): Problem {
+    return Problem(
+        oid = oid,
+        comment = comment,
+        type = Problem.Type.values()[type]
     )
 }

@@ -5,12 +5,12 @@
         <variable name="maintenanceJob" type="com.nstu.technician.domain.model.facility.maintenance.MaintenanceJob"/>
     </data>
     <androidx.cardview.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_margin"
             app:cardCornerRadius="@dimen/default_radius">
         <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/default_padding">
 
@@ -20,6 +20,7 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
+                    android:text="@{String.valueOf(maintenanceJob.oid)}"
                     tools:text="#1"/>
             <TextView
                     android:id="@+id/state"
@@ -32,6 +33,7 @@
                     app:layout_constraintStart_toEndOf="@+id/order_number"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
+                    app:setTypeStateOfJob="@{maintenanceJob.jobState}"
 
                     tools:text="Не выполнено"/>
 
@@ -45,6 +47,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
+                    android:text="@{maintenanceJob.jobType.name}"
 
                     tools:text="Текст задания Текст задания Текст задания Текст задания Текст задания"/>
 

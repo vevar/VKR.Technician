@@ -56,4 +56,11 @@
         <item>Повторная</item>
     </string-array>
 
+    <string-array name="types_job_state">
+        <item>В плане</item>
+        <item>В процессе</item>
+        <item>Выполнено</item>
+        <item>Проблема</item>
+    </string-array>
+
 </resources>
