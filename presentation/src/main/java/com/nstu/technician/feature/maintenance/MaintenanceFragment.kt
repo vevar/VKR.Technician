@@ -3,19 +3,24 @@ package com.nstu.technician.feature.maintenance
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.nstu.technician.BR
 import com.nstu.technician.R
 import com.nstu.technician.databinding.FragmentMaintenanceBinding
 import com.nstu.technician.di.component.maintenance.DaggerMaintenanceScreen
+import com.nstu.technician.di.module.model.MaintenanceModule
 import com.nstu.technician.domain.model.facility.maintenance.Maintenance
 import com.nstu.technician.feature.App
 import com.nstu.technician.feature.BaseActivity
 import com.nstu.technician.feature.BaseFragment
+import com.nstu.technician.feature.util.BaseViewModelFactory
 import javax.inject.Inject
 
 class MaintenanceFragment : BaseFragment() {
@@ -25,7 +30,7 @@ class MaintenanceFragment : BaseFragment() {
     }
 
     @Inject
-    lateinit var mFactory: MaintenanceVMFactory
+    lateinit var mFactory: BaseViewModelFactory<MaintenanceViewModel>
 
     private lateinit var mViewModel: MaintenanceViewModel
     private lateinit var mBinding: FragmentMaintenanceBinding
@@ -33,6 +38,8 @@ class MaintenanceFragment : BaseFragment() {
     private lateinit var mMaintenanceJobsRVAdapter: MaintenanceJobsRVAdapter
 
     private val maintenanceObserver = Observer<Maintenance> { maintenance ->
+        mBinding.notifyPropertyChanged(BR.maintenance)
+        mBinding.notifyPropertyChanged(BR.contract)
         if (maintenance.jobList != null) {
             Log.d(TAG, "JobList isn't null")
             mMaintenanceJobsRVAdapter.setMaintenanceJobs(maintenance.jobList!!)
@@ -46,10 +53,13 @@ class MaintenanceFragment : BaseFragment() {
     }
 
     private fun setupViewModel() {
+        mViewModel = ViewModelProviders.of(this, mFactory).get(MaintenanceViewModel::class.java)
+    }
+
+    private fun getMaintenance(): Maintenance {
         val args = MaintenanceFragmentArgs
             .fromBundle(arguments ?: throw NullPointerException("args is null"))
-        mFactory.init(args.maintenance.oid)
-        mViewModel = ViewModelProviders.of(this, mFactory).get(MaintenanceViewModel::class.java)
+        return args.maintenance
     }
 
     private fun setupInjection() {
@@ -58,6 +68,7 @@ class MaintenanceFragment : BaseFragment() {
         val screen = DaggerMaintenanceScreen.builder()
             .appComponent(App.getApp(requireContext()).getAppComponent())
             .maintenanceComponent(dataClient.createMaintenanceComponent())
+            .maintenanceModule(MaintenanceModule(getMaintenance()))
             .build()
 
         screen.inject(this)
@@ -80,7 +91,7 @@ class MaintenanceFragment : BaseFragment() {
         }
         val activity = activity as BaseActivity
         activity.supportActionBar?.title =
-            "${resources.getString(R.string.lbl_maintenance)} #${mViewModel.idMaintenance}"
+            "${resources.getString(R.string.lbl_maintenance)} #${mViewModel.maintenance.value?.oid}"
 
         return mBinding.root
     }
@@ -91,10 +102,14 @@ class MaintenanceFragment : BaseFragment() {
         mViewModel.loadDetailMaintenance()
     }
 
-    override fun onStop() {
-        super.onStop()
-        mViewModel.maintenance.removeObserver(maintenanceObserver)
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                findNavController().navigateUp()
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
+        }
     }
-
-
 }

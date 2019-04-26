@@ -335,8 +335,8 @@ fun MaintenanceDTO.convertToMaintenance(): Maintenance {
         maintenanceType = maintenanceType,
         duration = duration,
         endTime = endTime,
-        beginTime = beginTime
-    )
+        beginTime = beginTime,
+        jobList = jobList.map { it.getObject().convertToMaintenanceJobEntity() })
 }
 
 fun FacilityDTO.convertToFacility(): Facility {
@@ -457,6 +457,14 @@ fun GPSPointFromShiftEntity.convertToGpsPointDTO(): GPSPointDTO {
         geox = longitude,
         geoy = latitude
     )
+}
+
+fun MaintenanceJobDTO.convertToMaintenanceJob(): MaintenanceJob {
+    return MaintenanceJob(
+        oid = oid,
+        duration = duration,
+        beginPhoto = beginPhoto.getObject()
+        )
 }
 
 fun MaintenanceJobDTO.convertToMaintenanceJobEntity(maintenanceJobId: Long): MaintenanceJobEntity {

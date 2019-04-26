@@ -17,7 +17,7 @@ data class MaintenanceDTO(
     val parent: EntityLink<MaintenanceDTO>? = null,
     val beginTime: OwnDateTime? = null,
     val endTime: OwnDateTime? = null,
-    val jobList: List<EntityLink<MaintenanceJobDTO>>? = null,
+    val jobList: List<EntityLink<MaintenanceJobDTO>>,
     val workCompletionReport: EntityLink<DocumentDTO>? = null,
     val voiceMassage: EntityLink<ArtifactDTO>? = null
 ) : EntityDTO(oid) {
