@@ -48,7 +48,7 @@ class MaintenanceFragment : BaseFragment() {
     private fun setupViewModel() {
         val args = MaintenanceFragmentArgs
             .fromBundle(arguments ?: throw NullPointerException("args is null"))
-        mFactory.init(args.idMaintenance)
+        mFactory.init(args.maintenance.oid)
         mViewModel = ViewModelProviders.of(this, mFactory).get(MaintenanceViewModel::class.java)
     }
 

@@ -9,4 +9,4 @@ data class Contractor(
     val name: String,
     val address: Address,
     val INN: String
-)
+):java.io.Serializable

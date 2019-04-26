@@ -21,4 +21,4 @@ data class MaintenanceJob(
     val components: List<ComponentUnit>? = null,
     val duration: Int? = null,  // in minutes
     val problem: Problem? = null
-)
+):java.io.Serializable

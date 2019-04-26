@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 
 apply plugin: 'kotlin-android'
+
 apply plugin: 'kotlinx-serialization'
 
 apply plugin: 'kotlin-kapt'
@@ -45,8 +46,6 @@ dependencies {
     implementation dependencies.kotlinCoroutinesAndroid
     implementation dependencies.kotlinSerialization
 
-    implementation dependencies.roomRuntime
-    kapt dependencies.roomCompiler
 
     implementation dependencies.inject
 }

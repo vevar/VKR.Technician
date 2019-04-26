@@ -92,7 +92,7 @@ class ListMaintenanceForDayFragment : BaseFragment() {
 
                 override fun onStartJob(maintenance: Maintenance) {
                     val dest =
-                        PlanJobsFragmentDirections.actionPlanJobsDestToMaintenanceDest(maintenance.oid)
+                        PlanJobsFragmentDirections.actionPlanJobsDestToMaintenanceDest(maintenance)
                     findNavController().navigate(dest)
                 }
 

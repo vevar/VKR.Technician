@@ -12,4 +12,4 @@ data class Facility(
     val address: Address,
     val assingmentDate: OwnDateTime,
     val contract: Contract? = null
-)
+):java.io.Serializable

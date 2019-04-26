@@ -11,8 +11,8 @@ data class Artifact(
     val original: FileNameExt,
     val date: OwnDateTime,
     val fileSize: Int
-) {
-    enum class Type {
+):java.io.Serializable {
+    enum class Type :java.io.Serializable{
         IMAGE,
         VIDEO,
         AUDIO,

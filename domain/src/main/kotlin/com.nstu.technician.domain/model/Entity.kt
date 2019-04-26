@@ -5,4 +5,4 @@ import kotlinx.serialization.Serializable
 @Serializable
 open class Entity(
     open val oid: Long
-)
+):java.io.Serializable

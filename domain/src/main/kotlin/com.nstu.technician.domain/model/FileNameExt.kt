@@ -7,4 +7,4 @@ data class FileNameExt(
     val fileName: String,
     val path: String,
     val ext: String
-)
+):java.io.Serializable

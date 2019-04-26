@@ -86,15 +86,14 @@ ext {
             kotlinCoroutinesCore   : "org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlin_coroutines_version}",
             kotlinCoroutinesAndroid: "org.jetbrains.kotlinx:kotlinx-coroutines-android:${kotlin_coroutines_version}",
             kotlinSerialization    : "org.jetbrains.kotlinx:kotlinx-serialization-runtime:${kotlin_serialization_version}",
-            inject                 : "javax.inject:javax.inject:1",
-            roomRuntime            : "androidx.room:room-runtime:${roomVersion}",
-            roomCompiler           : "androidx.room:room-compiler:${roomVersion}",
+            inject                 : "javax.inject:javax.inject:1"
     ]
 
     dataDependencies = [
             kotlinLib              : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}",
             kotlinCoroutinesCore   : "org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlin_coroutines_version}",
             kotlinCoroutinesAndroid: "org.jetbrains.kotlinx:kotlinx-coroutines-android:${kotlin_coroutines_version}",
+            kotlinSerialization    : "org.jetbrains.kotlinx:kotlinx-serialization-runtime:${kotlin_serialization_version}",
             roomRuntime            : "androidx.room:room-runtime:${roomVersion}",
             roomCompiler           : "androidx.room:room-compiler:${roomVersion}",
             retrofit               : "com.squareup.retrofit2:retrofit:${retrofitVersion}",
@@ -104,7 +103,7 @@ ext {
             gson                   : "com.google.code.gson:gson:${gsonVersion}",
             inject                 : "javax.inject:javax.inject:1",
             daggerCompiler         : "com.google.dagger:dagger-compiler:${daggerVersion}",
-            dagger                 : "com.google.dagger:dagger:${daggerVersion}",
+            dagger                 : "com.google.dagger:dagger:${daggerVersion}"
     ]
 
     dataTestDependencies = [

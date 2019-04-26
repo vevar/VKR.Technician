@@ -15,4 +15,4 @@ data class Contract(
     override val date: OwnDateTime,
     override val artifact: Artifact,
     override val state: Int
-) : Document(oid, docType, number, date, artifact, state)
+) : Document(oid, docType, number, date, artifact, state), java.io.Serializable

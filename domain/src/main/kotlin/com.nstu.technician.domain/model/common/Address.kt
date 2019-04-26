@@ -8,4 +8,4 @@ data class Address(
     val home: String,
     val location: GPSPoint? = null,
     val office: String? = null
-)
+):java.io.Serializable

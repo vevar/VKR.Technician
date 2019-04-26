@@ -19,4 +19,4 @@ open class Document(
     open val artifact: Artifact? = null,
     @Transient
     open val state: Int = 0
-)
+):java.io.Serializable

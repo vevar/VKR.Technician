@@ -10,4 +10,4 @@ data class JobType(
     val description: String,
     val duration: Int,
     val impList: List<Implements>? = null
-)
+):java.io.Serializable

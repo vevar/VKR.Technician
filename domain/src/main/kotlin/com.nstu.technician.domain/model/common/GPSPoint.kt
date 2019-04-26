@@ -7,4 +7,4 @@ data class GPSPoint(
     val oid: Long,
     val geoy: Double, //latitude
     val geox: Double  //longitude
-)
+):java.io.Serializable

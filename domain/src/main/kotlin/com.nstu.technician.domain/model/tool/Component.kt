@@ -7,4 +7,4 @@ data class Component(
     val oid: Long,
     val name: String,
     val componentType: ComponentType
-)
+):java.io.Serializable

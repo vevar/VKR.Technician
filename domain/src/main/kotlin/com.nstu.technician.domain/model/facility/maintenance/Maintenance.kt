@@ -20,4 +20,4 @@ class Maintenance(
     val jobList: List<MaintenanceJob>? = null,
     val workCompletionReport: Document? = null,
     val voiceMassage: Artifact? = null
-)
+):java.io.Serializable

@@ -8,6 +8,9 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: "androidx.navigation.safeargs.kotlin"
 
+apply plugin: 'kotlinx-serialization'
+
+
 android {
     compileOptions {
         targetCompatibility = "8"
@@ -97,5 +100,7 @@ dependencies {
     testImplementation presentationTestDependencies.junit
     androidTestImplementation presentationTestDependencies.runner
     androidTestImplementation presentationTestDependencies.espresso
+
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.11.0"
 
 }

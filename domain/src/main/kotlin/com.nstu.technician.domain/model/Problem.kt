@@ -7,9 +7,9 @@ data class Problem(
     val oid: Int,
     val ProblemType: Type,
     val comment: String
-)  {
+):java.io.Serializable  {
 
-    enum class Type {
+    enum class Type:java.io.Serializable {
         UNDEFINED_TYPE
     }
 }
