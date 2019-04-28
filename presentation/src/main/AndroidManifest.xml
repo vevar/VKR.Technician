@@ -2,6 +2,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         package="com.nstu.technician">
 
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -22,18 +23,24 @@
         <meta-data
                 android:name="com.google.android.geo.API_KEY"
                 android:value="@string/map_api_key"/>
-
+        <meta-data
+                android:name="com.google.firebase.ml.vision.DEPENDENCIES"
+                android:value="barcode" />
 
         <activity android:name=".feature.login.LoginActivity"
                   android:windowSoftInputMode="adjustResize">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+
         </activity>
 
         <activity android:name=".feature.ContainerActivity">
 
+        </activity>
+
+        <activity android:name=".feature.qr.scanner.QRCodeScannerActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
     </application>
 

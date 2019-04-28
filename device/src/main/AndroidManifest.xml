@@ -3,6 +3,7 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="com.nstu.technician.device">
 
+    <uses-permission android:name="android.permission.CAMERA"/>
     <application android:allowBackup="true"
                  tools:ignore="GoogleAppIndexingWarning"/>
 

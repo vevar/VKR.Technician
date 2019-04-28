@@ -134,7 +134,6 @@ class ListMaintenanceForDayFragment : BaseFragment() {
                         ?: throw NullPointerException("arg is null")
                     showOnMap(idMaintenance)
                 }
-                return
             }
         }
     }
