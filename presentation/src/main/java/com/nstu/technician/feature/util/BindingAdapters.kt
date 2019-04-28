@@ -11,7 +11,7 @@ import java.util.*
 
 
 object BindingAdapters {
-
+    private const val INDEX_DONE_JOB = 2
     private const val MINUTE_IN_HOUR = 60
 
     @BindingAdapter("app:showIfLoad")
@@ -85,9 +85,18 @@ object BindingAdapters {
 
     @BindingAdapter("app:setTypeStateOfJob")
     @JvmStatic
-    fun setTypeStateOfJob(view: TextView, index: Int){
-        val array = view.resources.getStringArray(R.array.types_job_state)
+    fun setTypeStateOfJob(view: TextView, index: Int) {
+        val resources = view.resources
+        val array = resources.getStringArray(R.array.types_job_state)
         view.text = array[index]
+        if (index == INDEX_DONE_JOB) {
+            view.setCompoundDrawablesWithIntrinsicBounds(
+                resources.getDrawable(R.drawable.ic_done_black, view.context.theme),
+                null,
+                null,
+                null
+            )
+        }
     }
 
     @BindingAdapter("app:setVisibility")

@@ -14,12 +14,13 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.30"
         classpath "org.jetbrains.kotlin:kotlin-serialization:1.3.30"
         classpath "android.arch.navigation:navigation-safe-args-gradle-plugin:1.0.0"
+        classpath 'com.google.gms:google-services:4.2.0'
     }
 }
 
 allprojects {
     ext {
-        androidApplicationId = 'com.nstu.technician'
+        androidApplicationId = 'com.alxminyaev.firefighter.technician'
         androidTestInstrumentationRunner = 'androidx.test.runner.AndroidJUnitRunner'
 
         androidVDUseSupportLibrary = true

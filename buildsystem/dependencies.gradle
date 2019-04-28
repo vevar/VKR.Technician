@@ -43,6 +43,8 @@ ext {
 
     googleServicesMaps_verion = '16.1.0'
     playServiceLocation_version = '16.0.0'
+    firebase_core_version = '16.0.8'
+    firebase_common_version = '16.1.0'
 
 //Testing
     junitVersion = '4.12'
@@ -59,6 +61,7 @@ ext {
             kotlinLib              : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}",
             kotlinCoroutinesCore   : "org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlin_coroutines_version}",
             kotlinCoroutinesAndroid: "org.jetbrains.kotlinx:kotlinx-coroutines-android:${kotlin_coroutines_version}",
+            kotlinSerialization    : "org.jetbrains.kotlinx:kotlinx-serialization-runtime:${kotlin_serialization_version}",
             daggerCompiler         : "com.google.dagger:dagger-compiler:${daggerVersion}",
             dagger                 : "com.google.dagger:dagger:${daggerVersion}",
             lifeCycleExtention     : "androidx.lifecycle:lifecycle-extensions:${lifeCycleVersion}",
@@ -72,7 +75,9 @@ ext {
             navigationFragment     : "android.arch.navigation:navigation-fragment-ktx:${nav_version}",
             navigationUI           : "android.arch.navigation:navigation-ui-ktx:${nav_version}",
             googleServicesMaps     : "com.google.android.gms:play-services-maps:${googleServicesMaps_verion}",
-            playServiceLocation    : "com.google.android.gms:play-services-location:${playServiceLocation_version}"
+            playServiceLocation    : "com.google.android.gms:play-services-location:${playServiceLocation_version}",
+            firebaseCore           : "com.google.firebase:firebase-core:${firebase_core_version}",
+            firebaseCommon         : "com.google.firebase:firebase-common-ktx:${firebase_common_version}"
     ]
 
     presentationTestDependencies = [

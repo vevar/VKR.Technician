@@ -10,6 +10,7 @@ apply plugin: "androidx.navigation.safeargs.kotlin"
 
 apply plugin: 'kotlinx-serialization'
 
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileOptions {
@@ -73,6 +74,8 @@ dependencies {
     implementation dependencies.kotlinLib
     implementation dependencies.kotlinCoroutinesCore
     implementation dependencies.kotlinCoroutinesAndroid
+    implementation dependencies.kotlinSerialization
+
 //    Modules
     implementation project(path: ':domain')
     implementation project(path: ':data')
@@ -92,6 +95,9 @@ dependencies {
 //    Map
     implementation dependencies.googleServicesMaps
     implementation dependencies.playServiceLocation
+//    FireBase
+    implementation dependencies.firebaseCore
+    implementation dependencies.firebaseCommon
 
 //    Dagger
     implementation dependencies.dagger
@@ -101,6 +107,5 @@ dependencies {
     androidTestImplementation presentationTestDependencies.runner
     androidTestImplementation presentationTestDependencies.espresso
 
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.11.0"
 
 }

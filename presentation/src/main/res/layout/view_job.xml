@@ -20,20 +20,19 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:text="@{String.valueOf(maintenanceJob.oid)}"
+                    android:text="@{String.valueOf('#').concat(String.valueOf(maintenanceJob.oid))}"
                     tools:text="#1"/>
             <TextView
                     android:id="@+id/state"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/default_margin"
-                    android:drawableStart="@drawable/ic_cancel_black"
                     android:drawablePadding="3dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/order_number"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
-                    app:setTypeStateOfJob="@{maintenanceJob.jobState}"
+                    app:setTypeStateOfJob="@{2}"
 
                     tools:text="Не выполнено"/>
 
