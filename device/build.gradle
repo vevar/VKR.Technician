@@ -37,4 +37,5 @@ dependencies {
     def dependencies = rootProject.ext.deviceDependencies
 
     implementation project(path: ':domain')
+    implementation dependencies.liveData
 }

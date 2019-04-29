@@ -124,5 +124,6 @@ ext {
 
 
     deviceDependencies = [
+            liveData: "androidx.lifecycle:lifecycle-livedata:${lifeCycleVersion}"
     ]
 }
