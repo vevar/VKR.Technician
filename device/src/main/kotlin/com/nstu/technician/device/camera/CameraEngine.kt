@@ -57,6 +57,7 @@ class CameraEngine {
             Log.d(TAG, "Method onDisconnected (stateCallBack) is called")
             camera.close()
             mCameraDevice = null
+            stopBackgroundThread()
             cameraOpenCloseLock.release()
         }
 
@@ -82,7 +83,14 @@ class CameraEngine {
         ) {
 
         }
+
+        override fun onCaptureFailed(session: CameraCaptureSession, request: CaptureRequest, failure: CaptureFailure) {
+            Log.d(TAG, "Method onCaptureFailed (mCaptureSessionCallBack) called")
+
+        }
     }
+
+
 
     fun onStart(context: Context) {
         if (!cameraOpenCloseLock.tryAcquire(2500, TimeUnit.MILLISECONDS)) {
@@ -172,6 +180,5 @@ class CameraEngine {
         } catch (e: java.lang.IllegalStateException) {
             Log.d(TAG, e.toString())
         }
-        stopBackgroundThread()
     }
 }

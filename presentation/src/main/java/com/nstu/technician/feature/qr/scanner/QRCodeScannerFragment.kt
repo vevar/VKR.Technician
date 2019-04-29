@@ -43,7 +43,6 @@ class QRCodeScannerFragment : BaseFragment() {
         }
 
         override fun onSurfaceTextureUpdated(texture: SurfaceTexture) {
-            Log.d(TAG, "onSurfaceTextureUpdated(surfaceTextureListener) is called")
         }
     }
 
