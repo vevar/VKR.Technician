@@ -25,26 +25,7 @@ class QRCodeScannerFragment : BaseFragment() {
 
     private lateinit var mBinding: FragmentQrcodeScannerBinding
 
-    private val surfaceTextureListener = object : TextureView.SurfaceTextureListener {
-
-        override fun onSurfaceTextureAvailable(texture: SurfaceTexture, width: Int, height: Int) {
-            Log.d(TAG, "onSurfaceTextureAvailable is available")
-            cameraEngine.setSurfaceTexture(texture)
-        }
-
-        override fun onSurfaceTextureSizeChanged(texture: SurfaceTexture, width: Int, height: Int) {
-            Log.d(TAG, "onSurfaceTextureSizeChanged is available")
-            configureTransform(width, height)
-        }
-
-        override fun onSurfaceTextureDestroyed(texture: SurfaceTexture): Boolean {
-            Log.d(TAG, "onSurfaceTextureDestroyed(surfaceTextureListener) is called")
-            return true
-        }
-
-        override fun onSurfaceTextureUpdated(texture: SurfaceTexture) {
-        }
-    }
+//    private val surfaceTextureListener =
 
     private fun configureTransform(width: Int, height: Int) {
     }
@@ -53,7 +34,6 @@ class QRCodeScannerFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_qrcode_scanner, container, false)
-        mBinding.texture.surfaceTextureListener = surfaceTextureListener
 
         return mBinding.root
     }
@@ -64,11 +44,31 @@ class QRCodeScannerFragment : BaseFragment() {
             requestCameraPermission(this@QRCodeScannerFragment)
         } else {
             cameraEngine.onStart(this.requireContext())
-            val texture = mBinding.texture
-            if (texture.isAvailable) {
-                cameraEngine.setSurfaceTexture(texture.surfaceTexture)
+
+            mBinding.texture.surfaceTextureListener = object : TextureView.SurfaceTextureListener {
+
+                override fun onSurfaceTextureAvailable(texture: SurfaceTexture, width: Int, height: Int) {
+                    Log.d(TAG, "onSurfaceTextureAvailable is called")
+                    cameraEngine.setSurfaceTexture(texture)
+                }
+
+                override fun onSurfaceTextureSizeChanged(texture: SurfaceTexture, width: Int, height: Int) {
+                    Log.d(TAG, "onSurfaceTextureSizeChanged is called")
+                    configureTransform(width, height)
+                }
+
+                override fun onSurfaceTextureDestroyed(texture: SurfaceTexture): Boolean {
+                    Log.d(TAG, "onSurfaceTextureDestroyed(surfaceTextureListener) is called")
+                    return true
+                }
+
+                override fun onSurfaceTextureUpdated(texture: SurfaceTexture) {
+                }
             }
+
+
         }
+
     }
 
     override fun onStop() {

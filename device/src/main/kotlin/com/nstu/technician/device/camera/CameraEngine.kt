@@ -12,10 +12,7 @@ import java.util.concurrent.Semaphore
 import java.util.concurrent.TimeUnit
 import kotlin.properties.Delegates
 
-
 class CameraEngine {
-
-
     companion object {
         const val TAG = "CameraEngine"
     }
@@ -25,22 +22,23 @@ class CameraEngine {
     private var backgroundThread: HandlerThread? = null
     private var backgroundHandler: Handler? = null
 
-    private var mCaptureSession: CameraCaptureSession? = null
+    private var mSession: CameraCaptureSession? = null
 
-    private var mTarget: Surface? by Delegates.observable<Surface?>(null) { property, oldValue, newValue ->
+    private var mPreviewSurface: Surface? = null
+
+    private var mPreviewTexture: SurfaceTexture? by Delegates.observable<SurfaceTexture?>(null) { property, oldValue, newValue ->
         mCaptureIsReady = newValue != null && mCameraDevice != null
     }
-
     private var mCameraDevice: CameraDevice? by Delegates.observable<CameraDevice?>(null) { property, oldValue, newValue ->
-        mCaptureIsReady = newValue != null && mTarget != null
+        mCaptureIsReady = newValue != null && mPreviewSurface != null
     }
 
     private var mCaptureIsReady: Boolean by Delegates.observable(false) { property, oldValue, newValue ->
         if (newValue) {
             val cameraDevice = mCameraDevice
-            val surface = mTarget
-            if (cameraDevice != null && surface != null) {
-                createCaptureSession(cameraDevice, surface)
+            val texture = mPreviewTexture
+            if (cameraDevice != null && texture != null) {
+                createCaptureSession(cameraDevice, texture)
             }
         }
     }
@@ -57,7 +55,6 @@ class CameraEngine {
             Log.d(TAG, "Method onDisconnected (stateCallBack) is called")
             camera.close()
             mCameraDevice = null
-            stopBackgroundThread()
             cameraOpenCloseLock.release()
         }
 
@@ -86,13 +83,20 @@ class CameraEngine {
 
         override fun onCaptureFailed(session: CameraCaptureSession, request: CaptureRequest, failure: CaptureFailure) {
             Log.d(TAG, "Method onCaptureFailed (mCaptureSessionCallBack) called")
+        }
 
+        override fun onCaptureSequenceCompleted(session: CameraCaptureSession, sequenceId: Int, frameNumber: Long) {
+            Log.d(TAG, "Method onCaptureSequenceCompleted (mCaptureSessionCallBack) called")
+            stopBackgroundThread()
+        }
+
+        override fun onCaptureSequenceAborted(session: CameraCaptureSession, sequenceId: Int) {
+            Log.d(TAG, "Method onCaptureSequenceAborted (mCaptureSessionCallBack) called")
         }
     }
 
-
-
     fun onStart(context: Context) {
+        Log.d(TAG, "onStart is called")
         if (!cameraOpenCloseLock.tryAcquire(2500, TimeUnit.MILLISECONDS)) {
             throw RuntimeException("Time out waiting to lock camera opening.")
         }
@@ -140,16 +144,21 @@ class CameraEngine {
         }
     }
 
-    fun setSurfaceTexture(surfaceTexture: SurfaceTexture) {
-        mTarget = Surface(surfaceTexture)
-    }
-
-    private fun createCaptureSession(cameraDevice: CameraDevice, surface: Surface) {
+    private fun createCaptureSession(cameraDevice: CameraDevice, surfaceTexture: SurfaceTexture) {
+        mSession?.apply {
+            close()
+        }
+        mSession = null
+        mPreviewSurface?.apply {
+            release()
+        }
+        mPreviewSurface = Surface(surfaceTexture)
         val previewBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
-        previewBuilder.addTarget(surface)
+        previewBuilder.addTarget(mPreviewSurface!!)
         val previewRequest = previewBuilder.build()
         cameraDevice.createCaptureSession(
-            listOf(surface), object : CameraCaptureSession.StateCallback() {
+            listOf(mPreviewSurface),
+            object : CameraCaptureSession.StateCallback() {
                 override fun onConfigured(session: CameraCaptureSession) {
                     Log.d(TAG, "onConfigured is called for CameraDevice ${session.device.id}")
                     session.setRepeatingRequest(
@@ -157,7 +166,7 @@ class CameraEngine {
                         mCaptureSessionCallBack,
                         backgroundHandler
                     )
-                    mCaptureSession = session
+                    mSession = session
                 }
 
                 override fun onConfigureFailed(session: CameraCaptureSession) {
@@ -169,16 +178,21 @@ class CameraEngine {
     }
 
     fun onStop() {
-        mTarget = null
+        Log.d(TAG, "onStop is called")
+//        mPreviewSurface = null
         try {
-            mCaptureSession?.apply {
-                abortCaptures()
-                close()
-            }
+//            mSession?.apply {
+//                close()
+//            }
+//            mSession = null
         } catch (e: CameraAccessException) {
             Log.d(TAG, e.toString())
         } catch (e: java.lang.IllegalStateException) {
             Log.d(TAG, e.toString())
         }
+    }
+
+    fun setSurfaceTexture(texture: SurfaceTexture) {
+        mPreviewTexture = texture
     }
 }
