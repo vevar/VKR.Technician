@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.nstu.technician.R
 import com.nstu.technician.databinding.FragmentQrcodeScannerBinding
-import com.nstu.technician.device.camera.CameraEngine
+import com.nstu.technician.device.camera.CameraEngineImpl
 import com.nstu.technician.feature.BaseFragment
 import com.nstu.technician.feature.common.PERMISSION_REQUEST_CODE_CAMERA
 import com.nstu.technician.feature.common.checkPermissionCamera
@@ -30,7 +30,7 @@ class QRCodeScannerFragment : BaseFragment() {
     private fun configureTransform(width: Int, height: Int) {
     }
 
-    private val cameraEngine: CameraEngine = CameraEngine()
+    private val cameraEngine: CameraEngineImpl = CameraEngineImpl()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_qrcode_scanner, container, false)

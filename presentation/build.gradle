@@ -98,6 +98,7 @@ dependencies {
 //    FireBase
     implementation dependencies.firebaseCore
     implementation dependencies.firebaseCommon
+    implementation dependencies.firebaseML
 
 //    Dagger
     implementation dependencies.dagger
