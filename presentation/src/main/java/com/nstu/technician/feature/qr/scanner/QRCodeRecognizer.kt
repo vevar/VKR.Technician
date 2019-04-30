@@ -48,7 +48,6 @@ class QRCodeRecognizer constructor(
                 }, mHandler)
             }
         }, mHandler)
-        mCameraEngine.onStart()
     }
 
     private fun startExecutor() {

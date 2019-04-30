@@ -25,6 +25,8 @@ class QRCodeScannerFragment : BaseFragment() {
         const val TAG = "QRCodeScannerFragment"
     }
 
+    private val mCameraEngineBuilder: CameraEngine.Builder = CameraEnginePreview.Builder()
+
     private var mCameraEngine: CameraEngine? by Delegates.observable<CameraEngine?>(null) { property, oldValue, newValue ->
         newValue?.apply {
             mQRCodeRecognizer = QRCodeRecognizer(this)
@@ -39,22 +41,12 @@ class QRCodeScannerFragment : BaseFragment() {
     }
 
     private lateinit var mBinding: FragmentQrcodeScannerBinding
-    private var surfaceTexture: SurfaceTexture? by Delegates.observable<SurfaceTexture?>(null) { property, oldValue, newValue ->
-        if (newValue != null) {
-            CameraEnginePreview.Builder()
-                .setupCamera(requireContext())
-                .setSurfaceTexture(newValue)
-                .build { engine ->
-                    mCameraEngine = engine
-                }
-        }
-    }
 
     private val mSurfaceListener = object : TextureView.SurfaceTextureListener {
 
         override fun onSurfaceTextureAvailable(texture: SurfaceTexture, width: Int, height: Int) {
             Log.d(TAG, "onSurfaceTextureAvailable is called")
-            surfaceTexture = texture
+            mCameraEngineBuilder.setSurfaceTexture(texture)
         }
 
         override fun onSurfaceTextureSizeChanged(texture: SurfaceTexture, width: Int, height: Int) {
@@ -72,32 +64,47 @@ class QRCodeScannerFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_qrcode_scanner, container, false)
-
-        return mBinding.root
-    }
-
-    override fun onStart() {
-        super.onStart()
         mBinding.texture.surfaceTextureListener = mSurfaceListener
         mBinding.texture.setOnClickListener {
             Log.d(TAG, "onClick is called")
             mQRCodeRecognizer?.makeQR()
         }
 
+        return mBinding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
         if (!checkPermissionCamera(requireContext())) {
             requestCameraPermission(this@QRCodeScannerFragment)
         } else {
-            mCameraEngine?.onStart()
+            buildCameraEngine()
         }
 
     }
 
+    private fun buildCameraEngine() {
+        mCameraEngineBuilder.setupCamera(requireContext())
+        if (mBinding.texture.isAvailable) {
+            mCameraEngineBuilder
+                .setSurfaceTexture(mBinding.texture.surfaceTexture)
+        }
+        mCameraEngineBuilder.build {
+            mCameraEngine = it
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mCameraEngine?.onStop()
+        mCameraEngine = null
+    }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when (requestCode) {
             PERMISSION_REQUEST_CODE_CAMERA -> {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    mCameraEngine?.onStart()
+                    buildCameraEngine()
                 }
             }
         }

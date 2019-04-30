@@ -36,8 +36,17 @@ class CameraEnginePreview private constructor(
 
     override fun onStart() {
         Log.d(TAG, "onStart is called")
-
         createPreviewSession()
+    }
+
+    override fun onStop() {
+        mSession?.apply {
+            close()
+        }
+        mSession = null
+        mPreviewSurface?.apply {
+            release()
+        }
     }
 
     private fun createPreviewSession() {
@@ -90,10 +99,26 @@ class CameraEnginePreview private constructor(
         private var mImageReader: ImageReader? = null
         private var backgroundThread: HandlerThread? = null
         private var mBackgroundHandler: Handler? = null
-        private var mPreviewTexture: SurfaceTexture? = null
 
         private val cameraOpenCloseLock = Semaphore(1)
 
+        private var mCameraDevice: CameraDevice? by Delegates.observable<CameraDevice?>(null) { property, oldValue, newValue ->
+            mCaptureIsReady = newValue != null && mPreviewTexture != null
+        }
+        private var mPreviewTexture: SurfaceTexture? by Delegates.observable<SurfaceTexture?>(null) { property, oldValue, newValue ->
+            mCaptureIsReady = newValue != null && mCameraDevice != null
+        }
+
+        private var mCaptureIsReady: Boolean by Delegates.observable(false) { property, oldValue, newValue ->
+            if (newValue) {
+                val cameraDevice = mCameraDevice ?: throw IllegalArgumentException("mCameraDevice must be set")
+                val texture = mPreviewTexture ?: throw IllegalArgumentException("mPreviewTexture must be set")
+                val imageReader = mImageReader ?: throw IllegalArgumentException("imageReader must be set")
+                val handler = mBackgroundHandler ?: throw IllegalArgumentException("mBackgroundHandler must be set")
+
+                buildFunction.invoke(CameraEnginePreview(cameraDevice, handler, imageReader, texture))
+            }
+        }
 
         private val stateCallBack: CameraDevice.StateCallback = object : CameraDevice.StateCallback() {
 
@@ -117,27 +142,9 @@ class CameraEnginePreview private constructor(
             }
         }
 
-        private var mCameraDevice: CameraDevice? by Delegates.observable<CameraDevice?>(null) { property, oldValue, newValue ->
-            mCaptureIsReady = if (newValue != null) {
-                mPreviewTexture != null
-            } else {
-                false
-            }
-        }
-
-        private var mCaptureIsReady: Boolean by Delegates.observable(false) { property, oldValue, newValue ->
-            if (newValue) {
-                val cameraDevice = mCameraDevice ?: throw IllegalArgumentException("mCameraDevice must be set")
-                val texture = mPreviewTexture ?: throw IllegalArgumentException("mPreviewTexture must be set")
-                val imageReader = mImageReader ?: throw IllegalArgumentException("imageReader must be set")
-                val handler = mBackgroundHandler ?: throw IllegalArgumentException("mBackgroundHandler must be set")
-
-                buildFunction.invoke(CameraEnginePreview(cameraDevice, handler, imageReader, texture))
-            }
-        }
 
         @SuppressLint("MissingPermission")
-        fun setupCamera(context: Context): Builder {
+        override fun setupCamera(context: Context): Builder {
             val cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
             try {
                 for (cameraId in cameraManager.cameraIdList) {
@@ -180,8 +187,8 @@ class CameraEnginePreview private constructor(
             }
         }
 
-        fun setSurfaceTexture(texture: SurfaceTexture): Builder {
-            mPreviewTexture = texture
+        override fun setSurfaceTexture(surfaceTexture: SurfaceTexture): Builder {
+            mPreviewTexture = surfaceTexture
             return this
         }
 
