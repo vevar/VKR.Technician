@@ -22,14 +22,17 @@ import kotlin.properties.Delegates
 class QRCodeScannerFragment : BaseFragment() {
 
     companion object {
-        const val TAG = "QRCodeScannerFragment"
+        private const val TAG = "QRCodeScannerFragment"
+        private const val DELAY_IN_UPDATE = 50
+
     }
 
     private val mCameraEngineBuilder: CameraEngine.Builder = CameraEnginePreview.Builder()
 
+
     private var mCameraEngine: CameraEngine? by Delegates.observable<CameraEngine?>(null) { property, oldValue, newValue ->
         newValue?.apply {
-            mQRCodeRecognizer = QRCodeRecognizer(this)
+            mQRCodeRecognizer = QRCodeRecognizer()
             onStart()
         }
     }
@@ -41,7 +44,7 @@ class QRCodeScannerFragment : BaseFragment() {
     }
 
     private lateinit var mBinding: FragmentQrcodeScannerBinding
-
+    private var mCounterUpdate = 0
     private val mSurfaceListener = object : TextureView.SurfaceTextureListener {
 
         override fun onSurfaceTextureAvailable(texture: SurfaceTexture, width: Int, height: Int) {
@@ -59,6 +62,11 @@ class QRCodeScannerFragment : BaseFragment() {
         }
 
         override fun onSurfaceTextureUpdated(texture: SurfaceTexture) {
+            mCounterUpdate++
+            if (mCounterUpdate > DELAY_IN_UPDATE) {
+                mQRCodeRecognizer?.getQRCodeDetails(mBinding.texture.bitmap)
+                mCounterUpdate = 0
+            }
         }
     }
 
@@ -67,7 +75,6 @@ class QRCodeScannerFragment : BaseFragment() {
         mBinding.texture.surfaceTextureListener = mSurfaceListener
         mBinding.texture.setOnClickListener {
             Log.d(TAG, "onClick is called")
-            mQRCodeRecognizer?.makeQR()
         }
 
         return mBinding.root
@@ -80,7 +87,6 @@ class QRCodeScannerFragment : BaseFragment() {
         } else {
             buildCameraEngine()
         }
-
     }
 
     private fun buildCameraEngine() {

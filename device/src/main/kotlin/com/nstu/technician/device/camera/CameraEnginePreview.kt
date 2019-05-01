@@ -20,9 +20,11 @@ import kotlin.properties.Delegates
 class CameraEnginePreview private constructor(
     private val mCamera: CameraDevice,
     private val mHandler: Handler,
-    val imageReader: ImageReader,
-    private val mSurfaceTexture: SurfaceTexture
+    private val mSurfaceTexture: SurfaceTexture,
+    private val mImageReaders: List<ImageReader>
 ) : CameraEngine {
+
+
     companion object {
         const val TAG = "CameraEnginePreview"
     }
@@ -49,6 +51,10 @@ class CameraEnginePreview private constructor(
         }
     }
 
+    override fun getListImageReaders(): List<ImageReader> {
+        return mImageReaders
+    }
+
     private fun createPreviewSession() {
         mSession?.apply {
             close()
@@ -57,13 +63,16 @@ class CameraEnginePreview private constructor(
         mPreviewSurface?.apply {
             release()
         }
-        mPreviewSurface = Surface(mSurfaceTexture)
-
+        val targetSurface = Surface(mSurfaceTexture)
+        val list = mImageReaders.map { it.surface }.toMutableList().also {
+            it.add(targetSurface)
+        }
         val previewBuilder = mCamera.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW)
-        previewBuilder.addTarget(mPreviewSurface!!)
+        previewBuilder.addTarget(targetSurface)
+        mPreviewSurface = targetSurface
         val previewRequest = previewBuilder.build()
         mCamera.createCaptureSession(
-            listOf(mPreviewSurface, imageReader.surface),
+            list,
             object : CameraCaptureSession.StateCallback() {
                 override fun onConfigured(session: CameraCaptureSession) {
                     Log.d(TAG, "onConfigured is called for CameraDevice ${session.device.id}")
@@ -86,19 +95,20 @@ class CameraEnginePreview private constructor(
     override fun capture(callback: CameraCaptureSession.CaptureCallback, handler: Handler?) {
         val captureRequest = mCamera.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE)
 
-        captureRequest.addTarget(imageReader.surface)
+        captureRequest.addTarget(mImageReaders.first().surface)
         mSession?.apply {
-            stopRepeating()
-            abortCaptures()
-            capture(captureRequest.build(), callback, handler)
+            //            stopRepeating()
+//            abortCaptures()
+            captureBurst(listOf(captureRequest.build()), callback, handler)
         } ?: throw IllegalStateException("mSession must be set")
     }
 
     class Builder : CameraEngine.Builder {
         private lateinit var buildFunction: (cameraEngine: CameraEnginePreview) -> Unit
-        private var mImageReader: ImageReader? = null
         private var backgroundThread: HandlerThread? = null
         private var mBackgroundHandler: Handler? = null
+
+        private val mImageReaders: MutableList<ImageReader> = mutableListOf()
 
         private val cameraOpenCloseLock = Semaphore(1)
 
@@ -113,10 +123,9 @@ class CameraEnginePreview private constructor(
             if (newValue) {
                 val cameraDevice = mCameraDevice ?: throw IllegalArgumentException("mCameraDevice must be set")
                 val texture = mPreviewTexture ?: throw IllegalArgumentException("mPreviewTexture must be set")
-                val imageReader = mImageReader ?: throw IllegalArgumentException("imageReader must be set")
                 val handler = mBackgroundHandler ?: throw IllegalArgumentException("mBackgroundHandler must be set")
 
-                buildFunction.invoke(CameraEnginePreview(cameraDevice, handler, imageReader, texture))
+                buildFunction.invoke(CameraEnginePreview(cameraDevice, handler, texture, mImageReaders))
             }
         }
 
@@ -156,7 +165,7 @@ class CameraEnginePreview private constructor(
                     val map = chars.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP) ?: continue
 
                     val largest = Collections.max(map.getOutputSizes(ImageFormat.JPEG).toList(), CompareSizesByArea())
-                    mImageReader = ImageReader.newInstance(largest.width, largest.height, ImageFormat.JPEG, 2)
+                    mImageReaders.add(ImageReader.newInstance(largest.width, largest.height, ImageFormat.JPEG, 2))
 
                     cameraManager.openCamera(cameraId, stateCallBack, mBackgroundHandler)
                 }
@@ -190,6 +199,14 @@ class CameraEnginePreview private constructor(
         override fun setSurfaceTexture(surfaceTexture: SurfaceTexture): Builder {
             mPreviewTexture = surfaceTexture
             return this
+        }
+
+        override fun addImageReader(imageReader: ImageReader) {
+            mImageReaders.add(imageReader)
+        }
+
+        override fun removeImageReader(imageReader: ImageReader) {
+            mImageReaders.remove(imageReader)
         }
 
         override fun build(function: (cameraEngine: CameraEngine) -> Unit) {
