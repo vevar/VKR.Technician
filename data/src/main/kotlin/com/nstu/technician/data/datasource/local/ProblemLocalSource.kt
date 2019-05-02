@@ -1,6 +1,6 @@
 package com.nstu.technician.data.datasource.local
 
-import com.nstu.technician.data.datasource.ProblemDataSource
+import com.nstu.technician.data.datasource.entity.ProblemDataSource
 import com.nstu.technician.data.dto.ProblemDTO
 import javax.inject.Inject
 

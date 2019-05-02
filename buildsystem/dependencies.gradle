@@ -124,6 +124,14 @@ ext {
 
 
     deviceDependencies = [
-            liveData: "androidx.lifecycle:lifecycle-livedata:${lifeCycleVersion}"
+            kotlinLib              : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}",
+            kotlinCoroutinesCore   : "org.jetbrains.kotlinx:kotlinx-coroutines-core:${kotlin_coroutines_version}",
+            kotlinCoroutinesAndroid: "org.jetbrains.kotlinx:kotlinx-coroutines-android:${kotlin_coroutines_version}",
+            liveData: "androidx.lifecycle:lifecycle-livedata:${lifeCycleVersion}",
+            playServiceLocation    : "com.google.android.gms:play-services-location:${playServiceLocation_version}",
+            inject                 : "javax.inject:javax.inject:1",
+            daggerCompiler         : "com.google.dagger:dagger-compiler:${daggerVersion}",
+            dagger                 : "com.google.dagger:dagger:${daggerVersion}",
+
     ]
 }

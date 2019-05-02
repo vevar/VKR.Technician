@@ -36,6 +36,18 @@ dependencies {
 
     def dependencies = rootProject.ext.deviceDependencies
 
+    //    Kotlin
+    implementation dependencies.kotlinLib
+    implementation dependencies.kotlinCoroutinesCore
+    implementation dependencies.kotlinCoroutinesAndroid
+
     implementation project(path: ':domain')
     implementation dependencies.liveData
+    implementation dependencies.playServiceLocation
+
+    //    Dagger
+    implementation dependencies.dagger
+    kapt dependencies.daggerCompiler
+
+    implementation dependencies.inject
 }

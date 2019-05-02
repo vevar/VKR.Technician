@@ -1,7 +1,7 @@
 package com.nstu.technician.data.datasource.local
 
 import com.nstu.technician.data.database.AppDataBase
-import com.nstu.technician.data.datasource.ComponentTypeDataSource
+import com.nstu.technician.data.datasource.entity.ComponentTypeDataSource
 import com.nstu.technician.data.dto.getComponentTypeDTO
 import com.nstu.technician.data.util.DataBaseProvider
 import com.nstu.technician.data.util.DataSourceComponentBuilder

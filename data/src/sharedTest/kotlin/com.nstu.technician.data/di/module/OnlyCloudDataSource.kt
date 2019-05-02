@@ -1,9 +1,9 @@
 package com.nstu.technician.data.di.module
 
-import com.nstu.technician.data.datasource.AccountDataSource
-import com.nstu.technician.data.datasource.LOCAL
-import com.nstu.technician.data.datasource.TechnicianDataSource
-import com.nstu.technician.data.datasource.UserDataSource
+import com.nstu.technician.data.datasource.entity.AccountDataSource
+import com.nstu.technician.data.datasource.entity.LOCAL
+import com.nstu.technician.data.datasource.entity.TechnicianDataSource
+import com.nstu.technician.data.datasource.entity.UserDataSource
 import com.nstu.technician.data.datasource.cloud.TechnicianCloudSource
 import com.nstu.technician.data.datasource.cloud.UserCloudSource
 import com.nstu.technician.data.dto.user.AccountDTO

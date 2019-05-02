@@ -1,6 +1,6 @@
 package com.nstu.technician.data.di.component
 
-import com.nstu.technician.data.datasource.*
+import com.nstu.technician.data.datasource.entity.*
 import com.nstu.technician.data.di.model.ApiModule
 import com.nstu.technician.data.di.model.DaoModule
 import com.nstu.technician.data.di.model.DataSourceModule

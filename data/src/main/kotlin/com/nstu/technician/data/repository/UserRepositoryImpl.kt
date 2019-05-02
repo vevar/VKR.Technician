@@ -1,8 +1,8 @@
 package com.nstu.technician.data.repository
 
-import com.nstu.technician.data.datasource.CLOUD
-import com.nstu.technician.data.datasource.LOCAL
-import com.nstu.technician.data.datasource.UserDataSource
+import com.nstu.technician.data.datasource.entity.CLOUD
+import com.nstu.technician.data.datasource.entity.LOCAL
+import com.nstu.technician.data.datasource.entity.UserDataSource
 import com.nstu.technician.data.until.convertToDTO
 import com.nstu.technician.data.until.convertToModel
 import com.nstu.technician.domain.model.user.Account

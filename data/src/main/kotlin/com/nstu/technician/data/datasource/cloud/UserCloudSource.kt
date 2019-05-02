@@ -1,7 +1,7 @@
 package com.nstu.technician.data.datasource.cloud
 
 import android.util.Log
-import com.nstu.technician.data.datasource.UserDataSource
+import com.nstu.technician.data.datasource.entity.UserDataSource
 import com.nstu.technician.data.datasource.cloud.api.UserApi
 import com.nstu.technician.data.dto.user.AccountDTO
 import com.nstu.technician.data.dto.user.UserDTO

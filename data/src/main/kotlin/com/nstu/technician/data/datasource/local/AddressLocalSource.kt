@@ -1,8 +1,8 @@
 package com.nstu.technician.data.datasource.local
 
-import com.nstu.technician.data.datasource.AddressDataSource
-import com.nstu.technician.data.datasource.GPSPointDataSource
-import com.nstu.technician.data.datasource.LOCAL
+import com.nstu.technician.data.datasource.entity.AddressDataSource
+import com.nstu.technician.data.datasource.entity.GPSPointDataSource
+import com.nstu.technician.data.datasource.entity.LOCAL
 import com.nstu.technician.data.datasource.local.dao.AddressDao
 import com.nstu.technician.data.datasource.local.dao.UtilDao
 import com.nstu.technician.data.dto.common.AddressDTO

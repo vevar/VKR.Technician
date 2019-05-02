@@ -1,7 +1,7 @@
 package com.nstu.technician.data.datasource.local
 
 import com.nstu.technician.data.database.entity.job.MaintenanceJobEntity
-import com.nstu.technician.data.datasource.*
+import com.nstu.technician.data.datasource.entity.*
 import com.nstu.technician.data.datasource.local.dao.MaintenanceJobDao
 import com.nstu.technician.data.datasource.local.dao.UtilDao
 import com.nstu.technician.data.dto.ProblemDTO

@@ -1,6 +1,6 @@
 package com.nstu.technician.data.datasource.local
 
-import com.nstu.technician.data.datasource.ImplementsDataSource
+import com.nstu.technician.data.datasource.entity.ImplementsDataSource
 import com.nstu.technician.data.datasource.local.dao.ImplementDao
 import com.nstu.technician.data.dto.tool.ImplementsDTO
 import com.nstu.technician.data.until.convertToImplementsDTO

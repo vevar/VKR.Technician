@@ -5,7 +5,7 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.nstu.technician.data.TestAppDataBase
-import com.nstu.technician.data.datasource.FacilityDataSource
+import com.nstu.technician.data.datasource.entity.FacilityDataSource
 import com.nstu.technician.data.di.component.DaggerDataSourceComponent
 import com.nstu.technician.data.di.model.DaoModule
 import com.nstu.technician.data.di.model.DataSourceModule

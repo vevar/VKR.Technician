@@ -1,6 +1,6 @@
 package com.nstu.technician.data.datasource.local
 
-import com.nstu.technician.data.datasource.GPSPointDataSource
+import com.nstu.technician.data.datasource.entity.GPSPointDataSource
 import com.nstu.technician.data.datasource.local.dao.GPSPointFromShiftDao
 import com.nstu.technician.data.datasource.local.dao.GpsDao
 import com.nstu.technician.data.datasource.local.dao.UtilDao

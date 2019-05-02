@@ -1,7 +1,7 @@
 package com.nstu.technician.data.repository
 
-import com.nstu.technician.data.datasource.AccountDataSource
-import com.nstu.technician.data.datasource.LOCAL
+import com.nstu.technician.data.datasource.entity.AccountDataSource
+import com.nstu.technician.data.datasource.entity.LOCAL
 import com.nstu.technician.data.until.convertToDTO
 import com.nstu.technician.data.until.convertToModel
 import com.nstu.technician.domain.model.user.Account

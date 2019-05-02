@@ -1,8 +1,8 @@
 package com.nstu.technician.data.repository
 
-import com.nstu.technician.data.datasource.CLOUD
-import com.nstu.technician.data.datasource.LOCAL
-import com.nstu.technician.data.datasource.ShiftDataSource
+import com.nstu.technician.data.datasource.entity.CLOUD
+import com.nstu.technician.data.datasource.entity.LOCAL
+import com.nstu.technician.data.datasource.entity.ShiftDataSource
 import com.nstu.technician.data.until.convertToShiftModel
 import com.nstu.technician.domain.exceptions.NotFoundException
 import com.nstu.technician.domain.model.Shift

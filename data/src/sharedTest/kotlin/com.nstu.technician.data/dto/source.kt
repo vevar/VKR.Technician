@@ -36,7 +36,10 @@ fun getMaintenanceDTOWithShiftDTO(oid: Long, shiftDTO: ShiftDTO): MaintenanceDTO
 private fun getShiftDTO_STUB(oid: Long): ShiftDTO {
     return ShiftDTO(
         oid = oid,
-        date = getOwnTime()
+        date = getOwnTime(),
+        visits = getListSomeObject { EntityLink(getMaintenanceDTO(getRandomId())) },
+        points = getListSomeObject { EntityLink(getGPSPointDTO(getRandomId())) }
+
     )
 }
 
@@ -136,7 +139,8 @@ fun getComponentTypeDTO(oid: Long): ComponentTypeDTO {
 fun getImplementsDTO(oid: Long): ImplementsDTO {
     return ImplementsDTO(
         oid = oid,
-        name = "Hammer"
+        name = "Hammer",
+        currentNubmer = 3
     )
 }
 

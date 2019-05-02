@@ -1,6 +1,6 @@
 package com.nstu.technician.data.datasource.cloud
 
-import com.nstu.technician.data.datasource.ShiftDataSource
+import com.nstu.technician.data.datasource.entity.ShiftDataSource
 import com.nstu.technician.data.datasource.cloud.api.ShiftApi
 import com.nstu.technician.data.dto.job.ShiftDTO
 import javax.inject.Inject

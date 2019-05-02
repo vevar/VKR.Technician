@@ -1,6 +1,6 @@
 package com.nstu.technician.data.datasource.cloud
 
-import com.nstu.technician.data.datasource.FacilityDataSource
+import com.nstu.technician.data.datasource.entity.FacilityDataSource
 import com.nstu.technician.data.datasource.cloud.api.FacilityApi
 import com.nstu.technician.data.dto.job.FacilityDTO
 import javax.inject.Inject

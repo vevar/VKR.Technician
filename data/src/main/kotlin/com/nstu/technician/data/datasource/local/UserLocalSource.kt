@@ -1,8 +1,8 @@
 package com.nstu.technician.data.datasource.local
 
-import com.nstu.technician.data.datasource.AccountDataSource
-import com.nstu.technician.data.datasource.LOCAL
-import com.nstu.technician.data.datasource.UserDataSource
+import com.nstu.technician.data.datasource.entity.AccountDataSource
+import com.nstu.technician.data.datasource.entity.LOCAL
+import com.nstu.technician.data.datasource.entity.UserDataSource
 import com.nstu.technician.data.datasource.local.dao.UserDao
 import com.nstu.technician.data.datasource.local.dao.UtilDao
 import com.nstu.technician.data.dto.user.AccountDTO

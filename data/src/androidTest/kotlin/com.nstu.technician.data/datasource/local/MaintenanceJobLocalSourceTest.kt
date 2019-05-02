@@ -2,7 +2,7 @@ package com.nstu.technician.data.datasource.local
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.nstu.technician.data.database.AppDataBase
-import com.nstu.technician.data.datasource.MaintenanceJobDataSource
+import com.nstu.technician.data.datasource.entity.MaintenanceJobDataSource
 import com.nstu.technician.data.dto.getMaintenanceDTO
 import com.nstu.technician.data.until.getObject
 import com.nstu.technician.data.util.DataBaseProvider

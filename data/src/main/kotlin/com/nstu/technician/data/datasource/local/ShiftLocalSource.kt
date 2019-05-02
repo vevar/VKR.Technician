@@ -1,9 +1,9 @@
 package com.nstu.technician.data.datasource.local
 
-import com.nstu.technician.data.datasource.GPSPointDataSource
-import com.nstu.technician.data.datasource.LOCAL
-import com.nstu.technician.data.datasource.MaintenanceDataSource
-import com.nstu.technician.data.datasource.ShiftDataSource
+import com.nstu.technician.data.datasource.entity.GPSPointDataSource
+import com.nstu.technician.data.datasource.entity.LOCAL
+import com.nstu.technician.data.datasource.entity.MaintenanceDataSource
+import com.nstu.technician.data.datasource.entity.ShiftDataSource
 import com.nstu.technician.data.datasource.local.dao.ShiftDao
 import com.nstu.technician.data.datasource.local.dao.UtilDao
 import com.nstu.technician.data.dto.job.ShiftDTO

@@ -1,7 +1,7 @@
 package com.nstu.technician.data.datasource.local
 
-import com.nstu.technician.data.datasource.TechnicianDataSource
-import com.nstu.technician.data.datasource.UserDataSource
+import com.nstu.technician.data.datasource.entity.TechnicianDataSource
+import com.nstu.technician.data.datasource.entity.UserDataSource
 import com.nstu.technician.data.datasource.local.dao.TechnicianDao
 import com.nstu.technician.data.datasource.local.dao.UtilDao
 import com.nstu.technician.data.dto.user.TechnicianDTO

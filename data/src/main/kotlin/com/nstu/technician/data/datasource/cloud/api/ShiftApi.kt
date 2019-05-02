@@ -14,6 +14,6 @@ interface ShiftApi {
     ): Call<List<ShiftDTO>>
 
     @GET("/api/shift/full")
-    fun getShiftFull(@Query("shiftid") shiftId: Long): Call<ShiftDTO>
+    fun getShiftFull(@Query("id") id: Long): Call<ShiftDTO>
 }
 

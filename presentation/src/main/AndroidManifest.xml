@@ -29,7 +29,10 @@
 
         <activity android:name=".feature.login.LoginActivity"
                   android:windowSoftInputMode="adjustResize">
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
 
         <activity android:name=".feature.ContainerActivity">
@@ -37,11 +40,10 @@
         </activity>
 
         <activity android:name=".feature.qr.scanner.QRCodeScannerActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+
         </activity>
+
+        <service android:name=".service.StateTechnicianService"/>
     </application>
 
 

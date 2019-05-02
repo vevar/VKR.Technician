@@ -1,7 +1,7 @@
 package com.nstu.technician.data.datasource.local
 
 import com.nstu.technician.data.database.AppDataBase
-import com.nstu.technician.data.datasource.ImplementsDataSource
+import com.nstu.technician.data.datasource.entity.ImplementsDataSource
 import com.nstu.technician.data.dto.getJobTypeDTO
 import com.nstu.technician.data.dto.getMaintenanceJobDTO
 import com.nstu.technician.data.until.getObject

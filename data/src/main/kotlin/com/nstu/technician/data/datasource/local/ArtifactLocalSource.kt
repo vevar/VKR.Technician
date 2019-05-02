@@ -1,6 +1,6 @@
 package com.nstu.technician.data.datasource.local
 
-import com.nstu.technician.data.datasource.ArtifactDataSource
+import com.nstu.technician.data.datasource.entity.ArtifactDataSource
 import com.nstu.technician.data.datasource.local.dao.ArtifactDao
 import com.nstu.technician.data.dto.common.ArtifactDTO
 import com.nstu.technician.data.until.convertToArtifactDTO

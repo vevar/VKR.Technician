@@ -1,10 +1,10 @@
 package com.nstu.technician.data.di.model
 
-import com.nstu.technician.data.datasource.*
 import com.nstu.technician.data.datasource.cloud.FacilityCloudSource
 import com.nstu.technician.data.datasource.cloud.ShiftCloudSource
 import com.nstu.technician.data.datasource.cloud.TechnicianCloudSource
 import com.nstu.technician.data.datasource.cloud.UserCloudSource
+import com.nstu.technician.data.datasource.entity.*
 import com.nstu.technician.data.datasource.local.*
 import dagger.Module
 import dagger.Provides

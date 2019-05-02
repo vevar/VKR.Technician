@@ -8,6 +8,9 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.navArgs
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
 import com.nstu.technician.R
 import com.nstu.technician.databinding.ActivityContainerBinding
 import com.nstu.technician.feature.plan.jobs.PlanJobsFragmentArgs
@@ -15,6 +18,9 @@ import com.nstu.technician.feature.plan.jobs.PlanJobsFragmentArgs
 class ContainerActivity : BaseActivity() {
 
     private lateinit var mBinding: ActivityContainerBinding
+
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
 
     companion object {
         private const val TAG = "ContainerActivity"
@@ -38,11 +44,19 @@ class ContainerActivity : BaseActivity() {
         val navController = host.navController
         setupActionBar(navController, AppBarConfiguration(navController.graph))
 
-
         supportActionBar?.show()
+
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
     }
 
     private fun setupActionBar(navController: NavController, appBarConfiguration: AppBarConfiguration) {
         setupActionBarWithNavController(navController, appBarConfiguration)
     }
+
+    private fun createLocationRequest(intervalInMillisecond: Long): LocationRequest {
+        val request = LocationRequest()
+        request.interval = intervalInMillisecond
+        return request
+    }
+
 }

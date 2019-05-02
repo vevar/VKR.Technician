@@ -1,4 +1,4 @@
-package com.nstu.technician.data.datasource
+package com.nstu.technician.data.datasource.entity
 
 import com.nstu.technician.data.dto.tool.ImplementUnitDTO
 import com.nstu.technician.data.dto.tool.ImplementsDTO

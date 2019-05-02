@@ -1,6 +1,6 @@
 package com.nstu.technician.data.datasource.cloud
 
-import com.nstu.technician.data.datasource.TechnicianDataSource
+import com.nstu.technician.data.datasource.entity.TechnicianDataSource
 import com.nstu.technician.data.datasource.cloud.api.TechnicianApi
 import com.nstu.technician.data.dto.user.TechnicianDTO
 import com.nstu.technician.data.until.logCodeOfResponse

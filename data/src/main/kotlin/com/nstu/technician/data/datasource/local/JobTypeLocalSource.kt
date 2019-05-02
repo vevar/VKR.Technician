@@ -1,8 +1,8 @@
 package com.nstu.technician.data.datasource.local
 
-import com.nstu.technician.data.datasource.ImplementsDataSource
-import com.nstu.technician.data.datasource.JobTypeDataSource
-import com.nstu.technician.data.datasource.LOCAL
+import com.nstu.technician.data.datasource.entity.ImplementsDataSource
+import com.nstu.technician.data.datasource.entity.JobTypeDataSource
+import com.nstu.technician.data.datasource.entity.LOCAL
 import com.nstu.technician.data.datasource.local.dao.JobTypeDao
 import com.nstu.technician.data.datasource.local.dao.UtilDao
 import com.nstu.technician.data.dto.job.JobTypeDTO

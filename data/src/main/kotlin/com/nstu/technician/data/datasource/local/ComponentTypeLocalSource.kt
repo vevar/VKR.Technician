@@ -1,6 +1,6 @@
 package com.nstu.technician.data.datasource.local
 
-import com.nstu.technician.data.datasource.ComponentTypeDataSource
+import com.nstu.technician.data.datasource.entity.ComponentTypeDataSource
 import com.nstu.technician.data.datasource.local.dao.ComponentTypeDao
 import com.nstu.technician.data.dto.tool.ComponentTypeDTO
 import com.nstu.technician.data.until.convertToComponentTypeDTO

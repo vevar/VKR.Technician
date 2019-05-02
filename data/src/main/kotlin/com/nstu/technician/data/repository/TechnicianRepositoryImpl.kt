@@ -1,6 +1,6 @@
 package com.nstu.technician.data.repository
 
-import com.nstu.technician.data.datasource.TechnicianDataSource
+import com.nstu.technician.data.datasource.entity.TechnicianDataSource
 import com.nstu.technician.data.until.convertToModel
 import com.nstu.technician.domain.model.user.Technician
 import com.nstu.technician.domain.model.user.User

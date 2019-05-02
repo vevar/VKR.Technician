@@ -2,7 +2,7 @@ package com.nstu.technician.data.datasource.local
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.nstu.technician.data.database.AppDataBase
-import com.nstu.technician.data.datasource.ContractDataSource
+import com.nstu.technician.data.datasource.entity.ContractDataSource
 import com.nstu.technician.data.dto.getContractDTO
 import com.nstu.technician.data.util.DataBaseProvider
 import com.nstu.technician.data.util.DataSourceComponentBuilder

@@ -6,7 +6,8 @@ import com.nstu.technician.data.dto.common.GPSPointDTO
 import com.nstu.technician.data.until.isNotEqualSafeList
 import com.nstu.technician.domain.model.common.OwnDateTime
 
-data class ShiftDTO(
+data class ShiftDTO
+    (
     override val oid: Long,
     val date: OwnDateTime,
     val points: List<EntityLink<GPSPointDTO>>,
