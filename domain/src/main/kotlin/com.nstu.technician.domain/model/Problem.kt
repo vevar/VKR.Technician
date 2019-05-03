@@ -5,11 +5,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Problem(
     val oid: Long,
-    val type: Type,
+    val type: Int,
     val comment: String
-):java.io.Serializable  {
-
-    enum class Type:java.io.Serializable {
-        UNDEFINED_TYPE
-    }
-}
+) : java.io.Serializable

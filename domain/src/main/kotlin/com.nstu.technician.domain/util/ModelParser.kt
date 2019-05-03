@@ -16,8 +16,8 @@ class ModelParser {
         var mName: String? = null
         val mImports: MutableList<String> = mutableListOf()
         //    Map<fieldName, Type>
-        val fields: MutableMap<String, Model.Field> = mutableMapOf()
-        val primitiveFields: MutableMap<String, Model.PrimitiveType> = mutableMapOf()
+        val fields: MutableMap<String, Field> = mutableMapOf()
+        val primitiveFields: MutableMap<String, Primitive> = mutableMapOf()
 
         class ModelParserListener : KotlinParserBaseListener() {
 
@@ -43,8 +43,8 @@ class ModelParser {
                         val name = simpleIdentifier().text
                         val type = type().text
 
-                        fields[name] = Model.Field.getInstance(name, type, true)
-
+                        val field = Field(name, TypeFactory.getType(type))
+                        fields[field.name] = field
                         println("[$name, $type]")
                     }
                 }

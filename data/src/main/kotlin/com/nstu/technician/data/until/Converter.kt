@@ -450,7 +450,7 @@ fun ArtifactDTO.convertToArtifact(): Artifact {
         name = name,
         fileSize = fileSize,
         original = original,
-        type = Artifact.Type.values()[type]
+        type = type
     )
 }
 
@@ -592,6 +592,6 @@ fun ProblemDTO.convertToProblem(): Problem {
     return Problem(
         oid = oid,
         comment = comment,
-        type = Problem.Type.values()[type]
+        type = type
     )
 }
