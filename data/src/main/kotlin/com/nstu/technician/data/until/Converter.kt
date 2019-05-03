@@ -97,7 +97,7 @@ fun ArtifactEntity.convertToArtifactDTO(): ArtifactDTO {
     )
 }
 
-fun ArtifactDTO.convertToArtifactEntitty(): ArtifactEntity {
+fun ArtifactDTO.convertToArtifactEntity(): ArtifactEntity {
     return ArtifactEntity(
         oid = oid,
         date = date.timeInMS,
@@ -154,8 +154,8 @@ fun convertToModel(facilityDTO: FacilityDTO): Facility {
     return facility
 }
 
-fun <F : EntityDTO> EntityLink<F>.getObject(): F {
-    return ref ?: throw IllegalStateException("ref(${this.javaClass}) must be set")
+inline fun <reified F : EntityDTO> EntityLink<F>.getObject(): F {
+    return ref ?: throw IllegalStateException("ref(${F::class.java} must be set")
 }
 
 fun ShiftDTO.convertToShiftEntity(): ShiftEntity {

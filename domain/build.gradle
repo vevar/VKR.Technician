@@ -8,6 +8,7 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: 'kotlin-android-extensions'
 
+
 android {
     compileOptions {
         targetCompatibility = "8"
@@ -46,6 +47,7 @@ dependencies {
     implementation dependencies.kotlinCoroutinesAndroid
     implementation dependencies.kotlinSerialization
 
+    implementation "com.github.sarahbuisson:kotlin-parser:1.5"
 
     implementation dependencies.inject
 }

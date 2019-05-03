@@ -41,6 +41,6 @@ data class FacilityDTO(
     }
 
     override fun toString(): String {
-        return "FacilityDTO(oid=$oid, name='$name', address=$address, assingmentDate=$assingmentDate, contract=${contract.hashCode()})"
+        return "FacilityDTO(oid=$oid, mName='$name', address=$address, assingmentDate=$assingmentDate, contract=${contract.hashCode()})"
     }
 }

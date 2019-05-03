@@ -4,7 +4,7 @@ import com.nstu.technician.data.datasource.entity.ArtifactDataSource
 import com.nstu.technician.data.datasource.local.dao.ArtifactDao
 import com.nstu.technician.data.dto.common.ArtifactDTO
 import com.nstu.technician.data.until.convertToArtifactDTO
-import com.nstu.technician.data.until.convertToArtifactEntitty
+import com.nstu.technician.data.until.convertToArtifactEntity
 import javax.inject.Inject
 
 class ArtifactLocalSource @Inject constructor(
@@ -15,6 +15,6 @@ class ArtifactLocalSource @Inject constructor(
     }
 
     override suspend fun save(obj: ArtifactDTO) {
-        artifactDao.save(obj.convertToArtifactEntitty())
+        artifactDao.save(obj.convertToArtifactEntity())
     }
 }

@@ -8,12 +8,15 @@ import javax.inject.Inject
 class ShiftCloudSource @Inject constructor(
     private val shiftApi: ShiftApi
 ) : ShiftDataSource {
+    companion object {
+        const val DEFAULT_LEVEL = 3
+    }
+
     override suspend fun save(shiftDTO: ShiftDTO) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override suspend fun findById(id: Long): ShiftDTO? {
-        val response = shiftApi.getShiftFull(id).execute()
+        val response = shiftApi.getShiftFull(id, DEFAULT_LEVEL).execute()
 
         return response.body()
     }
@@ -23,7 +26,7 @@ class ShiftCloudSource @Inject constructor(
         startTime: Long,
         endTime: Long
     ): List<ShiftDTO> {
-        val response = shiftApi.getShiftToPeriod(technicianId, startTime, endTime).execute()
+        val response = shiftApi.getShiftToPeriod(technicianId, startTime, endTime, DEFAULT_LEVEL).execute()
 
         return response.body() ?: listOf()
     }
