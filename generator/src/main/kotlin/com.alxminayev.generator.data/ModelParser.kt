@@ -1,4 +1,4 @@
-package com.nstu.technician.domain.util
+package com.alxminayev.generator.data
 
 import com.github.sarahbuisson.kotlinparser.KotlinLexer
 import com.github.sarahbuisson.kotlinparser.KotlinParser
@@ -11,7 +11,7 @@ import java.io.File
 
 class ModelParser {
 
-    fun parse(file: File): Model {
+    fun parse(file: File): ModelDescriptor {
         var mPackageName: String? = null
         var mName: String? = null
         val mImports: MutableList<String> = mutableListOf()
@@ -68,7 +68,7 @@ class ModelParser {
 
         val packageName = mPackageName ?: throw IllegalStateException("packageName must be set")
         val name = mName ?: throw IllegalStateException("name must be set")
-        return Model(packageName, name, imports = mImports, fields = fields, primitiveFields = primitiveFields)
+        return ModelDescriptor(packageName, name, imports = mImports, fields = fields, primitiveFields = primitiveFields)
 
     }
 }

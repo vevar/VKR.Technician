@@ -1,0 +1,17 @@
+apply plugin: 'kotlin'
+
+apply plugin: 'kotlin-kapt'
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    def dependencies = rootProject.ext.deviceDependencies
+
+    //    Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.21"
+
+}

@@ -1,17 +1,17 @@
-package com.nstu.technician.domain.util
+package com.alxminayev.generator.data
 
 class ModelStructure private constructor(
-    val map: Map<Model, List<Model>>
+    val map: Map<ModelDescriptor, List<ModelDescriptor>>
 ) {
     class Builder {
-        private val mMap: MutableMap<Model, MutableList<Model>> = mutableMapOf()
+        private val mMap: MutableMap<ModelDescriptor, MutableList<ModelDescriptor>> = mutableMapOf()
 
-        fun addAllModel(list: List<Model>): Builder {
-            val modelCollectionMap = mutableMapOf<String, Model>()
+        fun addAllModel(list: List<ModelDescriptor>): Builder {
+            val modelCollectionMap = mutableMapOf<String, ModelDescriptor>()
             modelCollectionMap.putAll(list.map { Pair(it.name, it) })
 
             list.forEach { model ->
-                val dependencies = mutableListOf<Model>()
+                val dependencies = mutableListOf<ModelDescriptor>()
                 for (entry in model.fields) {
                     val field = entry.value
                     val type = field.type
@@ -20,14 +20,14 @@ class ModelStructure private constructor(
                         if (bottomType is Reference) {
                             modelCollectionMap[bottomType.name]?.also {
                                 dependencies.add(it)
-                            } ?: throw IllegalStateException("Model(${bottomType.name}) not found")
+                            } ?: throw IllegalStateException("ModelDescriptor(${bottomType.name}) not found")
                             continue
                         }
                     }
                     if (type is Reference) {
                         modelCollectionMap[type.name]?.also {
                             dependencies.add(it)
-                        } ?: throw IllegalStateException("Model(${type.name}) not found")
+                        } ?: throw IllegalStateException("ModelDescriptor(${type.name}) not found")
                         continue
                     }
                 }

@@ -22,6 +22,8 @@ android {
         testInstrumentationRunner androidTestInstrumentationRunner
         versionCode androidVersionCode
         versionName androidVersionName
+
+        javaCompileOptions.annotationProcessorOptions.includeCompileClasspath = true
     }
 
     sourceSets {
@@ -39,15 +41,28 @@ android {
     }
 }
 
+kapt {
+    generateStubs = true
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir "${buildDir.absolutePath}/tmp/kapt/main/kotlinGenerated/"
+        }
+    }
+}
+
 dependencies {
     def dependencies = rootProject.ext.domainDependencies
+
+    kapt project(":generator")
+    implementation  project(":annotation")
 
     implementation dependencies.kotlinLib
     implementation dependencies.kotlinCoroutinesCore
     implementation dependencies.kotlinCoroutinesAndroid
     implementation dependencies.kotlinSerialization
-
-    implementation "com.github.sarahbuisson:kotlin-parser:1.5"
 
     implementation dependencies.inject
 }

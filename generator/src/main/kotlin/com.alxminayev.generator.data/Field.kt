@@ -1,4 +1,4 @@
-package com.nstu.technician.domain.util
+package com.alxminayev.generator.data
 
 abstract class Type(
     open val name: String,
@@ -27,7 +27,7 @@ data class Collection(
 ) : Reference(name) {
     companion object {
         fun isCollection(type: String): Boolean {
-            val collection = Regex("List").find(type)?.value
+            val collection = Regex("[\\w]*List").find(type)?.value
             return collection != null
         }
 
