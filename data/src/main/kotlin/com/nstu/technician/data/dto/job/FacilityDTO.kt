@@ -9,6 +9,7 @@ import com.nstu.technician.domain.model.common.OwnDateTime
 
 data class FacilityDTO(
     override val oid: Long,
+    val identifier: String,
     val name: String,
     val address: AddressDTO,
     val assingmentDate: OwnDateTime,

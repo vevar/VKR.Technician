@@ -4,5 +4,6 @@ import com.nstu.technician.data.dto.EntityLink
 
 data class TechnicianDTO(
     val oid: Long,
-    val user: EntityLink<UserDTO>
+    val user: EntityLink<UserDTO>,
+    val tState: Int
 )

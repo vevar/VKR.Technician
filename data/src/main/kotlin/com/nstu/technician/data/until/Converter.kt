@@ -31,6 +31,8 @@ import com.nstu.technician.domain.model.common.Address
 import com.nstu.technician.domain.model.common.Artifact
 import com.nstu.technician.domain.model.common.GPSPoint
 import com.nstu.technician.domain.model.common.OwnDateTime
+import com.nstu.technician.domain.model.document.Contract
+import com.nstu.technician.domain.model.document.Contractor
 import com.nstu.technician.domain.model.facility.Facility
 import com.nstu.technician.domain.model.facility.JobType
 import com.nstu.technician.domain.model.facility.maintenance.Maintenance
@@ -57,11 +59,11 @@ fun AccountDTO.convertToAccountEntity(): AccountEntity {
 }
 
 fun TechnicianDTO.convertToTechnicianEntity(): TechnicianEntity {
-    return TechnicianEntity(oid, userId = user.oid)
+    return TechnicianEntity(oid, userId = user.oid, tState = tState)
 }
 
 fun TechnicianEntity.convertToTechnicianDTO(userDTO: UserDTO): TechnicianDTO {
-    return TechnicianDTO(oid, EntityLink(userDTO))
+    return TechnicianDTO(oid, EntityLink(userDTO), tState = tState)
 }
 
 fun UserDTO.convertToUserEntity(): UserEntity {
@@ -139,13 +141,15 @@ fun convertToModel(userDTO: UserDTO): User {
 fun convertToModel(technicianDTO: TechnicianDTO): Technician {
     return Technician(
         technicianDTO.oid,
-        convertToModel(technicianDTO.user.ref ?: throw IllegalStateException("User must be set"))
+        convertToModel(technicianDTO.user.ref ?: throw IllegalStateException("User must be set")),
+        technicianDTO.tState
     )
 }
 
 fun convertToModel(facilityDTO: FacilityDTO): Facility {
     val facility = Facility(
         facilityDTO.oid,
+        facilityDTO.identifier,
         facilityDTO.name,
         facilityDTO.address.convertToAddress(),
         facilityDTO.assingmentDate
@@ -214,7 +218,8 @@ fun FacilityDTO.convertToFacilityEntity(): FacilityEntity {
         name = name,
         addressId = address.location.oid,
         contractId = contract?.oid,
-        assingmentDate = assingmentDate
+        assingmentDate = assingmentDate,
+        identifier = identifier
     )
 }
 
@@ -309,10 +314,12 @@ fun MaintenanceDTO.convertToMaintenance(): Maintenance {
 
 fun FacilityDTO.convertToFacility(): Facility {
     return Facility(
-        oid,
-        name,
-        address.convertToAddress(),
-        assingmentDate
+        oid = oid,
+        name = name,
+        address = address.convertToAddress(),
+        assingmentDate = assingmentDate,
+        identifier = identifier,
+        contract = contract?.getObject()?.convertToContract()
     )
 }
 
@@ -346,12 +353,14 @@ fun MaintenanceEntity.convertToMaintenanceDTO(
     )
 }
 
-fun FacilityEntity.convertToFacilityDTO(addressDTO: AddressDTO): FacilityDTO {
+fun FacilityEntity.convertToFacilityDTO(addressDTO: AddressDTO, contractDTO: ContractDTO): FacilityDTO {
     return FacilityDTO(
         oid = oid,
         name = name,
         address = addressDTO,
-        assingmentDate = assingmentDate
+        assingmentDate = assingmentDate,
+        contract = EntityLink(contractDTO),
+        identifier = identifier
     )
 }
 
@@ -366,7 +375,8 @@ fun AddressEntity.convertToAddressDTO(gpsPointDTO: GPSPointDTO): AddressDTO {
 
 fun ContractEntity.convertToContractDTO(
     artifactDTO: ArtifactDTO,
-    contractorDTO: ContractorDTO
+    contractorDTO: ContractorDTO,
+    facilityDTO: FacilityDTO
 ): ContractDTO {
     return ContractDTO(
         oid = oid,
@@ -375,7 +385,8 @@ fun ContractEntity.convertToContractDTO(
         date = OwnDateTime(date),
         number = number,
         docType = docType,
-        contractor = EntityLink(contractorDTO)
+        contractor = EntityLink(contractorDTO),
+        facility = EntityLink(facilityDTO)
     )
 }
 
@@ -388,7 +399,20 @@ fun ContractDTO.convertToContractEntity(): ContractEntity {
         date = date.timeInMS,
         artifactId = artifact.oid,
         contractorId = contractor.oid,
-        facilityId = facility?.oid
+        facilityId = facility.oid
+    )
+}
+
+fun ContractDTO.convertToContract(): Contract {
+    return Contract(
+        oid = oid,
+        state = state,
+        number = number,
+        docType = docType,
+        date = date,
+        artifact = artifact.getObject().convertToArtifact(),
+        contractor = contractor.getObject().convertToContractor(),
+        facility = facility.getObject().convertToFacility()
     )
 }
 
@@ -407,6 +431,15 @@ fun ContractorDTO.convertToContractorEntity(): ContractorEntity {
         INN = INN,
         name = name,
         addressId = address.location.oid
+    )
+}
+
+fun ContractorDTO.convertToContractor(): Contractor {
+    return Contractor(
+        oid = oid,
+        address = address.convertToAddress(),
+        name = name,
+        INN = INN
     )
 }
 

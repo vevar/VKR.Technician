@@ -19,7 +19,7 @@ data class ContractDTO(
     @Transient
     override val state: Int,
     val contractor: EntityLink<ContractorDTO>,
-    var facility: EntityLink<FacilityDTO>? = null
+    val facility: EntityLink<FacilityDTO>
 ) : DocumentDTO(oid = oid, docType = docType, number = number, date = date, artifact = artifact, state = state) {
 
 

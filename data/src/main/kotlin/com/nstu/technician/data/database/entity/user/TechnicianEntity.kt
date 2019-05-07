@@ -17,5 +17,6 @@ import androidx.room.PrimaryKey
 data class TechnicianEntity(
     @PrimaryKey
     val oid: Long,
-    @ColumnInfo(name = "user_id") val userId: Long
+    @ColumnInfo(name = "user_id") val userId: Long,
+    val tState: Int
 )

@@ -11,6 +11,7 @@ import com.nstu.technician.domain.model.common.OwnDateTime
 data class FacilityEntity(
     @PrimaryKey
     val oid: Long,
+    val identifier: String,
     val name: String,
     @ColumnInfo(name = "address_id") val addressId: Long,
     @Embedded val assingmentDate: OwnDateTime,
