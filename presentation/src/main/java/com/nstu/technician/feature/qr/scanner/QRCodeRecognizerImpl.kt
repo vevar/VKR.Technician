@@ -7,10 +7,10 @@ import android.util.Log
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 
-class QRCodeRecognizer {
+class QRCodeRecognizerImpl {
 
     companion object {
-        const val TAG = "QRCodeRecognizer"
+        const val TAG = "QRCodeRecognizerImpl"
     }
 
     private var mHandler: Handler? = null

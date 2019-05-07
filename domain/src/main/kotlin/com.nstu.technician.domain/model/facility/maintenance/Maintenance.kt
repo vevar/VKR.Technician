@@ -7,7 +7,7 @@ import com.nstu.technician.domain.model.facility.Facility
 import kotlinx.serialization.Serializable
 
 @Serializable
-class Maintenance(
+data class Maintenance(
     val oid: Long,
     val facility: Facility,
     val visitDate: OwnDateTime,

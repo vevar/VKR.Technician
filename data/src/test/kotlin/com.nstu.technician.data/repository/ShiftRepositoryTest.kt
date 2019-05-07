@@ -7,7 +7,7 @@ import com.nstu.technician.data.di.model.DataSourceModule
 import com.nstu.technician.data.di.model.RepositoryModule
 import com.nstu.technician.data.network.retorfit.ApiProvider
 import com.nstu.technician.domain.repository.ShiftRepository
-import com.nstu.technician.domain.usecase.job.LoadShiftsUseCase
+import com.nstu.technician.domain.usecase.shift.GetListShiftsUseCase
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -35,11 +35,11 @@ class ShiftRepositoryTest {
 
         val startTime = Calendar.getInstance()
         startTime.timeInMillis = today.timeInMillis
-        startTime.add(Calendar.DAY_OF_MONTH, -LoadShiftsUseCase.RANGE_OF_LOADING_SHIFTS)
+        startTime.add(Calendar.DAY_OF_MONTH, -GetListShiftsUseCase.RANGE_OF_LOADING_SHIFTS)
 
         val endTime = Calendar.getInstance()
         endTime.timeInMillis = today.timeInMillis
-        endTime.add(Calendar.DAY_OF_MONTH, LoadShiftsUseCase.RANGE_OF_LOADING_SHIFTS)
+        endTime.add(Calendar.DAY_OF_MONTH, GetListShiftsUseCase.RANGE_OF_LOADING_SHIFTS)
         val shifts = runBlocking {
             shiftRepository.findByTechnicianIdAndTimePeriod(2, startTime.timeInMillis, endTime.timeInMillis)
         }

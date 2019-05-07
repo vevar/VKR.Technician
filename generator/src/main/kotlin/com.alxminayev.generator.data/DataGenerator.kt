@@ -15,6 +15,8 @@ import javax.tools.Diagnostic
 @SupportedOptions(DataGenerator.KAPT_KOTLIN_GENERATED_OPTION_NAME)
 class DataGenerator : AbstractProcessor() {
 
+    private var isRunned = false
+
     override fun getSupportedAnnotationTypes(): MutableSet<String> {
         return mutableSetOf(Model::class.java.name, Ignore::class.java.name)
     }
@@ -24,12 +26,12 @@ class DataGenerator : AbstractProcessor() {
         val typeUtils = processingEnv.typeUtils
         models?.forEach { element ->
             processingEnv.messager.printMessage(Diagnostic.Kind.NOTE, typeUtils.asElement(element.asType()).toString())
-
             val modelName = element.simpleName
             processingEnv.messager.printMessage(Diagnostic.Kind.NOTE, modelName)
 
             val fields: MutableMap<String, Field> = mutableMapOf()
 
+            isRunned = true
             element.enclosedElements.filter { it.kind.isField && it.simpleName.toString() != "Companion" }
                 .forEach { field ->
                     val type = field.asType()

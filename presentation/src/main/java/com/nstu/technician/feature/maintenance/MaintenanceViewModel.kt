@@ -6,12 +6,12 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.nstu.technician.domain.model.document.Contract
 import com.nstu.technician.domain.model.facility.maintenance.Maintenance
-import com.nstu.technician.domain.usecase.job.LoadDetailMaintenanceUseCase
+import com.nstu.technician.domain.usecase.maintenance.GetDetailMaintenanceUseCase
 import com.nstu.technician.feature.common.LoaderVM
 
 class MaintenanceViewModel(
     maintenance: Maintenance,
-    private val loadDetailMaintenanceUseCase: LoadDetailMaintenanceUseCase
+    private val getDetailMaintenanceUseCase: GetDetailMaintenanceUseCase
 ) : ViewModel() {
     companion object {
         private const val TAG = "MaintenanceViewModel"
@@ -36,18 +36,18 @@ class MaintenanceViewModel(
     fun loadDetailMaintenance() {
 
 //        loader.launchDataLoad {
-//            loadDetailMaintenanceUseCase.execute(object : CallUseCase<Maintenance> {
+//            getDetailMaintenanceUseCase.execute(object : CallUseCase<Maintenance> {
 //                override suspend fun onSuccess(result: Maintenance) {
 //                    _maintenance.value = result
 //                    _contract.value = result.facility.contract
-//                    Log.d(TAG, "LoadDetailMaintenanceUseCase is invoked success")
+//                    Log.d(TAG, "GetDetailMaintenanceUseCase is invoked success")
 //                }
 //
 //                override suspend fun onFailure(throwable: Throwable) {
-//                    Log.d(TAG, "LoadDetailMaintenanceUseCase fail")
+//                    Log.d(TAG, "GetDetailMaintenanceUseCase fail")
 //                    Log.d(TAG, throwable.message)
 //                }
-//            }, LoadDetailMaintenanceUseCase.Companion.Param.byId(idMaintenance))
+//            }, GetDetailMaintenanceUseCase.Companion.Param.findById(idMaintenance))
 //        }
     }
 

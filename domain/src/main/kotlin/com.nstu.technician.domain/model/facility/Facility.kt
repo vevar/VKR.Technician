@@ -8,8 +8,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Facility(
     val oid: Long,
+    val identifier: String,
     val name: String,
     val address: Address,
     val assingmentDate: OwnDateTime,
     val contract: Contract? = null
-):java.io.Serializable
+) : java.io.Serializable

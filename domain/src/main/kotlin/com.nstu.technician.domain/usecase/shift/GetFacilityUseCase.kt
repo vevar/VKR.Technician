@@ -1,4 +1,4 @@
-package com.nstu.technician.domain.usecase.job
+package com.nstu.technician.domain.usecase.shift
 
 import com.nstu.technician.domain.exceptions.NotFoundException
 import com.nstu.technician.domain.model.facility.Facility
@@ -6,9 +6,9 @@ import com.nstu.technician.domain.repository.FacilityRepository
 import com.nstu.technician.domain.usecase.UseCase
 import javax.inject.Inject
 
-class LoadFacilityUseCase @Inject constructor(
+class GetFacilityUseCase @Inject constructor(
     private val facilityRepository: FacilityRepository
-) : UseCase<Facility, LoadFacilityUseCase.Param>() {
+) : UseCase<Facility, GetFacilityUseCase.Param>() {
 
     override suspend fun task(param: Param): Facility {
         return facilityRepository.findById(param.idFacility) ?: throw NotFoundException("Facility not found")

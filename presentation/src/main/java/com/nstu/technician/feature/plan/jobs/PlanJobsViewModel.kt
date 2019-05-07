@@ -7,13 +7,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nstu.technician.domain.model.Shift
 import com.nstu.technician.domain.usecase.CallUseCase
-import com.nstu.technician.domain.usecase.job.LoadShiftsUseCase
+import com.nstu.technician.domain.usecase.shift.GetListShiftsUseCase
 import kotlinx.coroutines.launch
 import java.util.*
 
 class PlanJobsViewModel(
     private val technicianId: Long,
-    private val loadShiftsUseCase: LoadShiftsUseCase
+    private val getShiftsUseCase: GetListShiftsUseCase
 ) : ViewModel() {
     companion object {
         private const val TAG = "PlanJobsViewModel"
@@ -33,7 +33,7 @@ class PlanJobsViewModel(
 
     fun loadPlanJobs() {
         viewModelScope.launch {
-            loadShiftsUseCase.execute(object : CallUseCase<List<Shift>> {
+            getShiftsUseCase.execute(object : CallUseCase<List<Shift>> {
                 override suspend fun onSuccess(result: List<Shift>) {
                     val indexCurrentShift = findIndexOfCurrentShift(result) ?: 0
                     _data.value = Data(result, indexCurrentShift)
@@ -43,7 +43,7 @@ class PlanJobsViewModel(
                     Log.d(TAG, throwable.message)
                 }
 
-            }, LoadShiftsUseCase.Param.forTechnician(technicianId))
+            }, GetListShiftsUseCase.Param.forTechnician(technicianId))
         }
     }
 

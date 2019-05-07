@@ -7,7 +7,7 @@ import com.nstu.technician.domain.exceptions.UnauthorizedException
 import com.nstu.technician.domain.exceptions.UserNotFoundException
 import com.nstu.technician.domain.model.user.Technician
 import com.nstu.technician.domain.usecase.CallUseCase
-import com.nstu.technician.domain.usecase.auth.AuthUseCase
+import com.nstu.technician.domain.usecase.user.AuthUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 

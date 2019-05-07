@@ -1,6 +1,6 @@
 package com.nstu.technician.di.module.model
 
-import com.nstu.technician.domain.usecase.job.LoadFacilityUseCase
+import com.nstu.technician.domain.usecase.shift.GetFacilityUseCase
 import com.nstu.technician.feature.plan.jobs.map.MapViewModel
 import com.nstu.technician.feature.util.BaseViewModelFactory
 import dagger.Module
@@ -13,9 +13,9 @@ class MapModule(
 ) {
 
     @Provides
-    fun provideMapVMFactory(loadFacilityUseCase: LoadFacilityUseCase): BaseViewModelFactory<MapViewModel>{
+    fun provideMapVMFactory(getFacilityUseCase: GetFacilityUseCase): BaseViewModelFactory<MapViewModel>{
         return BaseViewModelFactory(MapViewModel::class.java){
-            MapViewModel(idFacility, loadFacilityUseCase, mapListener)
+            MapViewModel(idFacility, getFacilityUseCase, mapListener)
         }
     }
 }

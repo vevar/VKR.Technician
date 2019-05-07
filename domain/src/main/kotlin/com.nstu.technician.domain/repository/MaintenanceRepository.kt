@@ -2,7 +2,6 @@ package com.nstu.technician.domain.repository
 
 import com.nstu.technician.domain.model.facility.maintenance.Maintenance
 
-interface MaintenanceRepository {
+interface MaintenanceRepository : CrudRepository<Maintenance, Long> {
 
-    suspend fun findById(id: Long): Maintenance?
 }

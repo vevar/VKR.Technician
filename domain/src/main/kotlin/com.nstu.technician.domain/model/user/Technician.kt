@@ -5,5 +5,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Technician(
     val oid: Long,
-    var user: User
+    var user: User,
+    val state: Int
 )

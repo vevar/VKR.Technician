@@ -1,4 +1,4 @@
-package com.nstu.technician.device.gps
+package com.nstu.technician.service
 
 import android.annotation.SuppressLint
 import android.app.IntentService
@@ -24,7 +24,7 @@ class GPSMonitoringService : IntentService(TAG), CoroutineScope by CoroutineScop
         const val TAG = "GPSMonitoringService"
         const val DEFAULT_INTERVAL_IN_MILLISECOND = 120_000L
         const val ACTION_CREATE_LOCATION_REQUEST =
-            "com.nstu.technician.device.gps.GPSMonitoringService.CREATE_LOCATION_REQUEST"
+            "com.nstu.technician.service.GPSMonitoringService.CREATE_LOCATION_REQUEST"
         const val EXTRA_INTERVAL = "INTERVAL"
 
         fun createLocationRequest(context: Context, intervalInMillisecond: Long) {
@@ -41,7 +41,10 @@ class GPSMonitoringService : IntentService(TAG), CoroutineScope by CoroutineScop
 
         when (safeIntent.action) {
             ACTION_CREATE_LOCATION_REQUEST -> {
-                val interval = intent.getLongExtra(EXTRA_INTERVAL, DEFAULT_INTERVAL_IN_MILLISECOND)
+                val interval = intent.getLongExtra(
+                    EXTRA_INTERVAL,
+                    DEFAULT_INTERVAL_IN_MILLISECOND
+                )
                 fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
                 fusedLocationClient.requestLocationUpdates(createRequest(interval), GPSMonitoringCallBack(), null)
             }

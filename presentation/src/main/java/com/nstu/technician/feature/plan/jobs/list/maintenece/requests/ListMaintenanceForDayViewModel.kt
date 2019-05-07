@@ -7,13 +7,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nstu.technician.domain.model.facility.maintenance.Maintenance
 import com.nstu.technician.domain.usecase.CallUseCase
-import com.nstu.technician.domain.usecase.job.LoadListMaintenanceUseCase
+import com.nstu.technician.domain.usecase.shift.GetListMaintenanceUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class ListMaintenanceForDayViewModel(
     private val idShift: Long,
-    private val loadListMaintenanceUseCase: LoadListMaintenanceUseCase
+    private val getListMaintenanceUseCase: GetListMaintenanceUseCase
 ) : ViewModel() {
     companion object {
         private const val TAG = "Maintenances_ViewModel"
@@ -31,7 +31,7 @@ class ListMaintenanceForDayViewModel(
 
     fun loadListMaintenance() {
         launchDataLoad {
-            loadListMaintenanceUseCase.execute(object : CallUseCase<List<Maintenance>> {
+            getListMaintenanceUseCase.execute(object : CallUseCase<List<Maintenance>> {
                 override suspend fun onSuccess(result: List<Maintenance>) {
                     _listMaintenance.value = result
                 }
@@ -39,7 +39,7 @@ class ListMaintenanceForDayViewModel(
                 override suspend fun onFailure(throwable: Throwable) {
                     Log.d(TAG, throwable.message)
                 }
-            }, LoadListMaintenanceUseCase.Param.forShift(idShift))
+            }, GetListMaintenanceUseCase.Param.forShift(idShift))
         }
     }
 

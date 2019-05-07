@@ -1,4 +1,4 @@
-package com.nstu.technician.domain.usecase.auth
+package com.nstu.technician.domain.usecase.user
 
 import com.nstu.technician.domain.exceptions.NotFoundException
 import com.nstu.technician.domain.exceptions.UserNotFoundException
@@ -8,7 +8,9 @@ import com.nstu.technician.domain.repository.AccountRepository
 import com.nstu.technician.domain.repository.TechnicianRepository
 import com.nstu.technician.domain.repository.UserRepository
 import com.nstu.technician.domain.usecase.UseCase
-import kotlinx.coroutines.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.supervisorScope
 import javax.inject.Inject
 
 class AuthUseCase @Inject constructor(

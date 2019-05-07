@@ -32,12 +32,12 @@ class QRCodeScannerFragment : BaseFragment() {
 
     private var mCameraEngine: CameraEngine? by Delegates.observable<CameraEngine?>(null) { property, oldValue, newValue ->
         newValue?.apply {
-            mQRCodeRecognizer = QRCodeRecognizer()
+            mQRCodeRecognizer = QRCodeRecognizerImpl()
             onStart()
         }
     }
 
-    private var mQRCodeRecognizer: QRCodeRecognizer? by Delegates.observable<QRCodeRecognizer?>(null) { property, oldValue, newValue ->
+    private var mQRCodeRecognizer: QRCodeRecognizerImpl? by Delegates.observable<QRCodeRecognizerImpl?>(null) { property, oldValue, newValue ->
         newValue?.apply {
             onStart()
         }

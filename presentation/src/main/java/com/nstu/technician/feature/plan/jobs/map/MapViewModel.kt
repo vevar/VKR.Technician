@@ -9,12 +9,12 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.nstu.technician.domain.model.common.GPSPoint
 import com.nstu.technician.domain.model.facility.Facility
 import com.nstu.technician.domain.usecase.CallUseCase
-import com.nstu.technician.domain.usecase.job.LoadFacilityUseCase
+import com.nstu.technician.domain.usecase.shift.GetFacilityUseCase
 import kotlinx.coroutines.launch
 
 class MapViewModel(
     private val idFacility: Long,
-    private val loadFacilityUseCase: LoadFacilityUseCase,
+    private val getFacilityUseCase: GetFacilityUseCase,
     private val mapListener: MapListener
 ) : ViewModel() {
     companion object {
@@ -39,9 +39,9 @@ class MapViewModel(
 
     fun loadFacility() {
         viewModelScope.launch {
-            loadFacilityUseCase.execute(object : CallUseCase<Facility> {
+            getFacilityUseCase.execute(object : CallUseCase<Facility> {
                 override suspend fun onSuccess(result: Facility) {
-                    Log.d(TAG, "LoadFacilityUseCase is executed success")
+                    Log.d(TAG, "GetFacilityUseCase is executed success")
                     _mainFacility.value = result
                 }
 
@@ -49,7 +49,7 @@ class MapViewModel(
                     Log.d(TAG, throwable.message)
                 }
 
-            }, LoadFacilityUseCase.Param.byIdFacility(idFacility))
+            }, GetFacilityUseCase.Param.byIdFacility(idFacility))
         }
     }
 

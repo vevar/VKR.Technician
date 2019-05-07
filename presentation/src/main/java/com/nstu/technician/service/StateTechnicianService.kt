@@ -3,7 +3,6 @@ package com.nstu.technician.service
 import android.annotation.SuppressLint
 import android.app.IntentService
 import android.content.Intent
-import com.nstu.technician.device.gps.GPSMonitoringService
 import com.nstu.technician.feature.BaseFragment
 
 class StateTechnicianService : IntentService(TAG) {

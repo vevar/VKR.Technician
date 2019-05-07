@@ -1,6 +1,6 @@
 package com.nstu.technician.di.module.model
 
-import com.nstu.technician.domain.usecase.auth.AuthUseCase
+import com.nstu.technician.domain.usecase.user.AuthUseCase
 import com.nstu.technician.feature.login.LoginViewModel
 import com.nstu.technician.feature.util.BaseViewModelFactory
 import dagger.Module

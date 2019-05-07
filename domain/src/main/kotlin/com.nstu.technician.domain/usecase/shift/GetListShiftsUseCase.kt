@@ -1,4 +1,4 @@
-package com.nstu.technician.domain.usecase.job
+package com.nstu.technician.domain.usecase.shift
 
 import com.nstu.technician.domain.model.Shift
 import com.nstu.technician.domain.repository.ShiftRepository
@@ -6,9 +6,9 @@ import com.nstu.technician.domain.usecase.UseCase
 import java.util.*
 import javax.inject.Inject
 
-class LoadShiftsUseCase @Inject constructor(
+class GetListShiftsUseCase @Inject constructor(
     private val shiftRepository: ShiftRepository
-) : UseCase<List<Shift>, LoadShiftsUseCase.Param>() {
+) : UseCase<List<Shift>, GetListShiftsUseCase.Param>() {
 
     companion object {
         const val RANGE_OF_LOADING_SHIFTS = 7

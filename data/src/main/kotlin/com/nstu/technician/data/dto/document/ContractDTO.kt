@@ -53,7 +53,7 @@ data class ContractDTO(
     }
 
     override fun toString(): String {
-        return "ContractDTO(oid=$oid, docType=$docType, number='$number', date=$date, artifact=$artifact, state=$state, contractor=$contractor, facility=${facility.hashCode()})"
+        return "ContractDTO(oid=$oid, docType=$docType, number='$number', date=$date, artifact=$artifact, forChangeState=$state, contractor=$contractor, facility=${facility.hashCode()})"
     }
 
 
