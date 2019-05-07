@@ -2,14 +2,19 @@ package com.nstu.technician.feature.login
 
 import android.util.Log
 import androidx.lifecycle.*
-import com.alxminyaev.ratingnstustudent.domain.usecase.auth.AuthUseCase
 import com.nstu.technician.R
-import com.nstu.technician.domain.model.Technician
+import com.nstu.technician.domain.exceptions.UnauthorizedException
+import com.nstu.technician.domain.exceptions.UserNotFoundException
+import com.nstu.technician.domain.model.user.Technician
+import com.nstu.technician.domain.usecase.CallUseCase
+import com.nstu.technician.domain.usecase.auth.AuthUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(
+    private val authUseCase: AuthUseCase
+) : ViewModel() {
     companion object {
         private const val TAG = "LoginViewModel"
     }
@@ -19,7 +24,7 @@ class LoginViewModel : ViewModel() {
     private val _isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
     val isLoading: LiveData<Boolean>
         get() = _isLoading
-    val messageIdResource: MutableLiveData<Int?> = MutableLiveData(null)
+    val messageIdResource: MutableLiveData<Int> = MutableLiveData(0)
     private val _technician: MutableLiveData<Technician> = MutableLiveData()
     val technician: LiveData<Technician>
         get() = _technician
@@ -35,8 +40,21 @@ class LoginViewModel : ViewModel() {
 
     fun singIn() {
         launchDataLoad {
-            delay(1_000)
-            messageIdResource.value = R.string.incorrect_data_of_account
+            if (username.value != null && password.value != null) {
+                authUseCase.execute(object : CallUseCase<Technician> {
+                    override suspend fun onSuccess(result: Technician) {
+                        _technician.value = result
+                    }
+
+                    override suspend fun onFailure(throwable: Throwable) {
+                        if (throwable is UnauthorizedException || throwable is UserNotFoundException) {
+                            messageIdResource.value = R.string.lbl_incorrect_data_of_account
+                        }
+                        throwable.printStackTrace()
+                    }
+
+                }, AuthUseCase.Param.forAuth(username.value!!, password.value!!))
+            }
         }
     }
 
@@ -45,8 +63,8 @@ class LoginViewModel : ViewModel() {
             try {
                 _isLoading.value = true
                 block()
-            } catch (exception: AuthUseCase.StudentNotFoundException) {
-                Log.d(TAG, exception.message)
+            } catch (throwable: Throwable) {
+                Log.d(TAG, throwable.message)
             } finally {
                 _isLoading.value = false
             }

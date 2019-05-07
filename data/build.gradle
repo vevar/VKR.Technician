@@ -7,6 +7,11 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
 
 android {
+    compileOptions {
+        targetCompatibility = "8"
+        sourceCompatibility = "8"
+    }
+
     compileSdkVersion androidCompileSdkVersion
     defaultConfig {
         minSdkVersion androidMinSdkVersion
@@ -14,10 +19,13 @@ android {
         testInstrumentationRunner androidTestInstrumentationRunner
         versionCode androidVersionCode
         versionName androidVersionName
+
+        testInstrumentationRunner "androidx.test.ext.junit.runners.AndroidJUnit4"
     }
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
     }
 
     buildTypes {
@@ -29,25 +37,55 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+
+    useLibrary 'android.test.runner'
+
+    useLibrary 'android.test.base'
+    useLibrary 'android.test.mock'
 }
 
 dependencies {
-
     def dependencies = rootProject.ext.dataDependencies
-
+    def dependenciesTest = rootProject.ext.dataTestDependencies
+//  Kotlin
     implementation dependencies.kotlinLib
     implementation dependencies.kotlinCoroutinesCore
     implementation dependencies.kotlinCoroutinesAndroid
-
+//  Module
     implementation project(path: ':domain')
-
+//  Room
     implementation dependencies.roomRuntime
     kapt dependencies.roomCompiler
-
+//  DI
     implementation dependencies.inject
-
+    implementation dependencies.dagger
+    kapt dependencies.daggerCompiler
+//  Network
     implementation dependencies.retrofit
     implementation dependencies.retrofitGsonConverter
+    implementation dependencies.okHttp3Client
     implementation dependencies.okHttp3Logging
     implementation dependencies.gson
+
+//  Test
+    testImplementation dependenciesTest.junit
+    testImplementation dependenciesTest.core
+    testImplementation dependencies.dagger
+    kaptTest dependencies.daggerCompiler
+    kaptAndroidTest dependencies.daggerCompiler
+
+
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    androidTestImplementation 'androidx.test:core:1.1.0'
+    // AndroidJUnitRunner and JUnit Rules
+    androidTestImplementation 'androidx.test:runner:1.1.1'
+    androidTestImplementation 'androidx.test:rules:1.1.1'
+    // Assertions
+    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
+    androidTestImplementation 'androidx.test.ext:truth:1.1.0'
+    androidTestImplementation 'com.google.truth:truth:0.42'
 }

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/navigation_main_container"
+            app:startDestination="@id/plan_jobs_dest">
+
+    <fragment
+            android:id="@+id/plan_jobs_dest"
+            android:name="com.nstu.technician.feature.plan.jobs.PlanJobsFragment"
+            android:label="@string/tlt_plan_jobs"
+            tools:layout="@layout/fragment_plan_jobs">
+
+        <action android:id="@+id/action_plan_jobs_dest_to_map_dest"
+                app:destination="@id/map_dest"
+                app:popUpTo="@+id/plan_jobs_dest"/>
+        <action android:id="@+id/action_plan_jobs_dest_to_maintenance_dest"
+                app:destination="@id/maintenance_dest"
+                app:popUpTo="@id/plan_jobs_dest"/>
+    </fragment>
+
+    <fragment
+            android:id="@+id/map_dest"
+            android:name="com.nstu.technician.feature.plan.jobs.map.GMapFragment"
+            tools:layout="@layout/fragment_map">
+        <argument
+                android:name="idFacility"
+                android:defaultValue="-1"
+                app:argType="integer"/>
+    </fragment>
+
+    <fragment
+            android:id="@+id/maintenance_dest"
+            android:name="com.nstu.technician.feature.maintenance.MaintenanceFragment"
+            tools:layout="@layout/fragment_maintenance">
+        <argument
+                android:name="idMaintenance"
+                android:defaultValue="-1"
+                app:argType="integer"/>
+    </fragment>
+</navigation>
