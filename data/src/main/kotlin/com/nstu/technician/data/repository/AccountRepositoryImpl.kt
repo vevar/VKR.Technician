@@ -2,8 +2,8 @@ package com.nstu.technician.data.repository
 
 import com.nstu.technician.data.datasource.entity.AccountDataSource
 import com.nstu.technician.data.datasource.entity.LOCAL
-import com.nstu.technician.data.until.convertToDTO
-import com.nstu.technician.data.until.convertToModel
+import com.nstu.technician.data.until.toAccount
+import com.nstu.technician.data.until.toAccountDTO
 import com.nstu.technician.domain.model.user.Account
 import com.nstu.technician.domain.repository.AccountRepository
 import javax.inject.Inject
@@ -15,12 +15,10 @@ class AccountRepositoryImpl @Inject constructor(
 ) : AccountRepository {
 
     override suspend fun find(): Account? {
-        return accountLocalSource.find()?.let {
-            convertToModel(it)
-        }
+        return accountLocalSource.find()?.toAccount()
     }
 
     override suspend fun save(account: Account) {
-        accountLocalSource.save(convertToDTO(account))
+        accountLocalSource.save(account.toAccountDTO())
     }
 }

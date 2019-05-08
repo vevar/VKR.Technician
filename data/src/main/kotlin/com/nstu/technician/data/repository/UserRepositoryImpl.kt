@@ -3,8 +3,9 @@ package com.nstu.technician.data.repository
 import com.nstu.technician.data.datasource.entity.CLOUD
 import com.nstu.technician.data.datasource.entity.LOCAL
 import com.nstu.technician.data.datasource.entity.UserDataSource
-import com.nstu.technician.data.until.convertToDTO
-import com.nstu.technician.data.until.convertToModel
+import com.nstu.technician.data.until.toAccountDTO
+import com.nstu.technician.data.until.toUser
+import com.nstu.technician.data.until.toUserDTO
 import com.nstu.technician.domain.model.user.Account
 import com.nstu.technician.domain.model.user.User
 import com.nstu.technician.domain.repository.UserRepository
@@ -22,22 +23,18 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun find(): User? {
         return supervisorScope {
-            localUserDataSource.find()?.let {
-                convertToModel(it)
-            }
+            localUserDataSource.find()?.toUser()
         }
     }
 
     override suspend fun save(user: User) {
-        localUserDataSource.save(convertToDTO(user))
+        localUserDataSource.save(user.toUserDTO())
     }
 
     @ExperimentalCoroutinesApi
     override suspend fun findByAccount(account: Account): User? {
         return supervisorScope {
-            cloudUserDataSource.findByAccount(convertToDTO(account))?.let {
-                convertToModel(it)
-            }
+            cloudUserDataSource.findByAccount(account.toAccountDTO())?.toUser()
         }
     }
 }

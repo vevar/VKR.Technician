@@ -5,9 +5,9 @@ import com.nstu.technician.data.datasource.entity.*
 import com.nstu.technician.data.datasource.local.dao.MaintenanceDao
 import com.nstu.technician.data.datasource.local.dao.UtilDao
 import com.nstu.technician.data.dto.job.MaintenanceDTO
-import com.nstu.technician.data.until.convertToMaintenanceDTO
-import com.nstu.technician.data.until.convertToMaintenanceEntity
 import com.nstu.technician.data.until.getObject
+import com.nstu.technician.data.until.toMaintenanceDTO
+import com.nstu.technician.data.until.toMaintenanceEntity
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import javax.inject.Named
@@ -34,7 +34,7 @@ class MaintenanceLocalSource @Inject constructor(
                     }
                 }
             }
-            maintenanceDao.save(maintenanceDTO.convertToMaintenanceEntity(shiftId))
+            maintenanceDao.save(maintenanceDTO.toMaintenanceEntity(shiftId))
         }
     }
 
@@ -47,7 +47,7 @@ class MaintenanceLocalSource @Inject constructor(
             val parent = maintenanceEntity.maintenanceParentId?.let { findById(it) }
             val voiceMessage = maintenanceEntity.voiceMessageId?.let { artifactLocalSource.findById(it) }
 
-            maintenanceEntity.convertToMaintenanceDTO(facilityDTO, jobList, parent, voiceMessage)
+            maintenanceEntity.toMaintenanceDTO(facilityDTO, jobList, parent, voiceMessage)
         }
     }
 

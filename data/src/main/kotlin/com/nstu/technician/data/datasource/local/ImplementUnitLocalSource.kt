@@ -4,8 +4,8 @@ import com.nstu.technician.data.datasource.entity.ImplementUnitDataSource
 import com.nstu.technician.data.datasource.local.dao.ImplementUnitDao
 import com.nstu.technician.data.dto.tool.ImplementUnitDTO
 import com.nstu.technician.data.dto.tool.ImplementsDTO
-import com.nstu.technician.data.until.convertToImplementUnitDTO
-import com.nstu.technician.data.until.convertToImplementUnitEntity
+import com.nstu.technician.data.until.toImplementUnitDTO
+import com.nstu.technician.data.until.toImplementUnitEntity
 import javax.inject.Inject
 
 class ImplementUnitLocalSource @Inject constructor(
@@ -14,18 +14,18 @@ class ImplementUnitLocalSource @Inject constructor(
 
     override fun saveAll(list: List<ImplementUnitDTO>) {
         implementUnitDao.saveAll(list.map { implementUnitDTO ->
-            implementUnitDTO.convertToImplementUnitEntity()
+            implementUnitDTO.toImplementUnitEntity()
         })
     }
 
 
     override fun findByImplement(implements: ImplementsDTO): List<ImplementUnitDTO> {
         return implementUnitDao.findByImplementsId(implements.oid).map { implementUnitEntity ->
-            implementUnitEntity.convertToImplementUnitDTO(implements)
+            implementUnitEntity.toImplementUnitDTO(implements)
         }
     }
 
     override fun save(implementUnitDTO: ImplementUnitDTO) {
-        implementUnitDao.save(implementUnitDTO.convertToImplementUnitEntity())
+        implementUnitDao.save(implementUnitDTO.toImplementUnitEntity())
     }
 }

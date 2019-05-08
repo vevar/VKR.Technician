@@ -2,7 +2,6 @@ package com.nstu.technician.data.dto.document
 
 import com.nstu.technician.data.dto.EntityLink
 import com.nstu.technician.data.dto.common.ArtifactDTO
-import com.nstu.technician.data.dto.job.FacilityDTO
 import com.nstu.technician.domain.model.common.OwnDateTime
 
 data class ContractDTO(
@@ -17,9 +16,7 @@ data class ContractDTO(
     @Transient
     override val artifact: EntityLink<ArtifactDTO>,
     @Transient
-    override val state: Int,
-    val contractor: EntityLink<ContractorDTO>,
-    val facility: EntityLink<FacilityDTO>
+    override val state: Int
 ) : DocumentDTO(oid = oid, docType = docType, number = number, date = date, artifact = artifact, state = state) {
 
 
@@ -35,8 +32,6 @@ data class ContractDTO(
         if (date != other.date) return false
         if (artifact != other.artifact) return false
         if (state != other.state) return false
-        if (contractor != other.contractor) return false
-        if (facility.hashCode() != other.facility.hashCode()) return false
 
         return true
     }
@@ -48,12 +43,11 @@ data class ContractDTO(
         result = 31 * result + date.hashCode()
         result = 31 * result + artifact.hashCode()
         result = 31 * result + state
-        result = 31 * result + contractor.hashCode()
         return result
     }
 
     override fun toString(): String {
-        return "ContractDTO(oid=$oid, docType=$docType, number='$number', date=$date, artifact=$artifact, forChangeState=$state, contractor=$contractor, facility=${facility.hashCode()})"
+        return "ContractDTO(oid=$oid, docType=$docType, number='$number', date=$date, artifact=$artifact, forChangeState=$state)"
     }
 
 

@@ -6,8 +6,8 @@ import com.nstu.technician.data.datasource.entity.LOCAL
 import com.nstu.technician.data.datasource.local.dao.FacilityDao
 import com.nstu.technician.data.datasource.local.dao.UtilDao
 import com.nstu.technician.data.dto.job.FacilityDTO
-import com.nstu.technician.data.until.convertToFacilityDTO
-import com.nstu.technician.data.until.convertToFacilityEntity
+import com.nstu.technician.data.until.toFacilityDTO
+import com.nstu.technician.data.until.toFacilityEntity
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import javax.inject.Named
@@ -23,7 +23,7 @@ class FacilityLocalSource @Inject constructor(
         return facilityDao.findById(id)?.let { facilityEntity ->
             val addressDTO = addressLocalSource.findById(facilityEntity.addressId)
             return if (addressDTO != null) {
-                facilityEntity.convertToFacilityDTO(addressDTO)
+                facilityEntity.toFacilityDTO(addressDTO)
             } else {
                 null
             }
@@ -36,7 +36,7 @@ class FacilityLocalSource @Inject constructor(
             runBlocking {
                 addressLocalSource.save(facilityDTO.address)
             }
-            facilityDao.save(facilityDTO.convertToFacilityEntity())
+            facilityDao.save(facilityDTO.toFacilityEntity())
         }
     }
 }

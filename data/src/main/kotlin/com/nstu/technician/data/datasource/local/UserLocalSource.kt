@@ -8,8 +8,8 @@ import com.nstu.technician.data.datasource.local.dao.UtilDao
 import com.nstu.technician.data.dto.user.AccountDTO
 import com.nstu.technician.data.dto.user.UserDTO
 import com.nstu.technician.data.until.convertToUserDTO
-import com.nstu.technician.data.until.convertToUserEntity
 import com.nstu.technician.data.until.getObject
+import com.nstu.technician.data.until.toUserEntity
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -37,7 +37,7 @@ class UserLocalSource @Inject constructor(
     override suspend fun save(obj: UserDTO) {
         utilDao.transaction {
             accountLocalSource.save(obj.account.getObject())
-            userDao.save(obj.convertToUserEntity())
+            userDao.save(obj.toUserEntity())
         }
     }
 }

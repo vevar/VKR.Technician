@@ -5,9 +5,9 @@ import com.nstu.technician.data.datasource.entity.UserDataSource
 import com.nstu.technician.data.datasource.local.dao.TechnicianDao
 import com.nstu.technician.data.datasource.local.dao.UtilDao
 import com.nstu.technician.data.dto.user.TechnicianDTO
-import com.nstu.technician.data.until.convertToTechnicianDTO
-import com.nstu.technician.data.until.convertToTechnicianEntity
 import com.nstu.technician.data.until.getObject
+import com.nstu.technician.data.until.toTechnicianDTO
+import com.nstu.technician.data.until.toTechnicianEntity
 import javax.inject.Inject
 
 class TechnicianLocalSource @Inject constructor(
@@ -18,14 +18,14 @@ class TechnicianLocalSource @Inject constructor(
 
     override suspend fun findByUserId(userId: Long): TechnicianDTO? {
         return userDataSource.findById(userId)?.let { userDTO ->
-            technicianDao.findByUserId(userId)?.convertToTechnicianDTO(userDTO)
+            technicianDao.findByUserId(userId)?.toTechnicianDTO(userDTO)
         }
     }
 
     override suspend fun save(technician: TechnicianDTO) {
         utilDao.transaction {
             userDataSource.save(technician.user.getObject())
-            technicianDao.save(technician.convertToTechnicianEntity())
+            technicianDao.save(technician.toTechnicianEntity())
         }
     }
 }

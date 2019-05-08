@@ -8,9 +8,9 @@ import com.nstu.technician.data.datasource.local.dao.UtilDao
 import com.nstu.technician.data.dto.job.MaintenanceJobDTO
 import com.nstu.technician.data.dto.tool.ComponentDTO
 import com.nstu.technician.data.dto.tool.ComponentUnitDTO
-import com.nstu.technician.data.until.convertToComponentUnitDTO
-import com.nstu.technician.data.until.convertToComponentUnitEntity
 import com.nstu.technician.data.until.getObject
+import com.nstu.technician.data.until.toComponentUnitDTO
+import com.nstu.technician.data.until.toComponentUnitEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -29,7 +29,7 @@ class ComponentUnitLocalSource @Inject constructor(
         return componentUnitDao.findByMaintenanceJob(maintenanceId).map { componentUnitEntity ->
             withContext(Dispatchers.IO) {
                 val componentDTO = componentLocalSource.findById(componentUnitEntity.componentId)
-                componentUnitEntity.convertToComponentUnitDTO(
+                componentUnitEntity.toComponentUnitDTO(
                     componentDTO ?: throw IllegalStateException("component must be set")
                 )
             }
@@ -45,7 +45,7 @@ class ComponentUnitLocalSource @Inject constructor(
             runBlocking {
                 componentLocalSource.saveAll(components.toList())
             }
-            list.map { componentUnitDTO -> componentUnitDTO.convertToComponentUnitEntity(maintenanceJobDTO.oid) }
+            list.map { componentUnitDTO -> componentUnitDTO.toComponentUnitEntity(maintenanceJobDTO.oid) }
                 .forEach {
                     componentUnitDao.save(it)
                 }

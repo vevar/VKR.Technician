@@ -1,9 +1,6 @@
 package com.nstu.technician.data.datasource.local.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.nstu.technician.data.database.entity.tool.ComponentEntity
 
 @Dao
@@ -13,8 +10,11 @@ interface ComponentDao {
     fun findById(id: Long): ComponentEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun save(componentEntity: ComponentEntity)
+    fun save(componentEntity: ComponentEntity): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun saveAll(list: List<ComponentEntity>)
+    fun saveAll(list: List<ComponentEntity>): List<Long>
+
+    @Delete
+    fun delete(componentEntity: ComponentEntity)
 }

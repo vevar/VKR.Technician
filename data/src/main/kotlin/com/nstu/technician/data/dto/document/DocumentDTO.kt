@@ -10,6 +10,6 @@ open class DocumentDTO(
     open val docType: Int,
     open val number: String,
     open val date: OwnDateTime,
-    open val artifact: EntityLink<ArtifactDTO>,
+    open val artifact: EntityLink<ArtifactDTO>?,
     open val state: Int
 ) : EntityDTO(oid)

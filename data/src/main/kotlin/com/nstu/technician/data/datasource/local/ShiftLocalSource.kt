@@ -8,8 +8,8 @@ import com.nstu.technician.data.datasource.local.dao.ShiftDao
 import com.nstu.technician.data.datasource.local.dao.UtilDao
 import com.nstu.technician.data.dto.job.ShiftDTO
 import com.nstu.technician.data.until.convertToShiftDTO
-import com.nstu.technician.data.until.convertToShiftEntity
 import com.nstu.technician.data.until.getObject
+import com.nstu.technician.data.until.toShiftEntity
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -38,7 +38,7 @@ class ShiftLocalSource @Inject constructor(
 
     override suspend fun save(shiftDTO: ShiftDTO) {
         utilDao.transaction {
-            shiftDao.save(shiftDTO.convertToShiftEntity())
+            shiftDao.save(shiftDTO.toShiftEntity())
             shiftDTO.points?.map { it.getObject() }?.let {
                 gpsPointLocalSource.saveAllForShift(it, shiftDTO.oid)
             }

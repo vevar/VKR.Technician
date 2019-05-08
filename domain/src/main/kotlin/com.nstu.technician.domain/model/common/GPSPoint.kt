@@ -7,6 +7,6 @@ import kotlinx.serialization.Serializable
 @Model
 data class GPSPoint(
     val oid: Long,
-    val geoy: Double, //latitude
-    val geox: Double  //longitude
+    val latitude: Double,
+    val longitude: Double
 ) : java.io.Serializable

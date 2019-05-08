@@ -1,5 +1,6 @@
 package com.nstu.technician.data.until
 
+import com.nstu.technician.data.database.entity.ProblemEntity
 import com.nstu.technician.data.database.entity.ShiftEntity
 import com.nstu.technician.data.database.entity.common.AddressEntity
 import com.nstu.technician.data.database.entity.common.ArtifactEntity
@@ -19,6 +20,7 @@ import com.nstu.technician.data.dto.common.ArtifactDTO
 import com.nstu.technician.data.dto.common.GPSPointDTO
 import com.nstu.technician.data.dto.document.ContractDTO
 import com.nstu.technician.data.dto.document.ContractorDTO
+import com.nstu.technician.data.dto.document.DocumentDTO
 import com.nstu.technician.data.dto.job.*
 import com.nstu.technician.data.dto.tool.*
 import com.nstu.technician.data.dto.user.AccountDTO
@@ -33,6 +35,7 @@ import com.nstu.technician.domain.model.common.GPSPoint
 import com.nstu.technician.domain.model.common.OwnDateTime
 import com.nstu.technician.domain.model.document.Contract
 import com.nstu.technician.domain.model.document.Contractor
+import com.nstu.technician.domain.model.document.Document
 import com.nstu.technician.domain.model.facility.Facility
 import com.nstu.technician.domain.model.facility.JobType
 import com.nstu.technician.domain.model.facility.maintenance.Maintenance
@@ -42,38 +45,55 @@ import com.nstu.technician.domain.model.user.Account
 import com.nstu.technician.domain.model.user.Technician
 import com.nstu.technician.domain.model.user.User
 
-fun convertToDTO(account: Account): AccountDTO {
-    return AccountDTO(account.oid, account.login, account.password)
+inline fun <reified F : EntityDTO> EntityLink<F>.getObject(): F {
+    return ref ?: throw IllegalStateException("ref(${F::class.java} must be set")
 }
 
-fun convertToModel(account: AccountDTO): Account {
-    return Account(account.oid, account.login, account.password)
-}
-
-fun AccountEntity.convertToAccountDTO(): AccountDTO {
+fun AccountEntity.toAccountDTO(): AccountDTO {
     return AccountDTO(oid, login, password)
 }
 
-fun AccountDTO.convertToAccountEntity(): AccountEntity {
+fun AccountDTO.toAccountEntity(): AccountEntity {
     return AccountEntity(oid, login, password)
 }
 
-fun TechnicianDTO.convertToTechnicianEntity(): TechnicianEntity {
-    return TechnicianEntity(oid, userId = user.oid, tState = tState)
+fun AccountDTO.toAccount(): Account {
+    return Account(
+        oid = oid,
+        password = password,
+        login = login
+    )
 }
 
-fun TechnicianEntity.convertToTechnicianDTO(userDTO: UserDTO): TechnicianDTO {
+fun Account.toAccountDTO(): AccountDTO {
+    return AccountDTO(
+        oid = oid,
+        login = login,
+        password = password
+    )
+}
+
+fun TechnicianEntity.toTechnicianDTO(userDTO: UserDTO): TechnicianDTO {
     return TechnicianDTO(oid, EntityLink(userDTO), tState = tState)
 }
 
-fun UserDTO.convertToUserEntity(): UserEntity {
-    return UserEntity(
+fun TechnicianDTO.toTechnicianEntity(): TechnicianEntity {
+    return TechnicianEntity(oid, userId = user.oid, tState = tState)
+}
+
+fun TechnicianDTO.toTechnician(): Technician {
+    return Technician(
         oid = oid,
-        firstName = firstName,
-        lastName = lastName,
-        middleName = middleName,
-        sessionToken = sessionToken,
-        accountId = account.oid
+        user = user.getObject().toUser(),
+        state = tState
+    )
+}
+
+fun Technician.toTechnicianDTO(): TechnicianDTO {
+    return TechnicianDTO(
+        oid = oid,
+        tState = state,
+        user = EntityLink(user.toUserDTO())
     )
 }
 
@@ -85,6 +105,38 @@ fun UserEntity.convertToUserDTO(account: AccountDTO): UserDTO {
         lastName = lastName,
         firstName = firstName,
         account = EntityLink(account)
+    )
+}
+
+fun UserDTO.toUserEntity(): UserEntity {
+    return UserEntity(
+        oid = oid,
+        firstName = firstName,
+        lastName = lastName,
+        middleName = middleName,
+        sessionToken = sessionToken,
+        accountId = account?.oid ?: throw IllegalStateException("Account must be set")
+    )
+}
+
+fun UserDTO.toUser(): User {
+    return User(
+        oid,
+        lastName,
+        firstName,
+        middleName,
+        sessionToken
+    )
+}
+
+fun User.toUserDTO(): UserDTO {
+    return UserDTO(
+        oid = oid,
+        account = account?.let { EntityLink(it.toAccountDTO()) },
+        firstName = firstName,
+        lastName = lastName,
+        middleName = middleName,
+        sessionToken = sessionToken
     )
 }
 
@@ -110,98 +162,38 @@ fun ArtifactDTO.convertToArtifactEntity(): ArtifactEntity {
     )
 }
 
-fun convertToDTO(user: User): UserDTO {
-    return UserDTO(
-        user.oid,
-        user.lastName,
-        user.firstName,
-        user.middleName,
-        user.sessionToken,
-        user.account?.let {
-            EntityLink(it.oid, convertToDTO(it))
-        } ?: throw IllegalStateException("Account must be set")
-    )
-}
-
-fun convertToModel(userDTO: UserDTO): User {
-    val user = User(
-        userDTO.oid,
-        userDTO.lastName,
-        userDTO.firstName,
-        userDTO.middleName,
-        userDTO.sessionToken
-    )
-    if (userDTO.account.ref != null) {
-        user.account = convertToModel(userDTO.account.ref ?: throw IllegalStateException("Account must be set"))
-    }
-
-    return user
-}
-
-fun convertToModel(technicianDTO: TechnicianDTO): Technician {
-    return Technician(
-        technicianDTO.oid,
-        convertToModel(technicianDTO.user.ref ?: throw IllegalStateException("User must be set")),
-        technicianDTO.tState
-    )
-}
-
-fun convertToModel(facilityDTO: FacilityDTO): Facility {
-    val facility = Facility(
-        facilityDTO.oid,
-        facilityDTO.identifier,
-        facilityDTO.name,
-        facilityDTO.address.convertToAddress(),
-        facilityDTO.assingmentDate
-    )
-
-    return facility
-}
-
-inline fun <reified F : EntityDTO> EntityLink<F>.getObject(): F {
-    return ref ?: throw IllegalStateException("ref(${F::class.java} must be set")
-}
-
-fun ShiftDTO.convertToShiftEntity(): ShiftEntity {
-    return ShiftEntity(
-        oid, date
-    )
-}
-
-fun ShiftDTO.convertToShiftModel(): Shift {
-    return Shift(
+fun ArtifactDTO.convertToArtifact(): Artifact {
+    return Artifact(
         oid = oid,
         date = date,
-        points = points.map { it.getObject().convertToGPSPoint() },
-        visits = visits.map { it.getObject().convertToMaintenance() }
+        name = name,
+        fileSize = fileSize,
+        original = original,
+        type = type
     )
 }
 
-fun ShiftDTO.convertToMiniShift(): MiniShift {
-    return MiniShift(
+fun Artifact.toArtifactDTO(): ArtifactDTO {
+    return ArtifactDTO(
         oid = oid,
-        date = date
+        date = date,
+        name = name,
+        type = type,
+        original = original,
+        fileSize = fileSize
     )
 }
 
-fun MaintenanceDTO.convertToMaintenanceEntity(shiftId: Long): MaintenanceEntity {
-    return MaintenanceEntity(
-        oid = oid,
-        beginTime = beginTime?.timeInMS,
-        endTime = endTime?.timeInMS,
-        facilityId = facility.oid,
-        duration = duration,
-        maintenanceType = maintenanceType,
-        state = state,
-        visitDate = visitDate.timeInMS,
-        maintenanceParentId = parent?.oid,
-        voiceMessageId = voiceMassage?.oid,
-        workCompletionReportId = workCompletionReport?.oid,
-        shiftId = shiftId
+fun AddressEntity.toAddressDTO(gpsPointDTO: GPSPointDTO): AddressDTO {
+    return AddressDTO(
+        street = street,
+        home = home,
+        office = office,
+        location = gpsPointDTO
     )
 }
 
-fun AddressDTO.convertToAddressEntity(gpsPointId: Long): AddressEntity {
+fun AddressDTO.toAddressEntity(gpsPointId: Long): AddressEntity {
     return AddressEntity(
         oid = gpsPointId,
         home = home,
@@ -211,39 +203,69 @@ fun AddressDTO.convertToAddressEntity(gpsPointId: Long): AddressEntity {
     )
 }
 
+fun AddressDTO.toAddress(): Address {
+    return Address(
+        street, home, location.toGPSPoint(), office
+    )
+}
 
-fun FacilityDTO.convertToFacilityEntity(): FacilityEntity {
+fun Address.toAddressDTO(): AddressDTO {
+    return AddressDTO(
+        street = street,
+        home = home,
+        location = location.toGpsPointDTO(),
+        office = office
+    )
+}
+
+fun FacilityEntity.toFacilityDTO(addressDTO: AddressDTO, contractDTO: ContractDTO, contractorDTO: ContractorDTO): FacilityDTO {
+    return FacilityDTO(
+        oid = oid,
+        name = name,
+        address = addressDTO,
+        assingmentDate = assingmentDate,
+        contract = EntityLink(contractDTO),
+        identifier = identifier,
+        contractor = EntityLink(contractorDTO)
+    )
+}
+
+fun FacilityDTO.toFacilityEntity(): FacilityEntity {
     return FacilityEntity(
         oid = oid,
         name = name,
         addressId = address.location.oid,
-        contractId = contract?.oid,
+        contractId = contract.oid,
         assingmentDate = assingmentDate,
         identifier = identifier
     )
 }
 
-fun ImplementsDTO.convertToJobTypeImplementsJoin(jobTypeId: Long): JobTypeImplementsJoin {
-    return JobTypeImplementsJoin(
-        oid = 0, jobTypeId = jobTypeId, implementsId = oid
-    )
-}
-
-fun ImplementsDTO.convertToImplementsEntity(): ImplementsEntity {
-    return ImplementsEntity(
+fun FacilityDTO.toFacility(): Facility {
+    return Facility(
         oid = oid,
         name = name,
-        currentNumber = currentNubmer
+        address = address.toAddress(),
+        assingmentDate = assingmentDate,
+        identifier = identifier,
+        contract = contract.getObject().toContract(),
+        contractor = contractor.getObject().toContractor()
     )
 }
 
-fun ImplementsDTO.convertToImplement(): Implements {
-    return Implements(
-        oid, name, currentNubmer
+fun Facility.toFacilityDTO(): FacilityDTO {
+    return FacilityDTO(
+        oid = oid,
+        name = name,
+        identifier = identifier,
+        contract = contract.let { EntityLink(it.toContractDTO()) },
+        contractor = EntityLink(contractor.toContractorDTO()),
+        address = address.toAddressDTO(),
+        assingmentDate = assingmentDate
     )
 }
 
-fun ImplementsEntity.convertToImplementsDTO(): ImplementsDTO {
+fun ImplementsEntity.toImplementsDTO(): ImplementsDTO {
     return ImplementsDTO(
         oid = oid,
         name = name,
@@ -251,21 +273,37 @@ fun ImplementsEntity.convertToImplementsDTO(): ImplementsDTO {
     )
 }
 
-fun ImplementUnitDTO.convertToImplementUnit(): ImplementUnit {
-    return ImplementUnit(
-        oid, code
+fun ImplementsDTO.toJobTypeImplementsJoin(jobTypeId: Long): JobTypeImplementsJoin {
+    return JobTypeImplementsJoin(
+        oid = 0, jobTypeId = jobTypeId, implementsId = oid
     )
 }
 
-fun ImplementUnitDTO.convertToImplementUnitEntity(): ImplementUnitEntity {
-    return ImplementUnitEntity(
+fun ImplementsDTO.toImplementsEntity(): ImplementsEntity {
+    return ImplementsEntity(
         oid = oid,
-        code = code,
-        implementsId = impl.oid
+        name = name,
+        currentNumber = currentNubmer
     )
 }
 
-fun ImplementUnitEntity.convertToImplementUnitDTO(implementsDTO: ImplementsDTO): ImplementUnitDTO {
+fun ImplementsDTO.toImplements(): Implements {
+    return Implements(
+        oid,
+        name,
+        currentNubmer
+    )
+}
+
+fun Implements.toImplementsDTO(): ImplementsDTO {
+    return ImplementsDTO(
+        oid = oid,
+        name = name,
+        currentNubmer = currentNumber
+    )
+}
+
+fun ImplementUnitEntity.toImplementUnitDTO(implementsDTO: ImplementsDTO): ImplementUnitDTO {
     return ImplementUnitDTO(
         oid = oid,
         code = code,
@@ -273,13 +311,56 @@ fun ImplementUnitEntity.convertToImplementUnitDTO(implementsDTO: ImplementsDTO):
     )
 }
 
-fun AddressDTO.convertToAddress(): Address {
-    return Address(
-        street, home, location.convertToGPSPoint(), office
+fun ImplementUnitDTO.toImplementUnitEntity(): ImplementUnitEntity {
+    return ImplementUnitEntity(
+        oid = oid,
+        code = code,
+        implementsId = impl?.oid
     )
 }
 
-fun GPSPointDTO.convertToGPSPoint(): GPSPoint {
+fun ImplementUnitDTO.toImplementUnit(): ImplementUnit {
+    return ImplementUnit(
+        oid = oid,
+        code = code,
+        impl = impl.getObject().toImplements()
+    )
+}
+
+fun ImplementUnit.toImplementUnitDTO(): ImplementUnitDTO {
+    return ImplementUnitDTO(
+        oid = oid,
+        impl = EntityLink(impl.toImplementsDTO()),
+        code = code
+    )
+}
+
+fun GPSPointDTO.convertToGPSPointFromShiftEntity(shiftId: Long): GPSPointFromShiftEntity {
+    return GPSPointFromShiftEntity(
+        oid = oid,
+        latitude = geoy,
+        longitude = geox,
+        shiftId = shiftId
+    )
+}
+
+fun GPSPointFromShiftEntity.toGpsPointDTO(): GPSPointDTO {
+    return GPSPointDTO(
+        oid = oid,
+        geox = longitude,
+        geoy = latitude
+    )
+}
+
+fun GPSEntity.toGpsPointDTO(): GPSPointDTO {
+    return GPSPointDTO(
+        oid = oid,
+        geox = longitude,
+        geoy = latitude
+    )
+}
+
+fun GPSPointDTO.toGPSPoint(): GPSPoint {
     return GPSPoint(oid, geoy, geox)
 }
 
@@ -291,48 +372,13 @@ fun GPSPointDTO.convertToGPSEntity(): GPSEntity {
     )
 }
 
-fun GPSEntity.convertToGpsPointDTO(): GPSPointDTO {
+fun GPSPoint.toGpsPointDTO(): GPSPointDTO {
     return GPSPointDTO(
-        oid = oid,
-        geox = longitude,
-        geoy = latitude
+        oid, latitude, longitude
     )
 }
 
-fun MaintenanceDTO.convertToMaintenance(): Maintenance {
-    return Maintenance(
-        oid = oid,
-        facility = facility.getObject().convertToFacility(),
-        visitDate = visitDate,
-        state = state,
-        maintenanceType = maintenanceType,
-        duration = duration,
-        endTime = endTime,
-        beginTime = beginTime,
-        jobList = jobList.map { it.getObject().convertToMaintenanceJob() })
-}
-
-fun FacilityDTO.convertToFacility(): Facility {
-    return Facility(
-        oid = oid,
-        name = name,
-        address = address.convertToAddress(),
-        assingmentDate = assingmentDate,
-        identifier = identifier,
-        contract = contract?.getObject()?.convertToContract()
-    )
-}
-
-fun ShiftEntity.convertToShiftDTO(points: List<GPSPointDTO>, visits: List<MaintenanceDTO>): ShiftDTO {
-    return ShiftDTO(
-        oid = oid,
-        date = date,
-        points = points.map { EntityLink(it) },
-        visits = visits.map { EntityLink(it) }
-    )
-}
-
-fun MaintenanceEntity.convertToMaintenanceDTO(
+fun MaintenanceEntity.toMaintenanceDTO(
     facilityDTO: FacilityDTO,
     jobList: List<MaintenanceJobDTO>,
     parent: MaintenanceDTO?,
@@ -353,30 +399,95 @@ fun MaintenanceEntity.convertToMaintenanceDTO(
     )
 }
 
-fun FacilityEntity.convertToFacilityDTO(addressDTO: AddressDTO, contractDTO: ContractDTO): FacilityDTO {
-    return FacilityDTO(
+fun MaintenanceDTO.toMaintenanceEntity(shiftId: Long): MaintenanceEntity {
+    return MaintenanceEntity(
         oid = oid,
-        name = name,
-        address = addressDTO,
-        assingmentDate = assingmentDate,
-        contract = EntityLink(contractDTO),
-        identifier = identifier
+        beginTime = beginTime?.timeInMS,
+        endTime = endTime?.timeInMS,
+        facilityId = facility.oid,
+        duration = duration,
+        maintenanceType = maintenanceType,
+        state = state,
+        visitDate = visitDate.timeInMS,
+        maintenanceParentId = parent?.oid,
+        voiceMessageId = voiceMassage?.oid,
+        workCompletionReportId = workCompletionReport?.oid,
+        shiftId = shiftId
     )
 }
 
-fun AddressEntity.convertToAddressDTO(gpsPointDTO: GPSPointDTO): AddressDTO {
-    return AddressDTO(
-        street = street,
-        home = home,
-        office = office,
-        location = gpsPointDTO
+fun MaintenanceDTO.toMaintenance(): Maintenance {
+    return Maintenance(
+        oid = oid,
+        facility = facility.getObject().toFacility(),
+        visitDate = visitDate,
+        state = state,
+        maintenanceType = maintenanceType,
+        duration = duration,
+        endTime = endTime,
+        beginTime = beginTime,
+        jobList = jobList.map { it.getObject().toMaintenanceJob() })
+}
+
+fun Maintenance.toMaintenanceDTO(): MaintenanceDTO {
+    return MaintenanceDTO(
+        oid = oid,
+        facility = EntityLink(facility.toFacilityDTO()),
+        state = state,
+        duration = duration,
+        endTime = endTime,
+        beginTime = beginTime,
+        jobList = jobList.map { EntityLink(it.toMaintenanceJobDTO()) },
+        voiceMassage = voiceMassage?.let { (EntityLink(it.toArtifactDTO())) },
+        parent = parent?.let { EntityLink(it.toMaintenanceDTO()) },
+        maintenanceType = maintenanceType,
+        visitDate = visitDate,
+        workCompletionReport = workCompletionReport?.let { EntityLink(it.toDocumentDTO()) }
     )
 }
 
-fun ContractEntity.convertToContractDTO(
+fun ShiftEntity.convertToShiftDTO(points: List<GPSPointDTO>, visits: List<MaintenanceDTO>): ShiftDTO {
+    return ShiftDTO(
+        oid = oid,
+        date = date,
+        points = points.map { EntityLink(it) },
+        visits = visits.map { EntityLink(it) }
+    )
+}
+
+fun ShiftDTO.toShiftEntity(): ShiftEntity {
+    return ShiftEntity(
+        oid, date
+    )
+}
+
+fun ShiftDTO.toShiftModel(): Shift {
+    return Shift(
+        oid = oid,
+        date = date,
+        points = points.map { it.getObject().toGPSPoint() },
+        visits = visits.map { it.getObject().toMaintenance() }
+    )
+}
+
+fun Shift.toShiftDTO(): ShiftDTO {
+    return ShiftDTO(
+        oid = oid,
+        date = date,
+        visits = visits.map { EntityLink(it.toMaintenanceDTO()) },
+        points = points.map { EntityLink(it.toGpsPointDTO()) }
+    )
+}
+
+fun ShiftDTO.ToMiniShift(): MiniShift {
+    return MiniShift(
+        oid = oid,
+        date = date
+    )
+}
+
+fun ContractEntity.toContractDTO(
     artifactDTO: ArtifactDTO,
-    contractorDTO: ContractorDTO,
-    facilityDTO: FacilityDTO
 ): ContractDTO {
     return ContractDTO(
         oid = oid,
@@ -384,39 +495,44 @@ fun ContractEntity.convertToContractDTO(
         artifact = EntityLink(artifactDTO),
         date = OwnDateTime(date),
         number = number,
-        docType = docType,
-        contractor = EntityLink(contractorDTO),
-        facility = EntityLink(facilityDTO)
+        docType = docType
     )
 }
 
-fun ContractDTO.convertToContractEntity(): ContractEntity {
+fun ContractDTO.toContractEntity(): ContractEntity {
     return ContractEntity(
         oid = oid,
         state = state,
         number = number,
         docType = docType,
         date = date.timeInMS,
-        artifactId = artifact.oid,
-        contractorId = contractor.oid,
-        facilityId = facility.oid
+        artifactId = artifact.oid
     )
 }
 
-fun ContractDTO.convertToContract(): Contract {
+fun ContractDTO.toContract(): Contract {
     return Contract(
         oid = oid,
         state = state,
         number = number,
         docType = docType,
         date = date,
-        artifact = artifact.getObject().convertToArtifact(),
-        contractor = contractor.getObject().convertToContractor(),
-        facility = facility.getObject().convertToFacility()
+        artifact = artifact.getObject().convertToArtifact()
     )
 }
 
-fun ContractorEntity.convertToContractorDTO(addressDTO: AddressDTO): ContractorDTO {
+private fun Contract.toContractDTO(): ContractDTO {
+    return ContractDTO(
+        oid = oid,
+        state = state,
+        number = number,
+        docType = docType,
+        artifact = EntityLink(artifact.toArtifactDTO()),
+        date = date
+    )
+}
+
+fun ContractorEntity.toContractorDTO(addressDTO: AddressDTO): ContractorDTO {
     return ContractorDTO(
         oid = oid,
         name = name,
@@ -425,7 +541,7 @@ fun ContractorEntity.convertToContractorDTO(addressDTO: AddressDTO): ContractorD
     )
 }
 
-fun ContractorDTO.convertToContractorEntity(): ContractorEntity {
+fun ContractorDTO.toContractorEntity(): ContractorEntity {
     return ContractorEntity(
         oid = oid,
         INN = INN,
@@ -434,75 +550,25 @@ fun ContractorDTO.convertToContractorEntity(): ContractorEntity {
     )
 }
 
-fun ContractorDTO.convertToContractor(): Contractor {
+fun ContractorDTO.toContractor(): Contractor {
     return Contractor(
         oid = oid,
-        address = address.convertToAddress(),
+        address = address.toAddress(),
         name = name,
         INN = INN
     )
 }
 
-fun GPSPointDTO.convertToGPSPointFromShiftEntity(shiftId: Long): GPSPointFromShiftEntity {
-    return GPSPointFromShiftEntity(
+fun Contractor.toContractorDTO(): ContractorDTO {
+    return ContractorDTO(
         oid = oid,
-        latitude = geoy,
-        longitude = geox,
-        shiftId = shiftId
-    )
-}
-
-fun GPSPointFromShiftEntity.convertToGpsPointDTO(): GPSPointDTO {
-    return GPSPointDTO(
-        oid = oid,
-        geox = longitude,
-        geoy = latitude
-    )
-}
-
-fun MaintenanceJobDTO.convertToMaintenanceJob(): MaintenanceJob {
-    return MaintenanceJob(
-        oid = oid,
-        duration = duration,
-        beginPhoto = beginPhoto?.ref?.convertToArtifact(),
-        endPhoto = endPhoto?.ref?.convertToArtifact(),
-        jobState = jobState,
-        components = components?.map { it.getObject().convertToComponentUnit() },
-        implList = implList.map { it.getObject().convertToImplement() },
-        problem = problem?.ref?.convertToProblem(),
-        jobType = jobType.getObject().convertToJobType(),
-        beginTime = beginTime,
-        endTime = endTime
-    )
-}
-
-fun ArtifactDTO.convertToArtifact(): Artifact {
-    return Artifact(
-        oid = oid,
-        date = date,
+        address = address.toAddressDTO(),
         name = name,
-        fileSize = fileSize,
-        original = original,
-        type = type
+        INN = INN
     )
 }
 
-fun MaintenanceJobDTO.convertToMaintenanceJobEntity(maintenanceJobId: Long): MaintenanceJobEntity {
-    return MaintenanceJobEntity(
-        oid = oid,
-        jobState = jobState,
-        jobTypeId = jobType.oid,
-        beginPhotoId = beginPhoto?.oid,
-        endPhotoId = endPhoto?.oid,
-        beginTime = beginTime?.timeInMS,
-        duration = duration,
-        endTime = endTime?.timeInMS,
-        problemId = problem?.oid,
-        maintenanceId = maintenanceJobId
-    )
-}
-
-fun MaintenanceJobEntity.convertToMaintenanceJobDTO(
+fun MaintenanceJobEntity.toMaintenanceJobDTO(
     jobTypeDTO: JobTypeDTO,
     components: List<ComponentUnitDTO>,
     implList: List<ImplementsDTO>,
@@ -525,7 +591,54 @@ fun MaintenanceJobEntity.convertToMaintenanceJobDTO(
     )
 }
 
-fun ComponentUnitEntity.convertToComponentUnitDTO(componentDTO: ComponentDTO): ComponentUnitDTO {
+fun MaintenanceJobDTO.toMaintenanceJobEntity(maintenanceJobId: Long): MaintenanceJobEntity {
+    return MaintenanceJobEntity(
+        oid = oid,
+        jobState = jobState,
+        jobTypeId = jobType.oid,
+        beginPhotoId = beginPhoto?.oid,
+        endPhotoId = endPhoto?.oid,
+        beginTime = beginTime?.timeInMS,
+        duration = duration,
+        endTime = endTime?.timeInMS,
+        problemId = problem?.oid,
+        maintenanceId = maintenanceJobId
+    )
+}
+
+fun MaintenanceJobDTO.toMaintenanceJob(): MaintenanceJob {
+    return MaintenanceJob(
+        oid = oid,
+        duration = duration,
+        beginPhoto = beginPhoto?.ref?.convertToArtifact(),
+        endPhoto = endPhoto?.ref?.convertToArtifact(),
+        jobState = jobState,
+        components = components?.map { it.getObject().toComponentUnit() },
+        implList = implList.map { it.getObject().toImplements() },
+        problem = problem?.ref?.toProblem(),
+        jobType = jobType.getObject().toJobType(),
+        beginTime = beginTime,
+        endTime = endTime
+    )
+}
+
+fun MaintenanceJob.toMaintenanceJobDTO(): MaintenanceJobDTO {
+    return MaintenanceJobDTO(
+        oid = oid,
+        beginTime = beginTime,
+        endTime = endTime,
+        duration = duration,
+        jobType = EntityLink(jobType.toJobTypeDTO()),
+        problem = problem?.let { EntityLink(it.toProblemDTO()) },
+        implList = implList.map { EntityLink(it.toImplementsDTO()) },
+        jobState = jobState,
+        components = components?.map { EntityLink(it.toComponentUnitDTO()) },
+        endPhoto = endPhoto?.let { EntityLink(it.toArtifactDTO()) },
+        beginPhoto = beginPhoto?.let { EntityLink(it.toArtifactDTO()) }
+    )
+}
+
+fun ComponentUnitEntity.toComponentUnitDTO(componentDTO: ComponentDTO): ComponentUnitDTO {
     return ComponentUnitDTO(
         oid = oid,
         number = number,
@@ -533,7 +646,7 @@ fun ComponentUnitEntity.convertToComponentUnitDTO(componentDTO: ComponentDTO): C
     )
 }
 
-fun ComponentUnitDTO.convertToComponentUnitEntity(maintenanceJobId: Long): ComponentUnitEntity {
+fun ComponentUnitDTO.toComponentUnitEntity(maintenanceJobId: Long): ComponentUnitEntity {
     return ComponentUnitEntity(
         oid = oid,
         number = number,
@@ -542,31 +655,23 @@ fun ComponentUnitDTO.convertToComponentUnitEntity(maintenanceJobId: Long): Compo
     )
 }
 
-fun ComponentUnitDTO.convertToComponentUnit(): ComponentUnit {
+fun ComponentUnitDTO.toComponentUnit(): ComponentUnit {
     return ComponentUnit(
         oid = oid,
-        component = component.getObject().convertToComponent(),
+        component = component.getObject().toComponent(),
         number = number
     )
 }
 
-fun ComponentDTO.convertToComponentEntity(): ComponentEntity {
-    return ComponentEntity(
+private fun ComponentUnit.toComponentUnitDTO(): ComponentUnitDTO {
+    return ComponentUnitDTO(
         oid = oid,
-        name = name,
-        componentTypeId = type.oid
+        number = number,
+        component = EntityLink(component.toComponentDTO())
     )
 }
 
-fun ComponentDTO.convertToComponent(): Component {
-    return Component(
-        oid = oid,
-        name = name,
-        type = type.getObject().convertToComponentType()
-    )
-}
-
-fun ComponentEntity.convertToComponentDTO(componentTypeDTO: ComponentTypeDTO): ComponentDTO {
+fun ComponentEntity.toComponentDTO(componentTypeDTO: ComponentTypeDTO): ComponentDTO {
     return ComponentDTO(
         oid = oid,
         name = name,
@@ -574,28 +679,59 @@ fun ComponentEntity.convertToComponentDTO(componentTypeDTO: ComponentTypeDTO): C
     )
 }
 
-fun ComponentTypeEntity.convertToComponentTypeDTO(): ComponentTypeDTO {
+fun ComponentDTO.toComponentEntity(): ComponentEntity {
+    return ComponentEntity(
+        oid = oid,
+        name = name,
+        componentTypeId = type.oid
+    )
+}
+
+fun ComponentDTO.toComponent(): Component {
+    return Component(
+        oid = oid,
+        name = name,
+        type = type.getObject().toComponentType()
+    )
+}
+
+fun Component.toComponentDTO(): ComponentDTO {
+    return ComponentDTO(
+        oid = oid,
+        name = name,
+        type = EntityLink(type.toComponentTypeDTO())
+    )
+}
+
+fun ComponentTypeEntity.toComponentTypeDTO(): ComponentTypeDTO {
     return ComponentTypeDTO(
         oid = oid,
         name = name
     )
 }
 
-fun ComponentTypeDTO.convertToComponentTypeEntity(): ComponentTypeEntity {
+fun ComponentTypeDTO.toComponentTypeEntity(): ComponentTypeEntity {
     return ComponentTypeEntity(
         oid = oid,
         name = name
     )
 }
 
-fun ComponentTypeDTO.convertToComponentType(): ComponentType {
+fun ComponentTypeDTO.toComponentType(): ComponentType {
     return ComponentType(
         oid = oid,
         name = name
     )
 }
 
-fun JobTypeEntity.convertToJobTypeDTO(implements: List<ImplementsDTO>): JobTypeDTO {
+fun ComponentType.toComponentTypeDTO(): ComponentTypeDTO {
+    return ComponentTypeDTO(
+        oid = oid,
+        name = name
+    )
+}
+
+fun JobTypeEntity.toJobTypeDTO(implements: List<ImplementsDTO>): JobTypeDTO {
     return JobTypeDTO(
         oid = oid,
         name = name,
@@ -605,26 +741,74 @@ fun JobTypeEntity.convertToJobTypeDTO(implements: List<ImplementsDTO>): JobTypeD
     )
 }
 
-fun JobTypeDTO.convertToJobTypeEntity(): JobTypeEntity {
+fun JobTypeDTO.toJobTypeEntity(): JobTypeEntity {
     return JobTypeEntity(
         oid, name, description, duration
     )
 }
 
-fun JobTypeDTO.convertToJobType(): JobType {
+fun JobTypeDTO.toJobType(): JobType {
     return JobType(
         oid = oid,
         name = name,
         duration = duration,
         description = description,
-        impList = impList.map { it.getObject().convertToImplement() }
+        impList = impList.map { it.getObject().toImplements() }
     )
 }
 
-fun ProblemDTO.convertToProblem(): Problem {
+fun JobType.toJobTypeDTO(): JobTypeDTO {
+    return JobTypeDTO(
+        oid = oid,
+        name = name,
+        duration = duration,
+        description = description,
+        impList = impList?.map { EntityLink(it.toImplementsDTO()) } ?: mutableListOf()
+    )
+}
+
+fun ProblemEntity.toProblemDTO(): ProblemDTO{
+    return ProblemDTO(
+        oid=oid,
+        type = problemType,
+        comment = comment
+    )
+}
+
+fun ProblemDTO.toProblem(): Problem {
     return Problem(
         oid = oid,
         comment = comment,
         type = type
+    )
+}
+
+fun Problem.toProblemDTO(): ProblemDTO {
+    return ProblemDTO(
+        oid=oid,
+        type = type,
+        comment = comment
+    )
+}
+
+fun DocumentDTO.toDocument(): Document {
+    return Document(
+        oid = oid,
+        date = date,
+        artifact = artifact?.getObject()?.convertToArtifact(),
+        docType = docType,
+        number = number,
+        state = state
+    )
+}
+
+fun Document.toDocumentDTO(): DocumentDTO {
+    return DocumentDTO(
+        oid = oid,
+        date = date,
+        state = state,
+        artifact = artifact?.let { EntityLink(it.toArtifactDTO()) },
+        docType = docType,
+        number = number
     )
 }

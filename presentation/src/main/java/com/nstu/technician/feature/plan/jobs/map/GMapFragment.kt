@@ -41,7 +41,7 @@ class GMapFragment : BaseFragment() {
     private var mainTargetMarker: Marker? = null
     private var mainFacility = Observer<Facility> { facility ->
         val gpsPoint = facility.address.location ?: throw NullPointerException("gpsPoint is null")
-        val latLng = LatLng(gpsPoint.geoy, gpsPoint.geox)
+        val latLng = LatLng(gpsPoint.latitude, gpsPoint.longitude)
         if (mainTargetMarker == null) {
             addMarkerToMap(latLng)
         } else {
@@ -100,7 +100,7 @@ class GMapFragment : BaseFragment() {
 
                         override fun onGoToMainTarget(gpsPoint: GPSPoint) {
                             Log.d(TAG, "onGoToMainTarget is called")
-                            val latLng = LatLng(gpsPoint.geoy, gpsPoint.geox)
+                            val latLng = LatLng(gpsPoint.latitude, gpsPoint.longitude)
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
                         }
                     })).build()

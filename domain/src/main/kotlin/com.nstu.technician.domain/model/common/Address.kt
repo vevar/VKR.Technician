@@ -8,6 +8,6 @@ import kotlinx.serialization.Serializable
 data class Address(
     val street: String,
     val home: String,
-    val location: GPSPoint? = null,
+    val location: GPSPoint,
     val office: String? = null
 ) : java.io.Serializable

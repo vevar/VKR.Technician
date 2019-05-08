@@ -10,11 +10,16 @@ import javax.inject.Inject
 class ArtifactLocalSource @Inject constructor(
     private val artifactDao: ArtifactDao
 ) : ArtifactDataSource {
+
+    override suspend fun delete(id: Long) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override suspend fun findById(id: Long): ArtifactDTO? {
         return artifactDao.findById(id).convertToArtifactDTO()
     }
 
-    override suspend fun save(obj: ArtifactDTO) {
-        artifactDao.save(obj.convertToArtifactEntity())
+    override suspend fun save(obj: ArtifactDTO):Long {
+        return artifactDao.save(obj.convertToArtifactEntity())
     }
 }

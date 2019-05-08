@@ -4,6 +4,7 @@ import com.nstu.technician.data.dto.EntityDTO
 import com.nstu.technician.data.dto.EntityLink
 import com.nstu.technician.data.dto.common.AddressDTO
 import com.nstu.technician.data.dto.document.ContractDTO
+import com.nstu.technician.data.dto.document.ContractorDTO
 import com.nstu.technician.domain.model.common.OwnDateTime
 
 
@@ -13,7 +14,9 @@ data class FacilityDTO(
     val name: String,
     val address: AddressDTO,
     val assingmentDate: OwnDateTime,
-    var contract: EntityLink<ContractDTO>? = null
+    val contract: EntityLink<ContractDTO>,
+    val contractor: EntityLink<ContractorDTO>
+
 ) : EntityDTO(oid) {
 
 

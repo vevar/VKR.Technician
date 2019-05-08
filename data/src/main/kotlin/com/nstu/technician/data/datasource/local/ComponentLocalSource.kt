@@ -6,9 +6,9 @@ import com.nstu.technician.data.datasource.entity.LOCAL
 import com.nstu.technician.data.datasource.local.dao.ComponentDao
 import com.nstu.technician.data.datasource.local.dao.UtilDao
 import com.nstu.technician.data.dto.tool.ComponentDTO
-import com.nstu.technician.data.until.convertToComponentDTO
-import com.nstu.technician.data.until.convertToComponentEntity
 import com.nstu.technician.data.until.getObject
+import com.nstu.technician.data.until.toComponentDTO
+import com.nstu.technician.data.until.toComponentEntity
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import javax.inject.Named
@@ -20,12 +20,16 @@ class ComponentLocalSource @Inject constructor(
     private val componentTypeLocalSource: ComponentTypeDataSource
 ) : ComponentDataSource {
 
+    override suspend fun delete(id: Long) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override suspend fun saveAll(list: List<ComponentDTO>) {
         utilDao.transaction {
             val componentsEntities = runBlocking {
                 list.map { componentDTO ->
                     componentTypeLocalSource.save(componentDTO.type.getObject())
-                    componentDTO.convertToComponentEntity()
+                    componentDTO.toComponentEntity()
                 }
             }
             componentDao.saveAll(componentsEntities)
@@ -37,16 +41,16 @@ class ComponentLocalSource @Inject constructor(
             val componentTypeDTO =
                 componentTypeLocalSource.findById(componentEntity.componentTypeId)
                     ?: throw IllegalStateException("componentTypeDTO must be set")
-            componentEntity.convertToComponentDTO(componentTypeDTO)
+            componentEntity.toComponentDTO(componentTypeDTO)
         }
     }
 
-    override suspend fun save(obj: ComponentDTO) {
-        utilDao.transaction {
+    override suspend fun save(obj: ComponentDTO): Long {
+        return utilDao.transaction {
             runBlocking {
                 componentTypeLocalSource.save(obj.type.getObject())
             }
-            componentDao.save(obj.convertToComponentEntity())
+            componentDao.save(obj.toComponentEntity())
         }
     }
 }

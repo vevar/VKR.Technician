@@ -17,7 +17,7 @@ data class MaintenanceJob(
     val endTime: OwnDateTime? = null,
     val beginPhoto: Artifact? = null,
     val endPhoto: Artifact? = null,
-    val implList: List<Implements>? = null,
+    val implList: List<Implements>,
     val components: List<ComponentUnit>? = null,
     val duration: Int? = null,  // in minutes
     val problem: Problem? = null

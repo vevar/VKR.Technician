@@ -7,7 +7,7 @@ import com.nstu.technician.data.datasource.local.dao.UtilDao
 import com.nstu.technician.data.dto.common.GPSPointDTO
 import com.nstu.technician.data.until.convertToGPSEntity
 import com.nstu.technician.data.until.convertToGPSPointFromShiftEntity
-import com.nstu.technician.data.until.convertToGpsPointDTO
+import com.nstu.technician.data.until.toGpsPointDTO
 import javax.inject.Inject
 
 class GPSPointLocalSource @Inject constructor(
@@ -29,11 +29,11 @@ class GPSPointLocalSource @Inject constructor(
 
     override fun findByShiftId(shiftId: Long): List<GPSPointDTO> {
         return gpsPointFromShiftDao.findByShiftId(shiftId)
-            .map { gpsPointFromShiftEntity -> gpsPointFromShiftEntity.convertToGpsPointDTO() }
+            .map { gpsPointFromShiftEntity -> gpsPointFromShiftEntity.toGpsPointDTO() }
     }
 
     override suspend fun findById(id: Long): GPSPointDTO? {
-        return gpsDao.findById(id)?.convertToGpsPointDTO()
+        return gpsDao.findById(id)?.toGpsPointDTO()
     }
 
     override suspend fun save(obj: GPSPointDTO) {

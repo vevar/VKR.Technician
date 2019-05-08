@@ -10,9 +10,9 @@ import com.nstu.technician.data.dto.job.JobTypeDTO
 import com.nstu.technician.data.dto.job.MaintenanceJobDTO
 import com.nstu.technician.data.dto.tool.ComponentUnitDTO
 import com.nstu.technician.data.dto.tool.ImplementsDTO
-import com.nstu.technician.data.until.convertToMaintenanceJobDTO
-import com.nstu.technician.data.until.convertToMaintenanceJobEntity
 import com.nstu.technician.data.until.getObject
+import com.nstu.technician.data.until.toMaintenanceJobDTO
+import com.nstu.technician.data.until.toMaintenanceJobEntity
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import javax.inject.Named
@@ -54,7 +54,7 @@ class MaintenanceJobLocalSource @Inject constructor(
             problemDTO = maintenanceJobEntity.problemId?.let { problemLocalSource.findById(it) }
         }
 
-        return maintenanceJobEntity.convertToMaintenanceJobDTO(
+        return maintenanceJobEntity.toMaintenanceJobDTO(
             jobTypeDTO = jobTypeDTO ?: throw IllegalStateException("jobTypeDTO must be set"),
             implList = implList ?: throw IllegalStateException("implList must be set"),
             components = components ?: throw IllegalStateException("components must be set"),
@@ -87,7 +87,7 @@ class MaintenanceJobLocalSource @Inject constructor(
                     problemLocalSource.save(it)
                 }
             }
-            maintenanceJobDao.save(maintenanceJobDTO.convertToMaintenanceJobEntity(maintenanceId))
+            maintenanceJobDao.save(maintenanceJobDTO.toMaintenanceJobEntity(maintenanceId))
         }
     }
 
