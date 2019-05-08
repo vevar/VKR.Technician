@@ -14,7 +14,7 @@ class ShiftCloudSource @Inject constructor(
     }
 
     companion object {
-        const val DEFAULT_LEVEL = 3
+        const val DEFAULT_LEVEL = 1
     }
 
     override suspend fun save(obj: ShiftDTO): Long {

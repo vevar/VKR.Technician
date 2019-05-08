@@ -44,7 +44,7 @@ class TechnicianCloudSourceTest {
         assertNotEquals(null, technician)
         val user = correctUser.copy()
         user.sessionToken = ""
-        val correctTechnician = TechnicianDTO(2, EntityLink(user.oid,user))
+        val correctTechnician = TechnicianDTO(2, EntityLink(user.oid,user),1)
         assertEquals(correctTechnician, technician)
     }
 
