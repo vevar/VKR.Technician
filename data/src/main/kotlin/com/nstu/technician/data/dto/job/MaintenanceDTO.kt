@@ -54,7 +54,7 @@ data class MaintenanceDTO(
         result = 31 * result + (parent?.hashCode() ?: 0)
         result = 31 * result + (beginTime?.hashCode() ?: 0)
         result = 31 * result + (endTime?.hashCode() ?: 0)
-        result = 31 * result + (jobList?.hashCode() ?: 0)
+        result = 31 * result + jobList.hashCode()
         result = 31 * result + (workCompletionReport?.hashCode() ?: 0)
         result = 31 * result + (voiceMassage?.hashCode() ?: 0)
         return result

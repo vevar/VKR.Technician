@@ -9,12 +9,12 @@ class ShiftCloudSource @Inject constructor(
     private val shiftApi: ShiftApi
 ) : ShiftDataSource {
 
-    override suspend fun delete(obj: ShiftDTO) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     companion object {
         const val DEFAULT_LEVEL = 1
+    }
+
+    override suspend fun delete(obj: ShiftDTO) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override suspend fun save(obj: ShiftDTO): Long {

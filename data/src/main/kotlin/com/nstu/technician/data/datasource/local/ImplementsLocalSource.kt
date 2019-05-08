@@ -10,6 +10,21 @@ import javax.inject.Inject
 class ImplementsLocalSource @Inject constructor(
     private val implementDao: ImplementDao
 ) : ImplementsDataSource {
+    override suspend fun findAll(): List<ImplementsDTO> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun findById(id: Long): ImplementsDTO? {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun save(obj: ImplementsDTO): Long {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun delete(obj: ImplementsDTO) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     override suspend fun saveForJobTypeId(implementsDTO: ImplementsDTO, jobTypeId: Long) {
         implementDao.save(implementsDTO.toImplementsEntity())

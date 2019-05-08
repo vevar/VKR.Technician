@@ -1,9 +1,6 @@
 package com.nstu.technician.data.di.model
 
-import com.nstu.technician.data.datasource.cloud.FacilityCloudSource
-import com.nstu.technician.data.datasource.cloud.ShiftCloudSource
-import com.nstu.technician.data.datasource.cloud.TechnicianCloudSource
-import com.nstu.technician.data.datasource.cloud.UserCloudSource
+import com.nstu.technician.data.datasource.cloud.*
 import com.nstu.technician.data.datasource.entity.*
 import com.nstu.technician.data.datasource.local.*
 import dagger.Module
@@ -149,5 +146,17 @@ class DataSourceModule {
     @Provides
     fun provideUserCloudSource(userCloudSource: UserCloudSource): UserDataSource {
         return userCloudSource
+    }
+
+    @Named(CLOUD)
+    @Provides
+    fun provideMaintenanceCloudSource(maintenanceCloudSource: MaintenanceCloudSource): MaintenanceDataSource {
+        return maintenanceCloudSource
+    }
+
+    @Named(CLOUD)
+    @Provides
+    fun provideImplementsCloudSource(implementsCloudSource: ImplementsCloudSource): ImplementsDataSource {
+        return implementsCloudSource
     }
 }

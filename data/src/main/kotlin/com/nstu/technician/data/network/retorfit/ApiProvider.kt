@@ -23,8 +23,12 @@ class ApiProvider(
         return retrofitProvider.getRetrofit().create(FacilityApi::class.java)
     }
 
-    fun createMaintenanceApi(): MaintenanceAPi{
+    fun createMaintenanceApi(): MaintenanceAPi {
         return retrofitProvider.getRetrofit().create(MaintenanceAPi::class.java)
+    }
+
+    fun createImplementsApi(): ImplementsApi {
+        return retrofitProvider.getRetrofit().create(ImplementsApi::class.java)
     }
 
 }
