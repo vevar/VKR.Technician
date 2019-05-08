@@ -1,9 +1,13 @@
 package com.nstu.technician.data.datasource
 
-interface DataSourceCRUD<T> {
+import java.io.Serializable
 
-    suspend fun findById(id: Long): T?
+interface DataSourceCRUD<T, ID : Serializable> {
 
-    suspend fun save(obj: T)
+    suspend fun findById(id: ID): T?
+
+    suspend fun save(obj: T): T
+
+    suspend fun delete(id: ID)
 
 }

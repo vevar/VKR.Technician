@@ -1,7 +1,6 @@
 package com.nstu.technician.data.network.interceptor
 
 import com.nstu.technician.data.network.constant.NOT_FOUND
-import com.nstu.technician.data.network.constant.OK
 import com.nstu.technician.data.network.constant.UNAUTHORIZED
 import com.nstu.technician.domain.exceptions.NetworkException
 import com.nstu.technician.domain.exceptions.NotFoundException
@@ -12,11 +11,10 @@ import okhttp3.Response
 class HandlerExceptionsInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val response = chain.proceed(chain.request())
-        val code = response.code()
-        if (code in OK..300) {
+        if (response.isSuccessful) {
             return response
         } else {
-            when (code) {
+            when (response.code()) {
                 UNAUTHORIZED -> {
                     throw UnauthorizedException(response.message())
                 }

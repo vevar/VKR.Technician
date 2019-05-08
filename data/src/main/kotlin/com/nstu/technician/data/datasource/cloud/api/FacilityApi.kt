@@ -15,4 +15,7 @@ interface FacilityApi {
 
     @POST("/api/facility/update")
     fun updateFacility(token: String, @Body facility: FacilityDTO): Call<String>
+
+    @POST("/api/facility/add")
+    fun addFacility(@Body facility: FacilityDTO): Call<Long>
 }
