@@ -8,6 +8,15 @@ import javax.inject.Inject
 class ImplementsCloudSource @Inject constructor(
     private val implementsApi: ImplementsApi
 ) : ImplementsDataSource {
+
+    override suspend fun saveAll(list: List<ImplementsDTO>): List<Long> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun deleteAll() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override suspend fun findAll(): List<ImplementsDTO> {
         return implementsApi.getImplementsList().execute().body()
             ?: throw IllegalStateException("(findAll): ImplementsDTO not found ")
@@ -25,7 +34,7 @@ class ImplementsCloudSource @Inject constructor(
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun saveForMaintenanceJob(implements: ImplementsDTO, maintenanceJobId: Long) {
+    override suspend fun saveForMaintenanceJob(implements: ImplementsDTO, maintenanceJobId: Long): Long {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -37,7 +46,7 @@ class ImplementsCloudSource @Inject constructor(
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun saveForJobTypeId(implementsDTO: ImplementsDTO, jobTypeId: Long) {
+    override suspend fun saveForJobTypeId(implementsDTO: ImplementsDTO, jobTypeId: Long): Long {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

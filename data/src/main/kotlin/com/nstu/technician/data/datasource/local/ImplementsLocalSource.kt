@@ -10,25 +10,34 @@ import javax.inject.Inject
 class ImplementsLocalSource @Inject constructor(
     private val implementDao: ImplementDao
 ) : ImplementsDataSource {
+    override suspend fun saveAll(list: List<ImplementsDTO>): List<Long> {
+        return implementDao.saveAll(list.map { it.toImplementsEntity() })
+    }
+
+    override suspend fun deleteAll() {
+        return implementDao.nukeTable()
+    }
+
     override suspend fun findAll(): List<ImplementsDTO> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return implementDao.findAll().map { it.toImplementsDTO() }
     }
 
     override suspend fun findById(id: Long): ImplementsDTO? {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return implementDao.findById(id)?.toImplementsDTO()
     }
 
     override suspend fun save(obj: ImplementsDTO): Long {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return implementDao.save(obj.toImplementsEntity())
     }
 
     override suspend fun delete(obj: ImplementsDTO) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return implementDao.delete(obj.toImplementsEntity())
     }
 
-    override suspend fun saveForJobTypeId(implementsDTO: ImplementsDTO, jobTypeId: Long) {
-        implementDao.save(implementsDTO.toImplementsEntity())
+    override suspend fun saveForJobTypeId(implementsDTO: ImplementsDTO, jobTypeId: Long): Long {
+        val implementsId = implementDao.save(implementsDTO.toImplementsEntity())
         implementDao.saveForJobTypeId(jobTypeId, implementsDTO.oid)
+        return implementsId
     }
 
     override suspend fun findByJobTypeId(jobTypeId: Long): List<ImplementsDTO> {
@@ -36,9 +45,10 @@ class ImplementsLocalSource @Inject constructor(
             .map { implementsEntity -> implementsEntity.toImplementsDTO() }
     }
 
-    override suspend fun saveForMaintenanceJob(implements: ImplementsDTO, maintenanceJobId: Long) {
-        implementDao.save(implements.toImplementsEntity())
+    override suspend fun saveForMaintenanceJob(implements: ImplementsDTO, maintenanceJobId: Long): Long {
+        val implementsId = implementDao.save(implements.toImplementsEntity())
         implementDao.saveForMaintenanceJob(maintenanceJobId, implements.oid)
+        return implementsId
     }
 
     override suspend fun findByMaintenanceJobId(maintenanceJobId: Long): List<ImplementsDTO> {

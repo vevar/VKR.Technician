@@ -9,6 +9,9 @@ interface ImplementDao {
     @Query("SELECT * FROM implementsentity WHERE oid=:id")
     fun findById(id: Long): ImplementsEntity?
 
+    @Query("SELECT * FROM implementsentity")
+    fun findAll(): List<ImplementsEntity>
+
     @Query("SELECT implementsentity.oid, implementsentity.name, implementsentity.currentNumber FROM implementsentity INNER JOIN maintenancejobimplementjoin ON implementsentity.oid=maintenancejobimplementjoin.implements_id WHERE maintenancejobimplementjoin.maintenace_job_id=:maintenanceJobId")
     fun findByMaintenanceJobId(maintenanceJobId: Long): List<ImplementsEntity>
 
@@ -16,7 +19,10 @@ interface ImplementDao {
     fun saveForMaintenanceJob(maintenanceJobId: Long, implementId: Long)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun save(implementsEntity: ImplementsEntity)
+    fun save(implementsEntity: ImplementsEntity): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun saveAll(list: List<ImplementsEntity>): List<Long>
 
     @Query("SELECT implementsentity.oid, implementsentity.name, implementsentity.currentNumber FROM implementsentity INNER JOIN jobtypeimplementsjoin ON implementsentity.oid = jobtypeimplementsjoin.implements_id WHERE jobtypeimplementsjoin.job_type_id=:jobTypeId")
     fun findByJobTypeId(jobTypeId: Long): List<ImplementsEntity>
@@ -26,4 +32,7 @@ interface ImplementDao {
 
     @Delete
     fun delete(implementsEntity: ImplementsEntity)
+
+    @Query("DELETE FROM implementsentity")
+    fun nukeTable()
 }
