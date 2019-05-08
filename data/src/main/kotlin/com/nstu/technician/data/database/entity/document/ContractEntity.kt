@@ -2,20 +2,9 @@ package com.nstu.technician.data.database.entity.document
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
-import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
-@Entity(
-    foreignKeys = [
-        ForeignKey(
-            entity = ContractorEntity::class,
-            parentColumns = ["oid"],
-            childColumns = ["contractor_id"],
-            onDelete = ForeignKey.CASCADE,
-            onUpdate = ForeignKey.CASCADE
-        )
-    ]
-)
+@Entity
 data class ContractEntity(
     @PrimaryKey
     val oid: Long,

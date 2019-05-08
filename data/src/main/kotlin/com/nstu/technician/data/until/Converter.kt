@@ -140,7 +140,7 @@ fun User.toUserDTO(): UserDTO {
     )
 }
 
-fun ArtifactEntity.convertToArtifactDTO(): ArtifactDTO {
+fun ArtifactEntity.toArtifactDTO(): ArtifactDTO {
     return ArtifactDTO(
         oid = oid,
         type = type,
@@ -151,7 +151,7 @@ fun ArtifactEntity.convertToArtifactDTO(): ArtifactDTO {
     )
 }
 
-fun ArtifactDTO.convertToArtifactEntity(): ArtifactEntity {
+fun ArtifactDTO.toArtifactEntity(): ArtifactEntity {
     return ArtifactEntity(
         oid = oid,
         date = date.timeInMS,
@@ -162,7 +162,7 @@ fun ArtifactDTO.convertToArtifactEntity(): ArtifactEntity {
     )
 }
 
-fun ArtifactDTO.convertToArtifact(): Artifact {
+fun ArtifactDTO.toArtifact(): Artifact {
     return Artifact(
         oid = oid,
         date = date,
@@ -218,7 +218,11 @@ fun Address.toAddressDTO(): AddressDTO {
     )
 }
 
-fun FacilityEntity.toFacilityDTO(addressDTO: AddressDTO, contractDTO: ContractDTO, contractorDTO: ContractorDTO): FacilityDTO {
+fun FacilityEntity.toFacilityDTO(
+    addressDTO: AddressDTO,
+    contractDTO: ContractDTO,
+    contractorDTO: ContractorDTO
+): FacilityDTO {
     return FacilityDTO(
         oid = oid,
         name = name,
@@ -237,7 +241,8 @@ fun FacilityDTO.toFacilityEntity(): FacilityEntity {
         addressId = address.location.oid,
         contractId = contract.oid,
         assingmentDate = assingmentDate,
-        identifier = identifier
+        identifier = identifier,
+        contractorId = contractor.oid
     )
 }
 
@@ -258,7 +263,7 @@ fun Facility.toFacilityDTO(): FacilityDTO {
         oid = oid,
         name = name,
         identifier = identifier,
-        contract = contract.let { EntityLink(it.toContractDTO()) },
+        contract = EntityLink(contract.toContractDTO()),
         contractor = EntityLink(contractor.toContractorDTO()),
         address = address.toAddressDTO(),
         assingmentDate = assingmentDate
@@ -315,7 +320,7 @@ fun ImplementUnitDTO.toImplementUnitEntity(): ImplementUnitEntity {
     return ImplementUnitEntity(
         oid = oid,
         code = code,
-        implementsId = impl?.oid
+        implementsId = impl.oid
     )
 }
 
@@ -487,7 +492,7 @@ fun ShiftDTO.ToMiniShift(): MiniShift {
 }
 
 fun ContractEntity.toContractDTO(
-    artifactDTO: ArtifactDTO,
+    artifactDTO: ArtifactDTO
 ): ContractDTO {
     return ContractDTO(
         oid = oid,
@@ -517,7 +522,7 @@ fun ContractDTO.toContract(): Contract {
         number = number,
         docType = docType,
         date = date,
-        artifact = artifact.getObject().convertToArtifact()
+        artifact = artifact.getObject().toArtifact()
     )
 }
 
@@ -610,8 +615,8 @@ fun MaintenanceJobDTO.toMaintenanceJob(): MaintenanceJob {
     return MaintenanceJob(
         oid = oid,
         duration = duration,
-        beginPhoto = beginPhoto?.ref?.convertToArtifact(),
-        endPhoto = endPhoto?.ref?.convertToArtifact(),
+        beginPhoto = beginPhoto?.ref?.toArtifact(),
+        endPhoto = endPhoto?.ref?.toArtifact(),
         jobState = jobState,
         components = components?.map { it.getObject().toComponentUnit() },
         implList = implList.map { it.getObject().toImplements() },
@@ -767,9 +772,9 @@ fun JobType.toJobTypeDTO(): JobTypeDTO {
     )
 }
 
-fun ProblemEntity.toProblemDTO(): ProblemDTO{
+fun ProblemEntity.toProblemDTO(): ProblemDTO {
     return ProblemDTO(
-        oid=oid,
+        oid = oid,
         type = problemType,
         comment = comment
     )
@@ -785,7 +790,7 @@ fun ProblemDTO.toProblem(): Problem {
 
 fun Problem.toProblemDTO(): ProblemDTO {
     return ProblemDTO(
-        oid=oid,
+        oid = oid,
         type = type,
         comment = comment
     )
@@ -795,7 +800,7 @@ fun DocumentDTO.toDocument(): Document {
     return Document(
         oid = oid,
         date = date,
-        artifact = artifact?.getObject()?.convertToArtifact(),
+        artifact = artifact?.getObject()?.toArtifact(),
         docType = docType,
         number = number,
         state = state

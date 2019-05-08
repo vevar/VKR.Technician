@@ -3,6 +3,7 @@ package com.nstu.technician.data.repository
 import com.nstu.technician.data.datasource.entity.CLOUD
 import com.nstu.technician.data.datasource.entity.LOCAL
 import com.nstu.technician.data.datasource.entity.ShiftDataSource
+import com.nstu.technician.data.until.toShiftDTO
 import com.nstu.technician.data.until.toShiftModel
 import com.nstu.technician.domain.exceptions.NotFoundException
 import com.nstu.technician.domain.model.Shift
@@ -18,16 +19,16 @@ class ShiftRepositoryImpl @Inject constructor(
 ) : ShiftRepository {
 
     override suspend fun save(obj: Shift): Shift? {
-        shiftLocalSource.save(obj.to)
+        return shiftLocalSource.save(obj.toShiftDTO()).let { obj.copy(oid = it) }
     }
 
-    override suspend fun delete(id: Long) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override suspend fun delete(obj: Shift) {
+        shiftLocalSource.delete(obj.toShiftDTO())
     }
 
     override suspend fun findById(id: Long): Shift? {
         return (shiftCloudSource.findById(id)?.also { shiftDTO ->
-//            shiftLocalSource.save(shiftDTO)
+            shiftLocalSource.save(shiftDTO)
         })?.toShiftModel()
     }
 
@@ -35,9 +36,10 @@ class ShiftRepositoryImpl @Inject constructor(
         technicianId: Long, startTime: Long, endTime: Long
     ): List<Shift> {
         return shiftCloudSource.findByTechnicianIdAndTimePeriod(technicianId, startTime, endTime).let { shifts ->
-            shifts.map { shiftDTO ->
-                shiftCloudSource.findById(shiftDTO.oid)?.toShiftModel() ?: throw NotFoundException("shift by id(${shiftDTO.oid}) not found")
+            shifts?.map { shiftDTO ->
+                shiftCloudSource.findById(shiftDTO.oid)?.toShiftModel()
+                    ?: throw NotFoundException("shift by id(${shiftDTO.oid}) not found")
             }
-        }
+        } ?: listOf()
     }
 }

@@ -10,7 +10,7 @@ interface GpsDao {
     fun findById(id: Long): GPSEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun save(gpsEntity: GPSEntity)
+    fun save(gpsEntity: GPSEntity): Long
 
     @Delete
     fun delete(gpsEntity: GPSEntity)

@@ -37,7 +37,7 @@ class ComponentUnitLocalSource @Inject constructor(
     }
 
     override suspend fun saveAllForMaintenanceJob(list: List<ComponentUnitDTO>, maintenanceJobDTO: MaintenanceJobDTO) {
-        utilDao.transaction {
+        utilDao.transactionSaveAll {
             val components: MutableSet<ComponentDTO> = mutableSetOf()
             list.forEach {
                 components.add(it.component.getObject())
@@ -45,10 +45,11 @@ class ComponentUnitLocalSource @Inject constructor(
             runBlocking {
                 componentLocalSource.saveAll(components.toList())
             }
-            list.map { componentUnitDTO -> componentUnitDTO.toComponentUnitEntity(maintenanceJobDTO.oid) }
-                .forEach {
-                    componentUnitDao.save(it)
-                }
+            componentUnitDao.saveAll(list.map { componentUnitDTO ->
+                componentUnitDTO.toComponentUnitEntity(
+                    maintenanceJobDTO.oid
+                )
+            })
         }
     }
 }

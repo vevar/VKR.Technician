@@ -8,7 +8,14 @@ import kotlinx.coroutines.runBlocking
 abstract class UtilDao {
 
     @Transaction
-    open fun <T> transaction( function: suspend () -> T): T {
+    open fun transactionSave(function: suspend () -> Long): Long {
+        return runBlocking {
+            function.invoke()
+        }
+    }
+
+    @Transaction
+    open fun transactionSaveAll(function: suspend () -> List<Long>): List<Long> {
         return runBlocking {
             function.invoke()
         }

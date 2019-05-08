@@ -4,8 +4,6 @@ import com.nstu.technician.data.database.entity.user.TechnicianEntity
 import com.nstu.technician.data.database.entity.user.UserEntity
 import com.nstu.technician.data.datasource.local.dao.TechnicianDao
 import com.nstu.technician.data.datasource.local.dao.UserDao
-import com.nstu.technician.data.dto.user.TechnicianDTO
-import com.nstu.technician.data.dto.user.UserDTO
 import dagger.Module
 import dagger.Provides
 
@@ -14,7 +12,7 @@ class FakeDaoModule {
     @Provides
     fun provideUserDao(): UserDao {
         return object : UserDao {
-            override fun insert(user: UserEntity) {
+            override fun save(user: UserEntity): Long {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
@@ -31,7 +29,11 @@ class FakeDaoModule {
     @Provides
     fun provideTechnicianDao(): TechnicianDao {
         return object : TechnicianDao {
-            override fun save(technician: TechnicianEntity) {
+            override fun delete(technician: TechnicianEntity) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun save(technician: TechnicianEntity): Long {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 

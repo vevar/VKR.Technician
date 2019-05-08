@@ -11,7 +11,7 @@ class ComponentTypeLocalSource @Inject constructor(
     private val componentTypeDao: ComponentTypeDao
 ) : ComponentTypeDataSource {
 
-    override suspend fun delete(id: Long) {
+    override suspend fun delete(obj: ComponentTypeDTO) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

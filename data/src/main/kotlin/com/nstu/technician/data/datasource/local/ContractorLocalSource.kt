@@ -17,6 +17,11 @@ class ContractorLocalSource @Inject constructor(
     @Named(LOCAL)
     private val addressLocalSource: AddressDataSource
 ) : ContractorDataSource {
+
+    override suspend fun delete(obj: ContractorDTO) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override suspend fun findById(id: Long): ContractorDTO? {
         return contractorDao.findById(id)?.let { contractorEntity ->
             addressLocalSource.findById(contractorEntity.addressId)?.let { addressDTO ->
@@ -25,8 +30,8 @@ class ContractorLocalSource @Inject constructor(
         }
     }
 
-    override suspend fun save(obj: ContractorDTO) {
-        utilDao.transaction {
+    override suspend fun save(obj: ContractorDTO): Long {
+        return utilDao.transactionSave {
             addressLocalSource.save(obj.address)
             contractorDao.save(obj.toContractorEntity())
         }

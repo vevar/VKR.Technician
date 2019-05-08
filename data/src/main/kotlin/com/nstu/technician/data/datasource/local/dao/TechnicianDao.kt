@@ -9,7 +9,7 @@ interface TechnicianDao {
     fun findByUserId(userId: Long): TechnicianEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun save(technician: TechnicianEntity)
+    fun save(technician: TechnicianEntity): Long
 
     @Delete
     fun delete(technician: TechnicianEntity)

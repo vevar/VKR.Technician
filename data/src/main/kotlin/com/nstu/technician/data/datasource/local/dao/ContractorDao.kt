@@ -9,7 +9,7 @@ interface ContractorDao {
     fun findById(id: Long): ContractorEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun save(contractorEntity: ContractorEntity)
+    fun save(contractorEntity: ContractorEntity):Long
 
     @Delete
     fun delete(contractorEntity: ContractorEntity)

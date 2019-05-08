@@ -65,37 +65,44 @@ class MaintenanceJobLocalSource @Inject constructor(
     }
 
     private suspend fun saveMaintenanceJobDTO(maintenanceJobDTO: MaintenanceJobDTO, maintenanceId: Long) {
-        utilDao.transaction {
-            runBlocking {
-                jobTypeLocalSource.save(maintenanceJobDTO.jobType.getObject())
-                maintenanceJobDTO.implList?.let {
-                    it.map { entityLink -> entityLink.getObject() }
-                        .forEach { implementsDTO ->
-                            implementsLocalSource.saveForMaintenanceJob(implementsDTO, maintenanceJobDTO.oid)
-                        }
-                }
-                maintenanceJobDTO.components?.map { entityLink -> entityLink.getObject() }?.let {
-                    componentUnitLocalSource.saveAllForMaintenanceJob(it, maintenanceJobDTO)
-                }
-                maintenanceJobDTO.beginPhoto?.getObject()?.let {
-                    artifactLocalSource.save(it)
-                }
-                maintenanceJobDTO.endPhoto?.getObject()?.let {
-                    artifactLocalSource.save(it)
-                }
-                maintenanceJobDTO.problem?.getObject()?.let {
-                    problemLocalSource.save(it)
-                }
-            }
+        utilDao.transactionSave {
+            saveMaintenanceJobDependencies(maintenanceJobDTO)
             maintenanceJobDao.save(maintenanceJobDTO.toMaintenanceJobEntity(maintenanceId))
         }
     }
 
-    override suspend fun saveAllForMaintenance(list: List<MaintenanceJobDTO>, maintenanceId: Long) {
-        utilDao.transaction {
-            list.forEach {
-                saveMaintenanceJobDTO(it, maintenanceId)
+    private suspend fun saveMaintenanceJobDependencies(maintenanceJobDTO: MaintenanceJobDTO) {
+        runBlocking {
+            jobTypeLocalSource.save(maintenanceJobDTO.jobType.getObject())
+        }
+        maintenanceJobDTO.implList.let {
+            it.map { entityLink -> entityLink.getObject() }
+                .forEach { implementsDTO ->
+                    implementsLocalSource.saveForMaintenanceJob(implementsDTO, maintenanceJobDTO.oid)
+                }
+        }
+        maintenanceJobDTO.components?.map { entityLink -> entityLink.getObject() }?.let {
+            componentUnitLocalSource.saveAllForMaintenanceJob(it, maintenanceJobDTO)
+        }
+        maintenanceJobDTO.beginPhoto?.getObject()?.let {
+            artifactLocalSource.save(it)
+        }
+        maintenanceJobDTO.endPhoto?.getObject()?.let {
+            artifactLocalSource.save(it)
+        }
+        maintenanceJobDTO.problem?.getObject()?.let {
+            problemLocalSource.save(it)
+        }
+    }
+
+    override suspend fun saveAllForMaintenance(list: List<MaintenanceJobDTO>, maintenanceId: Long): List<Long> {
+        return utilDao.transactionSaveAll {
+            runBlocking {
+                list.forEach {
+                    saveMaintenanceJobDependencies(it)
+                }
             }
+            maintenanceJobDao.saveAll(list.map { it.toMaintenanceJobEntity(maintenanceId) })
         }
     }
 

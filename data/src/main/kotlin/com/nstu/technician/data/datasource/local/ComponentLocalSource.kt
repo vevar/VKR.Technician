@@ -20,12 +20,12 @@ class ComponentLocalSource @Inject constructor(
     private val componentTypeLocalSource: ComponentTypeDataSource
 ) : ComponentDataSource {
 
-    override suspend fun delete(id: Long) {
+    override suspend fun delete(obj: ComponentDTO) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override suspend fun saveAll(list: List<ComponentDTO>) {
-        utilDao.transaction {
+        utilDao.transactionSaveAll {
             val componentsEntities = runBlocking {
                 list.map { componentDTO ->
                     componentTypeLocalSource.save(componentDTO.type.getObject())
@@ -46,7 +46,7 @@ class ComponentLocalSource @Inject constructor(
     }
 
     override suspend fun save(obj: ComponentDTO): Long {
-        return utilDao.transaction {
+        return utilDao.transactionSave {
             runBlocking {
                 componentTypeLocalSource.save(obj.type.getObject())
             }

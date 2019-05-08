@@ -15,19 +15,22 @@ class GPSPointLocalSource @Inject constructor(
     private val gpsDao: GpsDao,
     private val gpsPointFromShiftDao: GPSPointFromShiftDao
 ) : GPSPointDataSource {
-    override fun saveAllForShift(list: List<GPSPointDTO>, shiftId: Long) {
-        utilDao.transaction {
-            list.forEach {
-                gpsPointFromShiftDao.save(it.convertToGPSPointFromShiftEntity(shiftId))
-            }
+
+    override suspend fun delete(obj: GPSPointDTO) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun saveAllForShift(list: List<GPSPointDTO>, shiftId: Long) {
+        utilDao.transactionSaveAll {
+            gpsPointFromShiftDao.saveAll(list.map { it.convertToGPSPointFromShiftEntity(shiftId) })
         }
     }
 
-    override fun saveForShift(gpsPointDTO: GPSPointDTO, shiftId: Long) {
+    override suspend fun saveForShift(gpsPointDTO: GPSPointDTO, shiftId: Long) {
         gpsPointFromShiftDao.save(gpsPointDTO.convertToGPSPointFromShiftEntity(shiftId))
     }
 
-    override fun findByShiftId(shiftId: Long): List<GPSPointDTO> {
+    override suspend fun findByShiftId(shiftId: Long): List<GPSPointDTO> {
         return gpsPointFromShiftDao.findByShiftId(shiftId)
             .map { gpsPointFromShiftEntity -> gpsPointFromShiftEntity.toGpsPointDTO() }
     }
@@ -36,8 +39,8 @@ class GPSPointLocalSource @Inject constructor(
         return gpsDao.findById(id)?.toGpsPointDTO()
     }
 
-    override suspend fun save(obj: GPSPointDTO) {
-        gpsDao.save(obj.convertToGPSEntity())
+    override suspend fun save(obj: GPSPointDTO): Long {
+        return gpsDao.save(obj.convertToGPSEntity())
     }
 
 }

@@ -61,16 +61,16 @@ fun getFacilityDTO(oid: Long): FacilityDTO {
         oid = oid,
         name = "Пушка",
         address = getAddressDTO(378),
-        assingmentDate = getOwnTime()
+        assingmentDate = getOwnTime(),
+        contractor = EntityLink(getContractorDTO(1314)),
+        contract = EntityLink(getContractDTO(1278)),
+        identifier = "andamsdlx"
     )
 }
 
 fun getFacilityDTOWithContractDTO(oid: Long): FacilityDTO {
     val facilityDTO = getFacilityDTO(oid)
     val contractDTO = getContractDTO(372)
-
-    facilityDTO.contract = EntityLink(contractDTO)
-    contractDTO.facility = EntityLink(facilityDTO)
 
     return facilityDTO
 }
@@ -177,7 +177,6 @@ fun getContractDTO(oid: Long): ContractDTO {
     return ContractDTO(
         oid = oid,
         artifact = EntityLink(getArtifactDTO(32, 1)),
-        contractor = EntityLink(getContractorDTO(852)),
         date = getOwnTime(),
         docType = 1,
         number = "123",
@@ -190,8 +189,6 @@ fun getContractDTOWithFacilityDTO(oid: Long): ContractDTO {
 
     val facilityDTO = getFacilityDTO(oid)
 
-    facilityDTO.contract = EntityLink(contractDTO)
-    contractDTO.facility = EntityLink(facilityDTO)
 
     return contractDTO
 }

@@ -10,7 +10,7 @@ interface FacilityDao {
     fun findById(id: Long): FacilityEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun save(facilityEntity: FacilityEntity)
+    fun save(facilityEntity: FacilityEntity): Long
 
     @Delete
     fun delete(facilityEntity: FacilityEntity)

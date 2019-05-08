@@ -9,13 +9,13 @@ interface MaintenanceDao {
     fun findById(id: Long): MaintenanceEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun save(maintenanceEntity: MaintenanceEntity)
+    fun save(maintenanceEntity: MaintenanceEntity): Long
 
     @Query("SELECT * FROM maintenanceentity WHERE shift_id=:shiftId")
     fun findByIdShift(shiftId: Long): List<MaintenanceEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun saveAll(listMaintenance: List<MaintenanceEntity>)
+    fun saveAll(listMaintenance: List<MaintenanceEntity>): List<Long>
 
     @Delete
     fun delete(maintenanceEntity: MaintenanceEntity)

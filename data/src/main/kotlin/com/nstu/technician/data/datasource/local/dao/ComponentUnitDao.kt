@@ -10,7 +10,10 @@ interface ComponentUnitDao {
     fun findByMaintenanceJob(id: Long): List<ComponentUnitEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun save(componentUnitEntity: ComponentUnitEntity)
+    fun save(componentUnitEntity: ComponentUnitEntity): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun saveAll(list: List<ComponentUnitEntity>): List<Long>
 
     @Delete
     fun delete(componentUnitEntity: ComponentUnitEntity)

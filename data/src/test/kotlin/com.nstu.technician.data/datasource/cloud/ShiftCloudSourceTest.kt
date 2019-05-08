@@ -3,9 +3,7 @@ package com.nstu.technician.data.datasource.cloud
 import com.nstu.technician.data.client.NetworkClientTest
 import com.nstu.technician.data.network.retorfit.ApiProvider
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 import java.util.*
@@ -35,7 +33,8 @@ class ShiftCloudSourceTest {
         val shifts = runBlocking {
             shiftCloudSource.findByTechnicianIdAndTimePeriod(2, startTime.timeInMillis, endTime.timeInMillis)
         }
-        assertEquals(5, shifts.size)
+        assertNotEquals(null, shifts)
+        assertEquals(5, shifts?.size)
     }
 
     @Test

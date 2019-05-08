@@ -13,16 +13,15 @@ class TechnicianRepositoryImpl @Inject constructor(
     @Named("Cloud")
     private val cloudTechnicianDataSource: TechnicianDataSource
 ) : TechnicianRepository {
+    override suspend fun delete(obj: Technician) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     override suspend fun save(obj: Technician): Technician? {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override suspend fun findById(id: Long): Technician? {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override suspend fun delete(id: Long) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

@@ -23,7 +23,7 @@ class TechnicianLocalSource @Inject constructor(
     }
 
     override suspend fun save(technician: TechnicianDTO) {
-        utilDao.transaction {
+        utilDao.transactionSave {
             userDataSource.save(technician.user.getObject())
             technicianDao.save(technician.toTechnicianEntity())
         }

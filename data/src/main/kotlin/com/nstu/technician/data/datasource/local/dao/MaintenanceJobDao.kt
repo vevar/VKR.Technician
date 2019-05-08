@@ -7,7 +7,7 @@ import com.nstu.technician.data.database.entity.job.MaintenanceJobEntity
 interface MaintenanceJobDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun save(maintenanceEntity: MaintenanceJobEntity)
+    fun save(maintenanceEntity: MaintenanceJobEntity): Long
 
     @Query("SELECT * FROM maintenancejobentity WHERE oid=:id")
     fun findById(id: Long): MaintenanceJobEntity?
@@ -16,7 +16,7 @@ interface MaintenanceJobDao {
     fun findByMaintenanceId(maintenanceId: Long): List<MaintenanceJobEntity>
 
     @Insert
-    fun saveAll(list: List<MaintenanceJobEntity>)
+    fun saveAll(list: List<MaintenanceJobEntity>): List<Long>
 
     @Delete
     fun delete(maintenanceJobEntity: MaintenanceJobEntity)

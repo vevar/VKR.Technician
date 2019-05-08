@@ -18,11 +18,9 @@ class AddressLocalSource @Inject constructor(
     @Named(LOCAL)
     private val gpsPointDataSource: GPSPointDataSource
 ) : AddressDataSource {
-
-    override suspend fun delete(id: Long) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override suspend fun delete(obj: AddressDTO) {
+        TODO()
     }
-
 
     override suspend fun findById(id: Long): AddressDTO? {
         return addressDao.findById(id)?.let { addressEntity ->
@@ -33,7 +31,7 @@ class AddressLocalSource @Inject constructor(
     }
 
     override suspend fun save(obj: AddressDTO): Long {
-        return utilDao.transaction {
+        return utilDao.transactionSave {
             val gpsPointDTO = obj.location
             val addressId = addressDao.save(obj.toAddressEntity(gpsPointDTO.oid))
             runBlocking {

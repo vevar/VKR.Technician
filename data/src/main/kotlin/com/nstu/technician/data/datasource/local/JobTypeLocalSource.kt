@@ -19,7 +19,7 @@ class JobTypeLocalSource @Inject constructor(
     private val jobTypeDao: JobTypeDao
 ) : JobTypeDataSource {
 
-    override suspend fun delete(id: Long) {
+    override suspend fun delete(obj: JobTypeDTO) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -30,12 +30,13 @@ class JobTypeLocalSource @Inject constructor(
         }
     }
 
-    override suspend fun save(obj: JobTypeDTO) {
-        utilDao.transaction {
-            jobTypeDao.save(obj.toJobTypeEntity())
+    override suspend fun save(obj: JobTypeDTO): Long {
+        return utilDao.transactionSave {
+            val jobTypeId = jobTypeDao.save(obj.toJobTypeEntity())
             obj.impList.map { it.getObject() }.forEach {
                 implementsLocalSource.saveForJobTypeId(it, obj.oid)
             }
+            jobTypeId
         }
     }
 }

@@ -8,5 +8,5 @@ interface CrudRepository<T, ID : Serializable> {
 
     suspend fun findById(id: ID): T?
 
-    suspend fun delete(id: ID)
+    suspend fun delete(obj: T)
 }

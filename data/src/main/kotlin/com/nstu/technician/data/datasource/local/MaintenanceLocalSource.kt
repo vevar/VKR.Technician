@@ -23,11 +23,11 @@ class MaintenanceLocalSource @Inject constructor(
     private val artifactLocalSource: ArtifactDataSource
 ) : MaintenanceDataSource {
 
-    private suspend fun saveToMaintenanceEntity(maintenanceDTO: MaintenanceDTO, shiftId: Long) {
-        utilDao.transaction {
+    private suspend fun saveToMaintenanceEntity(maintenanceDTO: MaintenanceDTO, shiftId: Long): Long {
+        return utilDao.transactionSave {
             runBlocking {
                 facilityLocalSource.save(maintenanceDTO.facility.getObject())
-                maintenanceDTO.jobList?.map { it.getObject() }?.let { jobs ->
+                maintenanceDTO.jobList.map { it.getObject() }.let { jobs ->
                     maintenanceJobLocalSource.saveAllForMaintenance(jobs, maintenanceDTO.oid)
                     maintenanceDTO.voiceMassage?.getObject()?.let {
                         artifactLocalSource.save(it)
@@ -63,17 +63,17 @@ class MaintenanceLocalSource @Inject constructor(
         }
     }
 
-    override suspend fun saveForShift(maintenanceDTO: MaintenanceDTO, shiftId: Long) {
-        saveToMaintenanceEntity(maintenanceDTO, shiftId)
+    override suspend fun saveForShift(maintenanceDTO: MaintenanceDTO, shiftId: Long): Long {
+        return saveToMaintenanceEntity(maintenanceDTO, shiftId)
     }
 
-    override suspend fun saveAllForShift(listMaintenance: List<MaintenanceDTO>, shiftId: Long) {
-        utilDao.transaction {
-            listMaintenance.apply {
-                forEach { maintenanceDTO ->
-                    saveToMaintenanceEntity(maintenanceDTO, shiftId)
-                }
+    override suspend fun saveAllForShift(listMaintenance: List<MaintenanceDTO>, shiftId: Long): List<Long> {
+        return utilDao.transactionSaveAll {
+            listMaintenance.forEach {
+                saveToMaintenanceEntity(it, shiftId)
             }
+            maintenanceDao.saveAll(listMaintenance.map { it.toMaintenanceEntity(shiftId) })
         }
+
     }
 }

@@ -10,7 +10,7 @@ interface JobTypeDao {
     fun findById(id: Long): JobTypeEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun save(jobTypeEntity: JobTypeEntity)
+    fun save(jobTypeEntity: JobTypeEntity):Long
 
     @Delete
     fun delete(jobTypeEntity: JobTypeEntity)

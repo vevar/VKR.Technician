@@ -7,11 +7,11 @@ import javax.inject.Inject
 class MaintenanceRepositoryImpl @Inject constructor(
 
 ) : MaintenanceRepository {
-    override suspend fun save(obj: Maintenance): Maintenance? {
+    override suspend fun delete(obj: Maintenance) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun delete(id: Long) {
+    override suspend fun save(obj: Maintenance): Maintenance{
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

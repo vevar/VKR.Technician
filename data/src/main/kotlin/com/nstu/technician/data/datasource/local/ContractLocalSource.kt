@@ -20,7 +20,7 @@ class ContractLocalSource @Inject constructor(
     private val artifactLocalSource: ArtifactDataSource
 ) : ContractDataSource {
 
-    override suspend fun delete(id: Long) {
+    override suspend fun delete(obj: ContractDTO) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -33,7 +33,7 @@ class ContractLocalSource @Inject constructor(
     }
 
     override suspend fun save(obj: ContractDTO): Long {
-        return utilDao.transaction {
+        return utilDao.transactionSave {
             runBlocking {
                 artifactLocalSource.save(obj.artifact.getObject())
             }

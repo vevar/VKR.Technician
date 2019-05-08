@@ -10,7 +10,7 @@ interface ShiftDao {
     fun findById(id: Long): ShiftEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun save(shiftEntity: ShiftEntity)
+    fun save(shiftEntity: ShiftEntity): Long
 
     @Delete
     fun delete(shiftEntity: ShiftEntity)

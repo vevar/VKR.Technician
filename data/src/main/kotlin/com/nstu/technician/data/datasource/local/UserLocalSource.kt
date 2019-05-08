@@ -20,6 +20,10 @@ class UserLocalSource @Inject constructor(
     private val accountLocalSource: AccountDataSource
 ) : UserDataSource {
 
+    override suspend fun delete(obj: UserDTO) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override suspend fun findById(id: Long): UserDTO? {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
@@ -34,9 +38,9 @@ class UserLocalSource @Inject constructor(
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun save(obj: UserDTO) {
-        utilDao.transaction {
-            accountLocalSource.save(obj.account.getObject())
+    override suspend fun save(obj: UserDTO): Long {
+        return utilDao.transactionSave {
+            accountLocalSource.save(obj.account?.getObject() ?: throw IllegalStateException("Account must be set"))
             userDao.save(obj.toUserEntity())
         }
     }

@@ -15,5 +15,6 @@ data class FacilityEntity(
     val name: String,
     @ColumnInfo(name = "address_id") val addressId: Long,
     @Embedded val assingmentDate: OwnDateTime,
-    @ColumnInfo(name = "contract_id") val contractId: Long? = null
+    @ColumnInfo(name = "contract_id") val contractId: Long? = null,
+    @ColumnInfo(name = "contractor_id") val contractorId: Long
 )

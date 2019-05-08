@@ -21,6 +21,11 @@ class ShiftLocalSource @Inject constructor(
     @Named(LOCAL)
     private val maintenanceLocalSource: MaintenanceDataSource
 ) : ShiftDataSource {
+
+    override suspend fun delete(obj: ShiftDTO) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override suspend fun findByTechnicianIdAndTimePeriod(
         technicianId: Long,
         startTime: Long,
@@ -36,15 +41,16 @@ class ShiftLocalSource @Inject constructor(
         return shiftDao.findById(id)?.convertToShiftDTO(points, visits)
     }
 
-    override suspend fun save(shiftDTO: ShiftDTO) {
-        utilDao.transaction {
-            shiftDao.save(shiftDTO.toShiftEntity())
-            shiftDTO.points?.map { it.getObject() }?.let {
-                gpsPointLocalSource.saveAllForShift(it, shiftDTO.oid)
+    override suspend fun save(obj: ShiftDTO): Long {
+        return utilDao.transactionSave {
+            val shiftId = shiftDao.save(obj.toShiftEntity())
+            obj.points.map { it.getObject() }.let {
+                gpsPointLocalSource.saveAllForShift(it, obj.oid)
             }
-            shiftDTO.visits?.map { it.getObject() }?.let {
-                maintenanceLocalSource.saveAllForShift(it, shiftDTO.oid)
+            obj.visits.map { it.getObject() }.let {
+                maintenanceLocalSource.saveAllForShift(it, obj.oid)
             }
+            shiftId
         }
     }
 }
