@@ -1,9 +1,6 @@
 package com.nstu.technician.data.datasource.local.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.nstu.technician.data.database.entity.job.MaintenanceJobEntity
 
 @Dao
@@ -20,4 +17,7 @@ interface MaintenanceJobDao {
 
     @Insert
     fun saveAll(list: List<MaintenanceJobEntity>)
+
+    @Delete
+    fun delete(maintenanceJobEntity: MaintenanceJobEntity)
 }

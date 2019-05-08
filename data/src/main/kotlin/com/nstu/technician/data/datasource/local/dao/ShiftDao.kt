@@ -12,4 +12,6 @@ interface ShiftDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun save(shiftEntity: ShiftEntity)
 
+    @Delete
+    fun delete(shiftEntity: ShiftEntity)
 }

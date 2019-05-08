@@ -1,9 +1,6 @@
 package com.nstu.technician.data.datasource.local.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.nstu.technician.data.database.entity.tool.ImplementsEntity
 
 @Dao
@@ -26,4 +23,7 @@ interface ImplementDao {
 
     @Query("INSERT INTO jobtypeimplementsjoin(job_type_id, implements_id) SELECT :jobTypeId, :implementId WHERE CASE WHEN NOT EXISTS (SELECT * FROM jobtypeimplementsjoin WHERE job_type_id=:jobTypeId AND implements_id=:implementId) THEN 'TRUE' ELSE 'FALSE' END='TRUE'")
     fun saveForJobTypeId(jobTypeId: Long, implementId: Long)
+
+    @Delete
+    fun delete(implementsEntity: ImplementsEntity)
 }
