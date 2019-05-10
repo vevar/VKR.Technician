@@ -3,9 +3,11 @@ package com.nstu.technician.data.datasource.local
 import com.nstu.technician.data.database.AppDataBase
 import com.nstu.technician.data.datasource.entity.ComponentTypeDataSource
 import com.nstu.technician.data.dto.getComponentTypeDTO
+import com.nstu.technician.data.dto.getListSomeObject
 import com.nstu.technician.data.dto.getRandomId
 import com.nstu.technician.data.util.DataBaseProvider
 import com.nstu.technician.data.util.DataSourceComponentBuilder
+import com.nstu.technician.domain.exceptions.NotFoundException
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -35,7 +37,7 @@ class ComponentTypeLocalSourceTest {
 
     @Test
     fun writeAndFindById() {
-        val expected = getComponentTypeDTO(47)
+        val expected = getComponentTypeDTO(getRandomId())
         runBlocking {
             componentTypeLocalSource.save(expected)
         }
@@ -48,26 +50,22 @@ class ComponentTypeLocalSourceTest {
     }
 
     @Test
-    fun delete_obj_ReturnsNull() {
+    fun delete_obj_throwNotFoundException() {
         val componentTypeId = getRandomId()
         runBlocking { componentTypeLocalSource.save(getComponentTypeDTO(componentTypeId)) }
-        // TODO need replace IllegalStateException
         val componentTypeDTO = runBlocking { componentTypeLocalSource.findById(componentTypeId) }
-            ?: throw IllegalStateException("Not found")
         runBlocking { componentTypeLocalSource.delete(componentTypeDTO) }
-        val actual = runBlocking { componentTypeLocalSource.findById(componentTypeId) }
-        assertEquals(null, actual)
+        try {
+            runBlocking { componentTypeLocalSource.findById(componentTypeId) }
+        } catch (exception: NotFoundException) {
+        }
     }
 
     @Test
-    fun deleteAll_ReturnsEmptyList(){
-        val componentTypeId = getRandomId()
-        runBlocking { componentTypeLocalSource.save(getComponentTypeDTO(componentTypeId)) }
-        // TODO need replace IllegalStateException
-        val componentTypeDTO = runBlocking { componentTypeLocalSource.findById(componentTypeId) }
-            ?: throw IllegalStateException("Not found")
-        runBlocking { componentTypeLocalSource.delete(componentTypeDTO) }
-        val actual = runBlocking { componentTypeLocalSource.findById(componentTypeId) }
-        assertEquals(null, actual)
+    fun deleteAll_ReturnsEmptyList() {
+        runBlocking { componentTypeLocalSource.saveAll(getListSomeObject { getComponentTypeDTO(it) }) }
+        runBlocking { componentTypeLocalSource.deleteAll() }
+        val actual = runBlocking { componentTypeLocalSource.findAll() }
+        assertEquals(0, actual.size)
     }
 }

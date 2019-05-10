@@ -15,10 +15,15 @@ class FacilityRepositoryImpl @Inject constructor(
     @Named(LOCAL)
     private val facilityLocalSource: FacilityDataSource
 ) : FacilityRepository {
+    override suspend fun save(obj: Facility): Facility? {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
-    override suspend fun findById(id: Long): Facility? {
-        return (facilityLocalSource.findById(id) ?: facilityCloudSource.findById(id)?.also { facilityDTO ->
-            facilityLocalSource.save(facilityDTO)
-        })?.toFacility()
+    override suspend fun delete(obj: Facility) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun findById(id: Long): Facility {
+        return facilityLocalSource.findById(id).toFacility()
     }
 }

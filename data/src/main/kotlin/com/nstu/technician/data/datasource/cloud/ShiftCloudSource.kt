@@ -1,5 +1,6 @@
 package com.nstu.technician.data.datasource.cloud
 
+import com.nstu.technician.data.BODY_MUST_BE_SET
 import com.nstu.technician.data.datasource.cloud.api.ShiftApi
 import com.nstu.technician.data.datasource.entity.ShiftDataSource
 import com.nstu.technician.data.dto.job.ShiftDTO
@@ -21,8 +22,8 @@ class ShiftCloudSource @Inject constructor(
         TODO()
     }
 
-    override suspend fun findById(id: Long): ShiftDTO? {
-        return shiftApi.getShiftFull(id, DEFAULT_LEVEL).execute().body()
+    override suspend fun findById(id: Long): ShiftDTO {
+        return shiftApi.getShiftFull(id, DEFAULT_LEVEL).execute().body()?: throw IllegalStateException(BODY_MUST_BE_SET)
     }
 
     override suspend fun findByTechnicianIdAndTimePeriod(

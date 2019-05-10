@@ -6,7 +6,7 @@ interface CrudRepository<T, ID : Serializable> {
 
     suspend fun save(obj: T): T?
 
-    suspend fun findById(id: ID): T?
+    suspend fun findById(id: ID): T
 
     suspend fun delete(obj: T)
 }

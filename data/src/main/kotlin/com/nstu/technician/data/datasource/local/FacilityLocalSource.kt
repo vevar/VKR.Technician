@@ -10,6 +10,7 @@ import com.nstu.technician.data.dto.job.FacilityDTO
 import com.nstu.technician.data.until.getObject
 import com.nstu.technician.data.until.toFacilityDTO
 import com.nstu.technician.data.until.toFacilityEntity
+import com.nstu.technician.domain.exceptions.NotFoundException
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import javax.inject.Named
@@ -25,11 +26,15 @@ class FacilityLocalSource @Inject constructor(
     private val contractorLocalSource: ContractorDataSource
 ) : FacilityDataSource {
 
+    companion object {
+        private const val TAG = "FacilityLocalSource"
+    }
+
     override suspend fun delete(obj: FacilityDTO) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun findById(id: Long): FacilityDTO? {
+    override suspend fun findById(id: Long): FacilityDTO {
         return facilityDao.findById(id)?.let { facilityEntity ->
             var addressDTO: AddressDTO? = null
             var contractorDTO: ContractorDTO? = null
@@ -39,12 +44,8 @@ class FacilityLocalSource @Inject constructor(
                 contractorDTO = contractorLocalSource.findById(facilityEntity.contractorId)
                 contractDTO = facilityEntity.contractId?.let { contractLocalSource.findById(it) }
             }
-            if (addressDTO != null && contractorDTO != null && contractDTO != null) {
-                facilityEntity.toFacilityDTO(addressDTO!!, contractDTO!!, contractorDTO!!)
-            } else {
-                null
-            }
-        }
+            facilityEntity.toFacilityDTO(addressDTO!!, contractDTO!!, contractorDTO!!)
+        } ?: throw NotFoundException(TAG, "FacilityDTO by id($id)")
     }
 
 

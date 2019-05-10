@@ -383,7 +383,8 @@ fun GPSPoint.toGpsPointDTO(): GPSPointDTO {
     )
 }
 
-fun MaintenanceEntity.toMaintenanceDTO(
+fun MaintenanceEntity.
+        toMaintenanceDTO(
     facilityDTO: FacilityDTO,
     jobList: List<MaintenanceJobDTO>,
     parent: MaintenanceDTO?,
@@ -574,9 +575,9 @@ fun Contractor.toContractorDTO(): ContractorDTO {
 }
 
 fun MaintenanceJobEntity.toMaintenanceJobDTO(
-    jobTypeDTO: JobTypeDTO,
-    components: List<ComponentUnitDTO>,
-    implList: List<ImplementsDTO>,
+    jobTypeDTO: JobTypeDTO?,
+    components: List<ComponentUnitDTO>?,
+    implList: List<ImplementsDTO>?,
     beginPhoto: ArtifactDTO?,
     endPhoto: ArtifactDTO?,
     problemDTO: ProblemDTO?
@@ -587,12 +588,12 @@ fun MaintenanceJobEntity.toMaintenanceJobDTO(
         duration = duration,
         beginTime = beginTime?.let { OwnDateTime(it) },
         jobState = jobState,
-        jobType = EntityLink(jobTypeDTO),
+        jobType = EntityLink(jobTypeDTO ?: throw IllegalStateException("jobTypeDTO must be set")),
         beginPhoto = beginPhoto?.let { EntityLink(it) },
         endPhoto = endPhoto?.let { EntityLink(it) },
         problem = problemDTO?.let { EntityLink(it) },
-        components = components.map { EntityLink(it) },
-        implList = implList.map { EntityLink(it) }
+        components = components?.map { EntityLink(it) } ?: throw IllegalStateException("components must be set"),
+        implList = implList?.map { EntityLink(it) } ?: throw IllegalStateException("implList must be set")
     )
 }
 
@@ -618,7 +619,7 @@ fun MaintenanceJobDTO.toMaintenanceJob(): MaintenanceJob {
         beginPhoto = beginPhoto?.ref?.toArtifact(),
         endPhoto = endPhoto?.ref?.toArtifact(),
         jobState = jobState,
-        components = components?.map { it.getObject().toComponentUnit() },
+        components = components.map { it.getObject().toComponentUnit() },
         implList = implList.map { it.getObject().toImplements() },
         problem = problem?.ref?.toProblem(),
         jobType = jobType.getObject().toJobType(),
@@ -637,7 +638,7 @@ fun MaintenanceJob.toMaintenanceJobDTO(): MaintenanceJobDTO {
         problem = problem?.let { EntityLink(it.toProblemDTO()) },
         implList = implList.map { EntityLink(it.toImplementsDTO()) },
         jobState = jobState,
-        components = components?.map { EntityLink(it.toComponentUnitDTO()) },
+        components = components.map { EntityLink(it.toComponentUnitDTO()) },
         endPhoto = endPhoto?.let { EntityLink(it.toArtifactDTO()) },
         beginPhoto = beginPhoto?.let { EntityLink(it.toArtifactDTO()) }
     )

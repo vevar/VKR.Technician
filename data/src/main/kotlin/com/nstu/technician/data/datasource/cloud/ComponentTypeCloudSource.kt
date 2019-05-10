@@ -1,5 +1,6 @@
 package com.nstu.technician.data.datasource.cloud
 
+import com.nstu.technician.data.BODY_MUST_BE_SET
 import com.nstu.technician.data.datasource.cloud.api.ComponentTypeApi
 import com.nstu.technician.data.datasource.entity.ComponentTypeDataSource
 import com.nstu.technician.data.dto.tool.ComponentTypeDTO
@@ -9,9 +10,8 @@ class ComponentTypeCloudSource @Inject constructor(
     private val componentTypeApi: ComponentTypeApi
 ) : ComponentTypeDataSource {
 
-    override suspend fun findById(id: Long): ComponentTypeDTO? {
-        return componentTypeApi.getComponentType(id).execute().body()
-            ?: throw IllegalStateException("(findById): ComponentTypeDTO not found ")
+    override suspend fun findById(id: Long): ComponentTypeDTO {
+        return componentTypeApi.getComponentType(id).execute().body() ?: throw IllegalStateException(BODY_MUST_BE_SET)
     }
 
     override suspend fun save(obj: ComponentTypeDTO): Long {
@@ -23,8 +23,7 @@ class ComponentTypeCloudSource @Inject constructor(
     }
 
     override suspend fun findAll(): List<ComponentTypeDTO> {
-        return componentTypeApi.getComponentTypeList().execute().body()
-            ?: throw IllegalStateException("(findAll): ComponentTypeDTO not found ")
+        return componentTypeApi.getComponentTypeList().execute().body() ?: throw IllegalStateException(BODY_MUST_BE_SET)
     }
 
     override suspend fun saveAll(list: List<ComponentTypeDTO>): List<Long> {

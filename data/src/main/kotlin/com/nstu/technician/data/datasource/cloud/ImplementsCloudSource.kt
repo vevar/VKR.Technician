@@ -1,5 +1,6 @@
 package com.nstu.technician.data.datasource.cloud
 
+import com.nstu.technician.data.BODY_MUST_BE_SET
 import com.nstu.technician.data.datasource.cloud.api.ImplementsApi
 import com.nstu.technician.data.datasource.entity.ImplementsDataSource
 import com.nstu.technician.data.dto.tool.ImplementsDTO
@@ -18,12 +19,11 @@ class ImplementsCloudSource @Inject constructor(
     }
 
     override suspend fun findAll(): List<ImplementsDTO> {
-        return implementsApi.getImplementsList().execute().body()
-            ?: throw IllegalStateException("(findAll): ImplementsDTO not found ")
+        return implementsApi.getImplementsList().execute().body() ?: throw IllegalStateException(BODY_MUST_BE_SET)
     }
 
-    override suspend fun findById(id: Long): ImplementsDTO? {
-        return implementsApi.getImplements(id).execute().body()
+    override suspend fun findById(id: Long): ImplementsDTO {
+        return implementsApi.getImplements(id).execute().body() ?: throw IllegalStateException(BODY_MUST_BE_SET)
     }
 
     override suspend fun save(obj: ImplementsDTO): Long {

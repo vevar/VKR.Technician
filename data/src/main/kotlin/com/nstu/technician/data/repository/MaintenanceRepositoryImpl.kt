@@ -15,7 +15,7 @@ class MaintenanceRepositoryImpl @Inject constructor(
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun findById(id: Long): Maintenance? {
+    override suspend fun findById(id: Long): Maintenance {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

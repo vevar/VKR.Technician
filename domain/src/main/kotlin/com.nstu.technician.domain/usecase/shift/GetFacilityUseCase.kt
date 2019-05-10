@@ -1,6 +1,5 @@
 package com.nstu.technician.domain.usecase.shift
 
-import com.nstu.technician.domain.exceptions.NotFoundException
 import com.nstu.technician.domain.model.facility.Facility
 import com.nstu.technician.domain.repository.FacilityRepository
 import com.nstu.technician.domain.usecase.UseCase
@@ -11,7 +10,7 @@ class GetFacilityUseCase @Inject constructor(
 ) : UseCase<Facility, GetFacilityUseCase.Param>() {
 
     override suspend fun task(param: Param): Facility {
-        return facilityRepository.findById(param.idFacility) ?: throw NotFoundException("Facility not found")
+        return facilityRepository.findById(param.idFacility)
     }
 
         class Param private constructor(

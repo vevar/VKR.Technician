@@ -1,6 +1,5 @@
 package com.nstu.technician.domain.usecase.shift
 
-import com.nstu.technician.domain.exceptions.NotFoundException
 import com.nstu.technician.domain.model.Shift
 import com.nstu.technician.domain.repository.ShiftRepository
 import com.nstu.technician.domain.usecase.UseCase
@@ -14,7 +13,7 @@ class GetShiftUseCase @Inject constructor(
     }
 
     override suspend fun task(param: Param): Shift {
-        return shiftRepository.findById(param.shiftId) ?: throw NotFoundException("$TAG: Shift by id not found")
+        return shiftRepository.findById(param.shiftId)
     }
 
     class Param private constructor(

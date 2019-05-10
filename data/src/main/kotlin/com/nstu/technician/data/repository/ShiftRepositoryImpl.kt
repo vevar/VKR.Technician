@@ -5,7 +5,6 @@ import com.nstu.technician.data.datasource.entity.LOCAL
 import com.nstu.technician.data.datasource.entity.ShiftDataSource
 import com.nstu.technician.data.until.toShiftDTO
 import com.nstu.technician.data.until.toShiftModel
-import com.nstu.technician.domain.exceptions.NotFoundException
 import com.nstu.technician.domain.model.Shift
 import com.nstu.technician.domain.repository.ShiftRepository
 import javax.inject.Inject
@@ -26,10 +25,10 @@ class ShiftRepositoryImpl @Inject constructor(
         shiftLocalSource.delete(obj.toShiftDTO())
     }
 
-    override suspend fun findById(id: Long): Shift? {
-        return (shiftCloudSource.findById(id)?.also { shiftDTO ->
+    override suspend fun findById(id: Long): Shift {
+        return (shiftCloudSource.findById(id).also { shiftDTO ->
             shiftLocalSource.save(shiftDTO)
-        })?.toShiftModel()
+        }).toShiftModel()
     }
 
     override suspend fun findByTechnicianIdAndTimePeriod(
@@ -37,8 +36,7 @@ class ShiftRepositoryImpl @Inject constructor(
     ): List<Shift> {
         return shiftCloudSource.findByTechnicianIdAndTimePeriod(technicianId, startTime, endTime).let { shifts ->
             shifts?.map { shiftDTO ->
-                shiftCloudSource.findById(shiftDTO.oid)?.toShiftModel()
-                    ?: throw NotFoundException("shift by id(${shiftDTO.oid}) not found")
+                shiftCloudSource.findById(shiftDTO.oid).toShiftModel()
             }
         } ?: listOf()
     }

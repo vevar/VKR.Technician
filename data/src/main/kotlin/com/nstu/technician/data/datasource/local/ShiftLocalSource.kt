@@ -10,6 +10,7 @@ import com.nstu.technician.data.dto.job.ShiftDTO
 import com.nstu.technician.data.until.convertToShiftDTO
 import com.nstu.technician.data.until.getObject
 import com.nstu.technician.data.until.toShiftEntity
+import com.nstu.technician.domain.exceptions.NotFoundException
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -21,6 +22,10 @@ class ShiftLocalSource @Inject constructor(
     @Named(LOCAL)
     private val maintenanceLocalSource: MaintenanceDataSource
 ) : ShiftDataSource {
+
+    companion object{
+        const val TAG = "ShiftLocalSource"
+    }
 
     override suspend fun delete(obj: ShiftDTO) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -34,11 +39,11 @@ class ShiftLocalSource @Inject constructor(
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun findById(id: Long): ShiftDTO? {
+    override suspend fun findById(id: Long): ShiftDTO {
         val visits = maintenanceLocalSource.findByShiftId(id)
         val points = gpsPointLocalSource.findByShiftId(id)
 
-        return shiftDao.findById(id)?.convertToShiftDTO(points, visits)
+        return shiftDao.findById(id)?.convertToShiftDTO(points, visits) ?: throw NotFoundException(TAG, "ShiftDTO by id($id)")
     }
 
     override suspend fun save(obj: ShiftDTO): Long {

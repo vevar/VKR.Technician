@@ -8,6 +8,7 @@ import com.nstu.technician.data.dto.user.TechnicianDTO
 import com.nstu.technician.data.until.getObject
 import com.nstu.technician.data.until.toTechnicianDTO
 import com.nstu.technician.data.until.toTechnicianEntity
+import com.nstu.technician.domain.exceptions.NotFoundException
 import javax.inject.Inject
 
 class TechnicianLocalSource @Inject constructor(
@@ -16,10 +17,14 @@ class TechnicianLocalSource @Inject constructor(
     private val userDataSource: UserDataSource
 ) : TechnicianDataSource {
 
-    override suspend fun findByUserId(userId: Long): TechnicianDTO? {
-        return userDataSource.findById(userId)?.let { userDTO ->
+    companion object {
+        const val TAG = "TechnicianLocalSource"
+    }
+
+    override suspend fun findByUserId(userId: Long): TechnicianDTO {
+        return userDataSource.findById(userId).let { userDTO ->
             technicianDao.findByUserId(userId)?.toTechnicianDTO(userDTO)
-        }
+        } ?: throw NotFoundException(TAG, "ContractDTO by userId($userId)")
     }
 
     override suspend fun save(technician: TechnicianDTO) {

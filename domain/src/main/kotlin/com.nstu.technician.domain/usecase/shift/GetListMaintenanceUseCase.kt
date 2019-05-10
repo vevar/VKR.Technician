@@ -1,6 +1,5 @@
 package com.nstu.technician.domain.usecase.shift
 
-import com.nstu.technician.domain.exceptions.NotFoundException
 import com.nstu.technician.domain.model.facility.maintenance.Maintenance
 import com.nstu.technician.domain.repository.ShiftRepository
 import com.nstu.technician.domain.usecase.UseCase
@@ -11,7 +10,7 @@ class GetListMaintenanceUseCase @Inject constructor(
 ) : UseCase<List<Maintenance>, GetListMaintenanceUseCase.Param>() {
 
     override suspend fun task(param: Param): List<Maintenance> {
-        val shift = shiftRepository.findById(param.idShift) ?: throw NotFoundException("Shift not found")
+        val shift = shiftRepository.findById(param.idShift)
 
         return shift.visits
     }

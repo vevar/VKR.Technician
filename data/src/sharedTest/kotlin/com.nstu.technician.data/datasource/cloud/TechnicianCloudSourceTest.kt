@@ -1,7 +1,6 @@
 package com.nstu.technician.data.datasource.cloud
 
 import com.nstu.technician.data.client.NetworkClientTest
-import com.nstu.technician.data.dto.EntityLink
 import com.nstu.technician.data.dto.user.AccountDTO
 import com.nstu.technician.data.dto.user.TechnicianDTO
 import com.nstu.technician.data.dto.user.UserDTO
@@ -14,7 +13,6 @@ import com.nstu.technician.domain.exceptions.UnauthorizedException
 import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotEquals
 import org.junit.Before
 import org.junit.Test
 
@@ -38,14 +36,9 @@ class TechnicianCloudSourceTest {
 
     @Test
     fun findById_CorrectUser_ReturnsTechnician() {
-        val technician = runBlocking {
-            technicianCloudSource.findByUserId(correctUser.oid)
-        }
-        assertNotEquals(null, technician)
-        val user = correctUser.copy()
-        user.sessionToken = ""
-        val correctTechnician = TechnicianDTO(2, EntityLink(user.oid,user),1)
-        assertEquals(correctTechnician, technician)
+        val actual = runBlocking { technicianCloudSource.findByUserId(correctUser.oid) }.user.oid
+        val user = correctUser.copy(sessionToken = "")
+        assertEquals(correctUser.oid, actual)
     }
 
     @Test

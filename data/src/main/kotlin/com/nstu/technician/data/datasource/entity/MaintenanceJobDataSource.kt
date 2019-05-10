@@ -10,5 +10,5 @@ interface MaintenanceJobDataSource {
 
     suspend fun saveAllForMaintenance(list: List<MaintenanceJobDTO>, maintenanceId: Long): List<Long>
 
-    suspend fun findById(id: Long): MaintenanceJobDTO?
+    suspend fun findById(id: Long): MaintenanceJobDTO
 }

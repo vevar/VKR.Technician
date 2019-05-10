@@ -18,7 +18,7 @@ data class MaintenanceJobDTO(
     val beginPhoto: EntityLink<ArtifactDTO>? = null,
     val endPhoto: EntityLink<ArtifactDTO>? = null,
     val implList: List<EntityLink<ImplementsDTO>>,
-    val components: List<EntityLink<ComponentUnitDTO>>? = null,
+    val components: List<EntityLink<ComponentUnitDTO>>,
     val duration: Int? = null,  // in minutes
     val problem: EntityLink<ProblemDTO>? = null
 ) : EntityDTO(oid) {
@@ -51,8 +51,8 @@ data class MaintenanceJobDTO(
         result = 31 * result + (endTime?.hashCode() ?: 0)
         result = 31 * result + (beginPhoto?.hashCode() ?: 0)
         result = 31 * result + (endPhoto?.hashCode() ?: 0)
-        result = 31 * result + (implList?.hashCode() ?: 0)
-        result = 31 * result + (components?.hashCode() ?: 0)
+        result = 31 * result + implList.hashCode()
+        result = 31 * result + components.hashCode()
         result = 31 * result + (duration ?: 0)
         result = 31 * result + (problem?.hashCode() ?: 0)
         return result

@@ -1,7 +1,7 @@
 package com.nstu.technician.data.network.interceptor
 
 import com.nstu.technician.data.network.constant.HEADER_SESSION_TOKEN
-import com.nstu.technician.data.network.constant.UNAUTHORIZED
+import com.nstu.technician.data.network.constant.UNAUTHORIZED_CODE
 import com.nstu.technician.data.network.token.AccessTokenProvider
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
@@ -25,7 +25,7 @@ AccessTokenInterceptor @Inject constructor(
                 .addHeader(HEADER_SESSION_TOKEN, "$token")
                 .build()
             val response = chain.proceed(authenticatedRequest)
-            if (response.code() == UNAUTHORIZED) {
+            if (response.code() == UNAUTHORIZED_CODE) {
                 token = runBlocking { tokenProvider.refreshToken() }
                 val repeatRequest = chain.request()
                     .newBuilder()

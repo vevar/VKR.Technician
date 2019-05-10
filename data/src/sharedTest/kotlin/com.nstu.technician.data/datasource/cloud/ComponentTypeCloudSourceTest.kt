@@ -22,7 +22,7 @@ class ComponentTypeCloudSourceTest {
     fun findById_2_ReturnsComponentTypeDTO() {
         val expected = 2L
         val actual = runBlocking { componentTypeCloudSource.findById(expected) }
-        assertEquals(expected, actual?.oid)
+        assertEquals(expected, actual.oid)
     }
 
     @Test

@@ -8,6 +8,6 @@ data class UserDTO(
     val lastName: String,
     val firstName: String,
     val middleName: String,
-    var sessionToken: String,
+    val sessionToken: String,
     val account: EntityLink<AccountDTO>?
 ):EntityDTO(oid)

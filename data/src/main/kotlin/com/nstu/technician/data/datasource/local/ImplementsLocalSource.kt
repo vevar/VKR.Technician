@@ -5,11 +5,17 @@ import com.nstu.technician.data.datasource.local.dao.ImplementDao
 import com.nstu.technician.data.dto.tool.ImplementsDTO
 import com.nstu.technician.data.until.toImplementsDTO
 import com.nstu.technician.data.until.toImplementsEntity
+import com.nstu.technician.domain.exceptions.NotFoundException
 import javax.inject.Inject
 
 class ImplementsLocalSource @Inject constructor(
     private val implementDao: ImplementDao
 ) : ImplementsDataSource {
+
+    companion object{
+        private const val TAG = "ImplementsLocalSource"
+    }
+
     override suspend fun saveAll(list: List<ImplementsDTO>): List<Long> {
         return implementDao.saveAll(list.map { it.toImplementsEntity() })
     }
@@ -22,8 +28,8 @@ class ImplementsLocalSource @Inject constructor(
         return implementDao.findAll().map { it.toImplementsDTO() }
     }
 
-    override suspend fun findById(id: Long): ImplementsDTO? {
-        return implementDao.findById(id)?.toImplementsDTO()
+    override suspend fun findById(id: Long): ImplementsDTO {
+        return implementDao.findById(id)?.toImplementsDTO()?: throw NotFoundException(TAG, "ContractDTO by id($id)")
     }
 
     override suspend fun save(obj: ImplementsDTO): Long {

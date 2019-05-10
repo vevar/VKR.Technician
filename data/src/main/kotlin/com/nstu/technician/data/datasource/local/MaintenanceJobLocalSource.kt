@@ -13,6 +13,7 @@ import com.nstu.technician.data.dto.tool.ImplementsDTO
 import com.nstu.technician.data.until.getObject
 import com.nstu.technician.data.until.toMaintenanceJobDTO
 import com.nstu.technician.data.until.toMaintenanceJobEntity
+import com.nstu.technician.domain.exceptions.NotFoundException
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import javax.inject.Named
@@ -32,6 +33,10 @@ class MaintenanceJobLocalSource @Inject constructor(
     private val problemLocalSource: ProblemDataSource
 ) : MaintenanceJobDataSource {
 
+    companion object{
+        const val TAG = "MaintenanceJobLocalSource"
+    }
+
     override suspend fun saveForMaintenance(maintenanceJobDTO: MaintenanceJobDTO, maintenanceId: Long) {
         saveMaintenanceJobDTO(maintenanceJobDTO, maintenanceId)
     }
@@ -46,7 +51,6 @@ class MaintenanceJobLocalSource @Inject constructor(
 
         runBlocking {
             jobTypeDTO = jobTypeLocalSource.findById(maintenanceJobEntity.jobTypeId)
-                ?: throw IllegalStateException("jobTypeDTO must be set")
             implList = implementsLocalSource.findByMaintenanceJobId(maintenanceJobEntity.oid)
             components = componentUnitLocalSource.findByMaintenanceJob(maintenanceJobEntity.oid)
             beginPhoto = maintenanceJobEntity.beginPhotoId?.let { artifactLocalSource.findById(it) }
@@ -55,9 +59,9 @@ class MaintenanceJobLocalSource @Inject constructor(
         }
 
         return maintenanceJobEntity.toMaintenanceJobDTO(
-            jobTypeDTO = jobTypeDTO ?: throw IllegalStateException("jobTypeDTO must be set"),
-            implList = implList ?: throw IllegalStateException("implList must be set"),
-            components = components ?: throw IllegalStateException("components must be set"),
+            jobTypeDTO = jobTypeDTO,
+            implList = implList,
+            components = components,
             endPhoto = endPhoto,
             beginPhoto = beginPhoto,
             problemDTO = problemDTO
@@ -81,7 +85,7 @@ class MaintenanceJobLocalSource @Inject constructor(
                     implementsLocalSource.saveForMaintenanceJob(implementsDTO, maintenanceJobDTO.oid)
                 }
         }
-        maintenanceJobDTO.components?.map { entityLink -> entityLink.getObject() }?.let {
+        maintenanceJobDTO.components.map { entityLink -> entityLink.getObject() }.let {
             componentUnitLocalSource.saveAllForMaintenanceJob(it, maintenanceJobDTO)
         }
         maintenanceJobDTO.beginPhoto?.getObject()?.let {
@@ -113,9 +117,9 @@ class MaintenanceJobLocalSource @Inject constructor(
         }
     }
 
-    override suspend fun findById(id: Long): MaintenanceJobDTO? {
+    override suspend fun findById(id: Long): MaintenanceJobDTO {
         return maintenanceJobDao.findById(id)?.let { maintenanceJobEntity ->
             getMaintenanceJobDTO(maintenanceJobEntity)
-        }
+        } ?: throw NotFoundException(TAG, "MaintenanceJobDTO by id($id)")
     }
 }

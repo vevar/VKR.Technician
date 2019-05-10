@@ -6,6 +6,7 @@ import com.nstu.technician.data.dto.*
 import com.nstu.technician.data.until.getObject
 import com.nstu.technician.data.util.DataBaseProvider
 import com.nstu.technician.data.util.DataSourceComponentBuilder
+import com.nstu.technician.domain.exceptions.NotFoundException
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -88,16 +89,18 @@ class ImplementsLocalSourceTest {
     }
 
     @Test
-    fun deleteFindById_ReturnsNull() {
+    fun deleteFindById_throwNotFoundException() {
         val implementsDTO = getImplementsDTO(getRandomId())
         runBlocking { implementsDataSource.save(implementsDTO) }
         runBlocking { implementsDataSource.delete(implementsDTO) }
-        val actual = runBlocking { implementsDataSource.findById(implementsDTO.oid) }
-        assertEquals(null, actual)
+        try {
+            runBlocking { implementsDataSource.findById(implementsDTO.oid) }
+        } catch (e: NotFoundException) {
+        }
     }
 
     @Test
-    fun deleteAllFindAll_ReturnsEmptyList() {
+    fun deleteAll_ReturnsEmptyList() {
         val expected = getListSomeObject { getImplementsDTO(getRandomId()) }
         runBlocking { implementsDataSource.saveAll(expected) }
         runBlocking { implementsDataSource.deleteAll() }

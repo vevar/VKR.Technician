@@ -8,6 +8,7 @@ import com.nstu.technician.data.dto.common.GPSPointDTO
 import com.nstu.technician.data.until.convertToGPSEntity
 import com.nstu.technician.data.until.convertToGPSPointFromShiftEntity
 import com.nstu.technician.data.until.toGpsPointDTO
+import com.nstu.technician.domain.exceptions.NotFoundException
 import javax.inject.Inject
 
 class GPSPointLocalSource @Inject constructor(
@@ -15,6 +16,10 @@ class GPSPointLocalSource @Inject constructor(
     private val gpsDao: GpsDao,
     private val gpsPointFromShiftDao: GPSPointFromShiftDao
 ) : GPSPointDataSource {
+
+    companion object{
+        private const val TAG = "GPSPointLocalSource"
+    }
 
     override suspend fun delete(obj: GPSPointDTO) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -35,8 +40,8 @@ class GPSPointLocalSource @Inject constructor(
             .map { gpsPointFromShiftEntity -> gpsPointFromShiftEntity.toGpsPointDTO() }
     }
 
-    override suspend fun findById(id: Long): GPSPointDTO? {
-        return gpsDao.findById(id)?.toGpsPointDTO()
+    override suspend fun findById(id: Long): GPSPointDTO {
+        return gpsDao.findById(id)?.toGpsPointDTO() ?: throw NotFoundException(TAG, "GPSPointDTO by id($id)")
     }
 
     override suspend fun save(obj: GPSPointDTO): Long {

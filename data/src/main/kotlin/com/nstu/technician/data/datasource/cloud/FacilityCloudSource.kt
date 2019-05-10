@@ -1,6 +1,6 @@
 package com.nstu.technician.data.datasource.cloud
 
-import com.nstu.technician.data.NotSavedException
+import com.nstu.technician.data.BODY_MUST_BE_SET
 import com.nstu.technician.data.datasource.cloud.api.FacilityApi
 import com.nstu.technician.data.datasource.entity.FacilityDataSource
 import com.nstu.technician.data.dto.job.FacilityDTO
@@ -15,10 +15,10 @@ class FacilityCloudSource @Inject constructor(
     }
 
     override suspend fun save(obj: FacilityDTO): Long {
-        return facilityApi.addFacility(obj).execute().body() ?: throw NotSavedException("$obj not saved")
+        return facilityApi.addFacility(obj).execute().body() ?: throw IllegalStateException(BODY_MUST_BE_SET)
     }
 
-    override suspend fun findById(id: Long): FacilityDTO? {
-        return facilityApi.getFacilityById(id).execute().body()
+    override suspend fun findById(id: Long): FacilityDTO {
+        return facilityApi.getFacilityById(id).execute().body() ?: throw IllegalStateException(BODY_MUST_BE_SET)
     }
 }

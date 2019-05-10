@@ -10,7 +10,7 @@ class ProblemLocalSource @Inject constructor(): ProblemDataSource {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun findById(id: Long): ProblemDTO? {
+    override suspend fun findById(id: Long): ProblemDTO {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

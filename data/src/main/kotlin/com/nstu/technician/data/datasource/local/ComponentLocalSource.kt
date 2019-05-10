@@ -9,6 +9,7 @@ import com.nstu.technician.data.dto.tool.ComponentDTO
 import com.nstu.technician.data.until.getObject
 import com.nstu.technician.data.until.toComponentDTO
 import com.nstu.technician.data.until.toComponentEntity
+import com.nstu.technician.domain.exceptions.NotFoundException
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import javax.inject.Named
@@ -19,6 +20,10 @@ class ComponentLocalSource @Inject constructor(
     @Named(LOCAL)
     private val componentTypeLocalSource: ComponentTypeDataSource
 ) : ComponentDataSource {
+
+    companion object {
+        private const val TAG = "ComponentLocalSource"
+    }
 
     override suspend fun delete(obj: ComponentDTO) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -36,13 +41,12 @@ class ComponentLocalSource @Inject constructor(
         }
     }
 
-    override suspend fun findById(id: Long): ComponentDTO? {
+    override suspend fun findById(id: Long): ComponentDTO {
         return componentDao.findById(id)?.let { componentEntity ->
             val componentTypeDTO =
                 componentTypeLocalSource.findById(componentEntity.componentTypeId)
-                    ?: throw IllegalStateException("componentTypeDTO must be set")
             componentEntity.toComponentDTO(componentTypeDTO)
-        }
+        } ?: throw NotFoundException(TAG, "ComponentDTO by id($id)")
     }
 
     override suspend fun save(obj: ComponentDTO): Long {

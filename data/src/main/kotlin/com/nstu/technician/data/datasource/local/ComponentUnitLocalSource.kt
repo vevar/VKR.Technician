@@ -28,10 +28,8 @@ class ComponentUnitLocalSource @Inject constructor(
     override suspend fun findByMaintenanceJob(maintenanceId: Long): List<ComponentUnitDTO> {
         return componentUnitDao.findByMaintenanceJob(maintenanceId).map { componentUnitEntity ->
             withContext(Dispatchers.IO) {
-                val componentDTO = componentLocalSource.findById(componentUnitEntity.componentId)
-                componentUnitEntity.toComponentUnitDTO(
-                    componentDTO ?: throw IllegalStateException("component must be set")
-                )
+                val componentDTO = runBlocking { componentLocalSource.findById(componentUnitEntity.componentId) }
+                componentUnitEntity.toComponentUnitDTO(componentDTO)
             }
         }
     }

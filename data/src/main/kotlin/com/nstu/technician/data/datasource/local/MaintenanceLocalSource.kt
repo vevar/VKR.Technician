@@ -40,9 +40,7 @@ class MaintenanceLocalSource @Inject constructor(
 
     private suspend fun getMaintenanceDTO(maintenanceEntity: MaintenanceEntity): MaintenanceDTO {
         return runBlocking {
-            val facilityDTO = facilityLocalSource.findById(maintenanceEntity.facilityId) ?: throw IllegalStateException(
-                "facility must be set"
-            )
+            val facilityDTO = facilityLocalSource.findById(maintenanceEntity.facilityId)
             val jobList = maintenanceJobLocalSource.findByMaintenanceId(maintenanceEntity.oid)
             val parent = maintenanceEntity.maintenanceParentId?.let { findById(it) }
             val voiceMessage = maintenanceEntity.voiceMessageId?.let { artifactLocalSource.findById(it) }

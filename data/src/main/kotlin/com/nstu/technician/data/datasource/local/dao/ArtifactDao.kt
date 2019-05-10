@@ -7,7 +7,7 @@ import com.nstu.technician.data.database.entity.common.ArtifactEntity
 interface ArtifactDao {
 
     @Query("SELECT * FROM artifactentity WHERE oid=:id")
-    fun findById(id: Long): ArtifactEntity
+    fun findById(id: Long): ArtifactEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun save(artifactEntity: ArtifactEntity): Long

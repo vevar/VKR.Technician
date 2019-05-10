@@ -24,7 +24,7 @@ class UserLocalSource @Inject constructor(
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override suspend fun findById(id: Long): UserDTO? {
+    override suspend fun findById(id: Long): UserDTO {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

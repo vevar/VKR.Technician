@@ -58,5 +58,4 @@ class AddressLocalSourceTest {
 
         assertEquals(expectedAddressDTO, actualAddress)
     }
-
 }

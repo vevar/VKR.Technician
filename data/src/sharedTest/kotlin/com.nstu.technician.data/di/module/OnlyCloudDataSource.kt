@@ -9,6 +9,7 @@ import com.nstu.technician.data.datasource.entity.UserDataSource
 import com.nstu.technician.data.dto.user.AccountDTO
 import com.nstu.technician.data.dto.user.TechnicianDTO
 import com.nstu.technician.data.dto.user.UserDTO
+import com.nstu.technician.domain.exceptions.NotFoundException
 import dagger.Module
 import dagger.Provides
 import javax.inject.Named
@@ -24,7 +25,7 @@ class OnlyCloudDataSource {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
-            override suspend fun findById(id: Long): UserDTO? {
+            override suspend fun findById(id: Long): UserDTO {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
 
@@ -53,8 +54,8 @@ class OnlyCloudDataSource {
     @Provides
     fun provideTechnicianLocalSource(): TechnicianDataSource {
         return object : TechnicianDataSource {
-            override suspend fun findByUserId(userId: Long): TechnicianDTO? {
-                return null
+            override suspend fun findByUserId(userId: Long): TechnicianDTO {
+                throw NotFoundException("OnlyCloudDataSource", "TechnicianDTO by userId($userId)")
             }
 
             override suspend fun save(technician: TechnicianDTO) {
