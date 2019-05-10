@@ -14,4 +14,13 @@ interface ComponentTypeDao {
 
     @Delete
     fun delete(componentTypeEntity: ComponentTypeEntity)
+
+    @Query("SELECT * FROM componenttypeentity")
+    fun findAll(): List<ComponentTypeEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun saveAll(list: List<ComponentTypeEntity>): List<Long>
+
+    @Query("DELETE FROM componenttypeentity")
+    fun deleteAll()
 }

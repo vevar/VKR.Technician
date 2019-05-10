@@ -11,13 +11,33 @@ class ApiModule(
 ) {
 
     @Provides
-    fun provideUserApi(): UserApi {
-        return apiProvider.createUserApi()
+    fun provideArtifactApi(): ArtifactApi {
+        return apiProvider.createArtifactApi()
     }
 
     @Provides
-    fun provideTechnicianApi(): TechnicianApi {
-        return apiProvider.createTechnicianApi()
+    fun provideComponentTypeApi(): ComponentTypeApi {
+        return apiProvider.createComponentTypeApi()
+    }
+
+    @Provides
+    fun provideFacilityApi(): FacilityApi {
+        return apiProvider.createFacilityApi()
+    }
+
+    @Provides
+    fun provideGpsApi(): GpsApi{
+        return apiProvider.createGpsApi()
+    }
+
+    @Provides
+    fun provideImplementsApi(): ImplementsApi{
+        return apiProvider.createImplementsApi()
+    }
+
+    @Provides
+    fun provideMaintenanceApi(): MaintenanceAPi {
+        return apiProvider.createMaintenanceApi()
     }
 
     @Provides
@@ -26,12 +46,12 @@ class ApiModule(
     }
 
     @Provides
-    fun provideFacilityApi(): FacilityApi{
-        return apiProvider.createFacilityApi()
+    fun provideTechnicianApi(): TechnicianApi {
+        return apiProvider.createTechnicianApi()
     }
 
     @Provides
-    fun provideMaintenanceApi(): MaintenanceAPi{
-        return apiProvider.createMaintenanceApi()
+    fun provideUserApi(): UserApi {
+        return apiProvider.createUserApi()
     }
 }

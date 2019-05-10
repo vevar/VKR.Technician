@@ -126,14 +126,32 @@ class DataSourceModule {
 
     @Named(CLOUD)
     @Provides
-    fun provideShiftCloudSource(shiftCloudSource: ShiftCloudSource): ShiftDataSource {
-        return shiftCloudSource
+    fun provideComponentTypeCloudSource(componentTypeCloudSource: ComponentTypeCloudSource): ComponentTypeDataSource {
+        return componentTypeCloudSource
     }
 
     @Named(CLOUD)
     @Provides
     fun provideFacilityCloudSource(facilityCloudSource: FacilityCloudSource): FacilityDataSource {
         return facilityCloudSource
+    }
+
+    @Named(CLOUD)
+    @Provides
+    fun provideImplementsCloudSource(implementsCloudSource: ImplementsCloudSource): ImplementsDataSource {
+        return implementsCloudSource
+    }
+
+    @Named(CLOUD)
+    @Provides
+    fun provideMaintenanceCloudSource(maintenanceCloudSource: MaintenanceCloudSource): MaintenanceDataSource {
+        return maintenanceCloudSource
+    }
+
+    @Named(CLOUD)
+    @Provides
+    fun provideShiftCloudSource(shiftCloudSource: ShiftCloudSource): ShiftDataSource {
+        return shiftCloudSource
     }
 
     @Named(CLOUD)
@@ -146,17 +164,5 @@ class DataSourceModule {
     @Provides
     fun provideUserCloudSource(userCloudSource: UserCloudSource): UserDataSource {
         return userCloudSource
-    }
-
-    @Named(CLOUD)
-    @Provides
-    fun provideMaintenanceCloudSource(maintenanceCloudSource: MaintenanceCloudSource): MaintenanceDataSource {
-        return maintenanceCloudSource
-    }
-
-    @Named(CLOUD)
-    @Provides
-    fun provideImplementsCloudSource(implementsCloudSource: ImplementsCloudSource): ImplementsDataSource {
-        return implementsCloudSource
     }
 }
