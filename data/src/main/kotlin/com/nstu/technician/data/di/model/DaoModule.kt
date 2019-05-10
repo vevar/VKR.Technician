@@ -6,7 +6,7 @@ import dagger.Module
 import dagger.Provides
 
 @Module
-class DaoModule(private val appDataBase: AppDataBase) {
+open class DaoModule(private val appDataBase: AppDataBase) {
 
     @Provides
     fun provideUserDao(): UserDao {

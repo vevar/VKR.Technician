@@ -8,7 +8,7 @@ import dagger.Provides
 import javax.inject.Named
 
 @Module
-class DataSourceModule {
+open class DataSourceModule {
 
     @Named(LOCAL)
     @Provides

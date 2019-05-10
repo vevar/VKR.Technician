@@ -6,7 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.nstu.technician.data.TestAppDataBase
 import com.nstu.technician.data.datasource.entity.MaintenanceDataSource
-import com.nstu.technician.data.di.component.DaggerDataSourceComponent
+import com.nstu.technician.data.di.component.DaggerLocalSourceComponent
 import com.nstu.technician.data.di.model.DaoModule
 import com.nstu.technician.data.di.model.DataSourceModule
 import com.nstu.technician.data.dto.getShiftDTO
@@ -30,7 +30,7 @@ class MaintenanceLocalSourceTest {
         testAppDataBase = Room.inMemoryDatabaseBuilder(context, TestAppDataBase::class.java)
             .build()
 
-        val dataSourceComponent = DaggerDataSourceComponent.builder()
+        val dataSourceComponent = DaggerLocalSourceComponent.builder()
             .daoModule(DaoModule(testAppDataBase))
             .dataSourceModule(DataSourceModule())
             .build()

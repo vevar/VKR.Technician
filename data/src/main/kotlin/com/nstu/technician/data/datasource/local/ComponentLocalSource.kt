@@ -25,8 +25,19 @@ class ComponentLocalSource @Inject constructor(
         private const val TAG = "ComponentLocalSource"
     }
 
+    override suspend fun findAll(): List<ComponentDTO> {
+        return componentDao.findAll().map {
+            val componentTypeDTO = componentTypeLocalSource.findById(it.componentTypeId)
+            it.toComponentDTO(componentTypeDTO)
+        }
+    }
+
+    override suspend fun deleteAll() {
+        componentDao.deleteAll()
+    }
+
     override suspend fun delete(obj: ComponentDTO) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        componentDao.delete(obj.toComponentEntity())
     }
 
     override suspend fun saveAll(list: List<ComponentDTO>) {

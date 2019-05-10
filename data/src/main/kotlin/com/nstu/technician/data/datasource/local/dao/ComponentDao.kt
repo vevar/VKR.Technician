@@ -12,9 +12,15 @@ interface ComponentDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun save(componentEntity: ComponentEntity): Long
 
+    @Delete
+    fun delete(componentEntity: ComponentEntity)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun saveAll(list: List<ComponentEntity>): List<Long>
 
-    @Delete
-    fun delete(componentEntity: ComponentEntity)
+    @Query("SELECT * FROM componententity")
+    fun findAll(): List<ComponentEntity>
+
+    @Query("DELETE FROM componententity")
+    fun deleteAll()
 }

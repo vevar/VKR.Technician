@@ -5,9 +5,11 @@ import com.nstu.technician.data.database.AppDataBase
 import com.nstu.technician.data.datasource.entity.ComponentDataSource
 import com.nstu.technician.data.dto.getComponentDTO
 import com.nstu.technician.data.dto.getListSomeObject
+import com.nstu.technician.data.dto.getRandomId
 import com.nstu.technician.data.dto.tool.ComponentDTO
 import com.nstu.technician.data.util.DataBaseProvider
 import com.nstu.technician.data.util.DataSourceComponentBuilder
+import com.nstu.technician.domain.exceptions.NotFoundException
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -38,8 +40,8 @@ class ComponentLocalSourceTest {
     }
 
     @Test
-    fun saveAndFindById() {
-        val expected = getComponentDTO(789)
+    fun saveAndFindById_ReturnsComponent() {
+        val expected = getComponentDTO(getRandomId())
 
         runBlocking {
             componentLocalSource.save(expected)
@@ -51,8 +53,8 @@ class ComponentLocalSourceTest {
     }
 
     @Test
-    fun saveAllAndFindById() {
-        val expected = getListSomeObject { getComponentDTO(789) }
+    fun saveAllAndFindById_ReturnsListComponents() {
+        val expected = getListSomeObject { getComponentDTO(it) }
 
         runBlocking {
             componentLocalSource.saveAll(expected)
@@ -60,12 +62,40 @@ class ComponentLocalSourceTest {
         val actual = mutableListOf<ComponentDTO>()
         runBlocking {
             expected.forEach { componentDTO ->
-                componentLocalSource.findById(componentDTO.oid)?.let {
+                componentLocalSource.findById(componentDTO.oid).let {
                     actual.add(it)
                 }
             }
         }
         assertEquals(expected, actual)
+    }
+
+    @Test
+    fun saveAllAndFindAll_ReturnsNotEmptyList() {
+        val expected = getListSomeObject { getComponentDTO(getRandomId()) }
+        runBlocking { componentLocalSource.saveAll(expected) }
+        val actual = runBlocking { componentLocalSource.findAll() }
+        assertEquals(expected.sortedBy { it.oid }, actual)
+    }
+
+    @Test
+    fun delete_ThrowNotFoundException() {
+        val saved = getComponentDTO(getRandomId())
+        runBlocking { componentLocalSource.save(saved) }
+        runBlocking { componentLocalSource.delete(saved) }
+        try {
+            runBlocking { componentLocalSource.findById(saved.oid) }
+        } catch (e: NotFoundException) {
+        }
+    }
+
+    @Test
+    fun deleteAll_ReturnsEmptyList() {
+        val savedList = getListSomeObject { getComponentDTO(getRandomId()) }
+        runBlocking { componentLocalSource.saveAll(savedList) }
+        runBlocking { componentLocalSource.deleteAll() }
+        val actual = runBlocking { componentLocalSource.findAll() }
+        assertEquals(0, actual.size)
     }
 
 }
