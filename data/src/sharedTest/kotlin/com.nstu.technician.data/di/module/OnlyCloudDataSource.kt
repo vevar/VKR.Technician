@@ -2,10 +2,7 @@ package com.nstu.technician.data.di.module
 
 import com.nstu.technician.data.datasource.cloud.TechnicianCloudSource
 import com.nstu.technician.data.datasource.cloud.UserCloudSource
-import com.nstu.technician.data.datasource.entity.AccountDataSource
-import com.nstu.technician.data.datasource.entity.LOCAL
-import com.nstu.technician.data.datasource.entity.TechnicianDataSource
-import com.nstu.technician.data.datasource.entity.UserDataSource
+import com.nstu.technician.data.datasource.entity.*
 import com.nstu.technician.data.dto.user.AccountDTO
 import com.nstu.technician.data.dto.user.TechnicianDTO
 import com.nstu.technician.data.dto.user.UserDTO
@@ -17,7 +14,21 @@ import javax.inject.Named
 @Module
 class OnlyCloudDataSource {
 
-    @Named("Local")
+    @Named(LOCAL)
+    @Provides
+    fun provideAccountLocalSource(): AccountDataSource {
+        return object : AccountDataSource {
+            override suspend fun find(): AccountDTO? {
+                return AccountDTO(0, "root", "1234")
+            }
+
+            override suspend fun save(account: AccountDTO) {
+            }
+
+        }
+    }
+
+    @Named(LOCAL)
     @Provides
     fun provideUserLocalSource(): UserDataSource {
         return object : UserDataSource {
@@ -44,13 +55,7 @@ class OnlyCloudDataSource {
         }
     }
 
-    @Named("Cloud")
-    @Provides
-    fun provideUserCloudSource(userCloudSource: UserCloudSource): UserDataSource {
-        return userCloudSource
-    }
-
-    @Named("Local")
+    @Named(LOCAL)
     @Provides
     fun provideTechnicianLocalSource(): TechnicianDataSource {
         return object : TechnicianDataSource {
@@ -64,23 +69,16 @@ class OnlyCloudDataSource {
         }
     }
 
-    @Named("Cloud")
+    @Named(CLOUD)
+    @Provides
+    fun provideUserCloudSource(userCloudSource: UserCloudSource): UserDataSource {
+        return userCloudSource
+    }
+
+    @Named(CLOUD)
     @Provides
     fun provideTechnicianCloudSource(technicianCloudSource: TechnicianCloudSource): TechnicianDataSource {
         return technicianCloudSource
     }
 
-    @Named(LOCAL)
-    @Provides
-    fun provideAccountLocalSource(): AccountDataSource {
-        return object : AccountDataSource {
-            override suspend fun find(): AccountDTO? {
-                return AccountDTO(0, "root", "1234")
-            }
-
-            override suspend fun save(account: AccountDTO) {
-            }
-
-        }
-    }
 }

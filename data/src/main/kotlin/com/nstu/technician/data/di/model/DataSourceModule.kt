@@ -126,6 +126,12 @@ class DataSourceModule {
 
     @Named(CLOUD)
     @Provides
+    fun provideComponentCloudSource(componentCloudSource: ComponentCloudSource): ComponentDataSource {
+        return componentCloudSource
+    }
+
+    @Named(CLOUD)
+    @Provides
     fun provideComponentTypeCloudSource(componentTypeCloudSource: ComponentTypeCloudSource): ComponentTypeDataSource {
         return componentTypeCloudSource
     }

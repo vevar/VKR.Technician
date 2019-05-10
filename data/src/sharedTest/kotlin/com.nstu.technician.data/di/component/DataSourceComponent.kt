@@ -49,5 +49,10 @@ interface DataSourceComponent {
     @Named(LOCAL)
     fun componentLocalSource(): ComponentDataSource
 
+    @Named(CLOUD)
+    fun componentCloudSource(): ComponentDataSource
+
+    @Named(CLOUD)
+    fun componentTypeCloudSource(): ComponentTypeDataSource
 
 }

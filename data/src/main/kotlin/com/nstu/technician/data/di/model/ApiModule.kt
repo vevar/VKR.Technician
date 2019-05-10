@@ -16,6 +16,11 @@ class ApiModule(
     }
 
     @Provides
+    fun provideComponentApi(): ComponentApi{
+        return apiProvider.createComponentApi()
+    }
+
+    @Provides
     fun provideComponentTypeApi(): ComponentTypeApi {
         return apiProvider.createComponentTypeApi()
     }

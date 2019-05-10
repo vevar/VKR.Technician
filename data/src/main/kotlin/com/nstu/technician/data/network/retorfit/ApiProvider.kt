@@ -10,6 +10,10 @@ class ApiProvider(
         return retrofitProvider.getRetrofit().create(ArtifactApi::class.java)
     }
 
+    fun createComponentApi(): ComponentApi {
+        return retrofitProvider.getRetrofit().create(ComponentApi::class.java)
+    }
+
     fun createComponentTypeApi(): ComponentTypeApi {
         return retrofitProvider.getRetrofit().create(ComponentTypeApi::class.java)
     }
