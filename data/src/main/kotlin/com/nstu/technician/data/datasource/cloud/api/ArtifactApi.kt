@@ -12,5 +12,7 @@ interface ArtifactApi {
     }
 
     @GET("/api/artifact/get")
-    fun getArtifactById(@Query("id") id: Long, @Query("level") level: Int  = DEFAULT_LEVEL): Call<ArtifactDTO>
+    fun getArtifactById(@Query("id") id: Long, @Query("level") level: Int = DEFAULT_LEVEL): Call<ArtifactDTO>
+
+
 }

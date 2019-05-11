@@ -22,6 +22,10 @@ class ApiProvider(
         return retrofitProvider.getRetrofit().create(FacilityApi::class.java)
     }
 
+    fun createFileApi(): FileApi {
+        return retrofitProvider.getRetrofit().create(FileApi::class.java)
+    }
+
     fun createGpsApi(): GpsApi {
         return retrofitProvider.getRetrofit().create(GpsApi::class.java)
     }

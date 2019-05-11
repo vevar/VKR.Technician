@@ -25,17 +25,34 @@ android {
     }
 
     sourceSets {
-        String sharedTestDir = 'src/sharedTest/kotlin'
+        String sharedTestSourceDir = 'src/sharedTest/kotlin'
+        String sharedTestResDir = 'src/sharedTest/res'
+        String sharedTestAssetsDir = 'src/sharedTest/assets'
+
         main.java.srcDirs += 'src/main/kotlin'
 
-        androidTest.java {
-            srcDirs += sharedTestDir
-            srcDirs += 'src/androidTest/kotlin'
+        androidTest {
+            java {
+                srcDirs += sharedTestSourceDir
+                srcDirs += 'src/androidTest/kotlin'
+            }
+            res {
+                srcDirs += sharedTestResDir
+            }
         }
-        test.java {
-            srcDirs += sharedTestDir
-            srcDirs += 'src/test/kotlin'
+        test {
+            java {
+                srcDirs += sharedTestSourceDir
+                srcDirs += 'src/test/kotlin'
+            }
+            res {
+                srcDirs += sharedTestResDir
+            }
+            assets {
+                srcDirs += sharedTestAssetsDir
+            }
         }
+
     }
 
     buildTypes {

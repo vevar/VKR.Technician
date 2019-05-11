@@ -126,6 +126,12 @@ open class DataSourceModule {
 
     @Named(CLOUD)
     @Provides
+    fun provideArtifactCloudSource(artifactCloudSource: ArtifactCloudSource): ArtifactDataSource {
+        return artifactCloudSource
+    }
+
+    @Named(CLOUD)
+    @Provides
     fun provideComponentCloudSource(componentCloudSource: ComponentCloudSource): ComponentDataSource {
         return componentCloudSource
     }
@@ -140,6 +146,12 @@ open class DataSourceModule {
     @Provides
     fun provideFacilityCloudSource(facilityCloudSource: FacilityCloudSource): FacilityDataSource {
         return facilityCloudSource
+    }
+
+    @Named(CLOUD)
+    @Provides
+    fun provideFileCloudSource(fileCloudSource: FileCloudSource): FileDataSource {
+        return fileCloudSource
     }
 
     @Named(CLOUD)

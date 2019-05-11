@@ -16,7 +16,7 @@ class ApiModule(
     }
 
     @Provides
-    fun provideComponentApi(): ComponentApi{
+    fun provideComponentApi(): ComponentApi {
         return apiProvider.createComponentApi()
     }
 
@@ -31,12 +31,17 @@ class ApiModule(
     }
 
     @Provides
-    fun provideGpsApi(): GpsApi{
+    fun provideFileApi(): FileApi {
+        return apiProvider.createFileApi()
+    }
+
+    @Provides
+    fun provideGpsApi(): GpsApi {
         return apiProvider.createGpsApi()
     }
 
     @Provides
-    fun provideImplementsApi(): ImplementsApi{
+    fun provideImplementsApi(): ImplementsApi {
         return apiProvider.createImplementsApi()
     }
 
@@ -46,7 +51,7 @@ class ApiModule(
     }
 
     @Provides
-    fun provideMatenanceJobApi(): MaintenanceJobApi{
+    fun provideMatenanceJobApi(): MaintenanceJobApi {
         return apiProvider.createMaintenanceJobApi()
     }
 
