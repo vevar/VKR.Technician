@@ -18,5 +18,5 @@ interface TechnicianApi {
     fun setTechnicianState(@Query("technicianid") id: Long, @Query("state") state: Int): Call<String>
 
     @POST("/api/technician/update")
-    fun updateTechnician(token: String, @Body body: Technician): Call<String>
+    fun updateTechnician(@Body body: Technician): Call<String>
 }

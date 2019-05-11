@@ -8,9 +8,14 @@ import retrofit2.http.Query
 
 interface ImplementsApi {
 
+    companion object {
+        private const val DEFAULT_LEVEL = 0
+        private const val DEFAULT_MODE = 0
+    }
+
     @GET("/api/implements/list")
-    fun getImplementsList(@Query("mode") mode: Int = 0, @Query("level") level: Int = 0): Call<List<ImplementsDTO>>
+    fun getImplementsList(@Query("mode") mode: Int = DEFAULT_MODE, @Query("level") level: Int = DEFAULT_LEVEL): Call<List<ImplementsDTO>>
 
     @GET("/api/implements/get")
-    fun getImplements(@Query("id") id: Long, @Query("level") level: Int = 0): Call<ImplementsDTO>
+    fun getImplements(@Query("id") id: Long, @Query("level") level: Int = DEFAULT_LEVEL): Call<ImplementsDTO>
 }

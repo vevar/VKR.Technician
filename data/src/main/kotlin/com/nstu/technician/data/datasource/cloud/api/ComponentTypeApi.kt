@@ -8,9 +8,14 @@ import retrofit2.http.Query
 
 interface ComponentTypeApi {
 
+    companion object {
+        private const val DEFAULT_LEVEL = 0
+        private const val DEFAULT_MODE = 0
+    }
+
     @GET("/api/componenttype/list")
-    fun getComponentTypeList(@Query("mode") mode: Int = 0, @Query("level") level: Int = 0): Call<List<ComponentTypeDTO>>
+    fun getComponentTypeList(@Query("mode") mode: Int = DEFAULT_MODE, @Query("level") level: Int = DEFAULT_LEVEL): Call<List<ComponentTypeDTO>>
 
     @GET("/api/componenttype/get")
-    fun getComponentType(@Query("id") id: Long, @Query("level") level: Int = 0): Call<ComponentTypeDTO>
+    fun getComponentType(@Query("id") id: Long, @Query("level") level: Int = DEFAULT_LEVEL): Call<ComponentTypeDTO>
 }

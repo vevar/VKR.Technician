@@ -8,6 +8,10 @@ import retrofit2.http.Query
 
 interface ShiftApi {
 
+    companion object {
+        private const val DEFAULT_LEVEL = 0
+    }
+
     @GET("/api/shift/getToPeriod")
     fun getShiftToPeriod(
         @Query("technicianid") id: Long, @Query("timeInMS1") timeMark1: Long, @Query("timeInMS2") timeMark2: Long, @Query(
@@ -16,6 +20,6 @@ interface ShiftApi {
     ): Call<List<ShiftDTO>>
 
     @GET("/api/shift/full")
-    fun getShiftFull(@Query("id") id: Long, @Query("level") level: Int): Call<ShiftDTO>
+    fun getShiftFull(@Query("id") id: Long, @Query("level") level: Int = DEFAULT_LEVEL): Call<ShiftDTO>
 }
 

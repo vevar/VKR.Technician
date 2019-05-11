@@ -10,6 +10,12 @@ import retrofit2.http.Query
 
 
 interface MaintenanceAPi {
+
+    companion object {
+        private const val DEFAULT_LEVEL = 2
+        private const val DEFAULT_MODE = 0
+    }
+
     /** Установить состояние обслуживания (заявки) по объекту   */
     @POST("/api/maintenance/setstate")
     fun setMaintenanceState(@Query("id") id: Long, @Query("state") state: Int): Call<String>
@@ -22,36 +28,13 @@ interface MaintenanceAPi {
     @POST("/api/maintenance/endtime")
     fun setMaintenanceEndTime(@Query("id") id: Long, @Query("timeInMS") timeMark: Long): Call<String>
 
-    /** Установить время начала выполнения работы   */
-    @POST("/api/maintenance/job/begintime")
-    fun setMaintenanceJobBeginTime(@Query("id") id: Long, @Query("timeInMS") timeMark: Long): Call<String>
-
-    /** Установить время окончания  выполнения работы   */
-    @POST("/api/maintenance/job/endtime")
-    fun setMaintenanceJobEndTime(@Query("id") id: Long, @Query("timeInMS") timeMark: Long): Call<String>
-
-    /** Установить состояние работы по объекту   */
-    @POST("/api/maintenance/job/setstate")
-    fun setMaintenanceJobSetState(@Query("id") id: Long, @Query("state") state: Int): Call<String>
-
     @GET("/api/maintenance/list")
-    fun getMaintenanceList(@Query("mode") mode: Int, @Query("level") level: Int): Call<List<MaintenanceDTO>>
+    fun getMaintenanceList(@Query("mode") mode: Int = DEFAULT_MODE, @Query("level") level: Int = DEFAULT_LEVEL): Call<List<MaintenanceDTO>>
 
     /** Добавить заявку к объекту (со всеми связанными объектами)  */
     @POST("/api/maintenance/add")
-    fun addMaintenance(@Query("facilityid") id: Long, @Body body: MaintenanceDTO, @Query("level") level: Int): Call<Long>
-
-    /** Добавить к смене выход на объект   */
-    @POST("/api/maintenance/shift/add")
-    fun addMaintenanceToShift(
-        @Query("shiftid") shiftId: Long, @Query("id") maintenanceId: Long, @Query("hour") hour: Int, @Query(
-            "minute"
-        ) minute: Int, @Query("duration") duration: Int
-    ): Call<String>
+    fun addMaintenance(@Query("facilityid") id: Long, @Body body: MaintenanceDTO, @Query("level") level: Int = DEFAULT_LEVEL): Call<Long>
 
     @GET("/api/maintenance/get")
-    fun getMaintenance(@Query("id") id: Long, @Query("level") level: Int): Call<MaintenanceDTO>
-
-    @POST("/api/maintenance/job/update")
-    fun updateMaintenanceJob(@Body body: MaintenanceJobDTO): Call<String>
+    fun getMaintenance(@Query("id") id: Long, @Query("level") level: Int = DEFAULT_LEVEL): Call<MaintenanceDTO>
 }

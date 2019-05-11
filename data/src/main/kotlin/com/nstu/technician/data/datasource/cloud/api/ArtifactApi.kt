@@ -7,6 +7,10 @@ import retrofit2.http.Query
 
 
 interface ArtifactApi {
+    companion object {
+        private const val DEFAULT_LEVEL = 0
+    }
+
     @GET("/api/artifact/get")
-    fun getArtifactById(@Query("id") id: Long, @Query("level") level: Int): Call<ArtifactDTO>
+    fun getArtifactById(@Query("id") id: Long, @Query("level") level: Int  = DEFAULT_LEVEL): Call<ArtifactDTO>
 }
