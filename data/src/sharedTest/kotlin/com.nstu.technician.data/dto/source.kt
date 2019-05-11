@@ -97,6 +97,8 @@ fun <T> getListSomeObject(function: (oid: Long) -> T): List<T> {
 
 fun getRandomId(): Long = (Math.random() * 100000 + 1).toLong()
 
+fun getRandomInt(): Int = (Math.random() * 100 + 1).toInt()
+
 fun getMaintenanceJobDTO(oid: Long): MaintenanceJobDTO {
     return MaintenanceJobDTO(
         oid = oid,

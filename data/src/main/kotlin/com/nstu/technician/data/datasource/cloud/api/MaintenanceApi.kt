@@ -1,7 +1,6 @@
 package com.nstu.technician.data.datasource.cloud.api
 
 import com.nstu.technician.data.dto.job.MaintenanceDTO
-import com.nstu.technician.data.dto.job.MaintenanceJobDTO
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -9,7 +8,7 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 
 
-interface MaintenanceAPi {
+interface MaintenanceApi {
 
     companion object {
         private const val DEFAULT_LEVEL = 2

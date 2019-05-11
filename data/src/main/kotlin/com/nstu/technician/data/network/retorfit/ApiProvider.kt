@@ -30,8 +30,8 @@ class ApiProvider(
         return retrofitProvider.getRetrofit().create(ImplementsApi::class.java)
     }
 
-    fun createMaintenanceApi(): MaintenanceAPi {
-        return retrofitProvider.getRetrofit().create(MaintenanceAPi::class.java)
+    fun createMaintenanceApi(): MaintenanceApi {
+        return retrofitProvider.getRetrofit().create(MaintenanceApi::class.java)
     }
 
     fun createShiftApi(): ShiftApi {
@@ -44,6 +44,10 @@ class ApiProvider(
 
     fun createUserApi(): UserApi {
         return retrofitProvider.getRetrofit().create(UserApi::class.java)
+    }
+
+    fun createMaintenanceJobApi(): MaintenanceJobApi {
+        return retrofitProvider.getRetrofit().create(MaintenanceJobApi::class.java)
     }
 }
 

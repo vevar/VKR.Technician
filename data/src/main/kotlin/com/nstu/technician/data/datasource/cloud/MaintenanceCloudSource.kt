@@ -1,12 +1,12 @@
 package com.nstu.technician.data.datasource.cloud
 
-import com.nstu.technician.data.datasource.cloud.api.MaintenanceAPi
+import com.nstu.technician.data.datasource.cloud.api.MaintenanceApi
 import com.nstu.technician.data.datasource.entity.MaintenanceDataSource
 import com.nstu.technician.data.dto.job.MaintenanceDTO
 import javax.inject.Inject
 
 class MaintenanceCloudSource @Inject constructor(
-    private val maintenanceAPi: MaintenanceAPi
+    private val maintenanceApi: MaintenanceApi
 ) : MaintenanceDataSource {
 
     companion object {

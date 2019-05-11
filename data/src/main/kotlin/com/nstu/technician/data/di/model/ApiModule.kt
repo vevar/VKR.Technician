@@ -41,8 +41,13 @@ class ApiModule(
     }
 
     @Provides
-    fun provideMaintenanceApi(): MaintenanceAPi {
+    fun provideMaintenanceApi(): MaintenanceApi {
         return apiProvider.createMaintenanceApi()
+    }
+
+    @Provides
+    fun provideMatenanceJobApi(): MaintenanceJobApi{
+        return apiProvider.createMaintenanceJobApi()
     }
 
     @Provides

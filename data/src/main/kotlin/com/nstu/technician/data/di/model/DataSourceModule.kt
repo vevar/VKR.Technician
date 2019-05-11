@@ -156,6 +156,12 @@ open class DataSourceModule {
 
     @Named(CLOUD)
     @Provides
+    fun provideMaintenanceJobCloudSource(maintenanceJobCloudSource: MaintenanceJobCloudSource): MaintenanceJobDataSource {
+        return maintenanceJobCloudSource
+    }
+
+    @Named(CLOUD)
+    @Provides
     fun provideShiftCloudSource(shiftCloudSource: ShiftCloudSource): ShiftDataSource {
         return shiftCloudSource
     }

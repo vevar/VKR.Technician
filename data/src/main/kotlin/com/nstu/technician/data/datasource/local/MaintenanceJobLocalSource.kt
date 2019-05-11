@@ -33,8 +33,32 @@ class MaintenanceJobLocalSource @Inject constructor(
     private val problemLocalSource: ProblemDataSource
 ) : MaintenanceJobDataSource {
 
-    companion object{
+    companion object {
         const val TAG = "MaintenanceJobLocalSource"
+    }
+
+    override suspend fun update(maintenanceJobDTO: MaintenanceJobDTO) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun saveState(maintenanceJobDTO: MaintenanceJobDTO) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun saveBeginTime(maintenanceJobDTO: MaintenanceJobDTO) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun saveEndTime(maintenanceJobDTO: MaintenanceJobDTO) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun saveBeginPhoto(maintenanceJobDTO: MaintenanceJobDTO) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun saveEndPhoto(maintenanceJobDTO: MaintenanceJobDTO) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override suspend fun saveForMaintenance(maintenanceJobDTO: MaintenanceJobDTO, maintenanceId: Long) {
