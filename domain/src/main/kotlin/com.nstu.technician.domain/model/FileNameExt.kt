@@ -7,4 +7,7 @@ data class FileNameExt(
     val fileName: String,
     val path: String,
     val ext: String
-):java.io.Serializable
+) : java.io.Serializable {
+
+    fun getFileNameExt() = "$fileName.$ext"
+}

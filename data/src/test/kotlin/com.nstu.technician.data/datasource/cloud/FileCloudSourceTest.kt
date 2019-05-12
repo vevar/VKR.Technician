@@ -1,6 +1,5 @@
 package com.nstu.technician.data.datasource.cloud
 
-import android.content.ContentResolver
 import com.nstu.technician.data.client.NetworkClientTest
 import com.nstu.technician.data.datasource.entity.FileDataSource
 import com.nstu.technician.data.di.component.DaggerCloudSourceComponent
@@ -15,7 +14,6 @@ import java.io.File
 class FileCloudSourceTest {
 
     private lateinit var fileCloudSource: FileDataSource
-    private lateinit var contentResolver: ContentResolver
 
 
     @Before
@@ -28,9 +26,10 @@ class FileCloudSourceTest {
     }
 
     @Test
-    fun save_Image_ReturnsArtifact() {
+    fun saveAndFindByArtifact_Image_ReturnsArtifact() {
         val file = File("C:\\Projects\\Mobile\\VKR.Technician\\data\\src\\sharedTest\\assets\\test_upload_image.jpg")
         val artifactDTO = runBlocking { fileCloudSource.save(file, "image/jpg") }
+        val inputFile = runBlocking { fileCloudSource.findFileByArtifact(artifactDTO) }
         val rec = 5
     }
 }

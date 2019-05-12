@@ -8,6 +8,7 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
+import java.io.InputStream
 import javax.inject.Inject
 
 class FileCloudSource @Inject constructor(
@@ -18,13 +19,15 @@ class FileCloudSource @Inject constructor(
         private const val TAG = "FileCloudSource"
     }
 
-    override suspend fun findFileByArtifact(artifactDTO: ArtifactDTO): File {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override suspend fun findFileByArtifact(artifactDTO: ArtifactDTO): InputStream {
+        val responseBody =
+            fileApi.downLoad(artifactDTO.oid).execute().body() ?: throw IllegalStateException(BODY_MUST_BE_SET)
+        return responseBody.byteStream()
     }
 
     override suspend fun save(file: File, mediaType: String): ArtifactDTO {
         val requestBody = RequestBody.create(MediaType.parse(mediaType), file)
-        val filePart = MultipartBody.Part.createFormData(file.name, file.name, requestBody)
+        val filePart = MultipartBody.Part.createFormData("file", file.name, requestBody)
         return fileApi.upload(file = filePart).execute().body() ?: throw IllegalStateException(BODY_MUST_BE_SET)
     }
 
