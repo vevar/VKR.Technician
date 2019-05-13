@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:bind="http://schemas.android.com/tools">
+    <data>
+        <variable name="maintenanceJob" type="com.nstu.technician.domain.model.facility.maintenance.MaintenanceJob"/>
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <include layout="@layout/view_maintenance_job"
+                 bind:maintenanceJob="maintenanceJob" android:id="@+id/include"/>
+        <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                bind:layout_editor_absoluteX="0dp"
+                android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/include"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

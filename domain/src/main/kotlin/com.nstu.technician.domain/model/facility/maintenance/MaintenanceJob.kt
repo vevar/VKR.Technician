@@ -19,6 +19,6 @@ data class MaintenanceJob(
     val endPhoto: Artifact? = null,
     val implList: List<Implements>,
     val components: List<ComponentUnit>,
-    val duration: Int? = null,  // in minutes
+    val duration: Int,  // in minutes
     val problem: Problem? = null
 ):java.io.Serializable

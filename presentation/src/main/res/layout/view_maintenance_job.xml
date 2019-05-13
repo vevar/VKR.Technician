@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable name="maintenanceJob" type="com.nstu.technician.domain.model.facility.maintenance.MaintenanceJob"/>
+    </data>
+    <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/default_radius">
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <TextView
+                    android:id="@+id/lbl_job_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:textSize="@dimen/H6"
+                    android:textColor="@color/black"
+                    android:text="@{maintenanceJob.jobType.name}"
+                    android:maxLines="2"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintEnd_toStartOf="@+id/lbl_duration"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:ellipsize="end"
+
+                    tools:text="Замена датчика Замена датчика Замена датчика Замена датчика "/>
+            <TextView
+                    android:id="@+id/lbl_duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/default_margin"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:textColor="@color/black"
+                    android:drawableStart="@drawable/ic_time_gray"
+                    android:drawablePadding="@dimen/mini_margin"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/lbl_job_name"
+                    app:layout_constraintHorizontal_bias="1"
+                    app:setTypeStateOfJob="@{maintenanceJob.}"
+
+                    tools:text="1ч. 20мин."/>
+
+            <TextView
+                    android:id="@+id/lbl_job_state"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="@dimen/default_margin"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+
+                    tools:text="Не выполнена"/>
+            <TextView
+                    android:id="@+id/lbl_description"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_marginEnd="@dimen/default_margin"
+                    android:layout_marginTop="@dimen/default_margin"
+                    app:layout_constraintTop_toBottomOf="@+id/lbl_job_name"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/lbl_job_state"
+
+                    tools:text="Описание Описание Описание Описание Описание Описание Описание Описание Описание
+                    Описание Описание Описание Описание Описание Описание Описание Описание Описание Описание"
+                    app:layout_constraintVertical_bias="0.0"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+
+</layout>

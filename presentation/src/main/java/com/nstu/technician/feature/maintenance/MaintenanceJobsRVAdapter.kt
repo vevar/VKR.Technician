@@ -49,7 +49,7 @@ class MaintenanceJobsRVAdapter(
                 MaintenanceHolder(view)
             }
             TYPE_JOB -> {
-                val view = inflater.inflate(R.layout.view_job, parent, false)
+                val view = inflater.inflate(R.layout.view_mini_job, parent, false)
                 JobHolder(view, maintenanceJobListener)
             }
             else -> {
