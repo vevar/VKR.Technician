@@ -3,8 +3,10 @@ package com.nstu.technician.data.repository
 import com.nstu.technician.data.datasource.entity.CLOUD
 import com.nstu.technician.data.datasource.entity.LOCAL
 import com.nstu.technician.data.datasource.entity.ShiftDataSource
+import com.nstu.technician.data.until.toMiniShift
 import com.nstu.technician.data.until.toShiftDTO
 import com.nstu.technician.data.until.toShiftModel
+import com.nstu.technician.domain.model.MiniShift
 import com.nstu.technician.domain.model.Shift
 import com.nstu.technician.domain.repository.ShiftRepository
 import javax.inject.Inject
@@ -26,18 +28,16 @@ class ShiftRepositoryImpl @Inject constructor(
     }
 
     override suspend fun findById(id: Long): Shift {
-        return (shiftCloudSource.findById(id).also { shiftDTO ->
-            shiftLocalSource.save(shiftDTO)
-        }).toShiftModel()
+        return shiftCloudSource.findById(id).toShiftModel()
     }
 
     override suspend fun findByTechnicianIdAndTimePeriod(
         technicianId: Long, startTime: Long, endTime: Long
-    ): List<Shift> {
+    ): List<MiniShift> {
         return shiftCloudSource.findByTechnicianIdAndTimePeriod(technicianId, startTime, endTime).let { shifts ->
-            shifts?.map { shiftDTO ->
-                shiftCloudSource.findById(shiftDTO.oid).toShiftModel()
+            shifts.map { shiftDTO ->
+                shiftDTO.toMiniShift()
             }
-        } ?: listOf()
+        }
     }
 }

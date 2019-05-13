@@ -1,39 +1,31 @@
 package com.nstu.technician.feature.qr.scanner
 
 import android.graphics.Bitmap
-import android.os.Handler
-import android.os.HandlerThread
 import android.util.Log
 import com.google.firebase.ml.vision.FirebaseVision
 import com.google.firebase.ml.vision.common.FirebaseVisionImage
 
-class QRCodeRecognizerImpl {
+class QRCodeGuardImpl(
+    private val key: String
+) {
 
     companion object {
-        const val TAG = "QRCodeRecognizerImpl"
+        const val TAG = "QRCodeGuardImpl"
     }
-
-    private var mHandler: Handler? = null
-    private var mHandlerThread: HandlerThread? = null
 
     private val detector = FirebaseVision.getInstance().visionBarcodeDetector
 
-    fun onStart() {
-        startExecutor()
-    }
-
-    private fun startExecutor() {
-        mHandlerThread = HandlerThread("QRCodeRecognizerThread").also { it.start() }
-        mHandler = Handler(mHandlerThread?.looper)
-    }
-
-    fun getQRCodeDetails(bitmap: Bitmap) {
+    fun getQRCodeDetails(bitmap: Bitmap, callBack: CallBack) {
         val image = FirebaseVisionImage.fromBitmap(bitmap)
         detector.detectInImage(image)
             .addOnSuccessListener { list ->
                 Log.d(TAG, "SuccessListener is called")
-                list.forEach {
-                    Log.d(TAG, "result: ${it.rawValue}")
+                if (list.size > 0) {
+                    if (list.find { it.rawValue == key } != null){
+                        callBack.onSuccessPass()
+                    }else{
+                        callBack.onFailurePass()
+                    }
                 }
             }.addOnFailureListener {
                 Log.d(TAG, it.toString())
@@ -44,5 +36,12 @@ class QRCodeRecognizerImpl {
             .addOnCanceledListener {
                 Log.d(TAG, "CanceledListener is called")
             }
+    }
+
+    interface CallBack {
+
+        fun onSuccessPass()
+
+        fun onFailurePass()
     }
 }

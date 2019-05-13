@@ -97,8 +97,6 @@ class CameraEnginePreview private constructor(
 
         captureRequest.addTarget(mImageReaders.first().surface)
         mSession?.apply {
-            //            stopRepeating()
-//            abortCaptures()
             captureBurst(listOf(captureRequest.build()), callback, handler)
         } ?: throw IllegalStateException("mSession must be set")
     }

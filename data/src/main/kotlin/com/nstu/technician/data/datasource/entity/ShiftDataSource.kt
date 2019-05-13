@@ -5,5 +5,5 @@ import com.nstu.technician.data.dto.job.ShiftDTO
 
 interface ShiftDataSource: CrudDataSource<ShiftDTO,Long> {
 
-    suspend fun findByTechnicianIdAndTimePeriod(technicianId: Long, startTime: Long, endTime: Long): List<ShiftDTO>?
+    suspend fun findByTechnicianIdAndTimePeriod(technicianId: Long, startTime: Long, endTime: Long): List<ShiftDTO>
 }

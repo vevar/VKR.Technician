@@ -9,7 +9,7 @@ import retrofit2.http.Query
 interface ShiftApi {
 
     companion object {
-        private const val DEFAULT_LEVEL = 0
+        private const val DEFAULT_LEVEL = 100
     }
 
     @GET("/api/shift/getToPeriod")

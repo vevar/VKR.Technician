@@ -187,35 +187,49 @@ fun Artifact.toArtifactDTO(): ArtifactDTO {
 
 fun AddressEntity.toAddressDTO(gpsPointDTO: GPSPointDTO): AddressDTO {
     return AddressDTO(
+        oid = oid,
         street = street,
         home = home,
         office = office,
-        location = gpsPointDTO
+        location = gpsPointDTO,
+        type = type,
+        city = city
     )
 }
 
 fun AddressDTO.toAddressEntity(gpsPointId: Long): AddressEntity {
     return AddressEntity(
-        oid = gpsPointId,
+        oid = oid,
         home = home,
         office = office,
         street = street,
-        gpsPointId = gpsPointId
+        gpsPointId = gpsPointId,
+        city = city,
+        type = type
     )
 }
 
 fun AddressDTO.toAddress(): Address {
     return Address(
-        street, home, location.toGPSPoint(), office
+        oid = oid,
+        street = street,
+        home = home,
+        location = location.toGPSPoint(),
+        office = office,
+        type = type,
+        city = city
     )
 }
 
 fun Address.toAddressDTO(): AddressDTO {
     return AddressDTO(
+        oid = oid,
         street = street,
         home = home,
         location = location.toGpsPointDTO(),
-        office = office
+        office = office,
+        type = type,
+        city = city
     )
 }
 
@@ -254,7 +268,7 @@ fun FacilityDTO.toFacility(): Facility {
         address = address.toAddress(),
         assingmentDate = assingmentDate,
         identifier = identifier,
-        contract = contract.getObject().toContract(),
+        contract = if (contract.oid == NONE) null else contract.getObject().toContract(),
         contractor = contractor.getObject().toContractor()
     )
 }
@@ -264,7 +278,7 @@ fun Facility.toFacilityDTO(): FacilityDTO {
         oid = oid,
         name = name,
         identifier = identifier,
-        contract = EntityLink(contract.toContractDTO()),
+        contract = contract?.let { EntityLink(it.toContractDTO()) } ?: EntityLink(NONE),
         contractor = EntityLink(contractor.toContractorDTO()),
         address = address.toAddressDTO(),
         assingmentDate = assingmentDate
@@ -479,6 +493,13 @@ fun ShiftDTO.toShiftModel(): Shift {
         date = date,
         points = points.map { it.getObject().toGPSPoint() },
         visits = visits.map { it.getObject().toMaintenance() }
+    )
+}
+
+fun ShiftDTO.toMiniShift(): MiniShift {
+    return MiniShift(
+        oid = oid,
+        date = date
     )
 }
 

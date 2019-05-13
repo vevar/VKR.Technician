@@ -74,7 +74,7 @@ class MaintenanceFragment : BaseFragment() {
 
             btnScanQr.setOnClickListener {
                 mViewModel.maintenance.value?.let {
-                    val action = MaintenanceFragmentDirections.actionMaintenanceDestToJobListFragment(it)
+                    val action = MaintenanceFragmentDirections.actionMaintenanceDestToQrcodeScannerDest(it)
                     findNavController().navigate(action)
                 }
 

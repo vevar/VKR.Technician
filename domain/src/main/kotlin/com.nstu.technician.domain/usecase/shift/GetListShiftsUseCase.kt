@@ -1,6 +1,6 @@
 package com.nstu.technician.domain.usecase.shift
 
-import com.nstu.technician.domain.model.Shift
+import com.nstu.technician.domain.model.MiniShift
 import com.nstu.technician.domain.repository.ShiftRepository
 import com.nstu.technician.domain.usecase.UseCase
 import java.util.*
@@ -8,13 +8,13 @@ import javax.inject.Inject
 
 class GetListShiftsUseCase @Inject constructor(
     private val shiftRepository: ShiftRepository
-) : UseCase<List<Shift>, GetListShiftsUseCase.Param>() {
+) : UseCase<List<MiniShift>, GetListShiftsUseCase.Param>() {
 
     companion object {
         const val RANGE_OF_LOADING_SHIFTS = 7
     }
 
-    override suspend fun task(param: Param): List<Shift> {
+    override suspend fun task(param: Param): List<MiniShift> {
         val today: Calendar = Calendar.getInstance()
 
         val startTime = Calendar.getInstance()

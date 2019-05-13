@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.navArgs
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.nstu.technician.R
@@ -30,6 +31,7 @@ class QRCodeScannerActivity: BaseActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
         val host: NavHostFragment = supportFragmentManager
             .findFragmentById(R.id.host_fragment) as NavHostFragment? ?: return
+        host.arguments = navArgs<QRCodeScannerFragmentArgs>().value.toBundle()
         val navController = host.navController
         setupActionBar(navController, AppBarConfiguration(navController.graph))
 

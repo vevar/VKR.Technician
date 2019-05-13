@@ -9,14 +9,17 @@ import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 import com.nstu.technician.R
 import com.nstu.technician.databinding.FragmentQrcodeScannerBinding
 import com.nstu.technician.device.camera.CameraEngine
 import com.nstu.technician.device.camera.CameraEnginePreview
+import com.nstu.technician.domain.model.facility.maintenance.Maintenance
 import com.nstu.technician.feature.BaseFragment
 import com.nstu.technician.feature.common.PERMISSION_REQUEST_CODE_CAMERA
 import com.nstu.technician.feature.common.checkPermissionCamera
 import com.nstu.technician.feature.common.requestCameraPermission
+import com.nstu.technician.feature.util.getQRCode
 import kotlin.properties.Delegates
 
 class QRCodeScannerFragment : BaseFragment() {
@@ -27,21 +30,38 @@ class QRCodeScannerFragment : BaseFragment() {
 
     }
 
-    private val mCameraEngineBuilder: CameraEngine.Builder = CameraEnginePreview.Builder()
+    private lateinit var mMaintenance: Maintenance
 
+    private lateinit var mCameraEngineBuilder: CameraEngine.Builder
+
+    private val mCallBack = object : QRCodeGuardImpl.CallBack {
+        override fun onSuccessPass() {
+            Log.d(TAG, "Method onSuccessPass called")
+            val action =
+                QRCodeScannerFragmentDirections.actionQRCodeScannerFragmentToJobListFragment(mMaintenance)
+            findNavController().navigate(action)
+        }
+
+        override fun onFailurePass() {
+            Log.d(TAG, "Method onFailurePass called")
+        }
+
+    }
 
     private var mCameraEngine: CameraEngine? by Delegates.observable<CameraEngine?>(null) { property, oldValue, newValue ->
         newValue?.apply {
-            mQRCodeRecognizer = QRCodeRecognizerImpl()
+            mQRCodeGuard = QRCodeGuardImpl(mMaintenance.facility.getQRCode())
             onStart()
         }
     }
 
-    private var mQRCodeRecognizer: QRCodeRecognizerImpl? by Delegates.observable<QRCodeRecognizerImpl?>(null) { property, oldValue, newValue ->
-        newValue?.apply {
-            onStart()
-        }
+    private fun getMaintenance(): Maintenance {
+        return arguments?.let {
+            QRCodeScannerFragmentArgs.fromBundle(it).maintenance
+        } ?: throw NullPointerException("mMaintenance must be set")
     }
+
+    private lateinit var mQRCodeGuard: QRCodeGuardImpl
 
     private lateinit var mBinding: FragmentQrcodeScannerBinding
     private var mCounterUpdate = 0
@@ -64,10 +84,16 @@ class QRCodeScannerFragment : BaseFragment() {
         override fun onSurfaceTextureUpdated(texture: SurfaceTexture) {
             mCounterUpdate++
             if (mCounterUpdate > DELAY_IN_UPDATE) {
-                mQRCodeRecognizer?.getQRCodeDetails(mBinding.texture.bitmap)
+                mQRCodeGuard.getQRCodeDetails(mBinding.texture.bitmap, mCallBack)
                 mCounterUpdate = 0
             }
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mMaintenance = getMaintenance()
+        Log.d(TAG, "key(QRCode): ${mMaintenance.facility.getQRCode()}")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -90,6 +116,7 @@ class QRCodeScannerFragment : BaseFragment() {
     }
 
     private fun buildCameraEngine() {
+        mCameraEngineBuilder = CameraEnginePreview.Builder()
         mCameraEngineBuilder.setupCamera(requireContext())
         if (mBinding.texture.isAvailable) {
             mCameraEngineBuilder

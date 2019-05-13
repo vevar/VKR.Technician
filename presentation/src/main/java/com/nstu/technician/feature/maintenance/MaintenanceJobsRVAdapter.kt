@@ -13,7 +13,9 @@ import com.nstu.technician.domain.model.document.Contract
 import com.nstu.technician.domain.model.facility.maintenance.Maintenance
 import com.nstu.technician.domain.model.facility.maintenance.MaintenanceJob
 
-class MaintenanceJobsRVAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MaintenanceJobsRVAdapter(
+    private val maintenanceJobListener: JobHolder.MaintenanceJobListener
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         const val TYPE_CONTRACT: Int = 0
@@ -48,7 +50,7 @@ class MaintenanceJobsRVAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
             }
             TYPE_JOB -> {
                 val view = inflater.inflate(R.layout.view_job, parent, false)
-                JobHolder(view)
+                JobHolder(view, maintenanceJobListener)
             }
             else -> {
                 throw IllegalStateException("Incorrect type o holder")
@@ -57,7 +59,7 @@ class MaintenanceJobsRVAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
     }
 
     override fun getItemCount(): Int {
-        return listMaintenanceJobs.size
+        return listMaintenanceJobs.size + BIAS
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -107,15 +109,22 @@ class MaintenanceJobsRVAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>()
         }
     }
 
-    class JobHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class JobHolder(view: View, private val maintenanceJobListener: MaintenanceJobListener) :
+        RecyclerView.ViewHolder(view) {
         private val binding: ViewJobBinding = DataBindingUtil.bind(view)
             ?: throw IllegalArgumentException("Incorrect view")
 
         fun bind(maintenanceJob: MaintenanceJob) {
             binding.maintenanceJob = maintenanceJob
+            itemView.setOnClickListener {
+                maintenanceJobListener.onShowJob(maintenanceJob)
+            }
             binding.notifyChange()
         }
 
+        interface MaintenanceJobListener {
+            fun onShowJob(maintenanceJob: MaintenanceJob)
+        }
     }
 
 

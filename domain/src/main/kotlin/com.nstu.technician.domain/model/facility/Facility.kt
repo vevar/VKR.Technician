@@ -13,6 +13,6 @@ data class Facility(
     val name: String,
     val address: Address,
     val assingmentDate: OwnDateTime,
-    val contract: Contract,
+    val contract: Contract?,
     val contractor: Contractor
 ) : java.io.Serializable

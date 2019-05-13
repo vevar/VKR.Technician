@@ -4,6 +4,7 @@
 
     <data>
         <variable name="contract" type="com.nstu.technician.domain.model.document.Contract"/>
+        <variable name="contractor" type="com.nstu.technician.domain.model.document.Contractor"/>
     </data>
 
     <androidx.cardview.widget.CardView
@@ -45,7 +46,7 @@
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintTop_toTopOf="@+id/lbl_contractor"
                     app:layout_constraintBottom_toBottomOf="@+id/lbl_contractor"
-                    android:text="@{contract.contractor.name}"
+                    android:text="@{contractor.name}"
 
                     tools:text="ООО НГТУ"/>
             <TextView

@@ -137,9 +137,4 @@ class ListMaintenanceForDayFragment : BaseFragment() {
             }
         }
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d(TAG, "${this} + fragment is destroy")
-    }
 }

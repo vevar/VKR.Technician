@@ -5,13 +5,11 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.nstu.technician.R
 import com.nstu.technician.databinding.ViewMaintenanceBinding
 import com.nstu.technician.domain.model.facility.maintenance.Maintenance
-import com.nstu.technician.feature.common.TypeNotification
 
 class MaintenanceRVAdapter(
     context: Context,
@@ -51,20 +49,17 @@ class MaintenanceRVAdapter(
         private var binding: ViewMaintenanceBinding = DataBindingUtil.bind(view)
             ?: throw IllegalArgumentException("Incorrect view for binding")
 
-        private var message: TextView = view.findViewById(R.id.maintenance_message)
-        private var type: TextView = view.findViewById(R.id.type_maintenance)
-
         @SuppressLint("SetTextI18n")
         fun bind(maintenance: Maintenance) {
             binding.apply {
                 this.maintenance = maintenance
-                notifyChange()
                 btnShowOnMap.setOnClickListener {
                     maintenanceListener.onShowOnMap(maintenance)
                 }
                 btnStartJob.setOnClickListener {
                     maintenanceListener.onStartJob(maintenance)
                 }
+                notifyChange()
             }
         }
     }

@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nstu.technician.domain.model.Shift
+import com.nstu.technician.domain.model.MiniShift
 import com.nstu.technician.domain.usecase.CallUseCase
 import com.nstu.technician.domain.usecase.shift.GetListShiftsUseCase
 import kotlinx.coroutines.launch
@@ -33,8 +33,8 @@ class PlanJobsViewModel(
 
     fun loadPlanJobs() {
         viewModelScope.launch {
-            getShiftsUseCase.execute(object : CallUseCase<List<Shift>> {
-                override suspend fun onSuccess(result: List<Shift>) {
+            getShiftsUseCase.execute(object : CallUseCase<List<MiniShift>> {
+                override suspend fun onSuccess(result: List<MiniShift>) {
                     val indexCurrentShift = findIndexOfCurrentShift(result) ?: 0
                     _data.value = Data(result, indexCurrentShift)
                 }
@@ -47,7 +47,7 @@ class PlanJobsViewModel(
         }
     }
 
-    private fun findIndexOfCurrentShift(list: List<Shift>): Int? {
+    private fun findIndexOfCurrentShift(list: List<MiniShift>): Int? {
         val currentDayYear = currentDate.get(Calendar.DAY_OF_YEAR)
         val currentYear = currentDate.get(Calendar.YEAR)
         return list.indexOfFirst { shift ->
@@ -61,7 +61,7 @@ class PlanJobsViewModel(
     }
 
     class Data(
-        val shifts: List<Shift>,
+        val shifts: List<MiniShift>,
         val indexCurrentDay: Int
     )
 
