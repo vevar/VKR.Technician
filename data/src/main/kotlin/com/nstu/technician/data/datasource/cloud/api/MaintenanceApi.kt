@@ -27,9 +27,6 @@ interface MaintenanceApi {
     @POST("/api/maintenance/endtime")
     fun setMaintenanceEndTime(@Query("id") id: Long, @Query("timeInMS") timeMark: Long): Call<String>
 
-    @GET("/api/maintenance/list")
-    fun getMaintenanceList(@Query("mode") mode: Int = DEFAULT_MODE, @Query("level") level: Int = DEFAULT_LEVEL): Call<List<MaintenanceDTO>>
-
     /** Добавить заявку к объекту (со всеми связанными объектами)  */
     @POST("/api/maintenance/add")
     fun addMaintenance(@Query("facilityid") id: Long, @Body body: MaintenanceDTO, @Query("level") level: Int = DEFAULT_LEVEL): Call<Long>

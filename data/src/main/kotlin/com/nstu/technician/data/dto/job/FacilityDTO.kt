@@ -16,7 +16,6 @@ data class FacilityDTO(
     val assingmentDate: OwnDateTime,
     val contract: EntityLink<ContractDTO>,
     val contractor: EntityLink<ContractorDTO>
-
 ) : EntityDTO(oid) {
 
 

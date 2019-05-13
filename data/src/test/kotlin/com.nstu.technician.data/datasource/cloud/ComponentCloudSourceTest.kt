@@ -34,7 +34,7 @@ class ComponentCloudSourceTest {
     }
 
     @Test
-    fun findById_0_ThrowNotFound() {
+    fun findById_0_ThrowNotFoundException() {
         try {
             runBlocking { componentCloudSource.findById(0) }
         } catch (e: NotFoundException) {

@@ -8,6 +8,7 @@ import com.nstu.technician.data.dto.job.MaintenanceDTO
 import com.nstu.technician.data.until.getObject
 import com.nstu.technician.data.until.toMaintenanceDTO
 import com.nstu.technician.data.until.toMaintenanceEntity
+import com.nstu.technician.domain.exceptions.NotFoundException
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import javax.inject.Named
@@ -23,13 +24,17 @@ class MaintenanceLocalSource @Inject constructor(
     private val artifactLocalSource: ArtifactDataSource
 ) : MaintenanceDataSource {
 
+    companion object {
+        const val TAG = "MaintenanceLocalSource"
+    }
+
     private suspend fun saveToMaintenanceEntity(maintenanceDTO: MaintenanceDTO, shiftId: Long): Long {
         return utilDao.transactionSave {
             runBlocking {
                 facilityLocalSource.save(maintenanceDTO.facility.getObject())
                 maintenanceDTO.jobList.map { it.getObject() }.let { jobs ->
                     maintenanceJobLocalSource.saveAllForMaintenance(jobs, maintenanceDTO.oid)
-                    maintenanceDTO.voiceMassage?.getObject()?.let {
+                    maintenanceDTO.voiceMessage.getObject().let {
                         artifactLocalSource.save(it)
                     }
                 }
@@ -45,7 +50,7 @@ class MaintenanceLocalSource @Inject constructor(
             val parent = maintenanceEntity.maintenanceParentId?.let { findById(it) }
             val voiceMessage = maintenanceEntity.voiceMessageId?.let { artifactLocalSource.findById(it) }
 
-            maintenanceEntity.toMaintenanceDTO(facilityDTO, jobList, parent, voiceMessage)
+            maintenanceEntity.toMaintenanceDTO(facilityDTO, jobList, parent, voiceMessage, null)
         }
     }
 
@@ -55,10 +60,10 @@ class MaintenanceLocalSource @Inject constructor(
         }
     }
 
-    override suspend fun findById(id: Long): MaintenanceDTO? {
+    override suspend fun findById(id: Long): MaintenanceDTO {
         return maintenanceDao.findById(id)?.let { maintenanceEntity ->
             getMaintenanceDTO(maintenanceEntity)
-        }
+        } ?: throw NotFoundException(TAG, "Maintenance by id=$id")
     }
 
     override suspend fun saveForShift(maintenanceDTO: MaintenanceDTO, shiftId: Long): Long {

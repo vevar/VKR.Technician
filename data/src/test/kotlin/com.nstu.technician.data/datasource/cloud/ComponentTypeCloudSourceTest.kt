@@ -2,6 +2,7 @@ package com.nstu.technician.data.datasource.cloud
 
 import com.nstu.technician.data.client.NetworkClientTest
 import com.nstu.technician.data.network.retorfit.ApiProvider
+import com.nstu.technician.domain.exceptions.NotFoundException
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
@@ -23,6 +24,15 @@ class ComponentTypeCloudSourceTest {
         val expected = 2L
         val actual = runBlocking { componentTypeCloudSource.findById(expected) }
         assertEquals(expected, actual.oid)
+    }
+
+    @Test
+    fun findById_NotExist_ThrowNotFoundException() {
+        try {
+            runBlocking { componentTypeCloudSource.findById(-3) }
+        } catch (e: NotFoundException) {
+        }
+
     }
 
     @Test

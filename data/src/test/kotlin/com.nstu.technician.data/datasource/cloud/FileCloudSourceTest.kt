@@ -30,6 +30,5 @@ class FileCloudSourceTest {
         val file = File("C:\\Projects\\Mobile\\VKR.Technician\\data\\src\\sharedTest\\assets\\test_upload_image.jpg")
         val artifactDTO = runBlocking { fileCloudSource.save(file, "image/jpg") }
         val inputFile = runBlocking { fileCloudSource.findFileByArtifact(artifactDTO) }
-        val rec = 5
     }
 }

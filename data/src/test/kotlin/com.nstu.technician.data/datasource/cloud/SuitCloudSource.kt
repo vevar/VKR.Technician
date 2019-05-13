@@ -6,7 +6,18 @@ import org.junit.runners.Suite
 
 @RunWith(Suite::class)
 @Suite.SuiteClasses(
-    value = [ComponentCloudSourceTest::class, ComponentTypeCloudSourceTest::class, ImplementsCloudSourceTest::class, ShiftCloudSourceTest::class,
-        TechnicianCloudSourceTest::class, UserCloudSourceTest::class]
+    value = [
+        ArtifactCloudSourceTest::class,
+        ComponentCloudSourceTest::class,
+        ComponentTypeCloudSourceTest::class,
+        ContractCloudSourceTest::class,
+        ContractorCloudSourceTest::class,
+        FacilityCloudSourceTest::class,
+        FileCloudSourceTest::class,
+        ImplementsCloudSourceTest::class,
+        MaintenanceCloudSourceTest::class,
+        ShiftCloudSourceTest::class,
+        TechnicianCloudSourceTest::class,
+        UserCloudSourceTest::class]
 )
 class SuitCloudSource

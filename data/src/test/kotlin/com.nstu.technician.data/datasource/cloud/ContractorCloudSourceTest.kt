@@ -1,7 +1,7 @@
 package com.nstu.technician.data.datasource.cloud
 
 import com.nstu.technician.data.client.NetworkClientTest
-import com.nstu.technician.data.datasource.entity.ArtifactDataSource
+import com.nstu.technician.data.datasource.entity.ContractorDataSource
 import com.nstu.technician.data.di.component.DaggerCloudSourceComponent
 import com.nstu.technician.data.di.model.ApiModule
 import com.nstu.technician.data.di.model.DataSourceModule
@@ -12,34 +12,32 @@ import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
-class ArtifactCloudSourceTest {
+class ContractorCloudSourceTest {
 
-    private lateinit var artifactCloudSource: ArtifactDataSource
+    private lateinit var contractorCloudSource: ContractorDataSource
 
     @Before
     fun init() {
         val apiProvider = ApiProvider(NetworkClientTest().buildRetrofitProvider())
-        artifactCloudSource = DaggerCloudSourceComponent.builder()
+        contractorCloudSource = DaggerCloudSourceComponent.builder()
             .apiModule(ApiModule(apiProvider))
             .dataSourceModule(DataSourceModule())
-            .build().artifactCloudSource()
+            .build().contractorCloudSource()
     }
 
     @Test
-    fun findById_2_ReturnsArtifact() {
-        val expected = 3L
-        val artifactDTO = runBlocking { artifactCloudSource.findById(expected) }
-        assertEquals(expected, artifactDTO.oid)
+    fun findById_2_ReturnsContractor() {
+        val expected = 2L
+        val actual = runBlocking { contractorCloudSource.findById(expected) }
+        assertEquals(expected, actual.oid)
     }
 
     @Test
     fun findById_NotExist_ThrowNotFoundException() {
         try {
-            val expected = -3L
-            val artifactDTO = runBlocking { artifactCloudSource.findById(expected) }
-            assertEquals(expected, artifactDTO.oid)
+            runBlocking { contractorCloudSource.findById(-3) }
         } catch (e: NotFoundException) {
-
         }
+
     }
 }

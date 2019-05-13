@@ -26,6 +26,16 @@ class ApiModule(
     }
 
     @Provides
+    fun provideContract(): ContractApi{
+        return apiProvider.createContractApi()
+    }
+
+    @Provides
+    fun provideContractor(): ContractorApi{
+        return apiProvider.createContractorApi()
+    }
+
+    @Provides
     fun provideFacilityApi(): FacilityApi {
         return apiProvider.createFacilityApi()
     }

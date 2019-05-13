@@ -6,6 +6,7 @@ import com.nstu.technician.data.datasource.entity.CLOUD
 import com.nstu.technician.data.datasource.entity.ComponentDataSource
 import com.nstu.technician.data.datasource.entity.ComponentTypeDataSource
 import com.nstu.technician.data.dto.tool.ComponentDTO
+import com.nstu.technician.domain.exceptions.NotFoundException
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import javax.inject.Named
@@ -25,10 +26,7 @@ class ComponentCloudSource @Inject constructor(
             componentApi.getComponentList().execute().body() ?: throw IllegalStateException(BODY_MUST_BE_SET)
         return runBlocking {
             components.map {
-                val type = it.type
-                if (type.ref == null) {
-                    it.type.ref = componentTypeCloudSource.findById(type.oid)
-                }
+                runBlocking { it.loadDependencies() }
                 it
             }
         }
@@ -45,10 +43,7 @@ class ComponentCloudSource @Inject constructor(
     override suspend fun findById(id: Long): ComponentDTO {
         val componentDTO =
             componentApi.getComponent(id).execute().body() ?: throw IllegalStateException(BODY_MUST_BE_SET)
-        val type = componentDTO.type
-        if (type.ref == null) {
-            runBlocking { type.ref = componentTypeCloudSource.findById(componentDTO.oid) }
-        }
+        runBlocking { componentDTO.loadDependencies() }
         return componentDTO
     }
 
@@ -58,5 +53,15 @@ class ComponentCloudSource @Inject constructor(
 
     override suspend fun delete(obj: ComponentDTO) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    private suspend fun ComponentDTO.loadDependencies() {
+        if (type.ref == null) {
+            try {
+                type.ref = componentTypeCloudSource.findById(type.oid)
+            } catch (e: NotFoundException) {
+                throw IllegalStateException("ComponentType by id=${type.oid} must be set")
+            }
+        }
     }
 }

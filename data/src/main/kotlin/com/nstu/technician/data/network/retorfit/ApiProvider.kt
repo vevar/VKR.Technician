@@ -53,5 +53,13 @@ class ApiProvider(
     fun createMaintenanceJobApi(): MaintenanceJobApi {
         return retrofitProvider.getRetrofit().create(MaintenanceJobApi::class.java)
     }
+
+    fun createContractorApi(): ContractorApi {
+        return retrofitProvider.getRetrofit().create(ContractorApi::class.java)
+    }
+
+    fun createContractApi(): ContractApi {
+        return retrofitProvider.getRetrofit().create(ContractApi::class.java)
+    }
 }
 

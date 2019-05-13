@@ -23,7 +23,7 @@ fun getMaintenanceDTO(oid: Long): MaintenanceDTO {
         visitDate = getOwnTime(),
         jobList = getListSomeObject { EntityLink(getMaintenanceJobDTO(getRandomId())) },
         parent = null,
-        voiceMassage = null,
+        voiceMessage = null,
         workCompletionReport = null
     )
 }
@@ -178,7 +178,7 @@ fun getArtifactDTO(oid: Long, type: Int): ArtifactDTO {
 fun getContractDTO(oid: Long): ContractDTO {
     return ContractDTO(
         oid = oid,
-        artifact = EntityLink(getArtifactDTO(32, 1)),
+        docscan = EntityLink(getArtifactDTO(32, 1)),
         date = getOwnTime(),
         docType = 1,
         number = "123",

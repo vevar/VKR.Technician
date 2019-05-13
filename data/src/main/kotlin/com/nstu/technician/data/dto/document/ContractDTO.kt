@@ -7,17 +7,12 @@ import com.nstu.technician.domain.model.common.OwnDateTime
 data class ContractDTO(
     @Transient
     override val oid: Long,
-    @Transient
     override val docType: Int,
-    @Transient
     override val number: String,
-    @Transient
     override val date: OwnDateTime,
-    @Transient
-    override val artifact: EntityLink<ArtifactDTO>,
-    @Transient
+    override val docscan: EntityLink<ArtifactDTO>,
     override val state: Int
-) : DocumentDTO(oid = oid, docType = docType, number = number, date = date, artifact = artifact, state = state) {
+) : DocumentDTO(oid = oid, docType = docType, number = number, date = date, docscan = docscan, state = state) {
 
 
     override fun equals(other: Any?): Boolean {
@@ -30,7 +25,7 @@ data class ContractDTO(
         if (docType != other.docType) return false
         if (number != other.number) return false
         if (date != other.date) return false
-        if (artifact != other.artifact) return false
+        if (docscan != other.docscan) return false
         if (state != other.state) return false
 
         return true
@@ -41,13 +36,13 @@ data class ContractDTO(
         result = 31 * result + docType
         result = 31 * result + number.hashCode()
         result = 31 * result + date.hashCode()
-        result = 31 * result + artifact.hashCode()
+        result = 31 * result + docscan.hashCode()
         result = 31 * result + state
         return result
     }
 
     override fun toString(): String {
-        return "ContractDTO(oid=$oid, docType=$docType, number='$number', date=$date, artifact=$artifact, forChangeState=$state)"
+        return "ContractDTO(oid=$oid, docType=$docType, number='$number', date=$date, docscan=$docscan, forChangeState=$state)"
     }
 
 

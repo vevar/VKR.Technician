@@ -8,7 +8,7 @@ import com.nstu.technician.data.di.model.DataSourceModule
 import com.nstu.technician.data.dto.getMaintenanceJobDTO
 import com.nstu.technician.data.dto.getRandomId
 import com.nstu.technician.data.network.retorfit.ApiProvider
-import com.nstu.technician.domain.usecase.JobState
+import com.nstu.technician.domain.JobState
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 

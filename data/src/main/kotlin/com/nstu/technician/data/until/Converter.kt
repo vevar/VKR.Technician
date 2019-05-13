@@ -26,6 +26,7 @@ import com.nstu.technician.data.dto.tool.*
 import com.nstu.technician.data.dto.user.AccountDTO
 import com.nstu.technician.data.dto.user.TechnicianDTO
 import com.nstu.technician.data.dto.user.UserDTO
+import com.nstu.technician.domain.NONE
 import com.nstu.technician.domain.model.MiniShift
 import com.nstu.technician.domain.model.Problem
 import com.nstu.technician.domain.model.Shift
@@ -383,12 +384,12 @@ fun GPSPoint.toGpsPointDTO(): GPSPointDTO {
     )
 }
 
-fun MaintenanceEntity.
-        toMaintenanceDTO(
+fun MaintenanceEntity.toMaintenanceDTO(
     facilityDTO: FacilityDTO,
     jobList: List<MaintenanceJobDTO>,
     parent: MaintenanceDTO?,
-    voiceMessage: ArtifactDTO?
+    voiceMessage: ArtifactDTO?,
+    workCompletionReport: DocumentDTO?
 ): MaintenanceDTO {
     return MaintenanceDTO(
         oid = oid,
@@ -397,27 +398,28 @@ fun MaintenanceEntity.
         state = state,
         maintenanceType = maintenanceType,
         duration = duration,
-        endTime = if (endTime != null) OwnDateTime(endTime) else null,
-        beginTime = if (beginTime != null) OwnDateTime(beginTime) else null,
+        endTime = OwnDateTime(endTime ?: NONE),
+        beginTime = OwnDateTime(beginTime ?: NONE),
         jobList = jobList.map { EntityLink(it) },
-        parent = parent?.let { EntityLink(it) },
-        voiceMassage = voiceMessage?.let { EntityLink(it) }
+        parent = parent?.let { EntityLink(it) } ?: EntityLink(NONE),
+        voiceMessage = voiceMessage?.let { EntityLink(it) } ?: EntityLink(NONE),
+        workCompletionReport = workCompletionReport?.let { EntityLink(it) } ?: EntityLink(NONE)
     )
 }
 
 fun MaintenanceDTO.toMaintenanceEntity(shiftId: Long): MaintenanceEntity {
     return MaintenanceEntity(
         oid = oid,
-        beginTime = beginTime?.timeInMS,
-        endTime = endTime?.timeInMS,
+        beginTime = beginTime.timeInMS,
+        endTime = endTime.timeInMS,
         facilityId = facility.oid,
         duration = duration,
         maintenanceType = maintenanceType,
         state = state,
         visitDate = visitDate.timeInMS,
-        maintenanceParentId = parent?.oid,
-        voiceMessageId = voiceMassage?.oid,
-        workCompletionReportId = workCompletionReport?.oid,
+        maintenanceParentId = if (parent.oid != NONE) parent.oid else null,
+        voiceMessageId = if (voiceMessage.oid != NONE) voiceMessage.oid else null,
+        workCompletionReportId = workCompletionReport.oid,
         shiftId = shiftId
     )
 }
@@ -432,7 +434,11 @@ fun MaintenanceDTO.toMaintenance(): Maintenance {
         duration = duration,
         endTime = endTime,
         beginTime = beginTime,
-        jobList = jobList.map { it.getObject().toMaintenanceJob() })
+        jobList = jobList.map { it.getObject().toMaintenanceJob() },
+        parent = parent.ref?.toMaintenance(),
+        voiceMassage = voiceMessage.ref?.toArtifact(),
+        workCompletionReport = workCompletionReport.ref?.toDocument()
+    )
 }
 
 fun Maintenance.toMaintenanceDTO(): MaintenanceDTO {
@@ -441,14 +447,14 @@ fun Maintenance.toMaintenanceDTO(): MaintenanceDTO {
         facility = EntityLink(facility.toFacilityDTO()),
         state = state,
         duration = duration,
-        endTime = endTime,
-        beginTime = beginTime,
+        endTime = endTime ?: OwnDateTime(NONE),
+        beginTime = beginTime ?: OwnDateTime(NONE),
         jobList = jobList.map { EntityLink(it.toMaintenanceJobDTO()) },
-        voiceMassage = voiceMassage?.let { (EntityLink(it.toArtifactDTO())) },
-        parent = parent?.let { EntityLink(it.toMaintenanceDTO()) },
+        voiceMessage = voiceMassage?.let { (EntityLink(it.toArtifactDTO())) } ?: EntityLink(NONE),
+        parent = parent?.let { EntityLink(it.toMaintenanceDTO()) } ?: EntityLink(NONE),
         maintenanceType = maintenanceType,
         visitDate = visitDate,
-        workCompletionReport = workCompletionReport?.let { EntityLink(it.toDocumentDTO()) }
+        workCompletionReport = workCompletionReport?.let { EntityLink(it.toDocumentDTO()) } ?: EntityLink(NONE)
     )
 }
 
@@ -498,7 +504,7 @@ fun ContractEntity.toContractDTO(
     return ContractDTO(
         oid = oid,
         state = state,
-        artifact = EntityLink(artifactDTO),
+        docscan = EntityLink(artifactDTO),
         date = OwnDateTime(date),
         number = number,
         docType = docType
@@ -512,7 +518,7 @@ fun ContractDTO.toContractEntity(): ContractEntity {
         number = number,
         docType = docType,
         date = date.timeInMS,
-        artifactId = artifact.oid
+        artifactId = docscan.oid
     )
 }
 
@@ -523,7 +529,7 @@ fun ContractDTO.toContract(): Contract {
         number = number,
         docType = docType,
         date = date,
-        artifact = artifact.getObject().toArtifact()
+        artifact = docscan.getObject().toArtifact()
     )
 }
 
@@ -533,7 +539,7 @@ private fun Contract.toContractDTO(): ContractDTO {
         state = state,
         number = number,
         docType = docType,
-        artifact = EntityLink(artifact.toArtifactDTO()),
+        docscan = EntityLink(artifact.toArtifactDTO()),
         date = date
     )
 }
@@ -801,7 +807,7 @@ fun DocumentDTO.toDocument(): Document {
     return Document(
         oid = oid,
         date = date,
-        artifact = artifact?.getObject()?.toArtifact(),
+        artifact = docscan?.getObject()?.toArtifact(),
         docType = docType,
         number = number,
         state = state
@@ -813,7 +819,7 @@ fun Document.toDocumentDTO(): DocumentDTO {
         oid = oid,
         date = date,
         state = state,
-        artifact = artifact?.let { EntityLink(it.toArtifactDTO()) },
+        docscan = artifact?.let { EntityLink(it.toArtifactDTO()) },
         docType = docType,
         number = number
     )

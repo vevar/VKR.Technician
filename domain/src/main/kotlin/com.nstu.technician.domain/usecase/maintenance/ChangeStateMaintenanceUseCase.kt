@@ -1,5 +1,6 @@
 package com.nstu.technician.domain.usecase.maintenance
 
+import com.nstu.technician.domain.*
 import com.nstu.technician.domain.exceptions.UnresolvedException
 import com.nstu.technician.domain.model.facility.maintenance.Maintenance
 import com.nstu.technician.domain.model.user.Technician

@@ -144,6 +144,18 @@ open class DataSourceModule {
 
     @Named(CLOUD)
     @Provides
+    fun provideContractCloudSource(contractCloudSource: ContractCloudSource): ContractDataSource {
+        return contractCloudSource
+    }
+
+    @Named(CLOUD)
+    @Provides
+    fun provideContractorCloudSource(contractorCloudSource: ContractorCloudSource): ContractorDataSource {
+        return contractorCloudSource
+    }
+
+    @Named(CLOUD)
+    @Provides
     fun provideFacilityCloudSource(facilityCloudSource: FacilityCloudSource): FacilityDataSource {
         return facilityCloudSource
     }

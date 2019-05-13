@@ -20,7 +20,8 @@ class MaintenanceEntity(
     val state: Int,
     @ColumnInfo(name = "maintenance_parent_id") val maintenanceParentId: Long? = null,
     val beginTime: Long? = null,
-    val endTime: Long? = null,
+    val
+    endTime: Long? = null,
     @ColumnInfo(name = "completion_report_id") val workCompletionReportId: Long? = null,
     @ColumnInfo(name = "voice_message_id") val voiceMessageId: Long? = null,
     @ColumnInfo(name = "shift_id") val shiftId: Long

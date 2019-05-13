@@ -3,7 +3,7 @@ package com.nstu.technician.domain.usecase.user
 import com.nstu.technician.domain.exceptions.UnresolvedException
 import com.nstu.technician.domain.model.user.Technician
 import com.nstu.technician.domain.repository.TechnicianRepository
-import com.nstu.technician.domain.usecase.TStateMaintenance
+import com.nstu.technician.domain.TStateMaintenance
 import com.nstu.technician.domain.usecase.UseCase
 import javax.inject.Inject
 

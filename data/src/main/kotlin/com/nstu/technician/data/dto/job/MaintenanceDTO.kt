@@ -14,12 +14,12 @@ data class MaintenanceDTO(
     val duration: Int,
     val maintenanceType: Int,
     val state: Int,
-    val parent: EntityLink<MaintenanceDTO>? = null,
-    val beginTime: OwnDateTime? = null,
-    val endTime: OwnDateTime? = null,
+    val parent: EntityLink<MaintenanceDTO>,
+    val beginTime: OwnDateTime,
+    val endTime: OwnDateTime,
     val jobList: List<EntityLink<MaintenanceJobDTO>>,
-    val workCompletionReport: EntityLink<DocumentDTO>? = null,
-    val voiceMassage: EntityLink<ArtifactDTO>? = null
+    val workCompletionReport: EntityLink<DocumentDTO>,
+    val voiceMessage: EntityLink<ArtifactDTO>
 ) : EntityDTO(oid) {
 
     override fun equals(other: Any?): Boolean {
@@ -39,7 +39,7 @@ data class MaintenanceDTO(
         if (endTime != other.endTime) return false
         if (isNotEqualSafeList(jobList, other.jobList)) return false
         if (workCompletionReport != other.workCompletionReport) return false
-        if (voiceMassage != other.voiceMassage) return false
+        if (voiceMessage != other.voiceMessage) return false
 
         return true
     }
@@ -51,12 +51,12 @@ data class MaintenanceDTO(
         result = 31 * result + duration
         result = 31 * result + maintenanceType
         result = 31 * result + state
-        result = 31 * result + (parent?.hashCode() ?: 0)
-        result = 31 * result + (beginTime?.hashCode() ?: 0)
-        result = 31 * result + (endTime?.hashCode() ?: 0)
+        result = 31 * result + parent.hashCode()
+        result = 31 * result + beginTime.hashCode()
+        result = 31 * result + endTime.hashCode()
         result = 31 * result + jobList.hashCode()
-        result = 31 * result + (workCompletionReport?.hashCode() ?: 0)
-        result = 31 * result + (voiceMassage?.hashCode() ?: 0)
+        result = 31 * result + workCompletionReport.hashCode()
+        result = 31 * result + voiceMessage.hashCode()
         return result
     }
 }

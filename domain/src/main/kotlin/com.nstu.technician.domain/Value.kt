@@ -1,5 +1,7 @@
-package com.nstu.technician.domain.usecase
+package com.nstu.technician.domain
 
+
+const val NONE = 0L
 //--------------------------------------------------------------------------------------------------
 const val GeoNone = 0                  // Координаты недоступны
 const val GeoNet = 1                   // Координаты от сети (вышек)

@@ -40,7 +40,7 @@ class ContractLocalSource @Inject constructor(
     override suspend fun save(obj: ContractDTO): Long {
         return utilDao.transactionSave {
             runBlocking {
-                artifactLocalSource.save(obj.artifact.getObject())
+                artifactLocalSource.save(obj.docscan.getObject())
             }
             contractDao.save(obj.toContractEntity())
         }

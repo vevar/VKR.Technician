@@ -11,7 +11,7 @@ interface FileApi {
     @POST("/api/file/upload")
     fun upload(@Query("description") description: String = "", @Part file: MultipartBody.Part): Call<ArtifactDTO>
 
-    /*download by artifact id*/
+    /*download by docscan id*/
     @Streaming
     @GET("/api/file/load")
     fun downLoad(@Query("id") id: Long): Call<ResponseBody>

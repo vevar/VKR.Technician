@@ -20,7 +20,19 @@ interface CloudSourceComponent {
     fun componentTypeCloudSource(): ComponentTypeDataSource
 
     @Named(CLOUD)
+    fun contractCloudSource(): ContractDataSource
+
+    @Named(CLOUD)
+    fun contractorCloudSource(): ContractorDataSource
+
+    @Named(CLOUD)
+    fun facilityCloudSource(): FacilityDataSource
+
+    @Named(CLOUD)
     fun fileCloudSource(): FileDataSource
+
+    @Named(CLOUD)
+    fun maintenanceCloudSource(): MaintenanceDataSource
 
     @Named(CLOUD)
     fun maintenanceJobCloudSource(): MaintenanceJobDataSource
