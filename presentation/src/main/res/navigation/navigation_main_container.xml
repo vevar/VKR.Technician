@@ -40,9 +40,10 @@
             android:name="com.nstu.technician.feature.maintenance.MaintenanceFragment"
             tools:layout="@layout/fragment_maintenance">
         <argument
-                android:name="maintenance"
-                app:argType="com.nstu.technician.domain.model.facility.maintenance.Maintenance"
-                app:nullable="false"/>
+                android:name="maintenanceId"
+                app:argType="long"
+                app:nullable="false"
+                android:defaultValue="-1L"/>
 
         <action android:id="@+id/action_maintenance_dest_to_qrcode_scanner_dest"
                 app:popUpTo="@id/maintenance_dest"

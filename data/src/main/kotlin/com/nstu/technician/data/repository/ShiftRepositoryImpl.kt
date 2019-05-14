@@ -28,7 +28,9 @@ class ShiftRepositoryImpl @Inject constructor(
     }
 
     override suspend fun findById(id: Long): Shift {
-        return shiftCloudSource.findById(id).toShiftModel()
+        return shiftCloudSource.findById(id).apply {
+            shiftLocalSource.save(this)
+        }.toShiftModel()
     }
 
     override suspend fun findByTechnicianIdAndTimePeriod(

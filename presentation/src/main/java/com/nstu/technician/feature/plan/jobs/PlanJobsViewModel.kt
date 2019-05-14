@@ -1,6 +1,5 @@
 package com.nstu.technician.feature.plan.jobs
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -40,7 +39,7 @@ class PlanJobsViewModel(
                 }
 
                 override suspend fun onFailure(throwable: Throwable) {
-                    Log.d(TAG, throwable.message)
+                    throwable.printStackTrace()
                 }
 
             }, GetListShiftsUseCase.Param.forTechnician(technicianId))

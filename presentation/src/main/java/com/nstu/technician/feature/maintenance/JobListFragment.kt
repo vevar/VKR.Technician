@@ -53,10 +53,10 @@ class JobListFragment : BaseFragment() {
         mViewModel = ViewModelProviders.of(this, mFactory).get(MaintenanceViewModel::class.java)
     }
 
-    private fun getMaintenance(): Maintenance {
+    private fun getMaintenance(): Long {
         val args = MaintenanceFragmentArgs
             .fromBundle(arguments ?: throw NullPointerException("args is null"))
-        return args.maintenance
+        return args.maintenanceId
     }
 
     private fun setupInjection() {

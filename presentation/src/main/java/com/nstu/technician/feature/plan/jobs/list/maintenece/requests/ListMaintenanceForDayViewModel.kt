@@ -37,7 +37,7 @@ class ListMaintenanceForDayViewModel(
                 }
 
                 override suspend fun onFailure(throwable: Throwable) {
-                    Log.d(TAG, throwable.message)
+                    throwable.printStackTrace()
                 }
             }, GetListMaintenanceUseCase.Param.forShift(idShift))
         }

@@ -6,56 +6,43 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.nstu.technician.domain.model.document.Contract
 import com.nstu.technician.domain.model.facility.maintenance.Maintenance
+import com.nstu.technician.domain.usecase.CallUseCase
 import com.nstu.technician.domain.usecase.maintenance.GetDetailMaintenanceUseCase
 import com.nstu.technician.feature.common.LoaderVM
 
 class MaintenanceViewModel(
-    maintenance: Maintenance,
+    private val maintenanceId: Long,
     private val getDetailMaintenanceUseCase: GetDetailMaintenanceUseCase
 ) : ViewModel() {
+
     companion object {
         private const val TAG = "MaintenanceViewModel"
     }
+
+    val loader: LoaderVM = LoaderVM()
 
     private val _maintenance: MutableLiveData<Maintenance> = MutableLiveData()
     val maintenance: LiveData<Maintenance>
         get() = _maintenance
 
-    val loader: LoaderVM = LoaderVM()
-    val contract: LiveData<Contract>
+    val contract: LiveData<Contract> = Transformations.map(_maintenance) { it.facility.contract }
 
     private val _isListJobsVisible: MutableLiveData<Boolean> = MutableLiveData(false)
     val isListJobsVisible: LiveData<Boolean>
         get() = _isListJobsVisible
 
-    init {
-        this._maintenance.value = maintenance
-        contract = Transformations.map(_maintenance) { it.facility.contract }
-    }
 
     fun loadDetailMaintenance() {
+        loader.launchDataLoad {
+            getDetailMaintenanceUseCase.execute(object : CallUseCase<Maintenance> {
+                override suspend fun onSuccess(result: Maintenance) {
+                    _maintenance.value = result
+                }
 
-//        loader.launchDataLoad {
-//            getDetailMaintenanceUseCase.execute(object : CallUseCase<Maintenance> {
-//                override suspend fun onSuccess(result: Maintenance) {
-//                    _maintenance.value = result
-//                    _contract.value = result.facility.contract
-//                    Log.d(TAG, "GetDetailMaintenanceUseCase is invoked success")
-//                }
-//
-//                override suspend fun onFailure(throwable: Throwable) {
-//                    Log.d(TAG, "GetDetailMaintenanceUseCase fail")
-//                    Log.d(TAG, throwable.message)
-//                }
-//            }, GetDetailMaintenanceUseCase.Companion.Param.findById(idMaintenance))
-//        }
-    }
-
-    fun showListJobs() {
-        _isListJobsVisible.value = true
-    }
-
-    fun hideListJobs() {
-        _isListJobsVisible.value = false
+                override suspend fun onFailure(throwable: Throwable) {
+                    throwable.printStackTrace()
+                }
+            }, GetDetailMaintenanceUseCase.Companion.Param.findById(maintenanceId))
+        }
     }
 }
