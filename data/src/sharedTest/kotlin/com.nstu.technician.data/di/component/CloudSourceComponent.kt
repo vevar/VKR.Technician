@@ -10,6 +10,8 @@ import javax.inject.Named
 @Component(modules = [ApiModule::class, DataSourceModule::class])
 interface CloudSourceComponent {
 
+
+
     @Named(CLOUD)
     fun artifactCloudSource(): ArtifactDataSource
 
@@ -36,4 +38,7 @@ interface CloudSourceComponent {
 
     @Named(CLOUD)
     fun maintenanceJobCloudSource(): MaintenanceJobDataSource
+
+    @Named(CLOUD)
+    fun shiftCloudSource(): ShiftDataSource
 }

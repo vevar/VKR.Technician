@@ -1,6 +1,10 @@
 package com.nstu.technician.data.datasource.cloud
 
 import com.nstu.technician.data.client.NetworkClientTest
+import com.nstu.technician.data.datasource.entity.ShiftDataSource
+import com.nstu.technician.data.di.component.DaggerCloudSourceComponent
+import com.nstu.technician.data.di.model.ApiModule
+import com.nstu.technician.data.di.model.DataSourceModule
 import com.nstu.technician.data.network.retorfit.ApiProvider
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -11,14 +15,17 @@ import java.util.*
 
 class ShiftCloudSourceTest {
 
-    private lateinit var shiftCloudSource: ShiftCloudSource
+    private lateinit var shiftCloudSource: ShiftDataSource
     private val today: Calendar = Calendar.getInstance()
 
     @Before
     fun init() {
 
         val apiProvider = ApiProvider(NetworkClientTest().buildRetrofitProvider())
-        shiftCloudSource = ShiftCloudSource(apiProvider.createShiftApi())
+        shiftCloudSource = DaggerCloudSourceComponent.builder()
+            .apiModule(ApiModule(apiProvider))
+            .dataSourceModule(DataSourceModule())
+            .build().shiftCloudSource()
     }
 
     @Test
@@ -35,7 +42,7 @@ class ShiftCloudSourceTest {
             shiftCloudSource.findByTechnicianIdAndTimePeriod(2, startTime.timeInMillis, endTime.timeInMillis)
         }
         assertNotEquals(null, shifts)
-        assertEquals(5, shifts?.size)
+        assertEquals(5, shifts.size)
     }
 
     @Test
