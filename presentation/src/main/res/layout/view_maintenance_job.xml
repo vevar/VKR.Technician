@@ -10,62 +10,67 @@
             app:cardCornerRadius="@dimen/default_radius">
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/default_margin">
             <TextView
                     android:id="@+id/lbl_job_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/default_margin"
-                    android:layout_marginStart="@dimen/default_margin"
                     android:textSize="@dimen/H6"
                     android:textColor="@color/black"
                     android:text="@{maintenanceJob.jobType.name}"
                     android:maxLines="2"
+                    android:layout_marginEnd="@dimen/mini_margin"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintEnd_toStartOf="@+id/lbl_duration"
+                    app:layout_constraintEnd_toStartOf="@+id/status_container"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     android:ellipsize="end"
 
                     tools:text="Замена датчика Замена датчика Замена датчика Замена датчика "/>
-            <TextView
-                    android:id="@+id/lbl_duration"
+            <LinearLayout
+                    android:id="@+id/status_container"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/default_margin"
-                    android:layout_marginTop="@dimen/default_margin"
-                    android:textColor="@color/black"
-                    android:drawableStart="@drawable/ic_time_gray"
-                    android:drawablePadding="@dimen/mini_margin"
+                    android:orientation="vertical"
+                    android:gravity="end"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/lbl_job_name"
-                    app:layout_constraintHorizontal_bias="1"
-                    app:setTypeStateOfJob="@{maintenanceJob.}"
+                    app:layout_constraintStart_toEndOf="@id/lbl_job_name"
+                    app:layout_constraintHorizontal_bias="1">
+                <TextView
+                        android:id="@+id/lbl_duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:drawableStart="@drawable/ic_time_gray"
+                        android:drawablePadding="@dimen/mini_margin"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/lbl_job_name"
 
-                    tools:text="1ч. 20мин."/>
+                        tools:text="1ч. 20мин."/>
 
-            <TextView
-                    android:id="@+id/lbl_job_state"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="@dimen/default_margin"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                <TextView
+                        android:id="@+id/lbl_job_state"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="@dimen/mini_margin"
+                        app:setTypeStateOfJob="@{maintenanceJob.jobState}"
+                        app:layout_constraintTop_toBottomOf="@+id/lbl_duration"
 
-                    tools:text="Не выполнена"/>
+                        tools:text="Не выполнена"/>
+            </LinearLayout>
+
             <TextView
                     android:id="@+id/lbl_description"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/default_margin"
-                    android:layout_marginEnd="@dimen/default_margin"
-                    android:layout_marginTop="@dimen/default_margin"
+                    android:layout_marginTop="@dimen/mini_margin"
                     app:layout_constraintTop_toBottomOf="@+id/lbl_job_name"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/lbl_job_state"
 
                     tools:text="Описание Описание Описание Описание Описание Описание Описание Описание Описание
                     Описание Описание Описание Описание Описание Описание Описание Описание Описание Описание"

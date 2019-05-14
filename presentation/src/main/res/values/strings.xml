@@ -14,6 +14,8 @@
     <string name="lbl_take_tools">Заберите инструменты</string>
     <string name="lbl_take_akt">Заберите акт</string>
     <string name="lbl_maintenance">Заявка</string>
+    <string name="lbl_components">Комплектующие</string>
+    <string name="lbl_implements">Инвентарь</string>
 
     <!--FIELDS-->
     <string name="fld_login">Логин</string>
