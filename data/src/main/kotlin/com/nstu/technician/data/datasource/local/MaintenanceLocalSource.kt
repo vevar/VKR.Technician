@@ -24,6 +24,7 @@ class MaintenanceLocalSource @Inject constructor(
     private val artifactLocalSource: ArtifactDataSource
 ) : MaintenanceDataSource {
 
+
     companion object {
         const val TAG = "MaintenanceLocalSource"
     }
@@ -52,6 +53,19 @@ class MaintenanceLocalSource @Inject constructor(
 
             maintenanceEntity.toMaintenanceDTO(facilityDTO, jobList, parent, voiceMessage, null)
         }
+    }
+
+
+    override suspend fun loadDependencies(obj: MaintenanceDTO) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun save(obj: MaintenanceDTO): Long {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun delete(obj: MaintenanceDTO) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override suspend fun findByShiftId(shiftId: Long): List<MaintenanceDTO> {

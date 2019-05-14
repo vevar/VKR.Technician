@@ -7,6 +7,7 @@ import com.nstu.technician.data.datasource.entity.MaintenanceDataSource
 import com.nstu.technician.data.datasource.entity.ShiftDataSource
 import com.nstu.technician.data.dto.job.ShiftDTO
 import com.nstu.technician.domain.exceptions.NotFoundException
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -15,6 +16,7 @@ class ShiftCloudSource @Inject constructor(
     @Named(CLOUD)
     private val maintenanceCloudSource: MaintenanceDataSource
 ) : ShiftDataSource {
+
 
     companion object {
         const val DEFAULT_LEVEL = 2
@@ -32,15 +34,7 @@ class ShiftCloudSource @Inject constructor(
     override suspend fun findById(id: Long): ShiftDTO {
         return (shiftApi.getShiftFull(id, MAX_LEVEL).execute().body()
             ?: throw IllegalStateException(BODY_MUST_BE_SET)).apply {
-            visits.forEach {
-                if (it.ref == null) {
-                    try {
-                        it.ref = maintenanceCloudSource.findById(it.oid)
-                    } catch (e: NotFoundException) {
-                        throw IllegalStateException("MaintenanceDTO must be set")
-                    }
-                }
-            }
+            runBlocking { loadDependencies(this@apply) }
         }
     }
 
@@ -51,5 +45,24 @@ class ShiftCloudSource @Inject constructor(
     ): List<ShiftDTO> {
         return shiftApi.getShiftToPeriod(technicianId, startTime, endTime, DEFAULT_LEVEL).execute().body()
             ?: throw IllegalStateException(BODY_MUST_BE_SET)
+    }
+
+    private suspend fun loadDependencies(obj: ShiftDTO) {
+        obj.apply {
+            visits.forEach {
+                val maintenanceDTO = it.ref
+                if (maintenanceDTO == null) {
+                    try {
+                        val maintenanceSource = maintenanceCloudSource.findById(it.oid)
+                        maintenanceCloudSource.loadDependencies(maintenanceSource)
+                        it.ref = maintenanceDTO
+                    } catch (e: NotFoundException) {
+                        throw IllegalStateException("MaintenanceDTO must be set")
+                    }
+                } else {
+                    maintenanceCloudSource.loadDependencies(maintenanceDTO)
+                }
+            }
+        }
     }
 }

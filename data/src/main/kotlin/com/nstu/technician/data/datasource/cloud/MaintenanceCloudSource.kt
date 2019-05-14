@@ -19,11 +19,58 @@ class MaintenanceCloudSource @Inject constructor(
     @Named(CLOUD)
     private val artifactCloudSource: ArtifactDataSource
 ) : MaintenanceDataSource {
+    override suspend fun save(obj: MaintenanceDTO): Long {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun delete(obj: MaintenanceDTO) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun loadDependencies(obj: MaintenanceDTO) {
+        obj.apply {
+            val facilityDTO = facility.ref
+            if (facilityDTO == null) {
+                try {
+                    facility.ref = facilityCloudSource.findById(facility.oid).apply {
+                        facilityCloudSource.loadDependencies(this)
+                    }
+                } catch (e: NotFoundException) {
+                    throw IllegalStateException("Facility must be set")
+                }
+            } else {
+                facilityCloudSource.loadDependencies(facilityDTO)
+            }
+
+            if (parent.oid != NONE && parent.ref == null) {
+                parent.ref = maintenanceApi.getMaintenance(parent.oid).execute().body()
+                    ?: throw IllegalStateException(BODY_MUST_BE_SET)
+            }
+
+            jobList.forEach {
+                if (it.ref == null) {
+                    try {
+                        it.ref = maintenanceJobCloudSource.findById(it.oid)
+                    } catch (e: NotFoundException) {
+                        throw IllegalStateException("maintenanceJob(oid:$oid) must be set")
+                    }
+                }
+            }
+
+            if (voiceMessage.oid != NONE && voiceMessage.ref == null) {
+                try {
+                    voiceMessage.ref = artifactCloudSource.findById(voiceMessage.oid)
+                } catch (e: NotFoundException) {
+                    throw IllegalStateException("voiceMessage must be set")
+                }
+            }
+        }
+    }
 
     override suspend fun findById(id: Long): MaintenanceDTO {
         return (maintenanceApi.getMaintenance(id).execute().body()
             ?: throw IllegalStateException(BODY_MUST_BE_SET)).apply {
-            runBlocking { loadDependencies() }
+            runBlocking { loadDependencies(this@apply) }
         }
     }
 
@@ -38,43 +85,4 @@ class MaintenanceCloudSource @Inject constructor(
     override suspend fun saveForShift(maintenanceDTO: MaintenanceDTO, shiftId: Long): Long {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-
-    suspend fun MaintenanceDTO.loadDependencies() {
-        val facilityDTO = facility.ref
-        if (facilityDTO == null) {
-            try {
-                facility.ref = facilityCloudSource.findById(facility.oid).apply {
-                    facilityCloudSource.loadDependencies(this)
-                }
-            } catch (e: NotFoundException) {
-                throw IllegalStateException("Facility must be set")
-            }
-        } else {
-            facilityCloudSource.loadDependencies(facilityDTO)
-        }
-
-        if (parent.oid != NONE && parent.ref == null) {
-            parent.ref = maintenanceApi.getMaintenance(parent.oid).execute().body()
-                ?: throw IllegalStateException(BODY_MUST_BE_SET)
-        }
-
-        jobList.forEach {
-            if (it.ref == null) {
-                try {
-                    it.ref = maintenanceJobCloudSource.findById(it.oid)
-                } catch (e: NotFoundException) {
-                    throw IllegalStateException("maintenanceJob(oid:$oid) must be set")
-                }
-            }
-        }
-
-        if (voiceMessage.oid != NONE && voiceMessage.ref == null) {
-            try {
-                voiceMessage.ref = artifactCloudSource.findById(voiceMessage.oid)
-            } catch (e: NotFoundException) {
-                throw IllegalStateException("voiceMessage must be set")
-            }
-        }
-    }
-
 }
