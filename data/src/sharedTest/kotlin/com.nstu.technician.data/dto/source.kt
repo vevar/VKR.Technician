@@ -22,9 +22,9 @@ fun getMaintenanceDTO(oid: Long): MaintenanceDTO {
         state = 1,
         visitDate = getOwnTime(),
         jobList = getListSomeObject { EntityLink(getMaintenanceJobDTO(getRandomId())) },
-        parent = null,
-        voiceMessage = null,
-        workCompletionReport = null
+        parent = EntityLink(0),
+        voiceMessage = EntityLink(0),
+        workCompletionReport = EntityLink(0)
     )
 }
 
@@ -77,8 +77,13 @@ fun getFacilityDTOWithContractDTO(oid: Long): FacilityDTO {
 
 fun getAddressDTO(oid: Long): AddressDTO {
     return AddressDTO(
-        street = "Пупкина", office = "11", home = "2",
-        location = getGPSPointDTO(62)
+        oid = oid,
+        street = "Пупкина",
+        office = "11",
+        home = "2",
+        location = getGPSPointDTO(62),
+        city = "Some city",
+        type = 111
     )
 }
 

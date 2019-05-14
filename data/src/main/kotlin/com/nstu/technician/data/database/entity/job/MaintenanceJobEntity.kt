@@ -14,7 +14,7 @@ data class MaintenanceJobEntity(
     val endTime: Long? = null,
     @ColumnInfo(name = "begin_photo_id") val beginPhotoId: Long? = null,
     @ColumnInfo(name = "end_photo_id") val endPhotoId: Long? = null,
-    val duration: Int? = null,  // in minutes
+    val duration: Int,  // in minutes
     @ColumnInfo(name = "problem_id") val problemId: Long? = null,
     @ColumnInfo(name = "maintenance_id") val maintenanceId: Long? = null
 )
