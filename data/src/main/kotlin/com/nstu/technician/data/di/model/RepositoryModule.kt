@@ -34,7 +34,12 @@ class RepositoryModule {
     }
 
     @Provides
-    fun provideMaintenanceRepository(maintenanceRepositoryImpl: MaintenanceRepositoryImpl): MaintenanceRepository{
+    fun provideMaintenanceRepository(maintenanceRepositoryImpl: MaintenanceRepositoryImpl): MaintenanceRepository {
         return maintenanceRepositoryImpl
+    }
+
+    @Provides
+    fun provideMaintenanceJobRepository(maintenanceJobRepositoryImpl: MaintenanceJobRepositoryImpl): MaintenanceJobRepository {
+        return maintenanceJobRepositoryImpl
     }
 }

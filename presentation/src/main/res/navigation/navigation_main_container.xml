@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/navigation_main_container"
             app:startDestination="@id/plan_jobs_dest">
 
@@ -14,9 +15,11 @@
                 android:name="technicianId"
                 app:argType="long"
                 android:defaultValue="-1L"/>
+
         <action android:id="@+id/action_plan_jobs_dest_to_map_dest"
                 app:destination="@id/map_dest"
                 app:popUpTo="@+id/plan_jobs_dest"/>
+
         <action android:id="@+id/action_plan_jobs_dest_to_maintenance_dest"
                 app:destination="@id/maintenance_dest"
                 app:popUpTo="@id/plan_jobs_dest"/>
@@ -45,9 +48,9 @@
                 app:popUpTo="@id/maintenance_dest"
                 app:destination="@+id/navigation_qrcode_scanner">
             <argument
-                android:name="maintenance"
-                app:argType="com.nstu.technician.domain.model.facility.maintenance.Maintenance"
-                app:nullable="false"/>
+                    android:name="maintenance"
+                    app:argType="com.nstu.technician.domain.model.facility.maintenance.Maintenance"
+                    app:nullable="false"/>
         </action>
     </fragment>
 

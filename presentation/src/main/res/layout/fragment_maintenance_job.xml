@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
-        <variable name="maintenanceJob" type="com.nstu.technician.domain.model.facility.maintenance.MaintenanceJob"/>
+        <variable name="viewModel" type="com.nstu.technician.feature.maintenance.job.MaintenanceJobVM"/>
     </data>
-    <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent">
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
         <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycle_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
         <ProgressBar
@@ -12,6 +15,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:visibility="gone"/>
+                app:setVisibility="@{viewModel.isLoading()}"/>
     </FrameLayout>
 </layout>

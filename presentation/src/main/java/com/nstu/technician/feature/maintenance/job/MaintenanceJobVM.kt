@@ -1,36 +1,28 @@
 package com.nstu.technician.feature.maintenance.job
 
 import android.util.Log
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.nstu.technician.domain.model.facility.maintenance.MaintenanceJob
 import com.nstu.technician.domain.usecase.CallUseCase
-import com.nstu.technician.domain.usecase.maintenance.GetMaintenanceJobUseCase
+import com.nstu.technician.domain.usecase.maintenance.job.GetMaintenanceJobUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class MaintenanceJobVM(
     private val maintenanceJobId: Long,
-    maintenanceJob: MaintenanceJob?,
     private val getMaintenanceJobUseCase: GetMaintenanceJobUseCase
 ) : ViewModel() {
-
-    constructor(maintenanceJob: MaintenanceJob, getMaintenanceJobUseCase: GetMaintenanceJobUseCase)
-            : this(maintenanceJob.oid, maintenanceJob, getMaintenanceJobUseCase)
-
-    constructor(maintenanceJobId: Long, getMaintenanceJobUseCase: GetMaintenanceJobUseCase)
-            : this(maintenanceJobId, null, getMaintenanceJobUseCase)
 
     companion object {
         const val TAG = "MaintenanceJobVM"
     }
 
-    private val _mMaintenanceJob: MutableLiveData<MaintenanceJob?> = MutableLiveData(maintenanceJob)
-    val mMaintenanceJob: LiveData<MaintenanceJob> = MediatorLiveData<MaintenanceJob>()
-        .apply {
-            addSource(_mMaintenanceJob) {
-                it != null
-            }
-        }
+    private val _mMaintenanceJob: MutableLiveData<MaintenanceJob> = MutableLiveData()
+    val mMaintenanceJob: LiveData<MaintenanceJob>
+        get() = _mMaintenanceJob
     private val _isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
     val isLoading: LiveData<Boolean> get() = _isLoading
 

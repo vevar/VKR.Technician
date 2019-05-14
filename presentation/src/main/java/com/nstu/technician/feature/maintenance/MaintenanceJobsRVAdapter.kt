@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.nstu.technician.R
 import com.nstu.technician.databinding.ViewContractBinding
 import com.nstu.technician.databinding.ViewDetailMaintenanceBinding
-import com.nstu.technician.databinding.ViewJobBinding
+import com.nstu.technician.databinding.ViewMiniJobBinding
 import com.nstu.technician.domain.model.document.Contract
 import com.nstu.technician.domain.model.facility.maintenance.Maintenance
 import com.nstu.technician.domain.model.facility.maintenance.MaintenanceJob
@@ -111,7 +111,7 @@ class MaintenanceJobsRVAdapter(
 
     class JobHolder(view: View, private val maintenanceJobListener: MaintenanceJobListener) :
         RecyclerView.ViewHolder(view) {
-        private val binding: ViewJobBinding = DataBindingUtil.bind(view)
+        private val binding: ViewMiniJobBinding = DataBindingUtil.bind(view)
             ?: throw IllegalArgumentException("Incorrect view")
 
         fun bind(maintenanceJob: MaintenanceJob) {

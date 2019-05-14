@@ -16,13 +16,14 @@ import com.nstu.technician.databinding.FragmentJobListBinding
 import com.nstu.technician.di.component.maintenance.DaggerMaintenanceScreen
 import com.nstu.technician.di.module.model.MaintenanceModule
 import com.nstu.technician.domain.model.facility.maintenance.Maintenance
+import com.nstu.technician.domain.model.facility.maintenance.MaintenanceJob
 import com.nstu.technician.feature.App
 import com.nstu.technician.feature.BaseActivity
 import com.nstu.technician.feature.BaseFragment
 import com.nstu.technician.feature.util.BaseViewModelFactory
 import javax.inject.Inject
 
-class JobListFragment: BaseFragment() {
+class JobListFragment : BaseFragment() {
 
     companion object {
         private const val TAG = "JobListFragment"
@@ -75,7 +76,13 @@ class JobListFragment: BaseFragment() {
         mBinding.apply {
             viewModel = mViewModel
             lifecycleOwner = this@JobListFragment
-            mMaintenanceJobsRVAdapter = MaintenanceJobsRVAdapter()
+            mMaintenanceJobsRVAdapter =
+                MaintenanceJobsRVAdapter(object : MaintenanceJobsRVAdapter.JobHolder.MaintenanceJobListener {
+                    override fun onShowJob(maintenanceJob: MaintenanceJob) {
+                        JobListFragmentDirections.actionJobListFragmentToPlanJobsFragment(maintenanceJob.oid)
+                    }
+
+                })
             listMaintenanceJobs.apply {
                 adapter = mMaintenanceJobsRVAdapter
                 layoutManager = LinearLayoutManager(requireContext())

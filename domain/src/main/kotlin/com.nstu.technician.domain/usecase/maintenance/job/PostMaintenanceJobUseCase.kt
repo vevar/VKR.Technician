@@ -1,4 +1,4 @@
-package com.nstu.technician.domain.usecase.maintenance
+package com.nstu.technician.domain.usecase.maintenance.job
 
 import com.nstu.technician.domain.exceptions.UnresolvedException
 import com.nstu.technician.domain.model.facility.maintenance.MaintenanceJob
@@ -30,7 +30,10 @@ class PostMaintenanceJobUseCase @Inject constructor(
     ) {
         companion object {
             fun forChangeMaitenanceJob(technician: Technician, maintenanceJob: MaintenanceJob): Param {
-                return Param(maintenanceJob, technician)
+                return Param(
+                    maintenanceJob,
+                    technician
+                )
             }
         }
     }

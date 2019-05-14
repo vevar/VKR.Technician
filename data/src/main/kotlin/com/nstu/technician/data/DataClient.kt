@@ -92,4 +92,13 @@ class DataClient private constructor() {
             .repositoryModule(RepositoryModule())
             .build()
     }
+
+    fun createMaintenanceJobComponent(): MaintenanceJobComponent {
+        return DaggerMaintenanceJobComponent.builder()
+            .apiModule(ApiModule(ApiProvider(retrofitProvider)))
+            .daoModule(DaoModule(appDataBase))
+            .dataSourceModule(DataSourceModule())
+            .repositoryModule(RepositoryModule())
+            .build()
+    }
 }
