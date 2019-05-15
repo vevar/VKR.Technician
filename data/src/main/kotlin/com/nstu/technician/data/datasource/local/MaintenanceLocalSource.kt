@@ -8,6 +8,7 @@ import com.nstu.technician.data.dto.job.MaintenanceDTO
 import com.nstu.technician.data.until.getObject
 import com.nstu.technician.data.until.toMaintenanceDTO
 import com.nstu.technician.data.until.toMaintenanceEntity
+import com.nstu.technician.domain.NONE
 import com.nstu.technician.domain.exceptions.NotFoundException
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
@@ -35,9 +36,10 @@ class MaintenanceLocalSource @Inject constructor(
                 facilityLocalSource.save(maintenanceDTO.facility.getObject())
                 maintenanceDTO.jobList.map { it.getObject() }.let { jobs ->
                     maintenanceJobLocalSource.saveAllForMaintenance(jobs, maintenanceDTO.oid)
-                    maintenanceDTO.voiceMessage.getObject().let {
-                        artifactLocalSource.save(it)
-                    }
+                }
+                val voiceMessage = maintenanceDTO.voiceMessage
+                if (voiceMessage.oid != NONE) {
+                    artifactLocalSource.save(voiceMessage.getObject())
                 }
             }
             maintenanceDao.save(maintenanceDTO.toMaintenanceEntity(shiftId))

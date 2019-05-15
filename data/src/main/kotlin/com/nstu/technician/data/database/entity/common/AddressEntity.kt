@@ -1,9 +1,7 @@
 package com.nstu.technician.data.database.entity.common
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.Index
-import androidx.room.PrimaryKey
+import androidx.room.*
+import com.nstu.technician.data.database.embedded.GpsObjectEmb
 
 
 @Entity(
@@ -19,5 +17,5 @@ data class AddressEntity(
     val street: String,
     val home: String,
     val office: String? = null,
-    @ColumnInfo(name = "gps_point_id") val gpsPointId: Long
+    @Embedded val gpsObjectEmb: GpsObjectEmb
 )

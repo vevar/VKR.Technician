@@ -6,6 +6,7 @@ import com.nstu.technician.data.datasource.entity.CLOUD
 import com.nstu.technician.data.datasource.entity.MaintenanceDataSource
 import com.nstu.technician.data.datasource.entity.ShiftDataSource
 import com.nstu.technician.data.dto.job.ShiftDTO
+import com.nstu.technician.domain.NONE
 import com.nstu.technician.domain.exceptions.NotFoundException
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
@@ -50,17 +51,19 @@ class ShiftCloudSource @Inject constructor(
     private suspend fun loadDependencies(obj: ShiftDTO) {
         obj.apply {
             visits.forEach {
-                val maintenanceDTO = it.ref
-                if (maintenanceDTO == null) {
-                    try {
-                        val maintenanceSource = maintenanceCloudSource.findById(it.oid)
-                        maintenanceCloudSource.loadDependencies(maintenanceSource)
-                        it.ref = maintenanceDTO
-                    } catch (e: NotFoundException) {
-                        throw IllegalStateException("MaintenanceDTO must be set")
+                if (it.oid != NONE) {
+                    val maintenanceDTO = it.ref
+                    if (maintenanceDTO == null) {
+                        try {
+                            val maintenanceSource = maintenanceCloudSource.findById(it.oid)
+                            maintenanceCloudSource.loadDependencies(maintenanceSource)
+                            it.ref = maintenanceDTO
+                        } catch (e: NotFoundException) {
+                            throw IllegalStateException("MaintenanceDTO must be set")
+                        }
+                    } else {
+                        maintenanceCloudSource.loadDependencies(maintenanceDTO)
                     }
-                } else {
-                    maintenanceCloudSource.loadDependencies(maintenanceDTO)
                 }
             }
         }

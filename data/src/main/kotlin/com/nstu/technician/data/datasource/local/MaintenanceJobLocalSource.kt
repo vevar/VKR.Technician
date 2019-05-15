@@ -13,6 +13,7 @@ import com.nstu.technician.data.dto.tool.ImplementsDTO
 import com.nstu.technician.data.until.getObject
 import com.nstu.technician.data.until.toMaintenanceJobDTO
 import com.nstu.technician.data.until.toMaintenanceJobEntity
+import com.nstu.technician.domain.NONE
 import com.nstu.technician.domain.exceptions.NotFoundException
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
@@ -94,7 +95,7 @@ class MaintenanceJobLocalSource @Inject constructor(
 
     private suspend fun saveMaintenanceJobDTO(maintenanceJobDTO: MaintenanceJobDTO, maintenanceId: Long) {
         utilDao.transactionSave {
-            saveMaintenanceJobDependencies(maintenanceJobDTO)
+            runBlocking { saveMaintenanceJobDependencies(maintenanceJobDTO) }
             maintenanceJobDao.save(maintenanceJobDTO.toMaintenanceJobEntity(maintenanceId))
         }
     }
@@ -112,16 +113,26 @@ class MaintenanceJobLocalSource @Inject constructor(
         maintenanceJobDTO.components.map { entityLink -> entityLink.getObject() }.let {
             componentUnitLocalSource.saveAllForMaintenanceJob(it, maintenanceJobDTO)
         }
-        maintenanceJobDTO.beginPhoto?.getObject()?.let {
-            artifactLocalSource.save(it)
+        val beginPhoto = maintenanceJobDTO.beginPhoto
+        if (beginPhoto.oid != NONE) {
+            artifactLocalSource.save(
+                beginPhoto.ref ?: throw IllegalStateException("$TAG:  ref of beginPhoto must be set for save")
+            )
         }
-        maintenanceJobDTO.endPhoto?.getObject()?.let {
-            artifactLocalSource.save(it)
+        val endPhoto = maintenanceJobDTO.endPhoto
+        if (endPhoto.oid != NONE) {
+            artifactLocalSource.save(
+                endPhoto.ref ?: throw  IllegalStateException("$TAG: ref of endPhoto must be set for save")
+            )
         }
-        maintenanceJobDTO.problem?.getObject()?.let {
-            problemLocalSource.save(it)
+        val problem = maintenanceJobDTO.problem
+        if (problem.oid != NONE) {
+            problemLocalSource.save(
+                problem.ref ?: throw  IllegalStateException("$TAG: ref of problem must be set for save")
+            )
         }
     }
+
 
     override suspend fun saveAllForMaintenance(list: List<MaintenanceJobDTO>, maintenanceId: Long): List<Long> {
         return utilDao.transactionSaveAll {

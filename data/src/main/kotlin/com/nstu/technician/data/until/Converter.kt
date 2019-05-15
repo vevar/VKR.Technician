@@ -1,5 +1,7 @@
 package com.nstu.technician.data.until
 
+import com.nstu.technician.data.database.embedded.AddressEmb
+import com.nstu.technician.data.database.embedded.GpsObjectEmb
 import com.nstu.technician.data.database.entity.ProblemEntity
 import com.nstu.technician.data.database.entity.ShiftEntity
 import com.nstu.technician.data.database.entity.common.AddressEntity
@@ -18,6 +20,7 @@ import com.nstu.technician.data.dto.ProblemDTO
 import com.nstu.technician.data.dto.common.AddressDTO
 import com.nstu.technician.data.dto.common.ArtifactDTO
 import com.nstu.technician.data.dto.common.GPSPointDTO
+import com.nstu.technician.data.dto.common.GpsObjectDTO
 import com.nstu.technician.data.dto.document.ContractDTO
 import com.nstu.technician.data.dto.document.ContractorDTO
 import com.nstu.technician.data.dto.document.DocumentDTO
@@ -30,10 +33,7 @@ import com.nstu.technician.domain.NONE
 import com.nstu.technician.domain.model.MiniShift
 import com.nstu.technician.domain.model.Problem
 import com.nstu.technician.domain.model.Shift
-import com.nstu.technician.domain.model.common.Address
-import com.nstu.technician.domain.model.common.Artifact
-import com.nstu.technician.domain.model.common.GPSPoint
-import com.nstu.technician.domain.model.common.OwnDateTime
+import com.nstu.technician.domain.model.common.*
 import com.nstu.technician.domain.model.document.Contract
 import com.nstu.technician.domain.model.document.Contractor
 import com.nstu.technician.domain.model.document.Document
@@ -185,36 +185,41 @@ fun Artifact.toArtifactDTO(): ArtifactDTO {
     )
 }
 
-fun AddressEntity.toAddressDTO(gpsPointDTO: GPSPointDTO): AddressDTO {
+private fun AddressDTO.toAddressEmb(): AddressEmb {
+    return AddressEmb(
+        type = type,
+        city = city,
+        home = home,
+        location = location.toGpsObjectEmb(),
+        office = office,
+        street = street
+    )
+}
+
+
+fun AddressEntity.toAddressDTO(): AddressDTO {
     return AddressDTO(
-        oid = oid,
         street = street,
         home = home,
         office = office,
-        location = gpsPointDTO,
+        location = gpsObjectEmb.toGpsObjectDTO(),
         type = type,
         city = city
     )
 }
 
-fun AddressDTO.toAddressEntity(gpsPointId: Long): AddressEntity {
-    return AddressEntity(
-        oid = oid,
-        home = home,
-        office = office,
-        street = street,
-        gpsPointId = gpsPointId,
-        city = city,
-        type = type
+private fun GpsObjectEmb.toGpsObjectDTO(): GpsObjectDTO {
+    return GpsObjectDTO(
+        geoy = latitude,
+        geox = longitude
     )
 }
 
 fun AddressDTO.toAddress(): Address {
     return Address(
-        oid = oid,
         street = street,
         home = home,
-        location = location.toGPSPoint(),
+        location = location.toGpsObject(),
         office = office,
         type = type,
         city = city
@@ -223,10 +228,9 @@ fun AddressDTO.toAddress(): Address {
 
 fun Address.toAddressDTO(): AddressDTO {
     return AddressDTO(
-        oid = oid,
         street = street,
         home = home,
-        location = location.toGpsPointDTO(),
+        location = location.toGpsObjectDTO(),
         office = office,
         type = type,
         city = city
@@ -253,7 +257,7 @@ fun FacilityDTO.toFacilityEntity(): FacilityEntity {
     return FacilityEntity(
         oid = oid,
         name = name,
-        addressId = address.location.oid,
+        address = address.toAddressEmb(),
         contractId = contract.oid,
         assingmentDate = assingmentDate,
         identifier = identifier,
@@ -352,6 +356,28 @@ fun ImplementUnit.toImplementUnitDTO(): ImplementUnitDTO {
         oid = oid,
         impl = EntityLink(impl.toImplementsDTO()),
         code = code
+    )
+}
+
+
+private fun GpsObject.toGpsObjectDTO(): GpsObjectDTO {
+    return GpsObjectDTO(
+        geoy = latitude,
+        geox = longitude
+    )
+}
+
+private fun GpsObjectDTO.toGpsObject(): GpsObject {
+    return GpsObject(
+        latitude = geoy,
+        longitude = geox
+    )
+}
+
+private fun GpsObjectDTO.toGpsObjectEmb(): GpsObjectEmb {
+    return GpsObjectEmb(
+        latitude = geoy,
+        longitude = geox
     )
 }
 
@@ -579,7 +605,7 @@ fun ContractorDTO.toContractorEntity(): ContractorEntity {
         oid = oid,
         INN = INN,
         name = name,
-        addressId = address.location.oid
+        addressEmb = address.toAddressEmb()
     )
 }
 
@@ -611,14 +637,14 @@ fun MaintenanceJobEntity.toMaintenanceJobDTO(
 ): MaintenanceJobDTO {
     return MaintenanceJobDTO(
         oid = oid,
-        endTime = endTime?.let { OwnDateTime(it) },
+        endTime = endTime?.let { OwnDateTime(it) } ?: OwnDateTime(NONE),
         duration = duration,
-        beginTime = beginTime?.let { OwnDateTime(it) },
+        beginTime = beginTime?.let { OwnDateTime(it) } ?: OwnDateTime(NONE),
         jobState = jobState,
         jobType = EntityLink(jobTypeDTO ?: throw IllegalStateException("jobTypeDTO must be set")),
-        beginPhoto = beginPhoto?.let { EntityLink(it) },
-        endPhoto = endPhoto?.let { EntityLink(it) },
-        problem = problemDTO?.let { EntityLink(it) },
+        beginPhoto = beginPhoto?.let { EntityLink(it) } ?: EntityLink(NONE),
+        endPhoto = endPhoto?.let { EntityLink(it) } ?: EntityLink(NONE),
+        problem = problemDTO?.let { EntityLink(it) } ?: EntityLink(NONE),
         components = components?.map { EntityLink(it) } ?: throw IllegalStateException("components must be set"),
         implList = implList?.map { EntityLink(it) } ?: throw IllegalStateException("implList must be set")
     )
@@ -629,12 +655,12 @@ fun MaintenanceJobDTO.toMaintenanceJobEntity(maintenanceJobId: Long): Maintenanc
         oid = oid,
         jobState = jobState,
         jobTypeId = jobType.oid,
-        beginPhotoId = beginPhoto?.oid,
-        endPhotoId = endPhoto?.oid,
-        beginTime = beginTime?.timeInMS,
+        beginPhotoId = beginPhoto.oid,
+        endPhotoId = endPhoto.oid,
+        beginTime = beginTime.timeInMS,
         duration = duration,
-        endTime = endTime?.timeInMS,
-        problemId = problem?.oid,
+        endTime = endTime.timeInMS,
+        problemId = problem.oid,
         maintenanceId = maintenanceJobId
     )
 }
@@ -643,12 +669,12 @@ fun MaintenanceJobDTO.toMaintenanceJob(): MaintenanceJob {
     return MaintenanceJob(
         oid = oid,
         duration = duration,
-        beginPhoto = beginPhoto?.ref?.toArtifact(),
-        endPhoto = endPhoto?.ref?.toArtifact(),
+        beginPhoto = beginPhoto.ref?.toArtifact(),
+        endPhoto = endPhoto.ref?.toArtifact(),
         jobState = jobState,
         components = components.map { it.getObject().toComponentUnit() },
         implList = implList.map { it.getObject().toImplements() },
-        problem = problem?.ref?.toProblem(),
+        problem = problem.ref?.toProblem(),
         jobType = jobType.getObject().toJobType(),
         beginTime = beginTime,
         endTime = endTime
@@ -658,16 +684,16 @@ fun MaintenanceJobDTO.toMaintenanceJob(): MaintenanceJob {
 fun MaintenanceJob.toMaintenanceJobDTO(): MaintenanceJobDTO {
     return MaintenanceJobDTO(
         oid = oid,
-        beginTime = beginTime,
-        endTime = endTime,
+        beginTime = beginTime ?: OwnDateTime(NONE),
+        endTime = endTime ?: OwnDateTime(NONE),
         duration = duration,
         jobType = EntityLink(jobType.toJobTypeDTO()),
-        problem = problem?.let { EntityLink(it.toProblemDTO()) },
+        problem = problem?.let { EntityLink(it.toProblemDTO()) } ?: EntityLink(NONE),
         implList = implList.map { EntityLink(it.toImplementsDTO()) },
         jobState = jobState,
         components = components.map { EntityLink(it.toComponentUnitDTO()) },
-        endPhoto = endPhoto?.let { EntityLink(it.toArtifactDTO()) },
-        beginPhoto = beginPhoto?.let { EntityLink(it.toArtifactDTO()) }
+        endPhoto = endPhoto?.let { EntityLink(it.toArtifactDTO()) } ?: EntityLink(NONE),
+        beginPhoto = beginPhoto?.let { EntityLink(it.toArtifactDTO()) } ?: EntityLink(NONE)
     )
 }
 

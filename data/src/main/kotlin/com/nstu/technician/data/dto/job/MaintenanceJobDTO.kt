@@ -13,14 +13,14 @@ data class MaintenanceJobDTO(
     override val oid: Long,
     val jobState: Int,
     val jobType: EntityLink<JobTypeDTO>,
-    val beginTime: OwnDateTime? = null,
-    val endTime: OwnDateTime? = null,
-    val beginPhoto: EntityLink<ArtifactDTO>? = null,
-    val endPhoto: EntityLink<ArtifactDTO>? = null,
+    val beginTime: OwnDateTime,
+    val endTime: OwnDateTime,
+    val beginPhoto: EntityLink<ArtifactDTO>,
+    val endPhoto: EntityLink<ArtifactDTO>,
     val implList: List<EntityLink<ImplementsDTO>>,
     val components: List<EntityLink<ComponentUnitDTO>>,
     val duration: Int,  // in minutes
-    val problem: EntityLink<ProblemDTO>? = null
+    val problem: EntityLink<ProblemDTO>
 ) : EntityDTO(oid) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

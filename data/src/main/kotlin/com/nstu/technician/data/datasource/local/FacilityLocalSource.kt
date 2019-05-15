@@ -10,6 +10,7 @@ import com.nstu.technician.data.dto.job.FacilityDTO
 import com.nstu.technician.data.until.getObject
 import com.nstu.technician.data.until.toFacilityDTO
 import com.nstu.technician.data.until.toFacilityEntity
+import com.nstu.technician.domain.NONE
 import com.nstu.technician.domain.exceptions.NotFoundException
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
@@ -52,9 +53,15 @@ class FacilityLocalSource @Inject constructor(
     override suspend fun save(obj: FacilityDTO): Long {
         return utilDao.transactionSave {
             runBlocking {
-                addressLocalSource.save(obj.address)
-                contractorLocalSource.save(obj.contractor.getObject())
-                contractLocalSource.save(obj.contract.getObject())
+                if (obj.address.oid != NONE) {
+                    addressLocalSource.save(obj.address)
+                }
+                if (obj.contractor.oid != NONE) {
+                    contractorLocalSource.save(obj.contractor.getObject())
+                }
+                if (obj.contract.oid != NONE) {
+                    contractLocalSource.save(obj.contract.getObject())
+                }
             }
             facilityDao.save(obj.toFacilityEntity())
         }

@@ -15,7 +15,7 @@ interface MaintenanceJobDao {
     @Query("SELECT * FROM maintenancejobentity WHERE maintenance_id=:maintenanceId")
     fun findByMaintenanceId(maintenanceId: Long): List<MaintenanceJobEntity>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun saveAll(list: List<MaintenanceJobEntity>): List<Long>
 
     @Delete

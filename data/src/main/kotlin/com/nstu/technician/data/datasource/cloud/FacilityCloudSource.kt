@@ -7,6 +7,7 @@ import com.nstu.technician.data.datasource.entity.ContractDataSource
 import com.nstu.technician.data.datasource.entity.ContractorDataSource
 import com.nstu.technician.data.datasource.entity.FacilityDataSource
 import com.nstu.technician.data.dto.job.FacilityDTO
+import com.nstu.technician.domain.NONE
 import com.nstu.technician.domain.exceptions.NotFoundException
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
@@ -37,14 +38,14 @@ class FacilityCloudSource @Inject constructor(
 
     override suspend fun loadDependencies(facilityDTO: FacilityDTO) {
         facilityDTO.apply {
-            if (contract.ref == null) {
+            if (contract.oid != NONE && contract.ref == null) {
                 try {
                     contract.ref = contractCloudSource.findById(contract.oid)
                 } catch (e: NotFoundException) {
                     throw IllegalStateException("Contract must be set")
                 }
             }
-            if (contractor.ref == null) {
+            if (contractor.oid != NONE && contractor.ref == null) {
                 try {
                     contractor.ref = contractorCloudSource.findById(contractor.oid)
                 } catch (e: NotFoundException) {

@@ -12,7 +12,7 @@ interface GPSPointFromShiftDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun save(gpsPointFromShiftEntity: GPSPointFromShiftEntity)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun saveAll(list: List<GPSPointFromShiftEntity>): List<Long>
 
     @Delete

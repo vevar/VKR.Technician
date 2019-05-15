@@ -1,6 +1,7 @@
 package com.nstu.technician.data.database.entity.job
 
 import androidx.room.*
+import com.nstu.technician.data.database.embedded.AddressEmb
 import com.nstu.technician.domain.model.common.OwnDateTime
 
 @Entity(
@@ -13,7 +14,7 @@ data class FacilityEntity(
     val oid: Long,
     val identifier: String,
     val name: String,
-    @ColumnInfo(name = "address_id") val addressId: Long,
+    @Embedded val address: AddressEmb,
     @Embedded val assingmentDate: OwnDateTime,
     @ColumnInfo(name = "contract_id") val contractId: Long? = null,
     @ColumnInfo(name = "contractor_id") val contractorId: Long
