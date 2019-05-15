@@ -28,7 +28,7 @@ import com.nstu.technician.data.datasource.local.dao.*
 abstract class AppDataBase : RoomDatabase() {
 
     companion object {
-        const val DATABASE_NAME = "com.nstu.technician.data.database"
+        const val DATABASE_NAME = "com.alxminyaev.firefighter.technician"
         const val VERSION_DATABASE = 1
     }
 

@@ -3,21 +3,6 @@
             xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/navigation_qrcode_scanner"
             app:startDestination="@id/QRCodeScannerFragment">
-
-    <fragment
-            android:id="@+id/jobListFragment"
-            android:name="com.nstu.technician.feature.maintenance.JobListFragment"
-            android:label="JobListFragment"
-            tools:layout="@layout/fragment_job_list">
-        <argument
-                android:name="maintenance"
-                app:argType="com.nstu.technician.domain.model.facility.maintenance.Maintenance"
-                app:nullable="false"/>
-        <action android:id="@+id/action_jobListFragment_to_planJobsFragment"
-                app:destination="@id/maintenance_job_dest"
-                app:popUpTo="@+id/jobListFragment"/>
-    </fragment>
-
     <fragment
             android:id="@+id/QRCodeScannerFragment"
             android:name="com.nstu.technician.feature.qr.scanner.QRCodeScannerFragment"
@@ -33,6 +18,21 @@
     </fragment>
 
     <fragment
+            android:id="@+id/jobListFragment"
+            android:name="com.nstu.technician.feature.maintenance.JobListFragment"
+            android:label="JobListFragment"
+            tools:layout="@layout/fragment_job_list">
+        <argument
+                android:name="maintenanceId"
+                app:argType="long"
+                app:nullable="false"/>
+
+        <action android:id="@+id/action_jobListFragment_to_planJobsFragment"
+                app:destination="@id/maintenance_job_dest"
+                app:popUpTo="@+id/jobListFragment"/>
+    </fragment>
+
+    <fragment
             android:id="@+id/maintenance_job_dest"
             android:name="com.nstu.technician.feature.maintenance.job.MaintenanceJobFragment"
             android:label="MaintenanceJobFragment"
@@ -40,6 +40,5 @@
         <argument
                 android:name="maintenanceId"
                 app:argType="long"/>
-
     </fragment>
 </navigation>

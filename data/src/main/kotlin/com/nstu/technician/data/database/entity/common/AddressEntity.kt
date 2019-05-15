@@ -1,14 +1,12 @@
 package com.nstu.technician.data.database.entity.common
 
-import androidx.room.*
+import androidx.room.Embedded
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.nstu.technician.data.database.embedded.GpsObjectEmb
 
 
-@Entity(
-    indices = [
-        Index(value = ["gps_point_id"], unique = true)
-    ]
-)
+@Entity
 data class AddressEntity(
     @PrimaryKey(autoGenerate = true)
     val oid: Long,

@@ -99,7 +99,7 @@ class PlanJobsFragment : BaseFragment() {
         mBinding.apply {
             viewPagerMaintenance.adapter = mPagerAdapter
             tabLayout.setupWithViewPager(viewPagerMaintenance)
-            lifecycleOwner = this@PlanJobsFragment
+            lifecycleOwner = viewLifecycleOwner
         }
     }
 

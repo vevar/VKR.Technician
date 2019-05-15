@@ -11,7 +11,7 @@ import com.nstu.technician.domain.usecase.maintenance.GetDetailMaintenanceUseCas
 import com.nstu.technician.feature.common.LoaderVM
 
 class MaintenanceViewModel(
-    private val maintenanceId: Long,
+    val maintenanceId: Long,
     private val getDetailMaintenanceUseCase: GetDetailMaintenanceUseCase
 ) : ViewModel() {
 

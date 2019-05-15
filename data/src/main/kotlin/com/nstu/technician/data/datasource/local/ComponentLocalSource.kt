@@ -63,7 +63,8 @@ class ComponentLocalSource @Inject constructor(
     override suspend fun save(obj: ComponentDTO): Long {
         return utilDao.transactionSave {
             runBlocking {
-                componentTypeLocalSource.save(obj.type.getObject())
+                val type = obj.type
+                componentTypeLocalSource.save(type.getObject())
             }
             componentDao.save(obj.toComponentEntity())
         }

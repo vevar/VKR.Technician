@@ -78,9 +78,19 @@ class MaintenanceJobLocalSource @Inject constructor(
             jobTypeDTO = jobTypeLocalSource.findById(maintenanceJobEntity.jobTypeId)
             implList = implementsLocalSource.findByMaintenanceJobId(maintenanceJobEntity.oid)
             components = componentUnitLocalSource.findByMaintenanceJob(maintenanceJobEntity.oid)
-            beginPhoto = maintenanceJobEntity.beginPhotoId?.let { artifactLocalSource.findById(it) }
-            endPhoto = maintenanceJobEntity.endPhotoId?.let { artifactLocalSource.findById(it) }
-            problemDTO = maintenanceJobEntity.problemId?.let { problemLocalSource.findById(it) }
+
+            val beginPhotoId = maintenanceJobEntity.beginPhotoId
+            if (beginPhotoId != null && beginPhotoId != NONE) {
+                beginPhoto = beginPhotoId.let { artifactLocalSource.findById(it) }
+            }
+            val endPhotoId = maintenanceJobEntity.endPhotoId
+            if (endPhotoId != null && endPhotoId != NONE) {
+                endPhoto = endPhotoId.let { artifactLocalSource.findById(it) }
+            }
+            val problemId = maintenanceJobEntity.problemId
+            if (problemId != null && problemId != NONE) {
+                problemDTO = problemId.let { problemLocalSource.findById(it) }
+            }
         }
 
         return maintenanceJobEntity.toMaintenanceJobDTO(

@@ -60,7 +60,7 @@ class MaintenanceJobFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_maintenance_job, container, false)
         mBinding.apply {
-            lifecycleOwner = this@MaintenanceJobFragment
+            lifecycleOwner = viewLifecycleOwner
         }
         return mBinding.root
     }

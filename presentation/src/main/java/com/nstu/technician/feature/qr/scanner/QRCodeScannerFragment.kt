@@ -26,7 +26,7 @@ class QRCodeScannerFragment : BaseFragment() {
 
     companion object {
         private const val TAG = "QRCodeScannerFragment"
-        private const val DELAY_IN_UPDATE = 50
+        private const val DELAY_IN_UPDATE = 10
 
     }
 
@@ -38,7 +38,7 @@ class QRCodeScannerFragment : BaseFragment() {
         override fun onSuccessPass() {
             Log.d(TAG, "Method onSuccessPass called")
             val action =
-                QRCodeScannerFragmentDirections.actionQRCodeScannerFragmentToJobListFragment(mMaintenance)
+                QRCodeScannerFragmentDirections.actionQRCodeScannerFragmentToJobListFragment(mMaintenance.oid)
             findNavController().navigate(action)
         }
 
@@ -50,8 +50,10 @@ class QRCodeScannerFragment : BaseFragment() {
 
     private var mCameraEngine: CameraEngine? by Delegates.observable<CameraEngine?>(null) { property, oldValue, newValue ->
         newValue?.apply {
-            mQRCodeGuard = QRCodeGuardImpl(mMaintenance.facility.getQRCode())
+            val qrCode = mMaintenance.facility.getQRCode()
+            mQRCodeGuard = QRCodeGuardImpl(qrCode)
             onStart()
+            Log.d(TAG, "QR-Code: $qrCode")
         }
     }
 
@@ -92,6 +94,7 @@ class QRCodeScannerFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mCameraEngineBuilder = CameraEnginePreview.Builder()
         mMaintenance = getMaintenance()
         Log.d(TAG, "key(QRCode): ${mMaintenance.facility.getQRCode()}")
     }

@@ -103,7 +103,7 @@ class ListMaintenanceForDayFragment : BaseFragment() {
                 layoutManager = LinearLayoutManager(this.context)
             }
             viewModel = mViewModel
-            lifecycleOwner = this@ListMaintenanceForDayFragment
+            lifecycleOwner = viewLifecycleOwner
         }
 
         return mBinding.root
@@ -121,7 +121,7 @@ class ListMaintenanceForDayFragment : BaseFragment() {
 
     override fun onStart() {
         super.onStart()
-        mViewModel.listMaintenance.observe(this, listMaintenanceObserver)
+        mViewModel.listMaintenance.observe(viewLifecycleOwner, listMaintenanceObserver)
         mViewModel.loadListMaintenance()
         Log.d(TAG, "${this} + fragment is started")
     }

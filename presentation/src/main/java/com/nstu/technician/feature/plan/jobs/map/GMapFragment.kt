@@ -18,6 +18,7 @@ import com.nstu.technician.databinding.FragmentMapBinding
 import com.nstu.technician.di.component.map.DaggerGMapScreen
 import com.nstu.technician.di.module.model.MapModule
 import com.nstu.technician.domain.model.common.GPSPoint
+import com.nstu.technician.domain.model.common.GpsObject
 import com.nstu.technician.domain.model.facility.Facility
 import com.nstu.technician.feature.App
 import com.nstu.technician.feature.BaseFragment
@@ -98,9 +99,9 @@ class GMapFragment : BaseFragment() {
                             Log.d(TAG, "onGoToDevicePosition is called")
                         }
 
-                        override fun onGoToMainTarget(gpsPoint: GPSPoint) {
+                        override fun onGoToMainTarget(gpsObject: GpsObject) {
                             Log.d(TAG, "onGoToMainTarget is called")
-                            val latLng = LatLng(gpsPoint.latitude, gpsPoint.longitude)
+                            val latLng = LatLng(gpsObject.latitude, gpsObject.longitude)
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
                         }
                     })).build()

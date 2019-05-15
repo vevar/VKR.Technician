@@ -12,9 +12,9 @@ data class MaintenanceJobEntity(
     @ColumnInfo(name = "job_type_id") val jobTypeId: Long,
     val beginTime: Long? = null,
     val endTime: Long? = null,
-    @ColumnInfo(name = "begin_photo_id") val beginPhotoId: Long? = null,
-    @ColumnInfo(name = "end_photo_id") val endPhotoId: Long? = null,
+    @ColumnInfo(name = "begin_photo_id") val beginPhotoId: Long?,
+    @ColumnInfo(name = "end_photo_id") val endPhotoId: Long?,
     val duration: Int,  // in minutes
-    @ColumnInfo(name = "problem_id") val problemId: Long? = null,
-    @ColumnInfo(name = "maintenance_id") val maintenanceId: Long? = null
+    @ColumnInfo(name = "problem_id") val problemId: Long?,
+    @ColumnInfo(name = "maintenance_id") val maintenanceId: Long
 )

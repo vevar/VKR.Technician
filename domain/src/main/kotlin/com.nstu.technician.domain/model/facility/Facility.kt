@@ -6,6 +6,7 @@ import com.nstu.technician.domain.model.document.Contract
 import com.nstu.technician.domain.model.document.Contractor
 import kotlinx.serialization.Serializable
 
+
 @Serializable
 data class Facility(
     val oid: Long,
@@ -15,4 +16,7 @@ data class Facility(
     val assingmentDate: OwnDateTime,
     val contract: Contract?,
     val contractor: Contractor
-) : java.io.Serializable
+) : java.io.Serializable{
+
+
+}

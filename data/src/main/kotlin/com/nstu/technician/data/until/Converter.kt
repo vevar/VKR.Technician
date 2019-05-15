@@ -238,18 +238,28 @@ fun Address.toAddressDTO(): AddressDTO {
 }
 
 fun FacilityEntity.toFacilityDTO(
-    addressDTO: AddressDTO,
-    contractDTO: ContractDTO,
+    contractDTO: ContractDTO?,
     contractorDTO: ContractorDTO
 ): FacilityDTO {
     return FacilityDTO(
         oid = oid,
         name = name,
-        address = addressDTO,
+        address = address.toAddressDTO(),
         assingmentDate = assingmentDate,
-        contract = EntityLink(contractDTO),
+        contract = contractDTO?.let { EntityLink(it) } ?: EntityLink(0),
         identifier = identifier,
         contractor = EntityLink(contractorDTO)
+    )
+}
+
+private fun AddressEmb.toAddressDTO(): AddressDTO {
+    return AddressDTO(
+        type = type,
+        street = street,
+        office = office,
+        location = location.toGpsObjectDTO(),
+        home = home,
+        city = city
     )
 }
 
@@ -591,12 +601,12 @@ private fun Contract.toContractDTO(): ContractDTO {
     )
 }
 
-fun ContractorEntity.toContractorDTO(addressDTO: AddressDTO): ContractorDTO {
+fun ContractorEntity.toContractorDTO(): ContractorDTO {
     return ContractorDTO(
         oid = oid,
         name = name,
         INN = INN,
-        address = addressDTO
+        address = addressEmb.toAddressDTO()
     )
 }
 
@@ -655,12 +665,12 @@ fun MaintenanceJobDTO.toMaintenanceJobEntity(maintenanceJobId: Long): Maintenanc
         oid = oid,
         jobState = jobState,
         jobTypeId = jobType.oid,
-        beginPhotoId = beginPhoto.oid,
-        endPhotoId = endPhoto.oid,
+        beginPhotoId = if (beginPhoto.oid != NONE) beginPhoto.oid else null,
+        endPhotoId = if (endPhoto.oid != NONE) endPhoto.oid else null,
         beginTime = beginTime.timeInMS,
         duration = duration,
         endTime = endTime.timeInMS,
-        problemId = problem.oid,
+        problemId = if (problem.oid != NONE) problem.oid else null,
         maintenanceId = maintenanceJobId
     )
 }

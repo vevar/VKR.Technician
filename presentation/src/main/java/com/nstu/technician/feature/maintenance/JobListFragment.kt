@@ -75,7 +75,7 @@ class JobListFragment : BaseFragment() {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_job_list, container, false)
         mBinding.apply {
             viewModel = mViewModel
-            lifecycleOwner = this@JobListFragment
+            lifecycleOwner = viewLifecycleOwner
             mMaintenanceJobsRVAdapter =
                 MaintenanceJobsRVAdapter(object : MaintenanceJobsRVAdapter.JobHolder.MaintenanceJobListener {
                     override fun onShowJob(maintenanceJob: MaintenanceJob) {
@@ -90,7 +90,7 @@ class JobListFragment : BaseFragment() {
         }
         val activity = activity as BaseActivity
         activity.supportActionBar?.title =
-            "${resources.getString(R.string.lbl_maintenance)} #${mViewModel.maintenance.value?.oid}"
+            "${resources.getString(R.string.lbl_maintenance)} #${mViewModel.maintenanceId}"
 
         return mBinding.root
     }

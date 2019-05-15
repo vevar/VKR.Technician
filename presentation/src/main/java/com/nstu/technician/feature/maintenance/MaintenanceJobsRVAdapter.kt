@@ -76,8 +76,10 @@ class MaintenanceJobsRVAdapter(
                 // TODO need implement contract bind
             }
             TYPE_MAINTENANCE -> {
-                holder as MaintenanceHolder
-                holder.bind(maintenance ?: throw IllegalStateException("maintenence must be set"))
+                maintenance?.let {
+                    holder as MaintenanceHolder
+                    holder.bind(it)
+                } ?: return
             }
             TYPE_JOB -> {
                 holder as JobHolder

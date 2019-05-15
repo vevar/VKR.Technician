@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.MarkerOptions
 import com.nstu.technician.domain.model.common.GPSPoint
+import com.nstu.technician.domain.model.common.GpsObject
 import com.nstu.technician.domain.model.facility.Facility
 import com.nstu.technician.domain.usecase.CallUseCase
 import com.nstu.technician.domain.usecase.shift.GetFacilityUseCase
@@ -54,7 +55,7 @@ class MapViewModel(
     }
 
     interface MapListener {
-        fun onGoToMainTarget(gpsPoint: GPSPoint)
+        fun onGoToMainTarget(gpsObject: GpsObject)
         fun onGoToDevicePosition(gpsPoint: GPSPoint)
         fun onUpdateDevicePosition(marker: MarkerOptions)
     }

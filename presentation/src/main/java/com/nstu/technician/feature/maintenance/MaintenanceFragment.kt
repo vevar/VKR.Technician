@@ -70,7 +70,7 @@ class MaintenanceFragment : BaseFragment() {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_maintenance, container, false)
         mBinding.apply {
             viewModel = mViewModel
-            lifecycleOwner = this@MaintenanceFragment
+            lifecycleOwner = viewLifecycleOwner
 
             btnScanQr.setOnClickListener {
                 mViewModel.maintenance.value?.let {
@@ -82,14 +82,14 @@ class MaintenanceFragment : BaseFragment() {
         }
         val activity = activity as BaseActivity
         activity.supportActionBar?.title =
-            "${resources.getString(R.string.lbl_maintenance)} #${mViewModel.maintenance.value?.oid}"
+            "${resources.getString(R.string.lbl_maintenance)} #${mViewModel.maintenanceId}"
 
         return mBinding.root
     }
 
     override fun onStart() {
         super.onStart()
-        mViewModel.maintenance.observe(this, maintenanceObserver)
+        mViewModel.maintenance.observe(viewLifecycleOwner, maintenanceObserver)
         mViewModel.loadDetailMaintenance()
     }
 

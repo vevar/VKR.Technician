@@ -8,8 +8,7 @@ import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject
 
-class
-AccessTokenInterceptor @Inject constructor(
+class AccessTokenInterceptor @Inject constructor(
     private var tokenProvider: AccessTokenProvider
 ) : Interceptor {
 

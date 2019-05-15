@@ -11,9 +11,7 @@ import com.nstu.technician.data.dto.tool.ComponentUnitDTO
 import com.nstu.technician.data.until.getObject
 import com.nstu.technician.data.until.toComponentUnitDTO
 import com.nstu.technician.data.until.toComponentUnitEntity
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -27,10 +25,8 @@ class ComponentUnitLocalSource @Inject constructor(
 
     override suspend fun findByMaintenanceJob(maintenanceId: Long): List<ComponentUnitDTO> {
         return componentUnitDao.findByMaintenanceJob(maintenanceId).map { componentUnitEntity ->
-            withContext(Dispatchers.IO) {
-                val componentDTO = runBlocking { componentLocalSource.findById(componentUnitEntity.componentId) }
-                componentUnitEntity.toComponentUnitDTO(componentDTO)
-            }
+            val componentDTO = runBlocking { componentLocalSource.findById(componentUnitEntity.componentId) }
+            componentUnitEntity.toComponentUnitDTO(componentDTO)
         }
     }
 
