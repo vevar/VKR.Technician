@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.nstu.technician.R
 import com.nstu.technician.databinding.FragmentMaintenanceJobBinding
 import com.nstu.technician.di.component.maintenance.job.DaggerMaintenanceJobScreen
@@ -27,7 +28,7 @@ class MaintenanceJobFragment : BaseFragment() {
 
     private val maintenanceJobObserver = Observer<MaintenanceJob> {
         mBinding.apply {
-            recycleView.adapter = MaintenanceJobRVAdapter(it)
+            recycleView.swapAdapter(MaintenanceJobRVAdapter(it),true)
         }
     }
 
@@ -60,6 +61,7 @@ class MaintenanceJobFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_maintenance_job, container, false)
         mBinding.apply {
+            recycleView.layoutManager = LinearLayoutManager(requireContext())
             lifecycleOwner = viewLifecycleOwner
         }
         return mBinding.root
@@ -67,7 +69,7 @@ class MaintenanceJobFragment : BaseFragment() {
 
     override fun onStart() {
         super.onStart()
-        mViewModel.mMaintenanceJob.observe(this, maintenanceJobObserver)
+        mViewModel.mMaintenanceJob.observe(viewLifecycleOwner, maintenanceJobObserver)
         mViewModel.loadMaintenanceJob()
     }
 }

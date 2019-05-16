@@ -6,7 +6,7 @@ import com.nstu.technician.domain.usecase.UseCase
 import javax.inject.Inject
 
 class GetMaintenanceJobUseCase @Inject constructor(
-    private val maintenanceRepository: MaintenanceJobRepository
+    private val maintenanceJobRepository: MaintenanceJobRepository
 ) : UseCase<MaintenanceJob, GetMaintenanceJobUseCase.Param>() {
 
     companion object {
@@ -14,7 +14,7 @@ class GetMaintenanceJobUseCase @Inject constructor(
     }
 
     override suspend fun task(param: Param): MaintenanceJob {
-        return maintenanceRepository.findById(param.id)
+        return maintenanceJobRepository.findById(param.id)
     }
 
     class Param private constructor(

@@ -41,7 +41,7 @@ class GMapFragment : BaseFragment() {
     private lateinit var mMap: GoogleMap
     private var mainTargetMarker: Marker? = null
     private var mainFacility = Observer<Facility> { facility ->
-        val gpsPoint = facility.address.location ?: throw NullPointerException("gpsPoint is null")
+        val gpsPoint = facility.address.location
         val latLng = LatLng(gpsPoint.latitude, gpsPoint.longitude)
         if (mainTargetMarker == null) {
             addMarkerToMap(latLng)
@@ -64,7 +64,7 @@ class GMapFragment : BaseFragment() {
             Log.d(TAG, "mainTargetMarker isn't added to map")
         } else {
             Log.d(
-                GMapFragment.TAG,
+                TAG,
                 "mainTargetMarker is added to map(" +
                         "${mainTargetMarker!!.position.latitude}, ${mainTargetMarker!!.position.longitude})"
             )
@@ -130,7 +130,7 @@ class GMapFragment : BaseFragment() {
             mapView.getMapAsync { map ->
                 mMap = map
             }
-            lifecycleOwner = this@GMapFragment
+            lifecycleOwner = viewLifecycleOwner
 
         }
 

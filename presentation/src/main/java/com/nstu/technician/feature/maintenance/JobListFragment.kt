@@ -79,7 +79,9 @@ class JobListFragment : BaseFragment() {
             mMaintenanceJobsRVAdapter =
                 MaintenanceJobsRVAdapter(object : MaintenanceJobsRVAdapter.JobHolder.MaintenanceJobListener {
                     override fun onShowJob(maintenanceJob: MaintenanceJob) {
-                        JobListFragmentDirections.actionJobListFragmentToPlanJobsFragment(maintenanceJob.oid)
+                        val action =
+                            JobListFragmentDirections.actionJobListFragmentToPlanJobsFragment(maintenanceJob.oid)
+                        findNavController().navigate(action)
                     }
 
                 })

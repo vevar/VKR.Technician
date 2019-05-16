@@ -41,9 +41,24 @@ class MaintenanceJobRVAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
-            DESCRIPTION_TYPE -> DescriptionHolder(inflater.inflate(R.layout.view_maintenance_job, parent, false))
-            COMPONENT_TYPE -> ComponentListHolder(inflater.inflate(R.layout.view_components, parent, false))
-            IMPLEMENTS_TYPE -> ImplementsListHolder(inflater.inflate(R.layout.view_implements, parent, false))
+            DESCRIPTION_TYPE -> {
+                val view = inflater.inflate(R.layout.view_maintenance_job, parent, false)
+                val marginLayoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
+                marginLayoutParams.topMargin = view.context.resources.getDimension(R.dimen.mini_margin).toInt()
+                DescriptionHolder(view)
+            }
+            COMPONENT_TYPE -> {
+                val view = inflater.inflate(R.layout.view_components, parent, false)
+                val marginLayoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
+                marginLayoutParams.topMargin = view.context.resources.getDimension(R.dimen.mini_margin).toInt()
+                ComponentListHolder(view)
+            }
+            IMPLEMENTS_TYPE -> {
+                val view = inflater.inflate(R.layout.view_implements, parent, false)
+                val marginLayoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
+                marginLayoutParams.topMargin = view.context.resources.getDimension(R.dimen.mini_margin).toInt()
+                ImplementsListHolder(view)
+            }
             else -> throw IllegalStateException("Incorrect viewType")
         }
     }
@@ -78,7 +93,7 @@ class MaintenanceJobRVAdapter(
 
         fun bind(components: List<ComponentUnit>) {
             val linearLayout = binding.componentsContainer
-            for (index in 0..components.size) {
+            for (index in 0 until components.size) {
                 val textView = TextView(itemView.context)
                 textView.text = components[index].component.name
                 linearLayout.addView(textView)
@@ -92,7 +107,7 @@ class MaintenanceJobRVAdapter(
 
         fun bind(implements: List<Implements>) {
             val linearLayout = binding.implementsContainer
-            for (index in 0..implements.size) {
+            for (index in 0 until implements.size) {
                 val textView = TextView(itemView.context)
                 textView.text = implements[index].name
                 linearLayout.addView(textView)
