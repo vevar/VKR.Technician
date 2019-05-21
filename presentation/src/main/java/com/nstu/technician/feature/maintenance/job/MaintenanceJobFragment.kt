@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -28,7 +29,7 @@ class MaintenanceJobFragment : BaseFragment() {
 
     private val maintenanceJobObserver = Observer<MaintenanceJob> {
         mBinding.apply {
-            recycleView.swapAdapter(MaintenanceJobRVAdapter(it),true)
+            recycleView.swapAdapter(MaintenanceJobRVAdapter(it), true)
         }
     }
 
@@ -59,10 +60,12 @@ class MaintenanceJobFragment : BaseFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        (requireActivity() as AppCompatActivity).supportActionBar?.title = "${getString(R.string.tlt_job)} #${mViewModel.maintenanceJobId}"
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_maintenance_job, container, false)
         mBinding.apply {
             recycleView.layoutManager = LinearLayoutManager(requireContext())
             lifecycleOwner = viewLifecycleOwner
+            viewModel = mViewModel
         }
         return mBinding.root
     }

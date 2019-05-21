@@ -12,7 +12,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class MaintenanceJobVM(
-    private val maintenanceJobId: Long,
+    val maintenanceJobId: Long,
     private val getMaintenanceJobUseCase: GetMaintenanceJobUseCase
 ) : ViewModel() {
 

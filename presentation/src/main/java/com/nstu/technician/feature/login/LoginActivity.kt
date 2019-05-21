@@ -60,6 +60,7 @@ class LoginActivity : BaseActivity(), ErrorDialogFragment.ErrorDialogListener {
 
     private fun setupViewModel(savedInstanceState: Bundle?) {
         mViewModel = ViewModelProviders.of(this, vmFactory).get(LoginViewModel::class.java)
+
         if (savedInstanceState != null) {
             mViewModel.username.value = savedInstanceState.getString(STATE_USERNAME) ?: ""
             mViewModel.password.value = savedInstanceState.getString(STATE_PASSWORD) ?: ""
@@ -71,6 +72,7 @@ class LoginActivity : BaseActivity(), ErrorDialogFragment.ErrorDialogListener {
             ContainerActivity.startActivity(this, it.oid)
             finish()
         }
+
         messageObserver = Observer {
             if (it != 0) {
                 val fragment = supportFragmentManager.findFragmentByTag(ErrorDialogFragment.TAG)
@@ -86,10 +88,12 @@ class LoginActivity : BaseActivity(), ErrorDialogFragment.ErrorDialogListener {
 
     private fun setupView(loginViewModel: LoginViewModel) {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_login)
-        mBinding.lifecycleOwner = this
-        mBinding.viewModel = loginViewModel
-        mBinding.btnSingIn.setOnClickListener {
-            mViewModel.singIn()
+        mBinding.apply {
+            lifecycleOwner = this@LoginActivity
+            viewModel = loginViewModel
+            btnSingIn.setOnClickListener {
+                mViewModel.singIn()
+            }
         }
     }
 
@@ -97,12 +101,6 @@ class LoginActivity : BaseActivity(), ErrorDialogFragment.ErrorDialogListener {
         super.onStart()
         mViewModel.technician.observe(this, technicianObserver)
         mViewModel.messageIdResource.observe(this, messageObserver)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        mViewModel.technician.removeObserver(technicianObserver)
-        mViewModel.messageIdResource.removeObserver(messageObserver)
     }
 
     override fun onSaveInstanceState(outState: Bundle?, outPersistentState: PersistableBundle?) {

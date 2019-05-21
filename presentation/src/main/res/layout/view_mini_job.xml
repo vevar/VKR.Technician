@@ -33,7 +33,7 @@
                     app:layout_constraintStart_toEndOf="@+id/order_number"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
-                    app:setTypeStateOfJob="@{2}"
+                    app:setTypeStateOfJob="@{maintenanceJob.jobState}"
 
                     tools:text="Не выполнено"/>
 

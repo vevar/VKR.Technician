@@ -24,8 +24,4 @@ abstract class UseCase<Result, Param> {
             callUseCase.onFailure(throwable)
         }
     }
-
-    fun blockGet(param: Param): Result {
-        return runBlocking { blockGet(param) }
-    }
 }

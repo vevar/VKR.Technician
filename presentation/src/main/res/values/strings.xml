@@ -26,6 +26,9 @@
 
     <!--TITLES-->
     <string name="tlt_plan_jobs">График работ</string>
+    <string name="tlt_job">Работа</string>
+    <string name="tlt_qr_scanner">QR Code сканер</string>
+
     <string name="btn_show_on_map">Показать на карте</string>
     <string name="btn_start">Начать</string>
     <string name="map">Карта</string>

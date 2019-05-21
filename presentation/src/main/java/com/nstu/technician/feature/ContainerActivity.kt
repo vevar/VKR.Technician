@@ -2,8 +2,10 @@ package com.nstu.technician.feature
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.navArgs
 import androidx.navigation.ui.AppBarConfiguration
@@ -43,9 +45,6 @@ class ContainerActivity : BaseActivity() {
         host.arguments = navArgs<PlanJobsFragmentArgs>().value.toBundle()
         val navController = host.navController
         setupActionBar(navController, AppBarConfiguration(navController.graph))
-
-        supportActionBar?.show()
-
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
     }
 
@@ -59,4 +58,10 @@ class ContainerActivity : BaseActivity() {
         return request
     }
 
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            android.R.id.home -> findNavController(R.id.host_fragment).navigateUp()
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 }

@@ -2,7 +2,6 @@ package com.nstu.technician.feature.maintenance
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -81,8 +80,10 @@ class MaintenanceFragment : BaseFragment() {
             }
         }
         val activity = activity as BaseActivity
-        activity.supportActionBar?.title =
-            "${resources.getString(R.string.lbl_maintenance)} #${mViewModel.maintenanceId}"
+        activity.supportActionBar?.apply {
+            title =
+                "${resources.getString(R.string.lbl_maintenance)} #${mViewModel.maintenanceId}"
+        }
 
         return mBinding.root
     }
@@ -91,16 +92,5 @@ class MaintenanceFragment : BaseFragment() {
         super.onStart()
         mViewModel.maintenance.observe(viewLifecycleOwner, maintenanceObserver)
         mViewModel.loadDetailMaintenance()
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                findNavController().navigateUp()
-            }
-            else -> {
-                super.onOptionsItemSelected(item)
-            }
-        }
     }
 }

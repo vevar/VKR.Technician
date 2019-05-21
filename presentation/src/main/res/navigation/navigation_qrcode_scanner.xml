@@ -35,7 +35,6 @@
     <fragment
             android:id="@+id/maintenance_job_dest"
             android:name="com.nstu.technician.feature.maintenance.job.MaintenanceJobFragment"
-            android:label="MaintenanceJobFragment"
             tools:layout="@layout/fragment_maintenance_job">
         <argument
                 android:name="maintenanceId"

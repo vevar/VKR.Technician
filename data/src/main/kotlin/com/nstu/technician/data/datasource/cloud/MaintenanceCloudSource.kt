@@ -19,12 +19,12 @@ class MaintenanceCloudSource @Inject constructor(
     @Named(CLOUD)
     private val artifactCloudSource: ArtifactDataSource
 ) : MaintenanceDataSource {
-    override suspend fun save(obj: MaintenanceDTO): Long {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
-    override suspend fun delete(obj: MaintenanceDTO) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override suspend fun findById(id: Long): MaintenanceDTO {
+        return (maintenanceApi.getMaintenance(id).execute().body()
+            ?: throw IllegalStateException(BODY_MUST_BE_SET)).apply {
+            runBlocking { loadDependencies(this@apply) }
+        }
     }
 
     override suspend fun loadDependencies(obj: MaintenanceDTO) {
@@ -67,11 +67,12 @@ class MaintenanceCloudSource @Inject constructor(
         }
     }
 
-    override suspend fun findById(id: Long): MaintenanceDTO {
-        return (maintenanceApi.getMaintenance(id).execute().body()
-            ?: throw IllegalStateException(BODY_MUST_BE_SET)).apply {
-            runBlocking { loadDependencies(this@apply) }
-        }
+    override suspend fun save(obj: MaintenanceDTO): Long {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun delete(obj: MaintenanceDTO) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override suspend fun saveAllForShift(listMaintenance: List<MaintenanceDTO>, shiftId: Long): List<Long> {
