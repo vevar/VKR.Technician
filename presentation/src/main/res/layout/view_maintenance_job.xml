@@ -48,6 +48,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/lbl_job_name"
+                        app:setTimeForJob="@{maintenanceJob.duration}"
 
                         tools:text="1ч. 20мин."/>
 
@@ -71,26 +72,56 @@
                     app:layout_constraintTop_toBottomOf="@+id/lbl_job_name"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-
+                    android:text="@{maintenanceJob.jobType.description}"
                     tools:text="Описание Описание Описание Описание Описание Описание Описание Описание Описание
                     Описание Описание Описание Описание Описание Описание Описание Описание Описание Описание"
                     app:layout_constraintVertical_bias="0.0"/>
 
             <Button
-                    android:id="@+id/btn_start_job"
+                    android:id="@+id/btn_send_about_error"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/fld_height"
-                    android:layout_marginEnd="@dimen/default_margin"
-                    android:textColor="@color/black"
-                    android:background="@drawable/btn_round_glass"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:layout_marginEnd="@dimen/mini_margin"
+                    android:textColor="@color/white"
+                    android:background="@drawable/btn_round_black"
+                    android:paddingStart="@dimen/default_padding"
+                    android:paddingEnd="@dimen/default_padding"
                     android:text="@string/btn_message_about_problem"
-                    android:drawableStart="@drawable/ic_warning_black"
+                    android:textSize="12sp"
+                    android:drawableStart="@drawable/ic_warning_white"
                     android:drawablePadding="@dimen/icon_padding"
+                    app:layout_constraintEnd_toStartOf="@id/btn_end_job"
+                    app:layout_constraintTop_toBottomOf="@+id/lbl_description"
+                    android:visibility="gone"/>
+            <Button
+                    android:id="@+id/btn_start_job"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn_start"
+                    android:textColor="@color/white"
+                    android:background="@drawable/btn_round_black"
+                    android:paddingStart="@dimen/default_padding"
+                    android:paddingEnd="@dimen/default_padding"
+                    android:layout_marginTop="@dimen/default_margin"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/lbl_description"/>
+            <Button
+                    android:id="@+id/btn_end_job"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btn_end"
+                    android:textSize="12sp"
+                    android:textColor="@color/white"
+                    android:background="@drawable/btn_round_black"
+                    android:paddingStart="@dimen/default_padding"
+                    android:paddingEnd="@dimen/default_padding"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/lbl_description"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
-
 
 </layout>

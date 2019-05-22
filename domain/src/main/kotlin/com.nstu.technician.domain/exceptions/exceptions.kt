@@ -10,3 +10,5 @@ class NetworkException(message: String) : Throwable(message)
 class UnresolvedException(message: String) : Throwable(message)
 
 class DataNotSaveException(tag: String) : Throwable("$tag: data aren't saved")
+
+class UseCaseNotInvokedException(): Throwable()

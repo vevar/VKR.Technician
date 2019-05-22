@@ -76,7 +76,6 @@ class MaintenanceFragment : BaseFragment() {
                     val action = MaintenanceFragmentDirections.actionMaintenanceDestToQrcodeScannerDest(it)
                     findNavController().navigate(action)
                 }
-
             }
         }
         val activity = activity as BaseActivity

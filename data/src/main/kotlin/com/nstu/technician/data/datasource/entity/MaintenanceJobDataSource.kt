@@ -1,10 +1,9 @@
 package com.nstu.technician.data.datasource.entity
 
+import com.nstu.technician.data.datasource.CrudDataSource
 import com.nstu.technician.data.dto.job.MaintenanceJobDTO
 
-interface MaintenanceJobDataSource {
-
-    suspend fun update(maintenanceJobDTO: MaintenanceJobDTO)
+interface MaintenanceJobDataSource : CrudDataSource<MaintenanceJobDTO, Long> {
 
     suspend fun saveState(maintenanceJobDTO: MaintenanceJobDTO)
 
@@ -22,5 +21,4 @@ interface MaintenanceJobDataSource {
 
     suspend fun saveAllForMaintenance(list: List<MaintenanceJobDTO>, maintenanceId: Long): List<Long>
 
-    suspend fun findById(id: Long): MaintenanceJobDTO
 }

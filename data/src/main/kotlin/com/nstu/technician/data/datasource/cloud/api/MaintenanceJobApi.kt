@@ -14,7 +14,7 @@ interface MaintenanceJobApi {
     }
 
     @POST("/api/maintenance/job/update")
-    fun updateMaintenanceJob(@Body body: MaintenanceJobDTO, @Query("level") level: Int = DEFAULT_LEVEL): Call<String>
+    fun updateMaintenanceJob(@Body body: MaintenanceJobDTO, @Query("level") level: Int = 3): Call<String>
 
     /** Установить состояние работы по объекту   */
     @POST("/api/maintenance/job/setstate")

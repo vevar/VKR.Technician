@@ -5,11 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.nstu.technician.BR
 import com.nstu.technician.R
 import com.nstu.technician.databinding.ViewContractBinding
 import com.nstu.technician.databinding.ViewDetailMaintenanceBinding
 import com.nstu.technician.databinding.ViewMiniJobBinding
 import com.nstu.technician.domain.model.document.Contract
+import com.nstu.technician.domain.model.document.Contractor
 import com.nstu.technician.domain.model.facility.maintenance.Maintenance
 import com.nstu.technician.domain.model.facility.maintenance.MaintenanceJob
 
@@ -25,12 +27,15 @@ class MaintenanceJobsRVAdapter(
     }
 
     private var contract: Contract? = null
+    private var contractor: Contractor? = null
     private var maintenance: Maintenance? = null
     private val listMaintenanceJobs: MutableList<MaintenanceJob> = mutableListOf()
 
     fun setMaintenance(maintenance: Maintenance) {
         this.maintenance = maintenance
-        contract = maintenance.facility.contract
+        val facility = maintenance.facility
+        contract = facility.contract
+        contractor = facility.contractor
         listMaintenanceJobs.clear()
         listMaintenanceJobs.addAll(maintenance.jobList)
         notifyDataSetChanged()
@@ -53,7 +58,7 @@ class MaintenanceJobsRVAdapter(
                 JobHolder(view, maintenanceJobListener)
             }
             else -> {
-                throw IllegalStateException("Incorrect type o holder")
+                throw IllegalStateException("Incorrect problemType o holder")
             }
         }
     }
@@ -71,22 +76,28 @@ class MaintenanceJobsRVAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        return when (holder.itemViewType) {
+        when (holder.itemViewType) {
             TYPE_CONTRACT -> {
-                // TODO need implement contract bind
+                holder as ContractHolder
+                contractor?.apply {
+                    holder.bindContractor(this)
+                }
+                contract?.apply {
+                    holder.bindContract(this)
+                }
             }
             TYPE_MAINTENANCE -> {
                 maintenance?.let {
                     holder as MaintenanceHolder
                     holder.bind(it)
-                } ?: return
+                }
             }
             TYPE_JOB -> {
                 holder as JobHolder
                 holder.bind(listMaintenanceJobs[position - BIAS])
             }
             else -> {
-                throw IllegalStateException("Incorrect type o holder")
+                throw IllegalStateException("Incorrect problemType o holder")
             }
         }
     }
@@ -95,9 +106,14 @@ class MaintenanceJobsRVAdapter(
         private val binding: ViewContractBinding =
             DataBindingUtil.bind(view) ?: throw IllegalArgumentException("Incorrect view")
 
-        fun bind(contract: Contract) {
+        fun bindContract(contract: Contract) {
             binding.contract = contract
-            binding.notifyChange()
+            binding.notifyPropertyChanged(BR.contract)
+        }
+
+        fun bindContractor(contractor: Contractor) {
+            binding.contractor = contractor
+            binding.notifyPropertyChanged(BR.contractor)
         }
     }
 

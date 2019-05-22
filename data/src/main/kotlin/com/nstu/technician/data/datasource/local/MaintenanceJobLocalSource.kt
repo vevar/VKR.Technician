@@ -34,12 +34,9 @@ class MaintenanceJobLocalSource @Inject constructor(
     private val problemLocalSource: ProblemDataSource
 ) : MaintenanceJobDataSource {
 
+
     companion object {
         const val TAG = "MaintenanceJobLocalSource"
-    }
-
-    override suspend fun update(maintenanceJobDTO: MaintenanceJobDTO) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override suspend fun saveState(maintenanceJobDTO: MaintenanceJobDTO) {
@@ -64,6 +61,19 @@ class MaintenanceJobLocalSource @Inject constructor(
 
     override suspend fun saveForMaintenance(maintenanceJobDTO: MaintenanceJobDTO, maintenanceId: Long) {
         saveMaintenanceJobDTO(maintenanceJobDTO, maintenanceId)
+    }
+
+    override suspend fun save(obj: MaintenanceJobDTO): Long {
+        return utilDao.transactionSave {
+            val maintenanceJobEntity =
+                maintenanceJobDao.findById(obj.oid) ?: throw IllegalStateException("maintenanceJobEntity must be set")
+            runBlocking { saveMaintenanceJobDependencies(obj) }
+            maintenanceJobDao.save(obj.toMaintenanceJobEntity(maintenanceJobEntity.maintenanceId))
+        }
+    }
+
+    override suspend fun delete(obj: MaintenanceJobDTO) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private suspend fun getMaintenanceJobDTO(maintenanceJobEntity: MaintenanceJobEntity): MaintenanceJobDTO {

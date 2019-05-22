@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable name="viewModel" type="com.nstu.technician.feature.problem.ProblemViewModel"/>
+    </data>
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/default_padding">
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+            <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="@dimen/default_radius">
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/default_padding">
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/lbl_type_problem"/>
+                    <RadioGroup
+                            android:id="@+id/group_type_problem"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/mini_margin"
+                    app:cardCornerRadius="@dimen/default_radius">
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/default_padding">
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                        <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/lbl_photo"/>
+                        <Button
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/btn_add"
+                                android:layout_gravity="end"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                            android:id="@+id/media_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/mini_margin"
+                    app:cardCornerRadius="@dimen/default_radius">
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/default_padding">
+                    <EditText
+                            android:hint="@string/lbl_comment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:minHeight="100dp"
+                            android:gravity="top"
+                            android:inputType="textMultiLine"
+                            android:maxLength="300"
+                            android:id="@+id/editText"
+                            android:autofillHints="@string/lbl_comment"
+                            android:text="@={viewModel.MComment}"
+                            tools:ignore="UnusedAttribute"/>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <Button
+                    android:id="@+id/btn_send"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/mini_margin"
+                    android:background="@drawable/btn_round_black"
+                    android:text="@string/btn_send"
+                    android:textColor="@color/white"/>
+        </LinearLayout>
+
+    </ScrollView>
+</layout>
+
+

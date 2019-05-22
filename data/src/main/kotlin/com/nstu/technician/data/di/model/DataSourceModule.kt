@@ -186,6 +186,12 @@ open class DataSourceModule {
 
     @Named(CLOUD)
     @Provides
+    fun provideProblemCloudSource(problemCloudSource : ProblemCloudSource): ProblemDataSource{
+        return problemCloudSource
+    }
+
+    @Named(CLOUD)
+    @Provides
     fun provideShiftCloudSource(shiftCloudSource: ShiftCloudSource): ShiftDataSource {
         return shiftCloudSource
     }

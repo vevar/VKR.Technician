@@ -163,7 +163,7 @@ fun getJobTypeDTO(oid: Long): JobTypeDTO {
     return JobTypeDTO(
         oid = oid,
         duration = 894,
-        name = "job type mName",
+        name = "job problemType mName",
         description = "@description",
         impList = getListSomeObject { EntityLink(getImplementsDTO(it)) }
     )

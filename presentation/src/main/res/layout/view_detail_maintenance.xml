@@ -9,11 +9,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/mini_margin"
+            android:layout_marginBottom="@dimen/mini_margin"
             app:cardCornerRadius="@dimen/default_radius">
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:padding="@dimen/default_padding">
             <TextView
                     android:id="@+id/name_facility"
                     android:layout_width="0dp"
@@ -38,18 +40,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:setAddress="@{maintenance.facility}"
                     tools:text="ул.Ватутина д. 245 оф.56"/>
-            <Button
-                    android:id="@+id/btn_start_job"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/fld_height"
-                    android:layout_marginEnd="@dimen/default_margin"
-                    android:textColor="@color/black"
-                    android:background="@drawable/btn_round_glass"
-                    android:text="@string/btn_message_about_problem"
-                    android:drawableStart="@drawable/ic_warning_black"
-                    android:drawablePadding="@dimen/icon_padding"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/address_facility"/>
             <TextView
                     android:id="@+id/type_maintenance"
                     android:layout_width="wrap_content"
@@ -59,6 +49,7 @@
                     android:textColor="@color/black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
+                    app:setMaintenanceType="@{maintenance.maintenanceType}"
 
                     tools:text="Ежемесячное ТО"/>
         </androidx.constraintlayout.widget.ConstraintLayout>

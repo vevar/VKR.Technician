@@ -6,7 +6,7 @@
     <fragment
             android:id="@+id/QRCodeScannerFragment"
             android:name="com.nstu.technician.feature.qr.scanner.QRCodeScannerFragment"
-            android:label="QRCodeScannerFragment"
+            android:label="@string/tlt_qr_scanner"
             tools:layout="@layout/fragment_qrcode_scanner">
         <argument
                 android:name="maintenance"
@@ -20,7 +20,6 @@
     <fragment
             android:id="@+id/jobListFragment"
             android:name="com.nstu.technician.feature.maintenance.JobListFragment"
-            android:label="JobListFragment"
             tools:layout="@layout/fragment_job_list">
         <argument
                 android:name="maintenanceId"
@@ -36,6 +35,17 @@
             android:id="@+id/maintenance_job_dest"
             android:name="com.nstu.technician.feature.maintenance.job.MaintenanceJobFragment"
             tools:layout="@layout/fragment_maintenance_job">
+        <argument
+                android:name="maintenanceId"
+                app:argType="long"/>
+        <action android:id="@+id/action_maintenance_job_dest_to_problemFragment"
+                app:destination="@id/problem_dest"/>
+    </fragment>
+    <fragment
+            android:id="@+id/problem_dest"
+            android:name="com.nstu.technician.feature.problem.ProblemFragment"
+            android:label="@string/tlt_problem"
+            tools:layout="@layout/fragment_problem">
         <argument
                 android:name="maintenanceId"
                 app:argType="long"/>

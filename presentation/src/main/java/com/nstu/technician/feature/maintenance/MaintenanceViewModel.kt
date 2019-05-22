@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.nstu.technician.domain.model.document.Contract
+import com.nstu.technician.domain.model.document.Contractor
 import com.nstu.technician.domain.model.facility.maintenance.Maintenance
 import com.nstu.technician.domain.usecase.CallUseCase
 import com.nstu.technician.domain.usecase.maintenance.GetDetailMaintenanceUseCase
@@ -26,6 +27,7 @@ class MaintenanceViewModel(
         get() = _maintenance
 
     val contract: LiveData<Contract> = Transformations.map(_maintenance) { it.facility.contract }
+    val contractor: LiveData<Contractor> = Transformations.map(_maintenance) { it.facility.contractor }
 
     private val _isListJobsVisible: MutableLiveData<Boolean> = MutableLiveData(false)
     val isListJobsVisible: LiveData<Boolean>

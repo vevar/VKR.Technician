@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nstu.technician.R
 import com.nstu.technician.databinding.FragmentMaintenanceJobBinding
@@ -29,7 +30,22 @@ class MaintenanceJobFragment : BaseFragment() {
 
     private val maintenanceJobObserver = Observer<MaintenanceJob> {
         mBinding.apply {
-            recycleView.swapAdapter(MaintenanceJobRVAdapter(it), true)
+            recycleView.swapAdapter(MaintenanceJobRVAdapter(it, object : MaintenanceJobRVAdapter.DetailJobListener {
+                override fun onStartJob(maintenanceJob: MaintenanceJob) {
+                    mViewModel.startJob()
+                }
+
+                override fun onEndJob(maintenanceJob: MaintenanceJob) {
+                    mViewModel.endJob()
+                }
+
+                override fun onSendAboutError(maintenanceJob: MaintenanceJob) {
+                    val action =
+                        MaintenanceJobFragmentDirections.actionMaintenanceJobDestToProblemFragment(maintenanceJob.oid)
+                    findNavController().navigate(action)
+                }
+
+            }), true)
         }
     }
 
@@ -60,7 +76,8 @@ class MaintenanceJobFragment : BaseFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        (requireActivity() as AppCompatActivity).supportActionBar?.title = "${getString(R.string.tlt_job)} #${mViewModel.maintenanceJobId}"
+        (requireActivity() as AppCompatActivity).supportActionBar?.title =
+            "${getString(R.string.tlt_job)} #${mViewModel.maintenanceJobId}"
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_maintenance_job, container, false)
         mBinding.apply {
             recycleView.layoutManager = LinearLayoutManager(requireContext())

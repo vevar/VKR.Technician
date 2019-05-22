@@ -101,4 +101,13 @@ class DataClient private constructor() {
             .repositoryModule(RepositoryModule())
             .build()
     }
+
+    fun createProblemComponent(): ProblemComponent {
+        return DaggerProblemComponent.builder()
+            .apiModule(ApiModule(ApiProvider(retrofitProvider)))
+            .daoModule(DaoModule(appDataBase))
+            .dataSourceModule(DataSourceModule())
+            .repositoryModule(RepositoryModule())
+            .build()
+    }
 }

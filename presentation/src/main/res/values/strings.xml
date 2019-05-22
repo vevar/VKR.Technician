@@ -16,6 +16,14 @@
     <string name="lbl_maintenance">Заявка</string>
     <string name="lbl_components">Комплектующие</string>
     <string name="lbl_implements">Инвентарь</string>
+    <string name="lbl_type_problem">Тип проблемы</string>
+    <string name="lbl_photo">Фото</string>
+    <string name="lbl_comment">Комментарий</string>
+
+    <string name="lbl_need_input_type_problem">Выберете тип проблемы</string>
+    <string name="lbl_need_input_comment">Введите комментарий</string>
+
+
 
     <!--FIELDS-->
     <string name="fld_login">Логин</string>
@@ -23,19 +31,24 @@
 
     <!--BUTTONS-->
     <string name="btn_sing_in">Вход</string>
+    <string name="btn_add">Добавить</string>
+    <string name="btn_send">Отправить</string>
+    <string name="btn_start">Начать</string>
+    <string name="btn_show_on_map">Показать на карте</string>
+    <string name="btn_message_about_problem">Сообщить о проблеме</string>
+    <string name="btn_end">Закончить</string>
+
 
     <!--TITLES-->
     <string name="tlt_plan_jobs">График работ</string>
     <string name="tlt_job">Работа</string>
     <string name="tlt_qr_scanner">QR Code сканер</string>
+    <string name="tlt_problem">Проблема</string>
 
-    <string name="btn_show_on_map">Показать на карте</string>
-    <string name="btn_start">Начать</string>
     <string name="map">Карта</string>
     <string name="txt_not_any_maintenance">Нет заявок</string>
     <string name="period_contract">Срок договора</string>
     <string name="contractor">Контрагент</string>
-    <string name="btn_message_about_problem">Сообщить о проблеме</string>
     <string name="lbl_scan_qr_for_start">Отсканируйте QR код объекта, чтобы начать обслуживание</string>
     <string name="btn_scan">Сканировать</string>
 
@@ -55,6 +68,7 @@
     </string-array>
 
     <string-array name="types_maintenance">
+        <item/>
         <item>Ежемесячное ТО</item>
         <item>Разовая</item>
         <item>Внеплановая</item>
@@ -62,10 +76,20 @@
     </string-array>
 
     <string-array name="types_job_state">
+        <item/>
         <item>В плане</item>
         <item>В процессе</item>
         <item>Выполнено</item>
         <item>Проблема</item>
     </string-array>
+
+    <string-array name="types_problems">
+        <item/>
+        <item>Проблема с QR</item>
+        <item>Невозможность выполнения</item>
+        <item>Необходимость оборудования</item>
+        <item>Другое</item>
+    </string-array>
+
 
 </resources>

@@ -836,10 +836,18 @@ fun JobType.toJobTypeDTO(): JobTypeDTO {
     )
 }
 
+fun ProblemDTO.toProblemEntity(): ProblemEntity{
+    return ProblemEntity(
+        oid = oid,
+        problemType = problemType,
+        comment = comment
+    )
+}
+
 fun ProblemEntity.toProblemDTO(): ProblemDTO {
     return ProblemDTO(
         oid = oid,
-        type = problemType,
+        problemType = problemType,
         comment = comment
     )
 }
@@ -848,14 +856,14 @@ fun ProblemDTO.toProblem(): Problem {
     return Problem(
         oid = oid,
         comment = comment,
-        type = type
+        type = problemType
     )
 }
 
 fun Problem.toProblemDTO(): ProblemDTO {
     return ProblemDTO(
         oid = oid,
-        type = type,
+        problemType = type,
         comment = comment
     )
 }

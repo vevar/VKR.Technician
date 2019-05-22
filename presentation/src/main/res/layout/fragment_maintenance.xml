@@ -17,7 +17,8 @@
                 app:setVisibility="@{!viewModel.loader.isLoading()}">
             <include
                     layout="@layout/view_contract"
-                    bind:contract="@{viewModel.contract}"/>
+                    bind:contract="@{viewModel.contract}"
+                    bind:contractor="@{viewModel.contractor}"/>
 
             <include
                     layout="@layout/view_detail_maintenance"

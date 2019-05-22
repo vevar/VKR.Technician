@@ -7,13 +7,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nstu.technician.domain.model.facility.maintenance.MaintenanceJob
 import com.nstu.technician.domain.usecase.CallUseCase
+import com.nstu.technician.domain.usecase.maintenance.job.EndMaintenanceJobUseCase
 import com.nstu.technician.domain.usecase.maintenance.job.GetMaintenanceJobUseCase
+import com.nstu.technician.domain.usecase.maintenance.job.StartMaintenanceJobUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class MaintenanceJobVM(
     val maintenanceJobId: Long,
-    private val getMaintenanceJobUseCase: GetMaintenanceJobUseCase
+    private val getMaintenanceJobUseCase: GetMaintenanceJobUseCase,
+    private val startMaintenanceJobUseCase: StartMaintenanceJobUseCase,
+    private val endMaintenanceJobUseCase: EndMaintenanceJobUseCase
 ) : ViewModel() {
 
     companion object {
@@ -25,6 +29,7 @@ class MaintenanceJobVM(
         get() = _mMaintenanceJob
     private val _isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
     val isLoading: LiveData<Boolean> get() = _isLoading
+
 
     fun loadMaintenanceJob() {
         launchDataLoad {
@@ -52,6 +57,46 @@ class MaintenanceJobVM(
                 Log.d(TAG, "(${this@MaintenanceJobVM})finally is called")
             }
             Log.d(TAG, "(${this@MaintenanceJobVM})launch is finished")
+        }
+    }
+
+    fun startJob() {
+        viewModelScope.launch {
+            startMaintenanceJobUseCase.execute(
+                object : CallUseCase<MaintenanceJob> {
+                    override suspend fun onSuccess(result: MaintenanceJob) {
+                        _mMaintenanceJob.value = result
+                    }
+
+                    override suspend fun onFailure(throwable: Throwable) {
+                        throwable.printStackTrace()
+                    }
+
+                },
+                StartMaintenanceJobUseCase.Param.forMaintenanceJob(
+                    _mMaintenanceJob.value ?: throw IllegalStateException("maintenance must be set")
+                )
+            )
+        }
+    }
+
+    fun endJob() {
+        viewModelScope.launch {
+            endMaintenanceJobUseCase.execute(
+                object : CallUseCase<MaintenanceJob> {
+                    override suspend fun onSuccess(result: MaintenanceJob) {
+                        _mMaintenanceJob.value = result
+                    }
+
+                    override suspend fun onFailure(throwable: Throwable) {
+                        throwable.printStackTrace()
+                    }
+
+                },
+                EndMaintenanceJobUseCase.Param.forMaintenanceJob(
+                    _mMaintenanceJob.value ?: throw IllegalStateException("maintenance must be set")
+                )
+            )
         }
     }
 }
