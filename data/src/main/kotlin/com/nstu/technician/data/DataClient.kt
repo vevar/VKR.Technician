@@ -13,6 +13,7 @@ import com.nstu.technician.data.network.interceptor.HandlerExceptionsInterceptor
 import com.nstu.technician.data.network.retorfit.ApiProvider
 import com.nstu.technician.data.network.retorfit.RetrofitProvider
 import okhttp3.OkHttpClient
+import java.time.Duration
 import javax.inject.Inject
 
 class DataClient private constructor() {
@@ -30,14 +31,20 @@ class DataClient private constructor() {
             dataClient.appDataBase =
                 Room.databaseBuilder(context, AppDataBase::class.java, AppDataBase.DATABASE_NAME)
                     .build()
-            dataClient.setupInjection()
-
             val okHttpClient = OkHttpClient.Builder()
-                .addInterceptor(dataClient.accessTokenInterceptor)
                 .addInterceptor(HandlerExceptionsInterceptor())
                 .build()
 
             dataClient.retrofitProvider.addClient(okHttpClient)
+
+            dataClient.setupInjection()
+
+            val okHttpClientWithTokenInterceptor = OkHttpClient.Builder()
+                .addInterceptor(dataClient.accessTokenInterceptor)
+                .addInterceptor(HandlerExceptionsInterceptor())
+                .build()
+
+            dataClient.retrofitProvider.addClient(okHttpClientWithTokenInterceptor)
 
             return dataClient
         }

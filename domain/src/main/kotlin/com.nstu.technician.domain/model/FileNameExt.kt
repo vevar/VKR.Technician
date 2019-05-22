@@ -4,10 +4,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class FileNameExt(
-    val fileName: String,
+    val name: String,
     val path: String,
     val ext: String
 ) : java.io.Serializable {
 
-    fun getFileNameExt() = "$fileName.$ext"
+    fun getFileNameExt() = "$name.$ext"
 }

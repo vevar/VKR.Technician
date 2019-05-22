@@ -164,3 +164,4 @@ const val OCabinet = 0x2000
 const val OQuart = 0x3000
 val TypesOffice = arrayOf("", "оф.", "к.", "кв.")
 
+const val MEDIA_TYPE_IMAGE = "image/jpg"

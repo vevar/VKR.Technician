@@ -1,6 +1,7 @@
 package com.nstu.technician.data.until
 
 import com.nstu.technician.data.database.embedded.AddressEmb
+import com.nstu.technician.data.database.embedded.FileNameExtEmb
 import com.nstu.technician.data.database.embedded.GpsObjectEmb
 import com.nstu.technician.data.database.entity.ProblemEntity
 import com.nstu.technician.data.database.entity.ShiftEntity
@@ -30,6 +31,7 @@ import com.nstu.technician.data.dto.user.AccountDTO
 import com.nstu.technician.data.dto.user.TechnicianDTO
 import com.nstu.technician.data.dto.user.UserDTO
 import com.nstu.technician.domain.NONE
+import com.nstu.technician.domain.model.FileNameExt
 import com.nstu.technician.domain.model.MiniShift
 import com.nstu.technician.domain.model.Problem
 import com.nstu.technician.domain.model.Shift
@@ -145,10 +147,26 @@ fun ArtifactEntity.toArtifactDTO(): ArtifactDTO {
     return ArtifactDTO(
         oid = oid,
         type = type,
-        original = original,
+        original = original.toFileNameExt(),
         name = name,
         fileSize = fileSize,
         date = OwnDateTime(date)
+    )
+}
+
+private fun FileNameExtEmb.toFileNameExt(): FileNameExt {
+    return FileNameExt(
+        name = fileName,
+        path = path,
+        ext = ext
+    )
+}
+
+private fun FileNameExt.toFileNameExtEmb(): FileNameExtEmb {
+    return FileNameExtEmb(
+        fileName = name,
+        ext = ext,
+        path = path
     )
 }
 
@@ -158,7 +176,7 @@ fun ArtifactDTO.toArtifactEntity(): ArtifactEntity {
         date = date.timeInMS,
         fileSize = fileSize,
         name = name,
-        original = original,
+        original = original.toFileNameExtEmb(),
         type = type
     )
 }
@@ -656,7 +674,8 @@ fun MaintenanceJobEntity.toMaintenanceJobDTO(
         endPhoto = endPhoto?.let { EntityLink(it) } ?: EntityLink(NONE),
         problem = problemDTO?.let { EntityLink(it) } ?: EntityLink(NONE),
         components = components?.map { EntityLink(it) } ?: throw IllegalStateException("components must be set"),
-        implList = implList?.map { EntityLink(it) } ?: throw IllegalStateException("implList must be set")
+        implList = implList?.map { EntityLink(it) } ?: throw IllegalStateException("implList must be set"),
+        needPhoto = needPhoto
     )
 }
 
@@ -671,7 +690,8 @@ fun MaintenanceJobDTO.toMaintenanceJobEntity(maintenanceJobId: Long): Maintenanc
         duration = duration,
         endTime = endTime.timeInMS,
         problemId = if (problem.oid != NONE) problem.oid else null,
-        maintenanceId = maintenanceJobId
+        maintenanceId = maintenanceJobId,
+        needPhoto = needPhoto
     )
 }
 
@@ -687,7 +707,8 @@ fun MaintenanceJobDTO.toMaintenanceJob(): MaintenanceJob {
         problem = problem.ref?.toProblem(),
         jobType = jobType.getObject().toJobType(),
         beginTime = beginTime,
-        endTime = endTime
+        endTime = endTime,
+        needPhoto = needPhoto
     )
 }
 
@@ -703,7 +724,8 @@ fun MaintenanceJob.toMaintenanceJobDTO(): MaintenanceJobDTO {
         jobState = jobState,
         components = components.map { EntityLink(it.toComponentUnitDTO()) },
         endPhoto = endPhoto?.let { EntityLink(it.toArtifactDTO()) } ?: EntityLink(NONE),
-        beginPhoto = beginPhoto?.let { EntityLink(it.toArtifactDTO()) } ?: EntityLink(NONE)
+        beginPhoto = beginPhoto?.let { EntityLink(it.toArtifactDTO()) } ?: EntityLink(NONE),
+        needPhoto = needPhoto
     )
 }
 
@@ -836,7 +858,7 @@ fun JobType.toJobTypeDTO(): JobTypeDTO {
     )
 }
 
-fun ProblemDTO.toProblemEntity(): ProblemEntity{
+fun ProblemDTO.toProblemEntity(): ProblemEntity {
     return ProblemEntity(
         oid = oid,
         problemType = problemType,

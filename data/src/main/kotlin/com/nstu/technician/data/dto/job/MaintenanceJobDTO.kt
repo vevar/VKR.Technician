@@ -20,7 +20,8 @@ data class MaintenanceJobDTO(
     val implList: List<EntityLink<ImplementsDTO>>,
     val components: List<EntityLink<ComponentUnitDTO>>,
     val duration: Int,  // in minutes
-    val problem: EntityLink<ProblemDTO>
+    val problem: EntityLink<ProblemDTO>,
+    val needPhoto: Boolean
 ) : EntityDTO(oid) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

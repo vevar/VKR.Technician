@@ -12,6 +12,7 @@ import com.nstu.technician.domain.usecase.maintenance.job.GetMaintenanceJobUseCa
 import com.nstu.technician.domain.usecase.maintenance.job.StartMaintenanceJobUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.io.File
 
 class MaintenanceJobVM(
     val maintenanceJobId: Long,
@@ -71,10 +72,29 @@ class MaintenanceJobVM(
                     override suspend fun onFailure(throwable: Throwable) {
                         throwable.printStackTrace()
                     }
-
                 },
                 StartMaintenanceJobUseCase.Param.forMaintenanceJob(
                     _mMaintenanceJob.value ?: throw IllegalStateException("maintenance must be set")
+                )
+            )
+        }
+    }
+
+    fun startJob(imageFile: File) {
+        viewModelScope.launch {
+            startMaintenanceJobUseCase.execute(
+                object : CallUseCase<MaintenanceJob> {
+                    override suspend fun onSuccess(result: MaintenanceJob) {
+                        _mMaintenanceJob.value = result
+                    }
+
+                    override suspend fun onFailure(throwable: Throwable) {
+                        throwable.printStackTrace()
+                    }
+                },
+                StartMaintenanceJobUseCase.Param.forMaintenanceJob(
+                    _mMaintenanceJob.value ?: throw IllegalStateException("maintenance must be set"),
+                    imageFile
                 )
             )
         }
@@ -95,6 +115,26 @@ class MaintenanceJobVM(
                 },
                 EndMaintenanceJobUseCase.Param.forMaintenanceJob(
                     _mMaintenanceJob.value ?: throw IllegalStateException("maintenance must be set")
+                )
+            )
+        }
+    }
+
+    fun endJob(imageFile: File) {
+        viewModelScope.launch {
+            endMaintenanceJobUseCase.execute(
+                object : CallUseCase<MaintenanceJob> {
+                    override suspend fun onSuccess(result: MaintenanceJob) {
+                        _mMaintenanceJob.value = result
+                    }
+
+                    override suspend fun onFailure(throwable: Throwable) {
+                        throwable.printStackTrace()
+                    }
+                },
+                EndMaintenanceJobUseCase.Param.forMaintenanceJob(
+                    _mMaintenanceJob.value ?: throw IllegalStateException("maintenance must be set"),
+                    imageFile
                 )
             )
         }

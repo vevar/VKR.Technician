@@ -4,6 +4,7 @@ import com.nstu.technician.data.di.model.ApiModule
 import com.nstu.technician.data.di.model.DaoModule
 import com.nstu.technician.data.di.model.DataSourceModule
 import com.nstu.technician.data.di.model.RepositoryModule
+import com.nstu.technician.domain.repository.FileRepository
 import com.nstu.technician.domain.repository.MaintenanceJobRepository
 import dagger.Component
 
@@ -12,4 +13,5 @@ import dagger.Component
 )
 interface MaintenanceJobComponent {
     fun maintenanceJobRepository(): MaintenanceJobRepository
+    fun fileRepository(): FileRepository
 }

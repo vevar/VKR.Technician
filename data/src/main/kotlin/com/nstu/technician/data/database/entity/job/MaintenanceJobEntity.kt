@@ -16,5 +16,6 @@ data class MaintenanceJobEntity(
     @ColumnInfo(name = "end_photo_id") val endPhotoId: Long?,
     val duration: Int,  // in minutes
     @ColumnInfo(name = "problem_id") val problemId: Long?,
-    @ColumnInfo(name = "maintenance_id") val maintenanceId: Long
+    @ColumnInfo(name = "maintenance_id") val maintenanceId: Long,
+    val needPhoto: Boolean
 )

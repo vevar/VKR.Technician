@@ -20,5 +20,6 @@ data class MaintenanceJob(
     val implList: List<Implements>,
     val components: List<ComponentUnit>,
     val duration: Int,  // in minutes
-    val problem: Problem? = null
+    val problem: Problem? = null,
+    val needPhoto: Boolean
 ):java.io.Serializable

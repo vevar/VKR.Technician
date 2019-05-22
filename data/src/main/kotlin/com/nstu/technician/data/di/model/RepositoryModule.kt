@@ -34,6 +34,11 @@ class RepositoryModule {
     }
 
     @Provides
+    fun provideFileRepository(fileRepositoryImpl: FileRepositoryImpl): FileRepository {
+        return fileRepositoryImpl
+    }
+
+    @Provides
     fun provideMaintenanceRepository(maintenanceRepositoryImpl: MaintenanceRepositoryImpl): MaintenanceRepository {
         return maintenanceRepositoryImpl
     }

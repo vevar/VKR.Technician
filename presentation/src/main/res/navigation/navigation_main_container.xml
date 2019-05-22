@@ -55,6 +55,6 @@
         </action>
     </fragment>
 
-    <include app:graph="@navigation/navigation_qrcode_scanner"/>
+    <include app:graph="@navigation/navigation_job"/>
 
 </navigation>
