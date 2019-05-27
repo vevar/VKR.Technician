@@ -255,16 +255,12 @@ fun Address.toAddressDTO(): AddressDTO {
     )
 }
 
-fun FacilityEntity.toFacilityDTO(
-    contractDTO: ContractDTO?,
-    contractorDTO: ContractorDTO
-): FacilityDTO {
+fun FacilityEntity.toFacilityDTO(contractorDTO: ContractorDTO): FacilityDTO {
     return FacilityDTO(
         oid = oid,
         name = name,
         address = address.toAddressDTO(),
         assingmentDate = assingmentDate,
-        contract = contractDTO?.let { EntityLink(it) } ?: EntityLink(0),
         identifier = identifier,
         contractor = EntityLink(contractorDTO)
     )
@@ -286,7 +282,6 @@ fun FacilityDTO.toFacilityEntity(): FacilityEntity {
         oid = oid,
         name = name,
         address = address.toAddressEmb(),
-        contractId = contract.oid,
         assingmentDate = assingmentDate,
         identifier = identifier,
         contractorId = contractor.oid
@@ -300,7 +295,6 @@ fun FacilityDTO.toFacility(): Facility {
         address = address.toAddress(),
         assingmentDate = assingmentDate,
         identifier = identifier,
-        contract = if (contract.oid == NONE) null else contract.getObject().toContract(),
         contractor = contractor.getObject().toContractor()
     )
 }
@@ -310,7 +304,6 @@ fun Facility.toFacilityDTO(): FacilityDTO {
         oid = oid,
         name = name,
         identifier = identifier,
-        contract = contract?.let { EntityLink(it.toContractDTO()) } ?: EntityLink(NONE),
         contractor = EntityLink(contractor.toContractorDTO()),
         address = address.toAddressDTO(),
         assingmentDate = assingmentDate

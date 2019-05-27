@@ -2,7 +2,6 @@ package com.nstu.technician.domain.model.facility
 
 import com.nstu.technician.domain.model.common.Address
 import com.nstu.technician.domain.model.common.OwnDateTime
-import com.nstu.technician.domain.model.document.Contract
 import com.nstu.technician.domain.model.document.Contractor
 import kotlinx.serialization.Serializable
 
@@ -14,7 +13,6 @@ data class Facility(
     val name: String,
     val address: Address,
     val assingmentDate: OwnDateTime,
-    val contract: Contract?,
     val contractor: Contractor
 ) : java.io.Serializable{
 

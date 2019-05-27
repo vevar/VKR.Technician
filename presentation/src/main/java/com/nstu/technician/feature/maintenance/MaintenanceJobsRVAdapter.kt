@@ -34,7 +34,6 @@ class MaintenanceJobsRVAdapter(
     fun setMaintenance(maintenance: Maintenance) {
         this.maintenance = maintenance
         val facility = maintenance.facility
-        contract = facility.contract
         contractor = facility.contractor
         listMaintenanceJobs.clear()
         listMaintenanceJobs.addAll(maintenance.jobList)

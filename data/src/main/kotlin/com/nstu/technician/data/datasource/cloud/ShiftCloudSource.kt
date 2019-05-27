@@ -20,7 +20,6 @@ class ShiftCloudSource @Inject constructor(
 
 
     companion object {
-        const val DEFAULT_LEVEL = 2
         const val MAX_LEVEL = 100
     }
 
@@ -44,7 +43,7 @@ class ShiftCloudSource @Inject constructor(
         startTime: Long,
         endTime: Long
     ): List<ShiftDTO> {
-        return shiftApi.getShiftToPeriod(technicianId, startTime, endTime, DEFAULT_LEVEL).execute().body()
+        return shiftApi.getShiftToPeriod(technicianId, startTime, endTime).execute().body()
             ?: throw IllegalStateException(BODY_MUST_BE_SET)
     }
 

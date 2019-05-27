@@ -6,7 +6,6 @@ import com.nstu.technician.data.datasource.entity.FacilityDataSource
 import com.nstu.technician.data.datasource.entity.LOCAL
 import com.nstu.technician.data.datasource.local.dao.FacilityDao
 import com.nstu.technician.data.datasource.local.dao.UtilDao
-import com.nstu.technician.data.dto.document.ContractDTO
 import com.nstu.technician.data.dto.document.ContractorDTO
 import com.nstu.technician.data.dto.job.FacilityDTO
 import com.nstu.technician.data.until.getObject
@@ -38,26 +37,18 @@ class FacilityLocalSource @Inject constructor(
     override suspend fun findById(id: Long): FacilityDTO {
         return facilityDao.findById(id)?.let { facilityEntity ->
             var contractorDTO: ContractorDTO? = null
-            var contractDTO: ContractDTO? = null
             runBlocking {
                 contractorDTO = contractorLocalSource.findById(facilityEntity.contractorId)
-                if (facilityEntity.contractId != NONE){
-                    contractDTO = facilityEntity.contractId.let { contractLocalSource.findById(it) }
-                }
             }
-            facilityEntity.toFacilityDTO(contractDTO, contractorDTO!!)
+            facilityEntity.toFacilityDTO( contractorDTO!!)
         } ?: throw NotFoundException(TAG, "FacilityDTO by id($id)")
     }
-
 
     override suspend fun save(obj: FacilityDTO): Long {
         return utilDao.transactionSave {
             runBlocking {
                 if (obj.contractor.oid != NONE) {
                     contractorLocalSource.save(obj.contractor.getObject())
-                }
-                if (obj.contract.oid != NONE) {
-                    contractLocalSource.save(obj.contract.getObject())
                 }
             }
             facilityDao.save(obj.toFacilityEntity())
