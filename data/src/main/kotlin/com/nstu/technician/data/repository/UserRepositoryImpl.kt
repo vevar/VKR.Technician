@@ -34,7 +34,11 @@ class UserRepositoryImpl @Inject constructor(
     @ExperimentalCoroutinesApi
     override suspend fun findByAccount(account: Account): User? {
         return supervisorScope {
-            cloudUserDataSource.findByAccount(account.toAccountDTO())?.toUser()
+            cloudUserDataSource.findByAccount(account.toAccountDTO())?.also {
+                it.account?.ref = account.toAccountDTO()
+                localUserDataSource.save(it)
+            }?.toUser()
+
         }
     }
 }

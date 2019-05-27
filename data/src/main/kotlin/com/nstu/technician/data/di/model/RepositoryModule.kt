@@ -39,6 +39,11 @@ class RepositoryModule {
     }
 
     @Provides
+    fun provideGPSPointRepository(gpsPointRepositoryImpl: GPSPointRepositoryImpl): GPSPointRepository {
+        return gpsPointRepositoryImpl
+    }
+
+    @Provides
     fun provideMaintenanceRepository(maintenanceRepositoryImpl: MaintenanceRepositoryImpl): MaintenanceRepository {
         return maintenanceRepositoryImpl
     }

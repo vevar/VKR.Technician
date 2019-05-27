@@ -6,6 +6,7 @@ import com.nstu.technician.data.DataClient
 import com.nstu.technician.di.component.AppComponent
 import com.nstu.technician.di.component.DaggerAppComponent
 import com.nstu.technician.di.module.EnvironmentModule
+import com.nstu.technician.di.module.service.ServiceModule
 
 class App : Application() {
 
@@ -33,6 +34,7 @@ class App : Application() {
     private fun initInjection() {
         appComponent = DaggerAppComponent.builder()
             .environmentModule(EnvironmentModule(getApp(getApp(this))))
+            .serviceModule(ServiceModule(this))
             .build()
     }
 

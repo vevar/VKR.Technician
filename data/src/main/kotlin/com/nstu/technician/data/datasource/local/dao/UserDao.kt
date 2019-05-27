@@ -9,7 +9,7 @@ import com.nstu.technician.data.database.entity.user.UserEntity
 @Dao
 interface UserDao {
 
-    @Query("SELECT * FROM userentity LIMIT 1")
+    @Query("SELECT * FROM userentity")
     fun find(): UserEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

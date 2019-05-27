@@ -82,11 +82,12 @@ class ListMaintenanceForDayFragment : BaseFragment() {
                 MaintenanceRVAdapter.MaintenanceListener {
                 override fun onShowOnMap(maintenance: Maintenance) {
                     if (checkPermissionLocation(requireContext())) {
+                        showOnMap(maintenance.facility.oid)
+                    } else {
                         arguments?.putLong(EXTRA_ID_MAINTENANCE, maintenance.facility.oid)
                             ?: NullPointerException("args is null")
                         requestLocationPermission(this@ListMaintenanceForDayFragment)
-                    } else {
-                        showOnMap(maintenance.facility.oid)
+
                     }
                 }
 

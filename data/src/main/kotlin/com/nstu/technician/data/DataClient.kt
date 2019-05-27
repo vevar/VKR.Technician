@@ -64,6 +64,15 @@ class DataClient private constructor() {
         return authComponent
     }
 
+    fun createRepositoryComponent(): RepositoryComponent {
+        return DaggerRepositoryComponent.builder()
+            .apiModule(ApiModule(ApiProvider(retrofitProvider)))
+            .daoModule(DaoModule(appDataBase))
+            .dataSourceModule(DataSourceModule())
+            .repositoryModule(RepositoryModule())
+            .build()
+    }
+
     fun createPlanJobsComponent(): PlanJobsComponent {
         return DaggerPlanJobsComponent.builder()
             .apiModule(ApiModule(ApiProvider(retrofitProvider)))

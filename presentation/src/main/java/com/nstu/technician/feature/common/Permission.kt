@@ -12,15 +12,17 @@ const val PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION = 1
 const val PERMISSION_REQUEST_CODE_CAMERA = 2
 
 fun checkPermissionLocation(context: Context): Boolean {
-    return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && PermissionChecker.checkSelfPermission(
+    return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && PermissionChecker.checkSelfPermission(
         context,
         Manifest.permission.ACCESS_COARSE_LOCATION
-    ) != PackageManager.PERMISSION_GRANTED
+    ) == PackageManager.PERMISSION_GRANTED) && PermissionChecker.checkSelfPermission(
+        context,
+        Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
 }
 
 fun requestLocationPermission(fragment: Fragment) {
     fragment.requestPermissions(
-        arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
+        arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION),
         PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION
     )
 }

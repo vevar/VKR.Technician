@@ -31,8 +31,8 @@ class GPSPointLocalSource @Inject constructor(
         }
     }
 
-    override suspend fun saveForShift(gpsPointDTO: GPSPointDTO, shiftId: Long) {
-        gpsPointFromShiftDao.save(gpsPointDTO.convertToGPSPointFromShiftEntity(shiftId))
+    override suspend fun saveForShift(gpsPointDTO: GPSPointDTO, shiftId: Long):Long? {
+        return gpsPointFromShiftDao.save(gpsPointDTO.convertToGPSPointFromShiftEntity(shiftId))
     }
 
     override suspend fun findByShiftId(shiftId: Long): List<GPSPointDTO> {

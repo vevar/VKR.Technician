@@ -2,9 +2,7 @@ package com.nstu.technician.feature.plan.jobs
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -42,6 +40,7 @@ class PlanJobsFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
         setupInjection()
         setupViewModel(savedInstanceState)
     }
@@ -52,7 +51,7 @@ class PlanJobsFragment : BaseFragment() {
 
         val jobsScreen = DaggerPlanJobsScreen.builder()
             .appComponent(app.getAppComponent())
-            .planJobsComponent(dataClient.createPlanJobsComponent())
+            .repositoryComponent(dataClient.createRepositoryComponent())
             .planJobsModule(PlanJobsModule(getTechnicianId()))
             .build()
 
@@ -80,6 +79,21 @@ class PlanJobsFragment : BaseFragment() {
         }
 
         return mBinding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_plan_jobs, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.start_shift -> {
+                mViewModel.startShift()
+                return true
+            }
+            else -> super.onOptionsItemSelected(item)
+
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

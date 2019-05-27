@@ -43,6 +43,7 @@
     <string name="tlt_job">Работа</string>
     <string name="tlt_qr_scanner">QR Code сканер</string>
     <string name="tlt_problem">Проблема</string>
+    <string name="tlt_start_shift">Начать смену</string>
 
     <string name="map">Карта</string>
     <string name="txt_not_any_maintenance">Нет заявок</string>

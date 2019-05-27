@@ -168,6 +168,12 @@ open class DataSourceModule {
 
     @Named(CLOUD)
     @Provides
+    fun provideGPSPointDataSource(gpsPointCloudSource: GPSPointCloudSource): GPSPointDataSource {
+        return gpsPointCloudSource
+    }
+
+    @Named(CLOUD)
+    @Provides
     fun provideImplementsCloudSource(implementsCloudSource: ImplementsCloudSource): ImplementsDataSource {
         return implementsCloudSource
     }
@@ -186,7 +192,7 @@ open class DataSourceModule {
 
     @Named(CLOUD)
     @Provides
-    fun provideProblemCloudSource(problemCloudSource : ProblemCloudSource): ProblemDataSource{
+    fun provideProblemCloudSource(problemCloudSource: ProblemCloudSource): ProblemDataSource {
         return problemCloudSource
     }
 

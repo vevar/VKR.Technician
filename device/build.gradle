@@ -36,6 +36,7 @@ dependencies {
 
     def dependencies = rootProject.ext.deviceDependencies
     //  Module
+    implementation project(path: ':data')
     implementation project(path: ':domain')
 
     //    Kotlin

@@ -10,6 +10,7 @@ import com.nstu.technician.data.dto.user.UserDTO
 import com.nstu.technician.data.until.convertToUserDTO
 import com.nstu.technician.data.until.getObject
 import com.nstu.technician.data.until.toUserEntity
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -40,7 +41,12 @@ class UserLocalSource @Inject constructor(
 
     override suspend fun save(obj: UserDTO): Long {
         return utilDao.transactionSave {
-            accountLocalSource.save(obj.account?.getObject() ?: throw IllegalStateException("Account must be set"))
+            runBlocking {
+                accountLocalSource.save(
+                    obj.account?.getObject() ?: throw IllegalStateException("Account must be set")
+                )
+            }
+            userDao.nukeTable()
             userDao.save(obj.toUserEntity())
         }
     }

@@ -1,5 +1,6 @@
 package com.nstu.technician.feature.plan.jobs
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,12 +8,15 @@ import androidx.lifecycle.viewModelScope
 import com.nstu.technician.domain.model.MiniShift
 import com.nstu.technician.domain.usecase.CallUseCase
 import com.nstu.technician.domain.usecase.shift.GetListShiftsUseCase
+import com.nstu.technician.domain.usecase.shift.StartShiftUseCase
+import dagger.Lazy
 import kotlinx.coroutines.launch
 import java.util.*
 
 class PlanJobsViewModel(
     private val technicianId: Long,
-    private val getShiftsUseCase: GetListShiftsUseCase
+    private val getShiftsUseCase: GetListShiftsUseCase,
+    private val startShiftUseCase: Lazy<StartShiftUseCase>
 ) : ViewModel() {
     companion object {
         private const val TAG = "PlanJobsViewModel"
@@ -56,6 +60,21 @@ class PlanJobsViewModel(
             val year = shiftDate.get(Calendar.YEAR)
 
             currentYear == year && currentDayYear == dayYear
+        }
+    }
+
+    fun startShift() {
+        Log.d(TAG,"Method startShift is called")
+        viewModelScope.launch {
+            startShiftUseCase.get().execute(object : CallUseCase<Unit> {
+                override suspend fun onSuccess(result: Unit) {
+                }
+
+                override suspend fun onFailure(throwable: Throwable) {
+                    throwable.printStackTrace()
+                }
+
+            }, Unit)
         }
     }
 
