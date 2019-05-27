@@ -35,6 +35,8 @@ android {
 dependencies {
 
     def dependencies = rootProject.ext.deviceDependencies
+    //  Module
+    implementation project(path: ':domain')
 
     //    Kotlin
     implementation dependencies.kotlinLib

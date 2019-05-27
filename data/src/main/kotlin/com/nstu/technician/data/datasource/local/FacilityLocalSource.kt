@@ -1,6 +1,5 @@
 package com.nstu.technician.data.datasource.local
 
-import com.nstu.technician.data.datasource.entity.ContractDataSource
 import com.nstu.technician.data.datasource.entity.ContractorDataSource
 import com.nstu.technician.data.datasource.entity.FacilityDataSource
 import com.nstu.technician.data.datasource.entity.LOCAL
@@ -20,8 +19,6 @@ import javax.inject.Named
 class FacilityLocalSource @Inject constructor(
     private val utilDao: UtilDao,
     private val facilityDao: FacilityDao,
-    @Named(LOCAL)
-    private val contractLocalSource: ContractDataSource,
     @Named(LOCAL)
     private val contractorLocalSource: ContractorDataSource
 ) : FacilityDataSource {

@@ -37,7 +37,7 @@ class CameraEnginePreview private constructor(
     }
 
     override fun onStart() {
-        Log.d(TAG, "onStart is called")
+        Log.d(TAG, "onRun is called")
         createPreviewSession()
     }
 
