@@ -8,6 +8,7 @@ import android.util.Log
 import com.google.android.gms.location.LocationResult
 import com.nstu.technician.data.DataClient
 import com.nstu.technician.device.di.DaggerLocationMonitoringServiceComponent
+import com.nstu.technician.domain.GeoGPS
 import com.nstu.technician.domain.model.common.GPSPoint
 import com.nstu.technician.domain.usecase.CallUseCase
 import com.nstu.technician.domain.usecase.PutGPSPointUseCase
@@ -27,7 +28,6 @@ class LocationMonitoringServiceImpl : IntentService(TAG), CoroutineScope by Coro
         fun getIntentTakeLocation(context: Context, shiftId: Long = 0): PendingIntent {
             val intent = Intent(context, LocationMonitoringServiceImpl::class.java)
             intent.action = ACTION_TAKE_LOCATION
-            intent.putExtra(EXTRA_SHIFT_ID, shiftId)
             return PendingIntent.getService(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         }
     }
@@ -41,6 +41,7 @@ class LocationMonitoringServiceImpl : IntentService(TAG), CoroutineScope by Coro
         DaggerLocationMonitoringServiceComponent.builder()
             .repositoryComponent(dataClient.createRepositoryComponent())
             .build().inject(this)
+
     }
 
     override fun onHandleIntent(intent: Intent?) {
@@ -48,8 +49,8 @@ class LocationMonitoringServiceImpl : IntentService(TAG), CoroutineScope by Coro
         val safeIntent = intent ?: throw IllegalArgumentException("intent must be set")
         when (safeIntent.action) {
             ACTION_TAKE_LOCATION -> {
-                if (LocationResult.hasResult(intent)) {
-                    val location = LocationResult.extractResult(intent).lastLocation
+                LocationResult.extractResult(intent)?.let {
+                    val location = it.lastLocation
                     launch {
                         this@LocationMonitoringServiceImpl.putGPSPointUseCase.execute(
                             object : CallUseCase<Unit> {
@@ -65,14 +66,10 @@ class LocationMonitoringServiceImpl : IntentService(TAG), CoroutineScope by Coro
                                 }
 
                             },
-                            PutGPSPointUseCase.Param.forShift(
-                                intent.getLongExtra(EXTRA_SHIFT_ID, 0),
-                                GPSPoint(0, location.latitude, location.longitude)
-                            )
+                            PutGPSPointUseCase.Param.forShift(GPSPoint(0, location.latitude, location.longitude, GeoGPS))
                         )
                     }
                 }
-
             }
             else -> {
 

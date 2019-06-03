@@ -8,5 +8,6 @@ import kotlinx.serialization.Serializable
 data class GPSPoint(
     val oid: Long,
     val latitude: Double,
-    val longitude: Double
+    val longitude: Double,
+    val state: Int
 ) : java.io.Serializable

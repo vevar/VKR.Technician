@@ -30,6 +30,7 @@ import com.nstu.technician.data.dto.tool.*
 import com.nstu.technician.data.dto.user.AccountDTO
 import com.nstu.technician.data.dto.user.TechnicianDTO
 import com.nstu.technician.data.dto.user.UserDTO
+import com.nstu.technician.domain.GeoGPS
 import com.nstu.technician.domain.NONE
 import com.nstu.technician.domain.model.FileNameExt
 import com.nstu.technician.domain.model.MiniShift
@@ -415,7 +416,8 @@ fun GPSPointFromShiftEntity.toGpsPointDTO(): GPSPointDTO {
     return GPSPointDTO(
         oid = oid,
         geox = longitude,
-        geoy = latitude
+        geoy = latitude,
+        state = GeoGPS // TODO need replace late
     )
 }
 
@@ -423,12 +425,13 @@ fun GPSEntity.toGpsPointDTO(): GPSPointDTO {
     return GPSPointDTO(
         oid = oid,
         geox = longitude,
-        geoy = latitude
+        geoy = latitude,
+        state = GeoGPS // TODO need replace late
     )
 }
 
 fun GPSPointDTO.toGPSPoint(): GPSPoint {
-    return GPSPoint(oid, geoy, geox)
+    return GPSPoint(oid, geoy, geox, state)
 }
 
 fun GPSPointDTO.convertToGPSEntity(): GPSEntity {
@@ -441,7 +444,10 @@ fun GPSPointDTO.convertToGPSEntity(): GPSEntity {
 
 fun GPSPoint.toGpsPointDTO(): GPSPointDTO {
     return GPSPointDTO(
-        oid, latitude, longitude
+        oid = oid,
+        geoy = latitude,
+        geox = longitude,
+        state = state
     )
 }
 
