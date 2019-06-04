@@ -1,6 +1,5 @@
 package com.nstu.technician.data.repository
 
-import android.util.Log
 import com.nstu.technician.data.datasource.entity.CLOUD
 import com.nstu.technician.data.datasource.entity.LOCAL
 import com.nstu.technician.data.datasource.entity.UserDataSource
@@ -10,9 +9,6 @@ import com.nstu.technician.data.until.toUserDTO
 import com.nstu.technician.domain.model.user.Account
 import com.nstu.technician.domain.model.user.User
 import com.nstu.technician.domain.repository.UserRepository
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.supervisorScope
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -36,14 +32,10 @@ class UserRepositoryImpl @Inject constructor(
         localUserDataSource.save(user.toUserDTO())
     }
 
-    @ExperimentalCoroutinesApi
     override suspend fun findByAccount(account: Account): User? {
         return cloudUserDataSource.findByAccount(account.toAccountDTO())?.also {
             it.account?.ref = account.toAccountDTO()
-            val userId = runBlocking { localUserDataSource.save(it) }
-            Log.d(TAG, "$userId")
+            localUserDataSource.save(it)
         }?.toUser()
-
-
     }
 }
