@@ -121,4 +121,10 @@ object BindingAdapters {
             view.text = array[type]
         }
     }
+
+    @BindingAdapter("app:setTextByRes")
+    @JvmStatic
+    fun setTextByRes(view: TextView, id: Int) {
+        view.text = view.resources.getString(id)
+    }
 }

@@ -1,19 +1,22 @@
 package com.nstu.technician.feature.plan.jobs.list.maintenece.requests
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.arch.core.util.Function
+import androidx.lifecycle.*
+import com.nstu.technician.R
 import com.nstu.technician.domain.model.facility.maintenance.Maintenance
 import com.nstu.technician.domain.usecase.CallUseCase
 import com.nstu.technician.domain.usecase.shift.GetListMaintenanceUseCase
+import com.nstu.technician.domain.usecase.shift.StartShiftUseCase
+import dagger.Lazy
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class ListMaintenanceForDayViewModel(
     private val idShift: Long,
-    private val getListMaintenanceUseCase: GetListMaintenanceUseCase
+    val isCurrentDay: Boolean,
+    private val getListMaintenanceUseCase: GetListMaintenanceUseCase,
+    private val startShiftUseCase: Lazy<StartShiftUseCase>
 ) : ViewModel() {
     companion object {
         private const val TAG = "Maintenances_ViewModel"
@@ -25,21 +28,51 @@ class ListMaintenanceForDayViewModel(
     private val _isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
     val isLoading: LiveData<Boolean>
         get() = _isLoading
-    private val _messageIdResource: MutableLiveData<Int> = MutableLiveData()
-    val message: LiveData<Int>
-        get() = _messageIdResource
+
+    private val _isBottomBtnVisible: MutableLiveData<Boolean> = MutableLiveData(false)
+    val isBottomBtnVisible: LiveData<Boolean>
+        get() = _isBottomBtnVisible
+    val btnBottomText: LiveData<Int> = MediatorLiveData<Int>().apply {
+        addSource(_isBottomBtnVisible) {
+            if (it) {
+                if (isCurrentDay) {
+                    this.value = R.string.btn_start_shift
+                } else {
+                    this.value = R.string.btn_go_to_current_day
+                }
+            }
+        }
+    }
+
 
     fun loadListMaintenance() {
         launchDataLoad {
             getListMaintenanceUseCase.execute(object : CallUseCase<List<Maintenance>> {
                 override suspend fun onSuccess(result: List<Maintenance>) {
                     _listMaintenance.value = result
+                    _isBottomBtnVisible.value = true
                 }
 
                 override suspend fun onFailure(throwable: Throwable) {
                     throwable.printStackTrace()
                 }
             }, GetListMaintenanceUseCase.Param.forShift(idShift))
+        }
+    }
+
+    fun startShift() {
+        viewModelScope.launch {
+            startShiftUseCase.get().execute(object : CallUseCase<Unit> {
+                override suspend fun onSuccess(result: Unit) {
+                    Log.d(TAG, "startShiftUseCase done")
+                    _isBottomBtnVisible.value = false
+                }
+
+                override suspend fun onFailure(throwable: Throwable) {
+                    throwable.printStackTrace()
+                }
+
+            }, StartShiftUseCase.Param.forShift(idShift))
         }
     }
 

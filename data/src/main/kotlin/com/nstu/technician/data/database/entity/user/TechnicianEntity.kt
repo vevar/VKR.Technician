@@ -10,8 +10,7 @@ import androidx.room.PrimaryKey
         entity = UserEntity::class,
         parentColumns = ["oid"],
         childColumns = ["user_id"],
-        onDelete = ForeignKey.CASCADE,
-        onUpdate = ForeignKey.CASCADE
+        onDelete = ForeignKey.CASCADE
     )]
 )
 data class TechnicianEntity(

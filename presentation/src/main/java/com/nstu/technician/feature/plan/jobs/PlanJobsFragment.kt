@@ -2,7 +2,9 @@ package com.nstu.technician.feature.plan.jobs
 
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -12,6 +14,7 @@ import com.nstu.technician.di.component.plan.jobs.DaggerPlanJobsScreen
 import com.nstu.technician.di.module.model.PlanJobsModule
 import com.nstu.technician.feature.App
 import com.nstu.technician.feature.BaseFragment
+import com.nstu.technician.feature.plan.jobs.list.maintenece.requests.ListMaintenanceForDayFragment
 import com.nstu.technician.feature.util.BaseViewModelFactory
 import java.util.*
 import javax.inject.Inject
@@ -26,16 +29,16 @@ class PlanJobsFragment : BaseFragment() {
     lateinit var planJobsVMFactory: BaseViewModelFactory<PlanJobsViewModel>
 
     private lateinit var mBinding: FragmentPlanJobsBinding
-    private lateinit var mViewModel: PlanJobsViewModel
+    lateinit var mViewModel: PlanJobsViewModel
     private lateinit var mPagerAdapter: PlanJobVPAdapter
 
     private var mDaysObserver = Observer<PlanJobsViewModel.Data> { data ->
-        mPagerAdapter.setListShifts(data.shifts)
-        mBinding.apply {
-            val index: Int = mViewModel.indexCurrentPosition ?: data.indexCurrentDay
-            Log.d(TAG, "Current index of tab: $index")
-            viewPagerMaintenance.currentItem = index
-        }
+        mPagerAdapter.setListShifts(data.shifts, data.indexCurrentDay)
+        mViewModel.goToCurrentShift()
+    }
+
+    private val mCurrentShiftObserver = Observer<Int> {
+        mBinding.viewPagerMaintenance.currentItem = it
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,9 +70,6 @@ class PlanJobsFragment : BaseFragment() {
 
     private fun setupViewModel(savedInstanceState: Bundle?) {
         mViewModel = ViewModelProviders.of(this, planJobsVMFactory).get(PlanJobsViewModel::class.java)
-        savedInstanceState?.apply {
-            mViewModel.indexCurrentPosition = getInt(STATE_TABS_SCROLL)
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -79,21 +79,6 @@ class PlanJobsFragment : BaseFragment() {
         }
 
         return mBinding.root
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_plan_jobs, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.start_shift -> {
-                mViewModel.startShift()
-                return true
-            }
-            else -> super.onOptionsItemSelected(item)
-
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -125,8 +110,12 @@ class PlanJobsFragment : BaseFragment() {
 
     override fun onStart() {
         super.onStart()
-        mViewModel.data.observe(this, mDaysObserver)
-        mViewModel.loadPlanJobs()
+        mViewModel.apply {
+            data.observe(this@PlanJobsFragment, mDaysObserver)
+            indexCurrentPosition.observe(this@PlanJobsFragment, mCurrentShiftObserver)
+            loadPlanJobs()
+        }
+
     }
 
 }

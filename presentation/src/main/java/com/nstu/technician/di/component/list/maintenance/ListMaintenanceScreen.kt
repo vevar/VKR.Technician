@@ -1,6 +1,6 @@
 package com.nstu.technician.di.component.list.maintenance
 
-import com.nstu.technician.data.di.component.ListMaintenanceComponent
+import com.nstu.technician.data.di.component.RepositoryComponent
 import com.nstu.technician.di.ScreenScope
 import com.nstu.technician.di.component.AppComponent
 import com.nstu.technician.di.module.model.ListMaintenanceModule
@@ -8,7 +8,7 @@ import com.nstu.technician.feature.plan.jobs.list.maintenece.requests.ListMainte
 import dagger.Component
 
 @ScreenScope
-@Component(dependencies = [AppComponent::class, ListMaintenanceComponent::class],
+@Component(dependencies = [AppComponent::class, RepositoryComponent::class],
     modules = [ListMaintenanceModule::class])
 interface ListMaintenanceScreen {
 

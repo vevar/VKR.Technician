@@ -10,6 +10,17 @@ import javax.inject.Inject
 class TechnicianCloudSource @Inject constructor(
     private val technicianApi: TechnicianApi
 ) : TechnicianDataSource {
+    override suspend fun findById(id: Long): TechnicianDTO {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun save(obj: TechnicianDTO): Long {
+        technicianApi.updateTechnician(obj)
+    }
+
+    override suspend fun delete(obj: TechnicianDTO) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     companion object {
         const val TAG = "NETWORK_TECHNICIAN"
@@ -22,8 +33,5 @@ class TechnicianCloudSource @Inject constructor(
         return response.body() ?: throw IllegalStateException(BODY_MUST_BE_SET)
     }
 
-    override suspend fun save(technician: TechnicianDTO) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
 }

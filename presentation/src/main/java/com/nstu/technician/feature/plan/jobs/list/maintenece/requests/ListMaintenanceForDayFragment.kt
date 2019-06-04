@@ -21,20 +21,23 @@ import com.nstu.technician.feature.BaseFragment
 import com.nstu.technician.feature.common.PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION
 import com.nstu.technician.feature.common.checkPermissionLocation
 import com.nstu.technician.feature.common.requestLocationPermission
+import com.nstu.technician.feature.plan.jobs.PlanJobsFragment
 import com.nstu.technician.feature.plan.jobs.PlanJobsFragmentDirections
 import com.nstu.technician.feature.util.BaseViewModelFactory
+import java.lang.IllegalStateException
 import javax.inject.Inject
 
-class ListMaintenanceForDayFragment : BaseFragment() {
+class ListMaintenanceForDayFragment private constructor() : BaseFragment() {
     companion object {
         private const val TAG = "Maintenance_Fragment"
         private const val EXTRA_ID_SHIFT = "EXTRA_ID_SHIFT"
         private const val EXTRA_ID_MAINTENANCE = "EXTRA_ID_MAINTENANCE"
-
-        fun newInstance(idShift: Long): ListMaintenanceForDayFragment {
+        private const val EXTRA_IS_CURRENT_DAY = "EXTRA_IS_CURRENT_DAY"
+        fun newInstance(idShift: Long, isCurrentDay: Boolean): ListMaintenanceForDayFragment {
             val fragment = ListMaintenanceForDayFragment()
             val bundle = Bundle()
             bundle.putLong(EXTRA_ID_SHIFT, idShift)
+            bundle.putBoolean(EXTRA_IS_CURRENT_DAY, isCurrentDay)
             fragment.arguments = bundle
             return fragment
         }
@@ -47,8 +50,12 @@ class ListMaintenanceForDayFragment : BaseFragment() {
     private lateinit var mViewModel: ListMaintenanceForDayViewModel
     private lateinit var mMaintenanceRecycleAdapter: MaintenanceRVAdapter
 
-    private var listMaintenanceObserver = Observer<List<Maintenance>> {
+    private val listMaintenanceObserver = Observer<List<Maintenance>> {
         mMaintenanceRecycleAdapter.setListMaintenance(it)
+    }
+
+    private val btnBottomTextObserver = Observer<Int> {
+        mBinding.bottomButton.text = resources.getString(it)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,11 +70,16 @@ class ListMaintenanceForDayFragment : BaseFragment() {
 
         val screen = DaggerListMaintenanceScreen.builder()
             .appComponent(App.getApp(requireContext()).getAppComponent())
-            .listMaintenanceComponent(dataClient.createListMaintenanceComponent())
-            .listMaintenanceModule(ListMaintenanceModule(getIdShift()))
+            .repositoryComponent(dataClient.createRepositoryComponent())
+            .listMaintenanceModule(ListMaintenanceModule(getIdShift(), getIsCurrentDay()))
             .build()
 
         screen.inject(this)
+    }
+
+    private fun getIsCurrentDay(): Boolean {
+        return arguments?.getBoolean(EXTRA_IS_CURRENT_DAY)
+            ?: throw IllegalStateException("$EXTRA_IS_CURRENT_DAY must be set")
     }
 
     private fun getIdShift(): Long {
@@ -99,12 +111,20 @@ class ListMaintenanceForDayFragment : BaseFragment() {
 
             })
         mBinding.apply {
+            lifecycleOwner = viewLifecycleOwner
             recycleViewMaintenance.apply {
                 adapter = mMaintenanceRecycleAdapter
                 layoutManager = LinearLayoutManager(this.context)
             }
             viewModel = mViewModel
-            lifecycleOwner = viewLifecycleOwner
+        }
+        mBinding.bottomButton.setOnClickListener {
+            if (mViewModel.isCurrentDay) {
+                mViewModel.startShift()
+            } else {
+                val jobsFragment = parentFragment as PlanJobsFragment
+                jobsFragment.mViewModel.goToCurrentShift()
+            }
         }
 
         return mBinding.root
@@ -123,6 +143,7 @@ class ListMaintenanceForDayFragment : BaseFragment() {
     override fun onStart() {
         super.onStart()
         mViewModel.listMaintenance.observe(viewLifecycleOwner, listMaintenanceObserver)
+        mViewModel.btnBottomText.observe(viewLifecycleOwner, btnBottomTextObserver)
         mViewModel.loadListMaintenance()
         Log.d(TAG, "${this} + fragment is started")
     }

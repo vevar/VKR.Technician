@@ -13,11 +13,10 @@ class PlanJobsModule(private val technicianId: Long) {
 
     @Provides
     fun providePlanJobsViewModel(
-        getShiftsUseCase: GetListShiftsUseCase,
-        startShiftUseCase: Lazy<StartShiftUseCase>
+        getShiftsUseCase: GetListShiftsUseCase
     ): BaseViewModelFactory<PlanJobsViewModel> {
         return BaseViewModelFactory(PlanJobsViewModel::class.java) {
-            PlanJobsViewModel(technicianId, getShiftsUseCase, startShiftUseCase)
+            PlanJobsViewModel(technicianId, getShiftsUseCase)
         }
     }
 }

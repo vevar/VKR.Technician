@@ -1,6 +1,5 @@
 package com.nstu.technician.feature.plan.jobs
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,30 +14,25 @@ import java.util.*
 
 class PlanJobsViewModel(
     private val technicianId: Long,
-    private val getShiftsUseCase: GetListShiftsUseCase,
-    private val startShiftUseCase: Lazy<StartShiftUseCase>
+    private val getShiftsUseCase: GetListShiftsUseCase
 ) : ViewModel() {
     companion object {
         private const val TAG = "PlanJobsViewModel"
     }
 
-    var indexCurrentPosition: Int? = null
-
     private val _data: MutableLiveData<Data> = MutableLiveData()
     val data: LiveData<Data>
         get() = _data
-
-    private val _messageIdResource: MutableLiveData<Int> = MutableLiveData()
-    val message: LiveData<Int>
-        get() = _messageIdResource
     private val currentDate: Calendar = Calendar.getInstance()
+    private var indexCurrentShift: Int = 0
+    val indexCurrentPosition: MutableLiveData<Int> = MutableLiveData(indexCurrentShift)
 
 
     fun loadPlanJobs() {
         viewModelScope.launch {
             getShiftsUseCase.execute(object : CallUseCase<List<MiniShift>> {
                 override suspend fun onSuccess(result: List<MiniShift>) {
-                    val indexCurrentShift = findIndexOfCurrentShift(result) ?: 0
+                    indexCurrentShift = findIndexOfCurrentShift(result) ?: 0
                     _data.value = Data(result, indexCurrentShift)
                 }
 
@@ -48,6 +42,10 @@ class PlanJobsViewModel(
 
             }, GetListShiftsUseCase.Param.forTechnician(technicianId))
         }
+    }
+
+    fun goToCurrentShift() {
+        indexCurrentPosition.value = indexCurrentShift
     }
 
     private fun findIndexOfCurrentShift(list: List<MiniShift>): Int? {
@@ -60,21 +58,6 @@ class PlanJobsViewModel(
             val year = shiftDate.get(Calendar.YEAR)
 
             currentYear == year && currentDayYear == dayYear
-        }
-    }
-
-    fun startShift() {
-        Log.d(TAG,"Method startShift is called")
-        viewModelScope.launch {
-            startShiftUseCase.get().execute(object : CallUseCase<Unit> {
-                override suspend fun onSuccess(result: Unit) {
-                }
-
-                override suspend fun onFailure(throwable: Throwable) {
-                    throwable.printStackTrace()
-                }
-
-            }, Unit)
         }
     }
 
