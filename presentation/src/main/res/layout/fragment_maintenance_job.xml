@@ -9,8 +9,7 @@
         <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycle_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="@dimen/default_padding"/>
+                android:layout_height="match_parent"/>
         <ProgressBar
                 android:id="@+id/progress_bar"
                 android:layout_width="wrap_content"
