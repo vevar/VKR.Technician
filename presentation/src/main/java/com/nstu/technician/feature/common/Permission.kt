@@ -8,7 +8,6 @@ import android.os.Build
 import androidx.core.content.PermissionChecker
 import androidx.fragment.app.Fragment
 
-const val PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION = 1
 const val PERMISSION_REQUEST_CODE_CAMERA = 2
 
 fun checkPermissionLocation(context: Context): Boolean {
@@ -20,10 +19,10 @@ fun checkPermissionLocation(context: Context): Boolean {
         Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
 }
 
-fun requestLocationPermission(fragment: Fragment) {
+fun requestLocationPermission(fragment: Fragment, requestCode: Int) {
     fragment.requestPermissions(
         arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION),
-        PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION
+        requestCode
     )
 }
 

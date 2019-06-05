@@ -19,11 +19,12 @@
     <string name="lbl_type_problem">Тип проблемы</string>
     <string name="lbl_photo">Фото</string>
     <string name="lbl_comment">Комментарий</string>
-
     <string name="lbl_need_input_type_problem">Выберете тип проблемы</string>
     <string name="lbl_need_input_comment">Введите комментарий</string>
+    <string name="lbl_in_shift_state">Вы на смене</string>
 
-
+    <string name="lbl_work_controller">Менеджер работ</string>
+    <string name="lbl_work_controller_description">Предоставляет информацию о статусе работы</string>
     <!--FIELDS-->
     <string name="fld_login">Логин</string>
     <string name="fld_password">Пароль</string>

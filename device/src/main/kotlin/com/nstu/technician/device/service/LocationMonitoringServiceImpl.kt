@@ -45,7 +45,7 @@ class LocationMonitoringServiceImpl : IntentService(TAG), CoroutineScope by Coro
     }
 
     override fun onHandleIntent(intent: Intent?) {
-        Log.d(TAG, "Method onHandleIntent called")
+        Log.d(TAG, "Method onHandleIntent(LocationMonitoringServiceImpl) called")
         val safeIntent = intent ?: throw IllegalArgumentException("intent must be set")
         when (safeIntent.action) {
             ACTION_TAKE_LOCATION -> {

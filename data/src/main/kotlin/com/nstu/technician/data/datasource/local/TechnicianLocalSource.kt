@@ -16,6 +16,13 @@ class TechnicianLocalSource @Inject constructor(
     private val technicianDao: TechnicianDao,
     private val userDataSource: UserDataSource
 ) : TechnicianDataSource {
+    override suspend fun findById(id: Long): TechnicianDTO {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun delete(obj: TechnicianDTO) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     companion object {
         const val TAG = "TechnicianLocalSource"
@@ -27,10 +34,10 @@ class TechnicianLocalSource @Inject constructor(
         } ?: throw NotFoundException(TAG, "ContractDTO by userId($userId)")
     }
 
-    override suspend fun save(technician: TechnicianDTO) {
-        utilDao.transactionSave {
-            userDataSource.save(technician.user.getObject())
-            technicianDao.save(technician.toTechnicianEntity())
+    override suspend fun save(obj: TechnicianDTO): Long {
+        return utilDao.transactionSave {
+            userDataSource.save(obj.user.getObject())
+            technicianDao.save(obj.toTechnicianEntity())
         }
     }
 }

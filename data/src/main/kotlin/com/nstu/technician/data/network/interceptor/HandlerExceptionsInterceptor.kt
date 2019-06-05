@@ -53,9 +53,6 @@ class HandlerExceptionsInterceptor : Interceptor {
             return response
         } else {
             when (response.code()) {
-                UNAUTHORIZED_CODE -> {
-                    throw UnauthorizedException(response.message())
-                }
                 NOT_FOUND_CODE -> {
                     throw NotFoundException(response.request().url().toString(), "Not found")
                 }

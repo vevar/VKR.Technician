@@ -15,7 +15,8 @@ class TechnicianCloudSource @Inject constructor(
     }
 
     override suspend fun save(obj: TechnicianDTO): Long {
-        technicianApi.updateTechnician(obj)
+        return technicianApi.updateTechnician(obj).execute().body()?.let { obj.oid }
+            ?: throw IllegalStateException(BODY_MUST_BE_SET)
     }
 
     override suspend fun delete(obj: TechnicianDTO) {

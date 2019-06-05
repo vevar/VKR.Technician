@@ -11,8 +11,7 @@ import kotlinx.coroutines.supervisorScope
 import javax.inject.Inject
 import javax.inject.Named
 
-class
-TechnicianRepositoryImpl @Inject constructor(
+class TechnicianRepositoryImpl @Inject constructor(
     @Named(CLOUD)
     private val cloudTechnicianDataSource: TechnicianDataSource
 ) : TechnicianRepository {
@@ -21,7 +20,9 @@ TechnicianRepositoryImpl @Inject constructor(
     }
 
     override suspend fun save(obj: Technician): Technician? {
-        cloudTechnicianDataSource.save(obj.toTechnicianDTO())
+        return cloudTechnicianDataSource.save(obj.toTechnicianDTO()).let {
+            obj.copy(oid = it)
+        }
     }
 
     override suspend fun findById(id: Long): Technician {

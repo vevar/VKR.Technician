@@ -6,6 +6,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -18,13 +20,12 @@ import com.nstu.technician.di.module.model.ListMaintenanceModule
 import com.nstu.technician.domain.model.facility.maintenance.Maintenance
 import com.nstu.technician.feature.App
 import com.nstu.technician.feature.BaseFragment
-import com.nstu.technician.feature.common.PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION
+import com.nstu.technician.feature.NOTIFICATION_WORK_MANAGER_ID
 import com.nstu.technician.feature.common.checkPermissionLocation
 import com.nstu.technician.feature.common.requestLocationPermission
 import com.nstu.technician.feature.plan.jobs.PlanJobsFragment
 import com.nstu.technician.feature.plan.jobs.PlanJobsFragmentDirections
 import com.nstu.technician.feature.util.BaseViewModelFactory
-import java.lang.IllegalStateException
 import javax.inject.Inject
 
 class ListMaintenanceForDayFragment private constructor() : BaseFragment() {
@@ -33,6 +34,10 @@ class ListMaintenanceForDayFragment private constructor() : BaseFragment() {
         private const val EXTRA_ID_SHIFT = "EXTRA_ID_SHIFT"
         private const val EXTRA_ID_MAINTENANCE = "EXTRA_ID_MAINTENANCE"
         private const val EXTRA_IS_CURRENT_DAY = "EXTRA_IS_CURRENT_DAY"
+
+        private const val PERMISSION_SHOW_MAP_CODE = 1
+        private const val PERMISSION_START_SHIFT_CODE = 2
+
         fun newInstance(idShift: Long, isCurrentDay: Boolean): ListMaintenanceForDayFragment {
             val fragment = ListMaintenanceForDayFragment()
             val bundle = Bundle()
@@ -88,17 +93,18 @@ class ListMaintenanceForDayFragment private constructor() : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_list_maintenance, container, false)
+        val context = requireContext()
         mMaintenanceRecycleAdapter = MaintenanceRVAdapter(
-            requireContext(),
+            context,
             object :
                 MaintenanceRVAdapter.MaintenanceListener {
                 override fun onShowOnMap(maintenance: Maintenance) {
-                    if (checkPermissionLocation(requireContext())) {
+                    if (checkPermissionLocation(context)) {
                         showOnMap(maintenance.facility.oid)
                     } else {
                         arguments?.putLong(EXTRA_ID_MAINTENANCE, maintenance.facility.oid)
                             ?: NullPointerException("args is null")
-                        requestLocationPermission(this@ListMaintenanceForDayFragment)
+                        requestLocationPermission(this@ListMaintenanceForDayFragment, PERMISSION_SHOW_MAP_CODE)
 
                     }
                 }
@@ -120,7 +126,20 @@ class ListMaintenanceForDayFragment private constructor() : BaseFragment() {
         }
         mBinding.bottomButton.setOnClickListener {
             if (mViewModel.isCurrentDay) {
-                mViewModel.startShift()
+                if (checkPermissionLocation(context)) {
+                    mViewModel.startShift()
+
+                    val notification = NotificationCompat.Builder(context, App.CHANNEL_WORK_CONTROLLER)
+                        .setSmallIcon(R.drawable.ic_fire_extinguisher)
+                        .setContentTitle(resources.getString(R.string.lbl_in_shift_state))
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .build()
+                    NotificationManagerCompat.from(context).apply {
+                        notify(NOTIFICATION_WORK_MANAGER_ID, notification)
+                    }
+                } else {
+                    requestLocationPermission(this, PERMISSION_START_SHIFT_CODE)
+                }
             } else {
                 val jobsFragment = parentFragment as PlanJobsFragment
                 jobsFragment.mViewModel.goToCurrentShift()
@@ -142,19 +161,26 @@ class ListMaintenanceForDayFragment private constructor() : BaseFragment() {
 
     override fun onStart() {
         super.onStart()
-        mViewModel.listMaintenance.observe(viewLifecycleOwner, listMaintenanceObserver)
-        mViewModel.btnBottomText.observe(viewLifecycleOwner, btnBottomTextObserver)
-        mViewModel.loadListMaintenance()
+        mViewModel.apply {
+            listMaintenance.observe(viewLifecycleOwner, listMaintenanceObserver)
+            btnBottomText.observe(viewLifecycleOwner, btnBottomTextObserver)
+            loadListMaintenance()
+        }
         Log.d(TAG, "${this} + fragment is started")
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when (requestCode) {
-            PERMISSIONS_REQUEST_CODE_ACCESS_COARSE_LOCATION -> {
+            PERMISSION_SHOW_MAP_CODE -> {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     val idMaintenance = arguments?.getLong(EXTRA_ID_MAINTENANCE)
                         ?: throw NullPointerException("arg is null")
                     showOnMap(idMaintenance)
+                }
+            }
+            PERMISSION_START_SHIFT_CODE -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    mViewModel.startShift()
                 }
             }
         }
