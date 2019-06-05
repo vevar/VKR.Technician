@@ -13,11 +13,12 @@ interface MaintenanceApi {
     companion object {
         private const val DEFAULT_LEVEL = 2
         private const val DEFAULT_MODE = 0
+        private const val DEEP_LEVEL = 999
     }
 
     /** Установить состояние обслуживания (заявки) по объекту   */
     @POST("/api/maintenance/setstate")
-    fun setMaintenanceState(@Query("id") id: Long, @Query("state") state: Int): Call<String>
+    fun setMaintenanceState(@Query("id") id: Long, @Query("maintenanceState") state: Int): Call<String>
 
     /** Установить время начала обслуживания (заявки) по объекту   */
     @POST("/api/maintenance/begintime")
@@ -33,4 +34,7 @@ interface MaintenanceApi {
 
     @GET("/api/maintenance/get")
     fun getMaintenance(@Query("id") id: Long, @Query("level") level: Int = DEFAULT_LEVEL): Call<MaintenanceDTO>
+
+    @POST("/api/maintenance/update")
+    fun updateMaintenance(@Body body: MaintenanceDTO, @Query("level") level: Int = DEEP_LEVEL): Call<String>
 }

@@ -58,7 +58,7 @@ class MaintenanceFragment : BaseFragment() {
 
         val screen = DaggerMaintenanceScreen.builder()
             .appComponent(App.getApp(requireContext()).getAppComponent())
-            .maintenanceComponent(dataClient.createMaintenanceComponent())
+            .repositoryComponent(dataClient.createRepositoryComponent())
             .maintenanceModule(MaintenanceModule(getMaintenanceId()))
             .build()
 

@@ -1,8 +1,8 @@
 package com.nstu.technician.di.module.model
 
 import com.nstu.technician.domain.usecase.maintenance.job.EndMaintenanceJobUseCase
-import com.nstu.technician.domain.usecase.maintenance.job.SendProblemUseCase
 import com.nstu.technician.domain.usecase.maintenance.job.GetMaintenanceJobUseCase
+import com.nstu.technician.domain.usecase.maintenance.job.SendProblemUseCase
 import com.nstu.technician.domain.usecase.maintenance.job.StartMaintenanceJobUseCase
 import com.nstu.technician.feature.maintenance.job.MaintenanceJobVM
 import com.nstu.technician.feature.problem.ProblemViewModel

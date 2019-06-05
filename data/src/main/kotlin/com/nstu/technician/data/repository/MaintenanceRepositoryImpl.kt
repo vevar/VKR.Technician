@@ -4,6 +4,7 @@ import com.nstu.technician.data.datasource.entity.CLOUD
 import com.nstu.technician.data.datasource.entity.LOCAL
 import com.nstu.technician.data.datasource.entity.MaintenanceDataSource
 import com.nstu.technician.data.until.toMaintenance
+import com.nstu.technician.data.until.toMaintenanceDTO
 import com.nstu.technician.domain.model.facility.maintenance.Maintenance
 import com.nstu.technician.domain.repository.MaintenanceRepository
 import javax.inject.Inject
@@ -20,7 +21,11 @@ class MaintenanceRepositoryImpl @Inject constructor(
     }
 
     override suspend fun save(obj: Maintenance): Maintenance {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return maintenanceCloudSource.save(obj.toMaintenanceDTO()).let {
+            val maintenance = obj.copy(oid = it)
+            maintenanceLocalSource.save(maintenance.toMaintenanceDTO())
+            maintenance
+        }
     }
 
     override suspend fun findById(id: Long): Maintenance {

@@ -62,8 +62,15 @@ class MaintenanceLocalSource @Inject constructor(
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
+    /*
+    Update
+     */
     override suspend fun save(obj: MaintenanceDTO): Long {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val maintenanceEntity = maintenanceDao.findById(obj.oid)
+            ?: throw IllegalStateException("MaintenanceEntity must be set")
+        val shiftId = maintenanceEntity.shiftId
+        runBlocking { saveToMaintenanceEntity(obj, shiftId) }
+        return maintenanceDao.save(obj.toMaintenanceEntity(shiftId))
     }
 
     override suspend fun delete(obj: MaintenanceDTO) {

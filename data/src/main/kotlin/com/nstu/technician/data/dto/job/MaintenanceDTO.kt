@@ -13,7 +13,7 @@ data class MaintenanceDTO(
     val visitDate: OwnDateTime,
     val duration: Int,
     val maintenanceType: Int,
-    val state: Int,
+    val maintenanceState: Int,
     val parent: EntityLink<MaintenanceDTO>,
     val beginTime: OwnDateTime,
     val endTime: OwnDateTime,
@@ -33,7 +33,7 @@ data class MaintenanceDTO(
         if (visitDate != other.visitDate) return false
         if (duration != other.duration) return false
         if (maintenanceType != other.maintenanceType) return false
-        if (state != other.state) return false
+        if (maintenanceState != other.maintenanceState) return false
         if (parent != other.parent) return false
         if (beginTime != other.beginTime) return false
         if (endTime != other.endTime) return false
@@ -50,7 +50,7 @@ data class MaintenanceDTO(
         result = 31 * result + visitDate.hashCode()
         result = 31 * result + duration
         result = 31 * result + maintenanceType
-        result = 31 * result + state
+        result = 31 * result + maintenanceState
         result = 31 * result + parent.hashCode()
         result = 31 * result + beginTime.hashCode()
         result = 31 * result + endTime.hashCode()

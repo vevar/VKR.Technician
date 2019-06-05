@@ -37,7 +37,8 @@ class SessionTokenProvider @Inject constructor(
         val account = accountRepository.find()
 
         return if (account != null) {
-            val user = userRepository.findByAccount(account) ?: throw UserNotFoundException()
+            val user = runBlocking { userRepository.findByAccount(account) } ?: throw UserNotFoundException()
+            user.account = account
             userRepository.save(user)
 
             user.sessionToken

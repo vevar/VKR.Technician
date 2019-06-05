@@ -18,7 +18,7 @@ interface MaintenanceJobApi {
 
     /** Установить состояние работы по объекту   */
     @POST("/api/maintenance/job/setstate")
-    fun setMaintenanceJobSetState(@Query("id") id: Long, @Query("state") state: Int): Call<String>
+    fun setMaintenanceJobSetState(@Query("id") id: Long, @Query("maintenanceState") state: Int): Call<String>
 
     /** Установить время начала выполнения работы   */
     @POST("/api/maintenance/job/begintime")

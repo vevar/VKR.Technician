@@ -9,17 +9,24 @@ import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.nstu.technician.R
 import com.nstu.technician.databinding.FragmentQrcodeScannerBinding
 import com.nstu.technician.device.camera.CameraEngine
 import com.nstu.technician.device.camera.CameraEnginePreview
+import com.nstu.technician.di.component.maintenance.DaggerMaintenanceScreen
+import com.nstu.technician.di.module.model.MaintenanceModule
 import com.nstu.technician.domain.model.facility.maintenance.Maintenance
+import com.nstu.technician.domain.usecase.CallUseCase
+import com.nstu.technician.feature.App
 import com.nstu.technician.feature.BaseFragment
 import com.nstu.technician.feature.common.PERMISSION_REQUEST_CODE_CAMERA
 import com.nstu.technician.feature.common.checkPermissionCamera
 import com.nstu.technician.feature.common.requestCameraPermission
+import com.nstu.technician.feature.util.BaseViewModelFactory
 import com.nstu.technician.feature.util.getQRCode
+import javax.inject.Inject
 import kotlin.properties.Delegates
 
 class QRCodeScannerFragment : BaseFragment() {
@@ -30,16 +37,27 @@ class QRCodeScannerFragment : BaseFragment() {
 
     }
 
-    private lateinit var mMaintenance: Maintenance
+    @Inject
+    lateinit var mFactoryVM: BaseViewModelFactory<QRCodeViewModel>
 
+    private lateinit var mViewModel: QRCodeViewModel
+    private lateinit var mMaintenance: Maintenance
     private lateinit var mCameraEngineBuilder: CameraEngine.Builder
 
     private val mCallBack = object : QRCodeGuardImpl.CallBack {
         override fun onSuccessPass() {
             Log.d(TAG, "Method onSuccessPass called")
-            val action =
-                QRCodeScannerFragmentDirections.actionQRCodeScannerFragmentToJobListFragment(mMaintenance.oid)
-            findNavController().navigate(action)
+            mViewModel.startMaintenance(object : CallUseCase<Unit> {
+                override suspend fun onSuccess(result: Unit) {
+                    val action =
+                        QRCodeScannerFragmentDirections.actionQRCodeScannerFragmentToJobListFragment(mMaintenance.oid)
+                    findNavController().navigate(action)
+                }
+
+                override suspend fun onFailure(throwable: Throwable) {
+                }
+
+            })
         }
 
         override fun onFailurePass() {
@@ -94,16 +112,34 @@ class QRCodeScannerFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mCameraEngineBuilder = CameraEnginePreview.Builder()
         mMaintenance = getMaintenance()
+        setupInjection()
+        setupViewModel()
+        mCameraEngineBuilder = CameraEnginePreview.Builder()
         Log.d(TAG, "key(QRCode): ${mMaintenance.facility.getQRCode()}")
+    }
+
+    private fun setupInjection() {
+        val app = App.getApp(requireContext())
+
+        DaggerMaintenanceScreen.builder()
+            .appComponent(app.getAppComponent())
+            .repositoryComponent(app.getDataClient().createRepositoryComponent())
+            .maintenanceModule(MaintenanceModule(mMaintenance.oid))
+            .build().inject(this)
+    }
+
+    private fun setupViewModel() {
+        mViewModel = ViewModelProviders.of(this, mFactoryVM).get(QRCodeViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_qrcode_scanner, container, false)
-        mBinding.texture.surfaceTextureListener = mSurfaceListener
-        mBinding.texture.setOnClickListener {
-            Log.d(TAG, "onClick is called")
+        mBinding.apply {
+            texture.surfaceTextureListener = mSurfaceListener
+            texture.setOnClickListener {
+                Log.d(TAG, "onClick is called")
+            }
         }
 
         return mBinding.root

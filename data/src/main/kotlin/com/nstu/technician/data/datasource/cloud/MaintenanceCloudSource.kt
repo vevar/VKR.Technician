@@ -68,7 +68,9 @@ class MaintenanceCloudSource @Inject constructor(
     }
 
     override suspend fun save(obj: MaintenanceDTO): Long {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return maintenanceApi.updateMaintenance(obj).execute().body()?.let { obj.oid } ?: throw  IllegalStateException(
+            BODY_MUST_BE_SET
+        )
     }
 
     override suspend fun delete(obj: MaintenanceDTO) {

@@ -25,7 +25,6 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun find(): User? {
         return localUserDataSource.find()?.toUser()
-
     }
 
     override suspend fun save(user: User) {
