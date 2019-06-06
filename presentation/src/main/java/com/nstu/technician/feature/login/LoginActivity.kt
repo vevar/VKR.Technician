@@ -1,5 +1,6 @@
 package com.nstu.technician.feature.login
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
@@ -27,6 +28,10 @@ class LoginActivity : BaseActivity(), ErrorDialogFragment.ErrorDialogListener {
         private const val STATE_USERNAME = "STATE_USERNAME"
         private const val STATE_PASSWORD = "STATE_PASSWORD"
         private const val STATE_MESSAGE = "STATE_MESSAGE"
+
+        fun startActivity(activity: BaseActivity) {
+            activity.startActivity(Intent(activity, LoginActivity::class.java))
+        }
     }
 
     @Inject

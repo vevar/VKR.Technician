@@ -29,9 +29,9 @@ class ContainerActivity : BaseActivity() {
 
         private const val EXTRA_TECHNICIAN_ID = "technicianId"
 
-        fun startActivity(activity: BaseActivity, userId: Long) {
+        fun startActivity(activity: BaseActivity, technicianId: Long) {
             val intent = Intent(activity, ContainerActivity::class.java)
-            intent.putExtra(EXTRA_TECHNICIAN_ID, userId)
+            intent.putExtra(EXTRA_TECHNICIAN_ID, technicianId)
             activity.startActivity(intent)
         }
     }

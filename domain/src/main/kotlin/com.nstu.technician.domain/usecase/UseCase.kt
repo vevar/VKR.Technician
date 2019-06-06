@@ -6,8 +6,8 @@ import kotlinx.coroutines.withContext
 
 abstract class UseCase<Result, Param> {
 
-    protected val executor = Dispatchers.IO
-    protected val postExecutor = Dispatchers.Main
+    private val executor = Dispatchers.IO
+    private val postExecutor = Dispatchers.Main
 
     protected abstract suspend fun task(param: Param): Result
 

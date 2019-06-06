@@ -20,4 +20,5 @@ interface AuthComponent {
     fun technicianRepository(): TechnicianRepository
 
     fun inject(dataClient: DataClient)
+
 }

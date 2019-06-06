@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        package="com.nstu.technician">
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.nstu.technician">
 
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
@@ -25,14 +25,17 @@
                 android:value="@string/map_api_key"/>
         <meta-data
                 android:name="com.google.firebase.ml.vision.DEPENDENCIES"
-                android:value="barcode" />
-
-        <activity android:name=".feature.login.LoginActivity"
-                  android:windowSoftInputMode="adjustResize">
+                android:value="barcode"/>
+        <activity android:name=".feature.login.AutoLoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+
+        <activity android:name=".feature.login.LoginActivity"
+                  android:windowSoftInputMode="adjustResize">
+
         </activity>
 
         <activity android:name=".feature.ContainerActivity">

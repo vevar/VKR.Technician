@@ -39,9 +39,8 @@ class DataClient private constructor() {
 
             dataClient.setupInjection()
 
-            val okHttpClientWithTokenInterceptor = OkHttpClient.Builder()
+            val okHttpClientWithTokenInterceptor = okHttpClient.newBuilder()
                 .addInterceptor(dataClient.accessTokenInterceptor)
-                .addInterceptor(HandlerExceptionsInterceptor())
                 .build()
 
             dataClient.retrofitProvider.addClient(okHttpClientWithTokenInterceptor)
